@@ -100,6 +100,12 @@
   color: var(--text-dim);
 }
 
+.render-error {
+  color: var(--danger, #e5534b);
+  font-size: 0.8rem;
+  padding: 4px 12px;
+}
+
 .preview-transport {
   display: flex;
   gap: 8px;
