@@ -1,67 +1,79 @@
-# Implementation Plan: M2 Voice analysis (first slice)
-
-**Status: COMPLETE** (closed 2026-09-12, commits `8abcd42` → `e864f18`, pushed to origin/main).
+# Implementation Plan: M3 — Semantic image matching (first slice)
 
 ## Overview
-Build the front half of the voice-over differentiator: narration audio → timed, editable
-transcript with word timestamps and pause boundaries. Per [SPEC-voice-analysis.md](../docs/SPEC-voice-analysis.md),
-capability build order: `pause-segmentation` → `transcribe-api` → `transcript-state` → `transcript-ui`.
 
-## Skills workflow (per AGENTS.md, applied per phase)
-Load before each phase: spec-driven-development (done — spec committed) · planning (done) ·
-test-driven-development · api-and-interface-design (before transcribe contract) ·
-incremental-implementation (all slices) · frontend-ui-engineering (transcript-ui) ·
-documentation-and-adrs (docs slice) · git-workflow-and-versioning (commits) ·
-code-review-and-quality (final review). References: definition-of-done, testing-patterns.
+Narration transcript + candidate images → auto-placed, timed, editable image track, using CLIP embeddings
+(ONNX, project-local) per the human decisions (spec: `docs/SPEC-image-matching.md`). Build order:
+`embedding-core` → `match-api` → `beat-segmentation` → `semantic-matching` → `match-ui`.
 
-## Task List (vertical slices, each committed atomically)
+## Architecture decisions
 
-### Slice 1 — pause-segmentation (backend, pure, TDD)
-- [x] `transcribe_core.py`: word-gap → `pauses` list; segments from whisper segments; confidence passthrough
-- [x] Tests: gap math, threshold boundary (≥0.3s), no-audio/empty, single word, identical timestamps
-- [x] Verify: `uv run pytest backend/tests/test_transcribe_core.py` green
+- CLIP ViT-B/32 ONNX (Xenova export) lazy-downloaded to `models/clip/`; `Embedder` interface keeps tests
+  deterministic (`FakeEmbedder`, same pattern as `FakeTranscriber`).
+- One round trip: `POST /api/match` (multipart images + JSON beats) returns `{ assignments, alternatives, timings }`.
+- Beats are computed **frontend-side** in pure TS from the M2 transcript (sentence/segment ends + pause ≥0.4s).
+- Auto-match applies clips through the editor store wrapped in zundo `pause()/resume()` → **one undo step**.
+- Match meta persists as optional `clip.beatId` + existing `clip.confidence` (version stays 1, D-011 pattern).
+- New backend dependency: `Pillow` (Ask-first, required by CLIP preprocessing; user approved CLIP approach).
 
-### Slice 2 — transcribe-api contract
-- [x] `Transcriber` interface + fake; `POST /api/transcribe` route + response/error shape (`TRANSCRIBE_FAILED`, bad request 400)
-- [x] Tests: fake transcriber integration (http 200 shape), missing file, corrupt audio
-- [x] Verify: focused pytest green; `curl` smoke with generated audio optional
+## Task list (vertical slices, each committed atomically)
 
-### Slice 3 — faster-whisper adapter
-- [x] `transcribers.py`: faster-whisper CPU int8, model from config (`models/` cache), downloads on first use
-- [x] Wire into route; keep fake for tests; manual smoke with real synthetic narration
-- [x] Verify: sidecar runs; `/api/transcribe` real path returns lyrics-timed transcript
+### Slice 1 — embedding-core (backend, TDD)
+- [ ] `clip.py`: lazy ONNX `Embedder` (load `models/clip/` files), Pillow preprocess (resize/center-crop/normalize),
+      CLIP text encode (HF tokenizer.json via `tokenizers`), cosine + softmax helpers
+- [ ] Tests: preprocess shape, text truncation, cosine/softmax edge cases (real model NOT in unit tests)
+- [ ] Real-model smoke (manual): tiny image + text through `Embedder` on this machine (onnxruntime 1.17.3 opset check)
+- [ ] Verify: `uv run pytest backend/tests/test_clip.py`, `uv add Pillow`, model download path gitignored
 
-### Slice 4 — transcript-state (frontend)
-- [x] `services/voice.ts` client + types; `transcriptStore` slice (per assetId: transcript/status/error)
-- [x] project.ts optional `transcripts` key (backward-compatible, D-009 extension); save/load round-trip
-- [x] Verify: vitest green; build+lint green
+### Slice 2 — match-api (backend, TDD)
+- [ ] `matching.py`: `POST /api/match` — multipart images + JSON `{ beats: [{id,text,start,end}] }` →
+      per-beat best image + confidence + top-3 alternatives + beat timings; repetition penalty (reuse-aware greedy)
+- [ ] Injectable `Embedder`; error codes `NO_IMAGES`/`NO_BEATS`/`EMBED_FAILED`/`MATCH_FAILED` via `ApiError`
+- [ ] Tests: contract shape, repetition penalty, empty beats, corrupt image → 4xx, deterministic fake embeddings
+- [ ] Verify: `uv run pytest backend/tests/test_matching.py` green; full backend suite
 
-### Slice 5 — transcript-ui
-- [x] `TranscriptPanel` in InspectorPanel: Analyze button, pending/error/empty/success states, word-click seek, inline word-text edit, low-confidence flag; CSS
-- [x] Verify: build+lint+tests green; manual dev smoke
+### Slice 3 — beat-segmentation (frontend, pure, TDD)
+- [ ] `editor/beats.ts`: transcript → beats (group segments; boundary at sentence end or pause ≥ 0.4s; merge tiny segs)
+- [ ] Tests: sentence boundaries, pause threshold, single-segment, mixed-language fallthrough
+- [ ] Verify: `cd frontend && npx vitest run src/editor/beats.test.ts`
+
+### Slice 4 — semantic-matching (frontend)
+- [ ] `services/match.ts`: client (`FormData` images + JSON beats), parse/validate result, error mapping (`VoiceError`-style `MatchError`)
+- [ ] `store/matchingStore.ts`: transient status per project; action `autoMatch()` — gather image Files + transcript →
+      POST → build Clip patches → apply image-track clips in one undo step + set `clip.beatId`/`confidence`
+- [ ] `editor/types.ts` Clip gains optional `beatId`; `project.ts` passthrough (backward compatible, version stays 1)
+- [ ] Tests: autoMatch single-undo-step, undo restores exact prior timeline, persistence round-trip, apply respects existing user clips on the image track
+- [ ] Verify: vitest + build + oxlint green
+
+### Slice 5 — matching-ui
+- [ ] `MatchPanel` (Inspector): Auto-match button (needs in-session image+voice Files), idle/analyzing/error/success states,
+      no-fit message (repetition/all-used), per-clip confidence badge + alternatives dropdown (replace existing clip)
+- [ ] CSS `.match-*` block (tokens), keyboard access, existing `clip-actions` reuse
+- [ ] Verify: build + lint + tests green; dev-server transform smoke
 
 ### Slice 6 — docs, review, push
-- [x] ROADMAP M2 checkboxes, FEATURES §2 status, DECISIONS D-010 (faster-whisper) + D-011 (transcript persistence), ARCHITECTURE §4 note, SESSION_LOG Session 5
-- [x] graphify update; code-review-and-quality pass; push
+- [ ] ROADMAP M3 partial checkboxes, FEATURES §3 status, DECISIONS D-012 (CLIP) + D-013 (match persistence), ARCHITECTURE §9 endpoint, SESSION_LOG Session 6
+- [ ] graphify update; code-review-and-quality pass (real `clip.py` + undo path scrutiny); push
 
 ## Checkpoints
-- [x] After Slice 3: backend pytest green (28) + real-model narration smoke (HTTP 200, words+pauses)
-- [x] After Slice 4: frontend tests (47) + build + lint green
-- [x] After Slice 5: dev-server transform smoke — all transcript modules serve 200 (see below); human browser pass on analyze/edit/seek still outstanding
-- [x] After Slice 6: full suites (backend 28, frontend 47) + docs + code-review + push (origin/main @ e864f18)
 
-### Verification summary (recorded in SESSION_LOG Session 5)
-- Backend: 28 pytest passed. Live e2e via `say`-generated narration → 200, 16 words, confidence 0.13–0.99, pause detected.
-- Frontend: 47 vitest passed, `tsc -b` build ok, oxlint 0 warnings.
-- Dev smoke command: `npm run dev` in `frontend/`, then fetch `/`, `/src/components/TranscriptPanel.tsx`, `/src/store/transcriptStore.ts`, `/src/services/voice.ts` — all HTTP 200 (Vite transform success).
+- [ ] After Slice 1: real-model Embedder smoke passes on this machine (opset/onnxruntime compat proven)
+- [ ] After Slice 2-3: backend + frontend focused suites green
+- [ ] After Slice 4: undo-restores-timeline test green; persistence round-trip green
+- [ ] After Slice 5: dev transform smoke; human browser pass (auto-match feel) documented
+- [ ] After Slice 6: full suites + docs + review + push
 
-## Risks and Mitigations
+## Risks and mitigations
+
 | Risk | Impact | Mitigation |
 |---|---|---|
-| faster-whisper deps/model heavy on baseline laptop | High | CPU int8 tiny default; model cached project-local; interface keeps fake for tests |
-| First-run model download slow/flaky | Med | Document; configurable model size; local-first cache in `models/` |
-| Probabilistic transcript (not deterministic) | Med | Confidence exposed; word edits persist; real-model smoke is manual, not unit |
-| Project-file change could break old files | Low | Optional `transcripts` key — version stays 1 (verified by existing parse tests) |
+| ONNX clip graph (INT8) incompatible with onnxruntime 1.17.3 on mac x86_64 | High | Slice 1 real-model smoke first; fallback fp32 model (larger download), documented |
+| Model download ~100–350MB slow/fails first run | Med | Lazy, project-local, logged; size stated in UI hint; resume not needed (single fetch) |
+| Urdu/roman-urdu beat text → weak embeddings | Med | Accepted (decision 3); English/keyword labels dominate; multilingual model flagged for tuning pass |
+| Auto-match clashes with user-placed image clips | Med | Apply only to empty/short image stretches; skip occupied beats → report skipped; never overwrite |
+| Blob URLs not visible to backend (files re-upload) | Low | In-session Files required (same D-009 limitation); re-import note in UI |
+| Repetition penalty constant is a guess | Low | Exposed constant; calibration deferred to M4/hardware pass |
 
-## Open Questions
-- None. Model size tuning deferred to baseline-hardware test.
+## Open questions
+
+- None until Slice 1 smoke results. Pillow ratified by CLIP decision; penalty/threshold calibration deferred.
