@@ -1,0 +1,400 @@
+.app {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100%;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+}
+
+.project-title {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.clip-count {
+  color: var(--text-dim);
+  font-size: 12px;
+}
+
+.workspace {
+  display: grid;
+  grid-template-columns: 240px 1fr 260px;
+  min-height: 0;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.left-panel {
+  border-left: none;
+  border-top: none;
+  border-bottom: none;
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.right-panel {
+  border-right: none;
+  border-top: none;
+  border-bottom: none;
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.center-panel {
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.bottom-panel {
+  border-top: 1px solid var(--border);
+  background: var(--panel);
+  min-height: 220px;
+}
+
+/* Preview */
+.preview-panel {
+  margin: 12px;
+  background: var(--panel);
+  border: none;
+  border-radius: 6px;
+}
+
+.preview-stage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.preview-stage img,
+.preview-stage video {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.audio-placeholder {
+  color: var(--text-dim);
+}
+
+.preview-transport {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px 12px;
+  border-top: 1px solid var(--border);
+}
+
+.timecode {
+  font-variant-numeric: tabular-nums;
+  color: var(--text-dim);
+}
+
+/* Media panel */
+.media-panel {
+  border: none;
+}
+
+.media-panel > button {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.asset-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.asset-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.asset-thumb {
+  width: 40px;
+  height: 40px;
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  border-radius: 4px;
+  overflow: hidden;
+  color: var(--text-dim);
+}
+
+.asset-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.asset-meta {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.asset-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 13px;
+}
+
+.asset-dims {
+  color: var(--text-dim);
+  font-size: 11px;
+}
+
+.asset-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.asset-actions button {
+  padding: 2px 6px;
+  font-size: 13px;
+}
+
+/* Inspector */
+.inspector-panel {
+  border: none;
+}
+
+.inspector-body,
+.inspector-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 0;
+  border-top: 1px solid var(--border);
+}
+
+.field {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.label {
+  color: var(--text-dim);
+}
+
+.value {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Timeline */
+.timeline-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.timeline-ruler {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  height: 28px;
+  flex: none;
+}
+
+.track-label-header {
+  flex: none;
+  width: 120px;
+}
+
+.ruler-scale {
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+}
+
+.ruler-tick {
+  position: absolute;
+  top: 0;
+  font-size: 10px;
+  color: var(--text-dim);
+  border-left: 1px solid var(--border);
+  padding-left: 3px;
+  transform: translateY(6px);
+}
+
+.timeline-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow-x: auto;
+}
+
+.track-labels {
+  flex: none;
+  width: 120px;
+  display: flex;
+  flex-direction: column;
+}
+
+.track-label {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  font-size: 12px;
+  color: var(--text-dim);
+  border-bottom: 1px solid var(--border);
+}
+
+.timeline-lanes {
+  position: relative;
+  flex: 1;
+  min-width: 400px;
+}
+
+.timeline-lane {
+  position: relative;
+  height: 56px;
+  border-bottom: 1px solid var(--border);
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.02) 0,
+      rgba(255, 255, 255, 0.02) 1px,
+      transparent 1px,
+      transparent 32px
+    );
+}
+
+.clip-block {
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  background: var(--accent-soft);
+  border: 1px solid var(--accent);
+  border-left-width: 2px;
+  border-radius: 3px;
+  overflow: hidden;
+  user-select: none;
+  cursor: grab;
+}
+
+.clip-block::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.08), transparent 60%);
+}
+
+.clip-block.selected {
+  border-color: #fff;
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.clip-title {
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: calc(100% - 8px);
+}
+
+.timeline-lane[data-track='video'] .clip-block {
+  border-color: var(--track-video);
+}
+
+.timeline-lane[data-track='image'] .clip-block {
+  border-color: var(--track-image);
+}
+
+.timeline-lane[data-track='voice'] .clip-block {
+  border-color: var(--track-voice);
+}
+
+.timeline-lane[data-track='music'] .clip-block {
+  border-color: var(--track-music);
+}
+
+.timeline-lane[data-track='sfx'] .clip-block {
+  border-color: var(--track-sfx);
+}
+
+.timeline-lane[data-track='captions'] .clip-block {
+  border-color: var(--track-captions);
+}
+
+.timeline-lane[data-track='text'] .clip-block {
+  border-color: var(--track-text);
+}
+
+.clip-actions {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  display: flex;
+  gap: 4px;
+}
+
+.clip-actions button {
+  padding: 0 5px;
+  font-size: 11px;
+  line-height: 18px;
+}
+
+.playhead {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--danger);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.playhead::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -4px;
+  width: 9px;
+  height: 9px;
+  background: var(--danger);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}

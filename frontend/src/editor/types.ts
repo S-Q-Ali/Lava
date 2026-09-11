@@ -1,0 +1,59 @@
+export const TRACK_TYPES = [
+  'video',
+  'image',
+  'voice',
+  'music',
+  'sfx',
+  'captions',
+  'text',
+] as const
+
+export type TrackType = (typeof TRACK_TYPES)[number]
+
+export const DEFAULT_TRACKS: Track[] = TRACK_TYPES.map((type) => ({
+  id: `track-${type}`,
+  type,
+  name: type,
+}))
+
+export interface Track {
+  id: string
+  type: TrackType
+  name: string
+}
+
+export type AssetKind = 'image' | 'video' | 'audio'
+
+export interface AssetMeta {
+  width?: number
+  height?: number
+  duration?: number
+  mimeType?: string
+  size?: number
+}
+
+export interface Asset {
+  id: string
+  kind: AssetKind
+  name: string
+  url: string
+  meta: AssetMeta
+}
+
+export interface Clip {
+  id: string
+  trackId: string
+  assetId: string
+  name: string
+  start: number
+  duration: number
+  confidence?: number
+}
+
+export interface TimelineModel {
+  tracks: Track[]
+  clips: Clip[]
+  assets: Asset[]
+  playhead: number
+  selectedClipId: string | null
+}
