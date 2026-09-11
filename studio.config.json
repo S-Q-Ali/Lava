@@ -1,0 +1,26 @@
+{
+  "$schema": "./studio.config.schema.json",
+  "name": "Lava Studio",
+  "localDirs": {
+    "venv": ".venv",
+    "nodeModules": "node_modules",
+    "models": "models",
+    "cache": "cache",
+    "temp": "temp",
+    "projects": "projects",
+    "ffmpeg": "tools/ffmpeg/bin",
+    "graphifyOut": "graphify-out"
+  },
+  "ffmpeg": {
+    "source": "auto",
+    "bin": "tools/ffmpeg/bin"
+  },
+  "preview": {
+    "maxProxyWidth": 480,
+    "proxyScale": "auto"
+  },
+  "backend": {
+    "host": "127.0.0.1",
+    "port": 7860
+  }
+}

@@ -1,0 +1,15 @@
+# Exclude vendored skill packs and reference material from the graph
+tools/
+
+# Runtime data
+node_modules/
+dist/
+.venv/
+cache/
+temp/
+projects/
+models/
+tools/ffmpeg/bin/
+
+# Generated / local-only
+graphify-out/cost.json

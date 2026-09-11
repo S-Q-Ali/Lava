@@ -1,0 +1,43 @@
+# Node
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Python / venv
+.venv/
+__pycache__/
+*.py[cod]
+
+# Project-local runtime data
+cache/*
+temp/*
+projects/*
+!cache/.gitkeep
+!temp/.gitkeep
+!projects/.gitkeep
+
+# Models & FFmpeg binaries stay local to the project
+models/*
+!models/.gitkeep
+tools/ffmpeg/bin/
+
+# Logs
+*.log
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/
+
+# Graphify (graphify-out is committed; cost.json + cache are local-only)
+graphify-out/cost.json
+graphify-out/cache/
+
+# OpenCode plugin deps (skills/config/references stay committed)
+.opencode/node_modules/
+
+# Vendor skill reference clones (re-clonable; curated copies live in .opencode/skills/)
+tools/agent-skills/*
+!tools/agent-skills/.gitkeep
+tools/anthropic-skills/*
+!tools/anthropic-skills/.gitkeep
