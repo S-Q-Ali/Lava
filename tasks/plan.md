@@ -1,70 +1,60 @@
-# Implementation Plan: M1 completion — project save/load + timeline drag/trim UX
+# Implementation Plan: M2 Voice analysis (first slice)
 
 ## Overview
-Finish Milestone 1 (media foundation). The editor model, undo/redo, import and rendering already
-ship. This slice adds: (1) versioned project files that serialize/restore the whole timeline model,
-with Save/Open in the topbar; (2) direct manipulation on clips — drag to move, edge handles to
-trim — each drag committing as one undo step (zundo `pause`/`resume`).
+Build the front half of the voice-over differentiator: narration audio → timed, editable
+transcript with word timestamps and pause boundaries. Per [SPEC-voice-analysis.md](../docs/SPEC-voice-analysis.md),
+capability build order: `pause-segmentation` → `transcribe-api` → `transcript-state` → `transcript-ui`.
 
-## Architecture Decisions
-- Project file is JSON (`projectVersion: 1`, `app: 'lava-studio'`), encoding `TimelineModel`
-  (tracks, assets, clips, playhead, selection). Media bytes are session-scoped in a browser
-  (blob URLs) — the file persists structure + metadata; assets whose files are absent on load
-  become available offline stubs. This is the honest M1 web scope; Tauri will persist real paths.
-- Serialization/deserialization is pure logic in `frontend/src/editor/project.ts` (validates,
-  throws `ProjectError` with a message) → unit-testable with vitest, matching the existing suite
-  style (pure logic tests; no component test harness installed).
-- `loadProject` hydrates the whole base state and clears undo history (like `reset`, but with data).
-- Drag/trim use pointer capture in `ClipBlock`, live-update preview, and zundo
-  `pause()` → drag → `resume()` so one gesture = one undo step (keep On page limits: min 0s start,
-  min duration 0.1s; trim capped at the source asset duration when known).
+## Skills workflow (per AGENTS.md, applied per phase)
+Load before each phase: spec-driven-development (done — spec committed) · planning (done) ·
+test-driven-development · api-and-interface-design (before transcribe contract) ·
+incremental-implementation (all slices) · frontend-ui-engineering (transcript-ui) ·
+documentation-and-adrs (docs slice) · git-workflow-and-versioning (commits) ·
+code-review-and-quality (final review). References: definition-of-done, testing-patterns.
 
-## Task List
+## Task List (vertical slices, each committed atomically)
 
-### Task 1: Project serialization (`editor/project.ts`) — S
-- [x] `serializeProject(model)` → `ProjectFile`; `toProjectJson` stringify; `parseProjectJson` round-trip
-- [ ] round-trip preserves tracks/assets/clips/playhead/selection
-- [ ] rejects invalid JSON, unknown `projectVersion`, wrong `app`, malformed clip shapes with clear messages
-- [ ] tests pass: `npx vitest run src/editor/project.test.ts`
+### Slice 1 — pause-segmentation (backend, pure, TDD)
+- [ ] `transcribe_core.py`: word-gap → `pauses` list; segments from whisper segments; confidence passthrough
+- [ ] Tests: gap math, threshold boundary (≥0.3s), no-audio/empty, single word, identical timestamps
+- [ ] Verify: `uv run pytest backend/tests/test_transcribe_core.py` green
 
-### Task 2: `loadProject` store action — S
-- [ ] hydrates base state and clears undo history (undo after load does nothing)
-- [ ] tests pass: `npx vitest run src/store/editorStore.test.ts`
+### Slice 2 — transcribe-api contract
+- [ ] `Transcriber` interface + fake; `POST /api/transcribe` route + response/error shape (`TRANSCRIBE_FAILED`, bad request 400)
+- [ ] Tests: fake transcriber integration (http 200 shape), missing file, corrupt audio
+- [ ] Verify: focused pytest green; `curl` smoke with generated audio optional
 
-### Task 3: Save/Open UI (topbar + `services/projectIO.ts`) — M
-- [ ] Save downloads `<lava-project-<ts>.lava.json>`; Open picks a file, parses, loads
-- [ ] invalid/corrupt project shows an alert, does not clobber current project
-- [ ] build + lint pass
+### Slice 3 — faster-whisper adapter
+- [ ] `transcribers.py`: faster-whisper CPU int8, model from config (`models/` cache), downloads on first use
+- [ ] Wire into route; keep fake for tests; manual smoke with real synthetic narration
+- [ ] Verify: sidecar runs; `/api/transcribe` real path returns lyrics-timed transcript
 
-### Task 4: Clip drag-move UX — M
-- [ ] dragging a clip horizontally moves it live; one undo step per gesture
-- [ ] clip stays on its track; negative start clamped
-- [ ] build + lint pass
+### Slice 4 — transcript-state (frontend)
+- [ ] `services/voice.ts` client + types; `transcriptStore` slice (per assetId: transcript/status/error)
+- [ ] project.ts optional `transcripts` key (backward-compatible, D-009 extension); save/load round-trip
+- [ ] Verify: vitest green; build+lint green
 
-### Task 5: Clip drag-trim UX (edge handles) — M
-- [ ] right handle extends/shortens duration; left handle moves start and adjusts duration
-- [ ] clamped to 0.1s minimum and to source duration when known
-- [ ] one undo step per gesture
+### Slice 5 — transcript-ui
+- [ ] `TranscriptPanel` in InspectorPanel: Analyze button, pending/error/empty/success states, word-click seek, inline word-text edit, low-confidence flag; CSS
+- [ ] Verify: build+lint+tests green; manual dev smoke
 
-### Task 6: CSS + verification + docs — S
-- [ ] handles styled (visible on the active clip), grab/resize cursors
-- [ ] `npm run build`, `npm run lint`, `npx vitest run` all green
-- [ ] manual smoke in browser via `npm run dev`
-- [ ] SESSION_LOG entry (Session 4), ROADMAP checkboxes, FEATURES media-foundation status
-- [ ] `graphify update .` + atomic commits + push
+### Slice 6 — docs, review, push
+- [ ] ROADMAP M2 checkboxes, FEATURES §2 status, DECISIONS D-010 (faster-whisper) + D-011 (transcript persistence), ARCHITECTURE §4 note, SESSION_LOG Session 5
+- [ ] graphify update; code-review-and-quality pass; push
 
 ## Checkpoints
-- After Task 2: vitest green in the touched suites.
-- After Task 3: build + lint + tests green; Save/Open works by hand, corrupt file does not clobber.
-- After Task 5: manual drag/trim test; after Task 6 full suite + docs + graph + commits.
+- After Slice 3: backend pytest green + one real-model smoke
+- After Slice 4: frontend tests + build green
+- After Slice 5: manual browser check of analyze/edit/seek
+- After Slice 6: full suites + docs + review + push
 
 ## Risks and Mitigations
 | Risk | Impact | Mitigation |
-| --- | --- | --- |
-| Blob/media URLs don't survive reload | High | Document honestly; structure persists, media bytes are a known browser limit; Tauri path later |
-| zundo history flooding during drag | Med | `pause`/`resume` around each gesture |
-| Drag vs. existing lane pointerdown (playhead seek) | Med | `stopPropagation` on clip pointerdown (already done) |
-| Trim beyond source media | Med | clamp duration to `asset.meta.duration` when present |
+|---|---|---|
+| faster-whisper deps/model heavy on baseline laptop | High | CPU int8 tiny default; model cached project-local; interface keeps fake for tests |
+| First-run model download slow/flaky | Med | Document; configurable model size; local-first cache in `models/` |
+| Probabilistic transcript (not deterministic) | Med | Confidence exposed; word edits persist; real-model smoke is manual, not unit |
+| Project-file change could break old files | Low | Optional `transcripts` key — version stays 1 (verified by existing parse tests) |
 
 ## Open Questions
-- None blocking. Cross-track drag and click-to-seek vs drag-start ambiguity deferred to next slice.
+- None. Model size tuning deferred to baseline-hardware test.
