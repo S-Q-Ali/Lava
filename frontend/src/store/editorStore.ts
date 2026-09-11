@@ -4,6 +4,16 @@ import type { Asset, Clip, TimelineModel, Transcript, Track } from '../editor/ty
 import { DEFAULT_TRACKS } from '../editor/types'
 import * as ops from '../editor/ops'
 
+export interface MatchClipInput {
+  trackId: string
+  assetId: string
+  name: string
+  start: number
+  end: number
+  confidence: number
+  beatId: string
+}
+
 interface EditorBase {
   tracks: Track[]
   assets: Asset[]
@@ -24,6 +34,7 @@ interface EditorActions {
   duplicateClip(id: string): void
   replaceClipAsset(id: string, assetId: string): void
   setTranscript(assetId: string, transcript: Transcript): void
+  applyMatch(inputs: MatchClipInput[], removeIds: string[]): void
   updateTranscriptWord(assetId: string, segmentId: number, wordIndex: number, text: string): void
   setPlayhead(t: number): void
   selectClip(id: string | null): void
@@ -111,6 +122,22 @@ export const useEditorStore = create<EditorState>()(
             },
           }
         }),
+      applyMatch: (inputs, removeIds) =>
+        set((s) => ({
+          clips: ops.replaceClips(
+            s.clips,
+            removeIds,
+            inputs.map((input) => ({
+              trackId: input.trackId,
+              assetId: input.assetId,
+              name: input.name,
+              start: input.start,
+              duration: Math.max(0.001, input.end - input.start),
+              confidence: input.confidence,
+              beatId: input.beatId,
+            })),
+          ),
+        })),
       undo: (): void => useEditorStore.temporal.getState().undo(),
       redo: (): void => useEditorStore.temporal.getState().redo(),
       reset: () => install(initialState()),

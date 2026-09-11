@@ -16,7 +16,7 @@ const assets: Asset[] = [
 ]
 
 const clips: Clip[] = [
-  { id: 'clip-1', trackId: 'track-image', assetId: 'asset-1', name: 'scene.png', start: 0, duration: 6, confidence: 0.9 },
+  { id: 'clip-1', trackId: 'track-image', assetId: 'asset-1', name: 'scene.png', start: 0, duration: 6, confidence: 0.9, beatId: 'b0' },
   { id: 'clip-2', trackId: 'track-voice', assetId: 'asset-2', name: 'narration.mp3', start: 1, duration: 12 },
 ]
 
@@ -50,6 +50,7 @@ describe('parseProjectJson', () => {
   it('round-trips a full project', () => {
     const restored = parseProjectJson(toProjectJson(model))
     expect(restored).toEqual(model)
+    expect(restored.clips[0]).toMatchObject({ confidence: 0.9, beatId: 'b0' })
   })
 
   it('round-trips an empty project', () => {

@@ -48,6 +48,7 @@ export interface Clip {
   start: number
   duration: number
   confidence?: number
+  beatId?: string
 }
 
 export interface TimelineModel {

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import {
   addClip,
+  addClips,
   clipsAtTime,
   createClip,
   duplicateClip,
@@ -8,6 +9,7 @@ import {
   projectDuration,
   removeClip,
   replaceClipAsset,
+  replaceClips,
   splitClip,
   trimClip,
 } from './ops'
@@ -21,6 +23,12 @@ describe('createClip', () => {
       duration: 5,
     })
     expect(createClip({ ...base, duration: 0 }).duration).toBeGreaterThan(0)
+  })
+
+  it('carries match metadata (confidence, beatId)', () => {
+    const clip = createClip({ ...base, duration: 5, confidence: 0.42, beatId: 'b3' })
+    expect(clip.confidence).toBe(0.42)
+    expect(clip.beatId).toBe('b3')
   })
 
   it('clamps negative start to 0', () => {
@@ -104,6 +112,29 @@ describe('replaceClipAsset', () => {
     const result = replaceClipAsset(clipsAB, clipsA[0].id, 'asset-9')
     expect(result[0].assetId).toBe('asset-9')
     expect(result[1].assetId).toBe('asset-2')
+  })
+})
+
+describe('addClips / replaceClips', () => {
+  it('adds many clips in one call', () => {
+    const clips = addClips([], [
+      { ...base, trackId: 'track-image', duration: 2, start: 0 },
+      { ...base, trackId: 'track-image', duration: 3, start: 2 },
+    ])
+    expect(clips).toHaveLength(2)
+    expect(clips[0].start).toBe(0)
+    expect(clips[1].start).toBe(2)
+  })
+
+  it('replaces the given ids and preserves the rest', () => {
+    const kept = createClip({ ...base, duration: 1 })
+    const old = createClip({ ...base, trackId: 'track-image', duration: 2 })
+    const next = replaceClips([kept, old], [old.id], [
+      { ...base, trackId: 'track-image', duration: 3, start: 0, beatId: 'b9', confidence: 0.7 },
+    ])
+    expect(next.map((c) => c.id)).toEqual([kept.id, next[1].id])
+    expect(next).toHaveLength(2)
+    expect(next[1]).toMatchObject({ beatId: 'b9', confidence: 0.7, duration: 3 })
   })
 })
 

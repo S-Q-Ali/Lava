@@ -10,6 +10,8 @@ export interface ClipInput {
   name: string
   start?: number
   duration: number
+  confidence?: number
+  beatId?: string
 }
 
 export function createClip(input: ClipInput, id = newId('clip')): Clip {
@@ -20,11 +22,22 @@ export function createClip(input: ClipInput, id = newId('clip')): Clip {
     name: input.name,
     start: Math.max(0, input.start ?? 0),
     duration: Math.max(0.001, input.duration),
+    confidence: input.confidence,
+    beatId: input.beatId,
   }
 }
 
 export function addClip(clips: Clip[], input: ClipInput): Clip[] {
   return [...clips, createClip(input)]
+}
+
+export function addClips(clips: Clip[], inputs: ClipInput[]): Clip[] {
+  return [...clips, ...inputs.map((input) => createClip(input))]
+}
+
+export function replaceClips(clips: Clip[], removeIds: string[], inputs: ClipInput[]): Clip[] {
+  const removed = new Set(removeIds)
+  return [...clips.filter((c) => !removed.has(c.id)), ...inputs.map((input) => createClip(input))]
 }
 
 export function removeClip(clips: Clip[], id: string): Clip[] {

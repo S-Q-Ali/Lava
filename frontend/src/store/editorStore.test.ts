@@ -290,3 +290,58 @@ describe('editorStore transcripts', () => {
     expect(t?.segments[0]?.words[0]?.word).toBe('Ali Baba')
   })
 })
+
+describe('editorStore applyMatch', () => {
+  it('places one match clip per beat in a single undo step', () => {
+    const s = useEditorStore.getState()
+    s.addAsset(imageAsset)
+    useEditorStore
+      .getState()
+      .applyMatch(
+        [
+          { trackId: 'track-image', assetId: imageAsset.id, name: 'scene.png', start: 0, end: 2, confidence: 0.7, beatId: 'b0' },
+          { trackId: 'track-image', assetId: imageAsset.id, name: 'scene.png', start: 2, end: 5, confidence: 0.4, beatId: 'b1' },
+        ],
+        [],
+      )
+
+    let st = useEditorStore.getState()
+    expect(st.clips).toHaveLength(2)
+    expect(st.clips[0]).toMatchObject({ beatId: 'b0', confidence: 0.7, start: 0, duration: 2 })
+    expect(st.clips[1]).toMatchObject({ beatId: 'b1', confidence: 0.4, start: 2, duration: 3 })
+
+    st.undo()
+    st = useEditorStore.getState()
+    expect(st.clips).toHaveLength(0)
+
+    st.redo()
+    st = useEditorStore.getState()
+    expect(st.clips).toHaveLength(2)
+  })
+
+  it('replaces only the given ids and keeps other clips', () => {
+    const s = useEditorStore.getState()
+    s.addAsset(imageAsset)
+    s.addClip({ trackId: 'track-image', assetId: imageAsset.id, name: 'manual', start: 0, duration: 4 })
+
+    const manual = useEditorStore.getState().clips[0]
+    useEditorStore
+      .getState()
+      .applyMatch(
+        [{ trackId: 'track-image', assetId: imageAsset.id, name: 'scene.png', start: 4, end: 6, confidence: 0.8, beatId: 'b0' }],
+        [],
+      )
+    useEditorStore
+      .getState()
+      .applyMatch(
+        [{ trackId: 'track-image', assetId: imageAsset.id, name: 'scene.png', start: 4, end: 7, confidence: 0.9, beatId: 'b1' }],
+        useEditorStore.getState().clips.filter((c) => c.beatId).map((c) => c.id),
+      )
+
+    const clips = useEditorStore.getState().clips
+    expect(clips).toHaveLength(2)
+    expect(clips.map((c) => c.id)).toContain(manual.id)
+    expect(clips.filter((c) => c.beatId === 'b1')).toHaveLength(1)
+    expect(clips.filter((c) => c.beatId === 'b0')).toHaveLength(0)
+  })
+})
