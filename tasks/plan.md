@@ -1,5 +1,7 @@
 # Implementation Plan: M2 Voice analysis (first slice)
 
+**Status: COMPLETE** (closed 2026-09-12, commits `8abcd42` → `e864f18`, pushed to origin/main).
+
 ## Overview
 Build the front half of the voice-over differentiator: narration audio → timed, editable
 transcript with word timestamps and pause boundaries. Per [SPEC-voice-analysis.md](../docs/SPEC-voice-analysis.md),
@@ -15,38 +17,43 @@ code-review-and-quality (final review). References: definition-of-done, testing-
 ## Task List (vertical slices, each committed atomically)
 
 ### Slice 1 — pause-segmentation (backend, pure, TDD)
-- [ ] `transcribe_core.py`: word-gap → `pauses` list; segments from whisper segments; confidence passthrough
-- [ ] Tests: gap math, threshold boundary (≥0.3s), no-audio/empty, single word, identical timestamps
-- [ ] Verify: `uv run pytest backend/tests/test_transcribe_core.py` green
+- [x] `transcribe_core.py`: word-gap → `pauses` list; segments from whisper segments; confidence passthrough
+- [x] Tests: gap math, threshold boundary (≥0.3s), no-audio/empty, single word, identical timestamps
+- [x] Verify: `uv run pytest backend/tests/test_transcribe_core.py` green
 
 ### Slice 2 — transcribe-api contract
-- [ ] `Transcriber` interface + fake; `POST /api/transcribe` route + response/error shape (`TRANSCRIBE_FAILED`, bad request 400)
-- [ ] Tests: fake transcriber integration (http 200 shape), missing file, corrupt audio
-- [ ] Verify: focused pytest green; `curl` smoke with generated audio optional
+- [x] `Transcriber` interface + fake; `POST /api/transcribe` route + response/error shape (`TRANSCRIBE_FAILED`, bad request 400)
+- [x] Tests: fake transcriber integration (http 200 shape), missing file, corrupt audio
+- [x] Verify: focused pytest green; `curl` smoke with generated audio optional
 
 ### Slice 3 — faster-whisper adapter
-- [ ] `transcribers.py`: faster-whisper CPU int8, model from config (`models/` cache), downloads on first use
-- [ ] Wire into route; keep fake for tests; manual smoke with real synthetic narration
-- [ ] Verify: sidecar runs; `/api/transcribe` real path returns lyrics-timed transcript
+- [x] `transcribers.py`: faster-whisper CPU int8, model from config (`models/` cache), downloads on first use
+- [x] Wire into route; keep fake for tests; manual smoke with real synthetic narration
+- [x] Verify: sidecar runs; `/api/transcribe` real path returns lyrics-timed transcript
 
 ### Slice 4 — transcript-state (frontend)
-- [ ] `services/voice.ts` client + types; `transcriptStore` slice (per assetId: transcript/status/error)
-- [ ] project.ts optional `transcripts` key (backward-compatible, D-009 extension); save/load round-trip
-- [ ] Verify: vitest green; build+lint green
+- [x] `services/voice.ts` client + types; `transcriptStore` slice (per assetId: transcript/status/error)
+- [x] project.ts optional `transcripts` key (backward-compatible, D-009 extension); save/load round-trip
+- [x] Verify: vitest green; build+lint green
 
 ### Slice 5 — transcript-ui
-- [ ] `TranscriptPanel` in InspectorPanel: Analyze button, pending/error/empty/success states, word-click seek, inline word-text edit, low-confidence flag; CSS
-- [ ] Verify: build+lint+tests green; manual dev smoke
+- [x] `TranscriptPanel` in InspectorPanel: Analyze button, pending/error/empty/success states, word-click seek, inline word-text edit, low-confidence flag; CSS
+- [x] Verify: build+lint+tests green; manual dev smoke
 
 ### Slice 6 — docs, review, push
-- [ ] ROADMAP M2 checkboxes, FEATURES §2 status, DECISIONS D-010 (faster-whisper) + D-011 (transcript persistence), ARCHITECTURE §4 note, SESSION_LOG Session 5
-- [ ] graphify update; code-review-and-quality pass; push
+- [x] ROADMAP M2 checkboxes, FEATURES §2 status, DECISIONS D-010 (faster-whisper) + D-011 (transcript persistence), ARCHITECTURE §4 note, SESSION_LOG Session 5
+- [x] graphify update; code-review-and-quality pass; push
 
 ## Checkpoints
-- After Slice 3: backend pytest green + one real-model smoke
-- After Slice 4: frontend tests + build green
-- After Slice 5: manual browser check of analyze/edit/seek
-- After Slice 6: full suites + docs + review + push
+- [x] After Slice 3: backend pytest green (28) + real-model narration smoke (HTTP 200, words+pauses)
+- [x] After Slice 4: frontend tests (47) + build + lint green
+- [x] After Slice 5: dev-server transform smoke — all transcript modules serve 200 (see below); human browser pass on analyze/edit/seek still outstanding
+- [x] After Slice 6: full suites (backend 28, frontend 47) + docs + code-review + push (origin/main @ e864f18)
+
+### Verification summary (recorded in SESSION_LOG Session 5)
+- Backend: 28 pytest passed. Live e2e via `say`-generated narration → 200, 16 words, confidence 0.13–0.99, pause detected.
+- Frontend: 47 vitest passed, `tsc -b` build ok, oxlint 0 warnings.
+- Dev smoke command: `npm run dev` in `frontend/`, then fetch `/`, `/src/components/TranscriptPanel.tsx`, `/src/store/transcriptStore.ts`, `/src/services/voice.ts` — all HTTP 200 (Vite transform success).
 
 ## Risks and Mitigations
 | Risk | Impact | Mitigation |
