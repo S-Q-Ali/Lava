@@ -4,6 +4,19 @@
   "graph": {},
   "nodes": [
     {
+      "id": "frontend_src_components_timeline_clipblock_dragmode",
+      "label": "DragMode",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "useEditorStore",
+      "file_type": "code",
+      "norm_label": "dragmode",
+      "source_file": "frontend/src/components/timeline/ClipBlock.tsx",
+      "source_location": "L8"
+    },
+    {
       "id": "frontend_src_editor_ops_clipinput",
       "label": "ClipInput",
       "_callable": true,
@@ -14,6 +27,32 @@
       "file_type": "code",
       "norm_label": "clipinput",
       "source_file": "frontend/src/editor/ops.ts",
+      "source_location": "L7"
+    },
+    {
+      "id": "frontend_src_editor_project_projecterror",
+      "label": "ProjectError",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "useEditorStore",
+      "file_type": "code",
+      "norm_label": "projecterror",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L14"
+    },
+    {
+      "id": "frontend_src_editor_project_projectfile",
+      "label": "ProjectFile",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "useEditorStore",
+      "file_type": "code",
+      "norm_label": "projectfile",
+      "source_file": "frontend/src/editor/project.ts",
       "source_location": "L7"
     },
     {
@@ -108,19 +147,6 @@
       "source_location": "L11"
     },
     {
-      "id": "frontend_src_services_ffmpeg_renderclipinput",
-      "label": "RenderClipInput",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "useEditorStore",
-      "file_type": "code",
-      "norm_label": "renderclipinput",
-      "source_file": "frontend/src/services/ffmpeg.ts",
-      "source_location": "L1"
-    },
-    {
       "id": "frontend_src_store_editorstore_editoractions",
       "label": "EditorActions",
       "_callable": true,
@@ -157,7 +183,7 @@
       "file_type": "code",
       "norm_label": "editorstate",
       "source_file": "frontend/src/store/editorStore.ts",
-      "source_location": "L32"
+      "source_location": "L33"
     },
     {
       "id": "backend_src_lava_backend_config_config",
@@ -329,6 +355,19 @@
       "source_location": "L69"
     },
     {
+      "id": "frontend_src_services_ffmpeg_renderclipinput",
+      "label": "RenderClipInput",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "ffmpeg.ts",
+      "file_type": "code",
+      "norm_label": "renderclipinput",
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L1"
+    },
+    {
       "id": "frontend_src_services_ffmpeg_renderinput",
       "label": "RenderInput",
       "_callable": true,
@@ -390,7 +429,7 @@
       "file_type": "code",
       "norm_label": "app()",
       "source_file": "frontend/src/App.tsx",
-      "source_location": "L9"
+      "source_location": "L11"
     },
     {
       "id": "frontend_src_components_inspectorpanel_inspectorpanel",
@@ -462,7 +501,7 @@
       "file_type": "code",
       "norm_label": "clipblock()",
       "source_file": "frontend/src/components/timeline/ClipBlock.tsx",
-      "source_location": "L5"
+      "source_location": "L10"
     },
     {
       "id": "frontend_src_components_timeline_timelinepanel_timelinepanel",
@@ -621,6 +660,126 @@
       "source_location": "L40"
     },
     {
+      "id": "frontend_src_editor_project_isasset",
+      "label": "isAsset()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "useEditorStore",
+      "file_type": "code",
+      "norm_label": "isasset()",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L53"
+    },
+    {
+      "id": "frontend_src_editor_project_isclip",
+      "label": "isClip()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "useEditorStore",
+      "file_type": "code",
+      "norm_label": "isclip()",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L65"
+    },
+    {
+      "id": "frontend_src_editor_project_isrecord",
+      "label": "isRecord()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "useEditorStore",
+      "file_type": "code",
+      "norm_label": "isrecord()",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L34"
+    },
+    {
+      "id": "frontend_src_editor_project_istrack",
+      "label": "isTrack()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "useEditorStore",
+      "file_type": "code",
+      "norm_label": "istrack()",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L43"
+    },
+    {
+      "id": "frontend_src_editor_project_parseprojectjson",
+      "label": "parseProjectJson()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "useEditorStore",
+      "file_type": "code",
+      "norm_label": "parseprojectjson()",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L102"
+    },
+    {
+      "id": "frontend_src_editor_project_parseprojectmodel",
+      "label": "parseProjectModel()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "useEditorStore",
+      "file_type": "code",
+      "norm_label": "parseprojectmodel()",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L77"
+    },
+    {
+      "id": "frontend_src_editor_project_projecterror_constructor",
+      "label": ".constructor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "useEditorStore",
+      "file_type": "code",
+      "norm_label": ".constructor()",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L15"
+    },
+    {
+      "id": "frontend_src_editor_project_requirerecord",
+      "label": "requireRecord()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "useEditorStore",
+      "file_type": "code",
+      "norm_label": "requirerecord()",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L38"
+    },
+    {
+      "id": "frontend_src_editor_project_serializeproject",
+      "label": "serializeProject()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "useEditorStore",
+      "file_type": "code",
+      "norm_label": "serializeproject()",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L21"
+    },
+    {
+      "id": "frontend_src_editor_project_toprojectjson",
+      "label": "toProjectJson()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "useEditorStore",
+      "file_type": "code",
+      "norm_label": "toprojectjson()",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L30"
+    },
+    {
       "id": "frontend_src_media_importer_getassetfile",
       "label": "getAssetFile()",
       "_callable": true,
@@ -705,6 +864,30 @@
       "source_location": "L134"
     },
     {
+      "id": "frontend_src_services_projectio_readprojectfromfile",
+      "label": "readProjectFromFile()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "useEditorStore",
+      "file_type": "code",
+      "norm_label": "readprojectfromfile()",
+      "source_file": "frontend/src/services/projectIO.ts",
+      "source_location": "L16"
+    },
+    {
+      "id": "frontend_src_services_projectio_saveprojecttofile",
+      "label": "saveProjectToFile()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "useEditorStore",
+      "file_type": "code",
+      "norm_label": "saveprojecttofile()",
+      "source_file": "frontend/src/services/projectIO.ts",
+      "source_location": "L4"
+    },
+    {
       "id": "frontend_src_store_editorstore_editoractions_addasset",
       "label": ".addAsset()",
       "_callable": true,
@@ -739,6 +922,18 @@
       "norm_label": ".duplicateclip()",
       "source_file": "frontend/src/store/editorStore.ts",
       "source_location": "L23"
+    },
+    {
+      "id": "frontend_src_store_editorstore_editoractions_loadproject",
+      "label": ".loadProject()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "useEditorStore",
+      "file_type": "code",
+      "norm_label": ".loadproject()",
+      "source_file": "frontend/src/store/editorStore.ts",
+      "source_location": "L30"
     },
     {
       "id": "frontend_src_store_editorstore_editoractions_moveclip",
@@ -882,7 +1077,7 @@
       "file_type": "code",
       "norm_label": "initialstate()",
       "source_file": "frontend/src/store/editorStore.ts",
-      "source_location": "L34"
+      "source_location": "L35"
     },
     {
       "id": "opencode_plugins_graphify_graphifyplugin",
@@ -2085,6 +2280,83 @@
       "source_location": "L15"
     },
     {
+      "id": "frontend_src_editor_project",
+      "label": "project.ts",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "useEditorStore",
+      "file_type": "code",
+      "norm_label": "project.ts",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "frontend_src_editor_project_project_app",
+      "label": "PROJECT_APP",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "useEditorStore",
+      "file_type": "code",
+      "norm_label": "project_app",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L4"
+    },
+    {
+      "id": "frontend_src_editor_project_project_version",
+      "label": "PROJECT_VERSION",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "useEditorStore",
+      "file_type": "code",
+      "norm_label": "project_version",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L5"
+    },
+    {
+      "id": "frontend_src_editor_project_test",
+      "label": "project.test.ts",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "useEditorStore",
+      "file_type": "code",
+      "norm_label": "project.test.ts",
+      "source_file": "frontend/src/editor/project.test.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "frontend_src_editor_project_test_assets",
+      "label": "assets",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "useEditorStore",
+      "file_type": "code",
+      "norm_label": "assets",
+      "source_file": "frontend/src/editor/project.test.ts",
+      "source_location": "L13"
+    },
+    {
+      "id": "frontend_src_editor_project_test_clips",
+      "label": "clips",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "useEditorStore",
+      "file_type": "code",
+      "norm_label": "clips",
+      "source_file": "frontend/src/editor/project.test.ts",
+      "source_location": "L18"
+    },
+    {
+      "id": "frontend_src_editor_project_test_model",
+      "label": "model",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "useEditorStore",
+      "file_type": "code",
+      "norm_label": "model",
+      "source_file": "frontend/src/editor/project.test.ts",
+      "source_location": "L23"
+    },
+    {
       "id": "frontend_src_editor_types",
       "label": "types.ts",
       "_origin": "ast",
@@ -2151,6 +2423,17 @@
       "source_location": "L4"
     },
     {
+      "id": "frontend_src_services_projectio",
+      "label": "projectIO.ts",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "useEditorStore",
+      "file_type": "code",
+      "norm_label": "projectio.ts",
+      "source_file": "frontend/src/services/projectIO.ts",
+      "source_location": "L1"
+    },
+    {
       "id": "frontend_src_store_editorstore",
       "label": "editorStore.ts",
       "_origin": "ast",
@@ -2181,7 +2464,7 @@
       "file_type": "code",
       "norm_label": "audioasset",
       "source_file": "frontend/src/store/editorStore.test.ts",
-      "source_location": "L13"
+      "source_location": "L14"
     },
     {
       "id": "frontend_src_store_editorstore_test_imageasset",
@@ -2192,7 +2475,7 @@
       "file_type": "code",
       "norm_label": "imageasset",
       "source_file": "frontend/src/store/editorStore.test.ts",
-      "source_location": "L5"
+      "source_location": "L6"
     },
     {
       "id": "frontend_src_store_editorstore_useeditorstore",
@@ -2203,7 +2486,7 @@
       "file_type": "code",
       "norm_label": "useeditorstore",
       "source_file": "frontend/src/store/editorStore.ts",
-      "source_location": "L44"
+      "source_location": "L45"
     },
     {
       "id": "ref_react",
@@ -7509,7 +7792,7 @@
       "node_kind": "heading",
       "norm_label": "milestone 10 \u2014 release hardening",
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L83"
+      "source_location": "L84"
     },
     {
       "id": "docs_roadmap_milestone_1_media_foundation",
@@ -7533,7 +7816,7 @@
       "node_kind": "heading",
       "norm_label": "milestone 2 \u2014 voice analysis",
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L27"
+      "source_location": "L28"
     },
     {
       "id": "docs_roadmap_milestone_3_semantic_image_matching",
@@ -7545,7 +7828,7 @@
       "node_kind": "heading",
       "norm_label": "milestone 3 \u2014 semantic image matching",
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L34"
+      "source_location": "L35"
     },
     {
       "id": "docs_roadmap_milestone_4_transition_animation_engine",
@@ -7557,7 +7840,7 @@
       "node_kind": "heading",
       "norm_label": "milestone 4 \u2014 transition/animation engine",
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L42"
+      "source_location": "L43"
     },
     {
       "id": "docs_roadmap_milestone_5_caption_engine",
@@ -7569,7 +7852,7 @@
       "node_kind": "heading",
       "norm_label": "milestone 5 \u2014 caption engine",
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L49"
+      "source_location": "L50"
     },
     {
       "id": "docs_roadmap_milestone_6_template_font_system",
@@ -7581,7 +7864,7 @@
       "node_kind": "heading",
       "norm_label": "milestone 6 \u2014 template/font system",
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L56"
+      "source_location": "L57"
     },
     {
       "id": "docs_roadmap_milestone_7_manhwa_extractor",
@@ -7593,7 +7876,7 @@
       "node_kind": "heading",
       "norm_label": "milestone 7 \u2014 manhwa extractor",
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L63"
+      "source_location": "L64"
     },
     {
       "id": "docs_roadmap_milestone_8_integrated_editor",
@@ -7605,7 +7888,7 @@
       "node_kind": "heading",
       "norm_label": "milestone 8 \u2014 integrated editor",
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L70"
+      "source_location": "L71"
     },
     {
       "id": "docs_roadmap_milestone_9_hardware_validation",
@@ -7617,7 +7900,7 @@
       "node_kind": "heading",
       "norm_label": "milestone 9 \u2014 hardware validation",
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L77"
+      "source_location": "L78"
     },
     {
       "id": "docs_roadmap_status_legend",
@@ -7629,7 +7912,7 @@
       "node_kind": "heading",
       "norm_label": "status legend",
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L90"
+      "source_location": "L91"
     },
     {
       "id": "docs_features_10_hardware_aware_operation",
@@ -7641,7 +7924,7 @@
       "node_kind": "heading",
       "norm_label": "10. hardware-aware operation",
       "source_file": "docs/FEATURES.md",
-      "source_location": "L116"
+      "source_location": "L117"
     },
     {
       "id": "docs_features_1_media_foundation",
@@ -7665,7 +7948,7 @@
       "node_kind": "heading",
       "norm_label": "2. voice / audio",
       "source_file": "docs/FEATURES.md",
-      "source_location": "L25"
+      "source_location": "L26"
     },
     {
       "id": "docs_features_3_semantic_image_matching",
@@ -7677,7 +7960,7 @@
       "node_kind": "heading",
       "norm_label": "3. semantic image matching",
       "source_file": "docs/FEATURES.md",
-      "source_location": "L34"
+      "source_location": "L35"
     },
     {
       "id": "docs_features_4_transitions_animation",
@@ -7689,7 +7972,7 @@
       "node_kind": "heading",
       "norm_label": "4. transitions / animation",
       "source_file": "docs/FEATURES.md",
-      "source_location": "L49"
+      "source_location": "L50"
     },
     {
       "id": "docs_features_5_captions",
@@ -7701,7 +7984,7 @@
       "node_kind": "heading",
       "norm_label": "5. captions",
       "source_file": "docs/FEATURES.md",
-      "source_location": "L58"
+      "source_location": "L59"
     },
     {
       "id": "docs_features_6_templates_styles_fonts",
@@ -7713,7 +7996,7 @@
       "node_kind": "heading",
       "norm_label": "6. templates / styles / fonts",
       "source_file": "docs/FEATURES.md",
-      "source_location": "L80"
+      "source_location": "L81"
     },
     {
       "id": "docs_features_7_manhwa_webtoon_extractor",
@@ -7725,7 +8008,7 @@
       "node_kind": "heading",
       "norm_label": "7. manhwa / webtoon extractor",
       "source_file": "docs/FEATURES.md",
-      "source_location": "L89"
+      "source_location": "L90"
     },
     {
       "id": "docs_features_8_editor_timeline",
@@ -7737,7 +8020,7 @@
       "node_kind": "heading",
       "norm_label": "8. editor / timeline",
       "source_file": "docs/FEATURES.md",
-      "source_location": "L104"
+      "source_location": "L105"
     },
     {
       "id": "docs_features_9_ai_control_editing_integrity",
@@ -7749,7 +8032,7 @@
       "node_kind": "heading",
       "norm_label": "9. ai control & editing integrity",
       "source_file": "docs/FEATURES.md",
-      "source_location": "L110"
+      "source_location": "L111"
     },
     {
       "id": "docs_features_ai_video_studio_features",
@@ -8040,30 +8323,6 @@
       "source_location": "L1"
     },
     {
-      "id": "docs_architecture",
-      "label": "ARCHITECTURE.md",
-      "_origin": "ast",
-      "community": 35,
-      "community_name": "README.md",
-      "file_type": "document",
-      "node_kind": "page",
-      "norm_label": "architecture.md",
-      "source_file": "docs/ARCHITECTURE.md",
-      "source_location": "L1"
-    },
-    {
-      "id": "docs_decisions",
-      "label": "DECISIONS.md",
-      "_origin": "ast",
-      "community": 35,
-      "community_name": "README.md",
-      "file_type": "document",
-      "node_kind": "page",
-      "norm_label": "decisions.md",
-      "source_file": "docs/DECISIONS.md",
-      "source_location": "L1"
-    },
-    {
       "id": "docs_features",
       "label": "FEATURES.md",
       "_origin": "ast",
@@ -8196,6 +8455,18 @@
       "source_location": "L148"
     },
     {
+      "id": "docs_session_log_decisions_181",
+      "label": "Decisions",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "Session 2026-09-12 \u2014 Milestone 0 bootstrap + Milestone 1 media foundation",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "decisions",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L181"
+    },
+    {
       "id": "docs_session_log_how",
       "label": "HOW",
       "_origin": "ast",
@@ -8230,6 +8501,18 @@
       "norm_label": "how",
       "source_file": "docs/SESSION_LOG.md",
       "source_location": "L143"
+    },
+    {
+      "id": "docs_session_log_how_176",
+      "label": "HOW",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "Session 2026-09-12 \u2014 Milestone 0 bootstrap + Milestone 1 media foundation",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "how",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L176"
     },
     {
       "id": "docs_session_log_limitations",
@@ -8268,6 +8551,18 @@
       "source_location": "L154"
     },
     {
+      "id": "docs_session_log_limitations_188",
+      "label": "Limitations",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "Session 2026-09-12 \u2014 Milestone 0 bootstrap + Milestone 1 media foundation",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "limitations",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L188"
+    },
+    {
       "id": "docs_session_log_next_step",
       "label": "Next step",
       "_origin": "ast",
@@ -8304,6 +8599,18 @@
       "source_location": "L160"
     },
     {
+      "id": "docs_session_log_next_step_193",
+      "label": "Next step",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "Session 2026-09-12 \u2014 Milestone 0 bootstrap + Milestone 1 media foundation",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "next step",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L193"
+    },
+    {
       "id": "docs_session_log_purpose_why",
       "label": "Purpose (WHY)",
       "_origin": "ast",
@@ -8326,6 +8633,18 @@
       "norm_label": "purpose (why)",
       "source_file": "docs/SESSION_LOG.md",
       "source_location": "L128"
+    },
+    {
+      "id": "docs_session_log_purpose_why_167",
+      "label": "Purpose (WHY)",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "Session 2026-09-12 \u2014 Milestone 0 bootstrap + Milestone 1 media foundation",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "purpose (why)",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L167"
     },
     {
       "id": "docs_session_log_purpose_why_93",
@@ -8376,6 +8695,18 @@
       "source_location": "L126"
     },
     {
+      "id": "docs_session_log_session_2026_09_12_session_4_m1_completion_save_load_clip_editing",
+      "label": "Session 2026-09-12 \u2014 Session 4: M1 completion (save/load + clip editing)",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "Session 2026-09-12 \u2014 Milestone 0 bootstrap + Milestone 1 media foundation",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "session 2026-09-12 \u2014 session 4: m1 completion (save/load + clip editing)",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L165"
+    },
+    {
       "id": "docs_session_log_template",
       "label": "Template",
       "_origin": "ast",
@@ -8424,6 +8755,18 @@
       "source_location": "L151"
     },
     {
+      "id": "docs_session_log_verify_184",
+      "label": "Verify",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "Session 2026-09-12 \u2014 Milestone 0 bootstrap + Milestone 1 media foundation",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "verify",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L184"
+    },
+    {
       "id": "docs_session_log_what",
       "label": "WHAT",
       "_origin": "ast",
@@ -8448,6 +8791,18 @@
       "source_location": "L131"
     },
     {
+      "id": "docs_session_log_what_170",
+      "label": "WHAT",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "Session 2026-09-12 \u2014 Milestone 0 bootstrap + Milestone 1 media foundation",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "what",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L170"
+    },
+    {
       "id": "docs_session_log_what_96",
       "label": "WHAT",
       "_origin": "ast",
@@ -8460,11 +8815,23 @@
       "source_location": "L96"
     },
     {
+      "id": "docs_architecture",
+      "label": "ARCHITECTURE.md",
+      "_origin": "ast",
+      "community": 37,
+      "community_name": "AI Video Studio \u2014 Decision Log",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "architecture.md",
+      "source_file": "docs/ARCHITECTURE.md",
+      "source_location": "L1"
+    },
+    {
       "id": "docs_architecture_1_repository_layout",
       "label": "1. Repository Layout",
       "_origin": "ast",
       "community": 37,
-      "community_name": "AI Video Studio \u2014 Architecture",
+      "community_name": "AI Video Studio \u2014 Decision Log",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "1. repository layout",
@@ -8476,7 +8843,7 @@
       "label": "2. Design Principles",
       "_origin": "ast",
       "community": 37,
-      "community_name": "AI Video Studio \u2014 Architecture",
+      "community_name": "AI Video Studio \u2014 Decision Log",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "2. design principles",
@@ -8488,7 +8855,7 @@
       "label": "3. Core Technology",
       "_origin": "ast",
       "community": 37,
-      "community_name": "AI Video Studio \u2014 Architecture",
+      "community_name": "AI Video Studio \u2014 Decision Log",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "3. core technology",
@@ -8500,7 +8867,7 @@
       "label": "4. Voice-over \u2192 Images Processing Graph",
       "_origin": "ast",
       "community": 37,
-      "community_name": "AI Video Studio \u2014 Architecture",
+      "community_name": "AI Video Studio \u2014 Decision Log",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "4. voice-over \u2192 images processing graph",
@@ -8512,7 +8879,7 @@
       "label": "5. Manhwa / Webtoon Extraction Processing Graph",
       "_origin": "ast",
       "community": 37,
-      "community_name": "AI Video Studio \u2014 Architecture",
+      "community_name": "AI Video Studio \u2014 Decision Log",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "5. manhwa / webtoon extraction processing graph",
@@ -8524,7 +8891,7 @@
       "label": "6. Caption Processing Graph",
       "_origin": "ast",
       "community": 37,
-      "community_name": "AI Video Studio \u2014 Architecture",
+      "community_name": "AI Video Studio \u2014 Decision Log",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "6. caption processing graph",
@@ -8536,7 +8903,7 @@
       "label": "7. System Boundaries",
       "_origin": "ast",
       "community": 37,
-      "community_name": "AI Video Studio \u2014 Architecture",
+      "community_name": "AI Video Studio \u2014 Decision Log",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "7. system boundaries",
@@ -8548,7 +8915,7 @@
       "label": "8. Design Decisions (WHY)",
       "_origin": "ast",
       "community": 37,
-      "community_name": "AI Video Studio \u2014 Architecture",
+      "community_name": "AI Video Studio \u2014 Decision Log",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "8. design decisions (why)",
@@ -8560,7 +8927,7 @@
       "label": "9. Media Sidecar API",
       "_origin": "ast",
       "community": 37,
-      "community_name": "AI Video Studio \u2014 Architecture",
+      "community_name": "AI Video Studio \u2014 Decision Log",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "9. media sidecar api",
@@ -8572,7 +8939,7 @@
       "label": "AI Video Studio \u2014 Architecture",
       "_origin": "ast",
       "community": 37,
-      "community_name": "AI Video Studio \u2014 Architecture",
+      "community_name": "AI Video Studio \u2014 Decision Log",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "ai video studio \u2014 architecture",
@@ -8580,10 +8947,22 @@
       "source_location": "L1"
     },
     {
+      "id": "docs_decisions",
+      "label": "DECISIONS.md",
+      "_origin": "ast",
+      "community": 37,
+      "community_name": "AI Video Studio \u2014 Decision Log",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "decisions.md",
+      "source_file": "docs/DECISIONS.md",
+      "source_location": "L1"
+    },
+    {
       "id": "docs_decisions_ai_video_studio_decision_log",
       "label": "AI Video Studio \u2014 Decision Log",
       "_origin": "ast",
-      "community": 38,
+      "community": 37,
       "community_name": "AI Video Studio \u2014 Decision Log",
       "file_type": "document",
       "node_kind": "heading",
@@ -8595,7 +8974,7 @@
       "id": "docs_decisions_d_001_web_first_editor_shell_vite_react_typescript",
       "label": "D-001 \u2014 Web-first editor shell (Vite + React + TypeScript)",
       "_origin": "ast",
-      "community": 38,
+      "community": 37,
       "community_name": "AI Video Studio \u2014 Decision Log",
       "file_type": "document",
       "node_kind": "heading",
@@ -8607,7 +8986,7 @@
       "id": "docs_decisions_d_002_zustand_zundo_for_state_and_undo_redo",
       "label": "D-002 \u2014 Zustand + Zundo for state and undo/redo",
       "_origin": "ast",
-      "community": 38,
+      "community": 37,
       "community_name": "AI Video Studio \u2014 Decision Log",
       "file_type": "document",
       "node_kind": "heading",
@@ -8619,7 +8998,7 @@
       "id": "docs_decisions_d_003_project_local_ffmpeg_binary",
       "label": "D-003 \u2014 Project-local FFmpeg binary",
       "_origin": "ast",
-      "community": 38,
+      "community": 37,
       "community_name": "AI Video Studio \u2014 Decision Log",
       "file_type": "document",
       "node_kind": "heading",
@@ -8631,7 +9010,7 @@
       "id": "docs_decisions_d_004_ffmpeg_provider_abstraction",
       "label": "D-004 \u2014 FFmpeg provider abstraction",
       "_origin": "ast",
-      "community": 38,
+      "community": 37,
       "community_name": "AI Video Studio \u2014 Decision Log",
       "file_type": "document",
       "node_kind": "heading",
@@ -8643,7 +9022,7 @@
       "id": "docs_decisions_d_005_curated_vendor_skills_reference_clones_kept_local",
       "label": "D-005 \u2014 Curated vendor skills; reference clones kept local",
       "_origin": "ast",
-      "community": 38,
+      "community": 37,
       "community_name": "AI Video Studio \u2014 Decision Log",
       "file_type": "document",
       "node_kind": "heading",
@@ -8655,7 +9034,7 @@
       "id": "docs_decisions_d_006_commit_graphify_out_code_only_pass_for_now",
       "label": "D-006 \u2014 Commit `graphify-out/`; code-only pass for now",
       "_origin": "ast",
-      "community": 38,
+      "community": 37,
       "community_name": "AI Video Studio \u2014 Decision Log",
       "file_type": "document",
       "node_kind": "heading",
@@ -8667,7 +9046,7 @@
       "id": "docs_decisions_d_007_written_session_log_decisions_log_for_continuity",
       "label": "D-007 \u2014 Written session log + decisions log for continuity",
       "_origin": "ast",
-      "community": 38,
+      "community": 37,
       "community_name": "AI Video Studio \u2014 Decision Log",
       "file_type": "document",
       "node_kind": "heading",
@@ -8679,7 +9058,7 @@
       "id": "docs_decisions_d_008_media_sidecar_http_api_fastapi",
       "label": "D-008 \u2014 Media sidecar HTTP API (FastAPI)",
       "_origin": "ast",
-      "community": 38,
+      "community": 37,
       "community_name": "AI Video Studio \u2014 Decision Log",
       "file_type": "document",
       "node_kind": "heading",
@@ -8688,16 +9067,196 @@
       "source_location": "L70"
     },
     {
+      "id": "docs_decisions_d_009_versioned_project_file_format_lava_studio_json",
+      "label": "D-009 \u2014 Versioned project file format (lava-studio JSON)",
+      "_origin": "ast",
+      "community": 37,
+      "community_name": "AI Video Studio \u2014 Decision Log",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "d-009 \u2014 versioned project file format (lava-studio json)",
+      "source_file": "docs/DECISIONS.md",
+      "source_location": "L81"
+    },
+    {
       "id": "docs_decisions_index_of_decisions",
       "label": "Index of decisions",
       "_origin": "ast",
-      "community": 38,
+      "community": 37,
       "community_name": "AI Video Studio \u2014 Decision Log",
       "file_type": "document",
       "node_kind": "heading",
       "norm_label": "index of decisions",
       "source_file": "docs/DECISIONS.md",
-      "source_location": "L81"
+      "source_location": "L92"
+    },
+    {
+      "id": "tasks_plan",
+      "label": "plan.md",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "Implementation Plan: M1 completion \u2014 project save/load + timeline drag/trim UX",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "plan.md",
+      "source_file": "tasks/plan.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "tasks_plan_architecture_decisions",
+      "label": "Architecture Decisions",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "Implementation Plan: M1 completion \u2014 project save/load + timeline drag/trim UX",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "architecture decisions",
+      "source_file": "tasks/plan.md",
+      "source_location": "L9"
+    },
+    {
+      "id": "tasks_plan_checkpoints",
+      "label": "Checkpoints",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "Implementation Plan: M1 completion \u2014 project save/load + timeline drag/trim UX",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "checkpoints",
+      "source_file": "tasks/plan.md",
+      "source_location": "L56"
+    },
+    {
+      "id": "tasks_plan_implementation_plan_m1_completion_project_save_load_timeline_drag_trim_ux",
+      "label": "Implementation Plan: M1 completion \u2014 project save/load + timeline drag/trim UX",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "Implementation Plan: M1 completion \u2014 project save/load + timeline drag/trim UX",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "implementation plan: m1 completion \u2014 project save/load + timeline drag/trim ux",
+      "source_file": "tasks/plan.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "tasks_plan_open_questions",
+      "label": "Open Questions",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "Implementation Plan: M1 completion \u2014 project save/load + timeline drag/trim UX",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "open questions",
+      "source_file": "tasks/plan.md",
+      "source_location": "L69"
+    },
+    {
+      "id": "tasks_plan_overview",
+      "label": "Overview",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "Implementation Plan: M1 completion \u2014 project save/load + timeline drag/trim UX",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "overview",
+      "source_file": "tasks/plan.md",
+      "source_location": "L3"
+    },
+    {
+      "id": "tasks_plan_risks_and_mitigations",
+      "label": "Risks and Mitigations",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "Implementation Plan: M1 completion \u2014 project save/load + timeline drag/trim UX",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "risks and mitigations",
+      "source_file": "tasks/plan.md",
+      "source_location": "L61"
+    },
+    {
+      "id": "tasks_plan_task_1_project_serialization_editor_project_ts_s",
+      "label": "Task 1: Project serialization (`editor/project.ts`) \u2014 S",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "Implementation Plan: M1 completion \u2014 project save/load + timeline drag/trim UX",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "task 1: project serialization (`editor/project.ts`) \u2014 s",
+      "source_file": "tasks/plan.md",
+      "source_location": "L24"
+    },
+    {
+      "id": "tasks_plan_task_2_loadproject_store_action_s",
+      "label": "Task 2: `loadProject` store action \u2014 S",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "Implementation Plan: M1 completion \u2014 project save/load + timeline drag/trim UX",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "task 2: `loadproject` store action \u2014 s",
+      "source_file": "tasks/plan.md",
+      "source_location": "L30"
+    },
+    {
+      "id": "tasks_plan_task_3_save_open_ui_topbar_services_projectio_ts_m",
+      "label": "Task 3: Save/Open UI (topbar + `services/projectIO.ts`) \u2014 M",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "Implementation Plan: M1 completion \u2014 project save/load + timeline drag/trim UX",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "task 3: save/open ui (topbar + `services/projectio.ts`) \u2014 m",
+      "source_file": "tasks/plan.md",
+      "source_location": "L34"
+    },
+    {
+      "id": "tasks_plan_task_4_clip_drag_move_ux_m",
+      "label": "Task 4: Clip drag-move UX \u2014 M",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "Implementation Plan: M1 completion \u2014 project save/load + timeline drag/trim UX",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "task 4: clip drag-move ux \u2014 m",
+      "source_file": "tasks/plan.md",
+      "source_location": "L39"
+    },
+    {
+      "id": "tasks_plan_task_5_clip_drag_trim_ux_edge_handles_m",
+      "label": "Task 5: Clip drag-trim UX (edge handles) \u2014 M",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "Implementation Plan: M1 completion \u2014 project save/load + timeline drag/trim UX",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "task 5: clip drag-trim ux (edge handles) \u2014 m",
+      "source_file": "tasks/plan.md",
+      "source_location": "L44"
+    },
+    {
+      "id": "tasks_plan_task_6_css_verification_docs_s",
+      "label": "Task 6: CSS + verification + docs \u2014 S",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "Implementation Plan: M1 completion \u2014 project save/load + timeline drag/trim UX",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "task 6: css + verification + docs \u2014 s",
+      "source_file": "tasks/plan.md",
+      "source_location": "L49"
+    },
+    {
+      "id": "tasks_plan_task_list",
+      "label": "Task List",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "Implementation Plan: M1 completion \u2014 project save/load + timeline drag/trim UX",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "task list",
+      "source_file": "tasks/plan.md",
+      "source_location": "L22"
     },
     {
       "id": "opencode_skills_graphify_references_exports",
@@ -9465,7 +10024,7 @@
       "node_kind": "heading",
       "norm_label": "baseline target hardware",
       "source_file": "README.md",
-      "source_location": "L47"
+      "source_location": "L48"
     },
     {
       "id": "readme_current_status",
@@ -9501,7 +10060,7 @@
       "node_kind": "heading",
       "norm_label": "documentation",
       "source_file": "README.md",
-      "source_location": "L26"
+      "source_location": "L27"
     },
     {
       "id": "readme_how_to_work_on_this_project",
@@ -9513,7 +10072,7 @@
       "node_kind": "heading",
       "norm_label": "how to work on this project",
       "source_file": "README.md",
-      "source_location": "L43"
+      "source_location": "L44"
     },
     {
       "id": "readme_lava_ai_video_studio",
@@ -10416,6 +10975,30 @@
       "source_location": "L1",
       "type": "package",
       "version": "0.1.0"
+    },
+    {
+      "id": "tasks_todo",
+      "label": "todo.md",
+      "_origin": "ast",
+      "community": 58,
+      "community_name": "todo.md",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "todo.md",
+      "source_file": "tasks/todo.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "tasks_todo_task_list_m1_completion_project_save_load_timeline_drag_trim_ux",
+      "label": "Task list \u2014 M1 completion: project save/load + timeline drag/trim UX",
+      "_origin": "ast",
+      "community": 58,
+      "community_name": "todo.md",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "task list \u2014 m1 completion: project save/load + timeline drag/trim ux",
+      "source_file": "tasks/todo.md",
+      "source_location": "L1"
     },
     {
       "id": "opencode_skills_code_review_and_quality_skill",
@@ -11841,7 +12424,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/App.tsx",
-      "source_location": "L10",
+      "source_location": "L12",
       "weight": 1.0
     },
     {
@@ -11853,7 +12436,43 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/App.tsx",
-      "source_location": "L15",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_app_app",
+      "target": "frontend_src_services_projectio_readprojectfromfile",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/App.tsx",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_app_app",
+      "target": "frontend_src_store_editorstore_editoractions_loadproject",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/App.tsx",
+      "source_location": "L32",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_app_app",
+      "target": "frontend_src_services_projectio_saveprojecttofile",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/App.tsx",
+      "source_location": "L46",
       "weight": 1.0
     },
     {
@@ -12026,30 +12645,6 @@
     },
     {
       "source": "frontend_src_components_timeline_clipblock_clipblock",
-      "target": "frontend_src_store_editorstore_useeditorstore",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "frontend/src/components/timeline/ClipBlock.tsx",
-      "source_location": "L12",
-      "weight": 1.0
-    },
-    {
-      "source": "frontend_src_components_timeline_clipblock_clipblock",
-      "target": "frontend_src_store_editorstore_editoractions_selectclip",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "frontend/src/components/timeline/ClipBlock.tsx",
-      "source_location": "L26",
-      "weight": 1.0
-    },
-    {
-      "source": "frontend_src_components_timeline_clipblock_clipblock",
       "target": "frontend_src_store_editorstore_editoractions_splitclip",
       "relation": "calls",
       "_origin": "ast",
@@ -12057,7 +12652,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/components/timeline/ClipBlock.tsx",
-      "source_location": "L40",
+      "source_location": "L155",
       "weight": 1.0
     },
     {
@@ -12069,7 +12664,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/components/timeline/ClipBlock.tsx",
-      "source_location": "L42",
+      "source_location": "L157",
       "weight": 1.0
     },
     {
@@ -12081,7 +12676,55 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/components/timeline/ClipBlock.tsx",
-      "source_location": "L53",
+      "source_location": "L168",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_components_timeline_clipblock_clipblock",
+      "target": "frontend_src_store_editorstore_useeditorstore",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/components/timeline/ClipBlock.tsx",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_components_timeline_clipblock_clipblock",
+      "target": "frontend_src_store_editorstore_editoractions_moveclip",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/components/timeline/ClipBlock.tsx",
+      "source_location": "L57",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_components_timeline_clipblock_clipblock",
+      "target": "frontend_src_store_editorstore_editoractions_trimclip",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/components/timeline/ClipBlock.tsx",
+      "source_location": "L66",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_components_timeline_clipblock_clipblock",
+      "target": "frontend_src_store_editorstore_editoractions_selectclip",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/components/timeline/ClipBlock.tsx",
+      "source_location": "L92",
       "weight": 1.0
     },
     {
@@ -12093,7 +12736,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/components/timeline/TimelinePanel.tsx",
-      "source_location": "L10",
+      "source_location": "L11",
       "weight": 1.0
     },
     {
@@ -12117,7 +12760,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/components/timeline/TrackRow.tsx",
-      "source_location": "L13",
+      "source_location": "L15",
       "weight": 1.0
     },
     {
@@ -12129,7 +12772,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/components/timeline/TrackRow.tsx",
-      "source_location": "L25",
+      "source_location": "L27",
       "weight": 1.0
     },
     {
@@ -12166,6 +12809,174 @@
       "context": "call",
       "source_file": "frontend/src/editor/ops.ts",
       "source_location": "L63",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_isasset",
+      "target": "frontend_src_editor_project_isrecord",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L54",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_isclip",
+      "target": "frontend_src_editor_project_isrecord",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L67",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_istrack",
+      "target": "frontend_src_editor_project_isrecord",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L45",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_parseprojectjson",
+      "target": "frontend_src_editor_project_projecterror",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L107",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_parseprojectjson",
+      "target": "frontend_src_editor_project_requirerecord",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L109",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_parseprojectjson",
+      "target": "frontend_src_editor_project_parseprojectmodel",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L116",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_parseprojectmodel",
+      "target": "frontend_src_editor_project_requirerecord",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L78",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_parseprojectmodel",
+      "target": "frontend_src_editor_project_projecterror",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L79",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_parseprojectmodel",
+      "target": "frontend_src_editor_project_istrack",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L82",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_parseprojectmodel",
+      "target": "frontend_src_editor_project_isasset",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L88",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_parseprojectmodel",
+      "target": "frontend_src_editor_project_isclip",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L94",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_requirerecord",
+      "target": "frontend_src_editor_project_isrecord",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L39",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_requirerecord",
+      "target": "frontend_src_editor_project_projecterror",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L39",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_toprojectjson",
+      "target": "frontend_src_editor_project_serializeproject",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L31",
       "weight": 1.0
     },
     {
@@ -12289,6 +13100,42 @@
       "weight": 1.0
     },
     {
+      "source": "frontend_src_services_projectio_readprojectfromfile",
+      "target": "frontend_src_editor_project_projecterror",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/services/projectIO.ts",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_projectio_readprojectfromfile",
+      "target": "frontend_src_editor_project_parseprojectjson",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/services/projectIO.ts",
+      "source_location": "L22",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_projectio_saveprojecttofile",
+      "target": "frontend_src_editor_project_toprojectjson",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/services/projectIO.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
       "source": "frontend_src_store_editorstore_useeditorstore",
       "target": "frontend_src_store_editorstore_initialstate",
       "relation": "calls",
@@ -12297,7 +13144,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/store/editorStore.ts",
-      "source_location": "L47",
+      "source_location": "L56",
       "weight": 1.0
     },
     {
@@ -12309,7 +13156,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/store/editorStore.ts",
-      "source_location": "L59",
+      "source_location": "L68",
       "weight": 1.0
     },
     {
@@ -12321,7 +13168,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/store/editorStore.ts",
-      "source_location": "L62",
+      "source_location": "L71",
       "weight": 1.0
     },
     {
@@ -12333,7 +13180,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/store/editorStore.ts",
-      "source_location": "L66",
+      "source_location": "L75",
       "weight": 1.0
     },
     {
@@ -12345,7 +13192,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/store/editorStore.ts",
-      "source_location": "L68",
+      "source_location": "L77",
       "weight": 1.0
     },
     {
@@ -12357,7 +13204,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/store/editorStore.ts",
-      "source_location": "L70",
+      "source_location": "L79",
       "weight": 1.0
     },
     {
@@ -12369,7 +13216,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/store/editorStore.ts",
-      "source_location": "L72",
+      "source_location": "L81",
       "weight": 1.0
     },
     {
@@ -12381,7 +13228,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/store/editorStore.ts",
-      "source_location": "L74",
+      "source_location": "L83",
       "weight": 1.0
     },
     {
@@ -12393,7 +13240,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/store/editorStore.ts",
-      "source_location": "L77",
+      "source_location": "L86",
       "weight": 1.0
     },
     {
@@ -12405,7 +13252,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/store/editorStore.ts",
-      "source_location": "L78",
+      "source_location": "L87",
       "weight": 1.0
     },
     {
@@ -12526,6 +13373,18 @@
       "context": "decorator",
       "source_file": "backend/tests/conftest.py",
       "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_projectfile",
+      "target": "frontend_src_editor_types_timelinemodel",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "field",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L11",
       "weight": 1.0
     },
     {
@@ -12949,6 +13808,30 @@
       "weight": 1.0
     },
     {
+      "source": "frontend_src_app",
+      "target": "frontend_src_services_projectio_readprojectfromfile",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/App.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_app",
+      "target": "frontend_src_services_projectio_saveprojecttofile",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/App.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
       "source": "frontend_src_components_inspectorpanel",
       "target": "frontend_src_store_editorstore_useeditorstore",
       "relation": "imports",
@@ -13077,7 +13960,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "frontend/src/components/timeline/ClipBlock.tsx",
-      "source_location": "L1",
+      "source_location": "L2",
       "weight": 1.0
     },
     {
@@ -13089,7 +13972,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "frontend/src/components/timeline/ClipBlock.tsx",
-      "source_location": "L2",
+      "source_location": "L3",
       "weight": 1.0
     },
     {
@@ -13101,7 +13984,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "frontend/src/components/timeline/ClipBlock.tsx",
-      "source_location": "L3",
+      "source_location": "L4",
       "weight": 1.0
     },
     {
@@ -13345,6 +14228,174 @@
       "weight": 1.0
     },
     {
+      "source": "frontend_src_editor_project",
+      "target": "frontend_src_editor_types_asset",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project",
+      "target": "frontend_src_editor_types_clip",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project",
+      "target": "frontend_src_editor_types_timelinemodel",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project",
+      "target": "frontend_src_editor_types_track",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project",
+      "target": "frontend_src_editor_types_track_types",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_test",
+      "target": "frontend_src_editor_types_asset",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/editor/project.test.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_test",
+      "target": "frontend_src_editor_types_clip",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/editor/project.test.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_test",
+      "target": "frontend_src_editor_types_timelinemodel",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/editor/project.test.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_test",
+      "target": "frontend_src_editor_types_track",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/editor/project.test.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_test",
+      "target": "frontend_src_editor_types_default_tracks",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/editor/project.test.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_test",
+      "target": "frontend_src_editor_project_parseprojectjson",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/editor/project.test.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_test",
+      "target": "frontend_src_editor_project_projecterror",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/editor/project.test.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_test",
+      "target": "frontend_src_editor_project_serializeproject",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/editor/project.test.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_test",
+      "target": "frontend_src_editor_project_toprojectjson",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/editor/project.test.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
       "source": "frontend_src_main",
       "target": "frontend_src_app_app",
       "relation": "imports",
@@ -13453,6 +14504,54 @@
       "weight": 1.0
     },
     {
+      "source": "frontend_src_services_projectio",
+      "target": "frontend_src_editor_types_timelinemodel",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/services/projectIO.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_projectio",
+      "target": "frontend_src_editor_project_parseprojectjson",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/services/projectIO.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_projectio",
+      "target": "frontend_src_editor_project_projecterror",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/services/projectIO.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_projectio",
+      "target": "frontend_src_editor_project_toprojectjson",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/services/projectIO.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
       "source": "frontend_src_store_editorstore",
       "target": "frontend_src_editor_types_asset",
       "relation": "imports",
@@ -13467,6 +14566,18 @@
     {
       "source": "frontend_src_store_editorstore",
       "target": "frontend_src_editor_types_clip",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/store/editorStore.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_store_editorstore",
+      "target": "frontend_src_editor_types_timelinemodel",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -13522,6 +14633,30 @@
       "context": "import",
       "source_file": "frontend/src/store/editorStore.test.ts",
       "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_store_editorstore_test",
+      "target": "frontend_src_editor_types_timelinemodel",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/store/editorStore.test.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_store_editorstore_test",
+      "target": "frontend_src_editor_types_default_tracks",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/store/editorStore.test.ts",
+      "source_location": "L4",
       "weight": 1.0
     },
     {
@@ -13705,6 +14840,30 @@
       "weight": 1.0
     },
     {
+      "source": "frontend_src_app",
+      "target": "frontend_src_services_projectio",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/App.tsx",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_app",
+      "target": "ref_react",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/App.tsx",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
       "source": "frontend_src_components_inspectorpanel",
       "target": "frontend_src_store_editorstore",
       "relation": "imports_from",
@@ -13838,7 +14997,7 @@
     },
     {
       "source": "frontend_src_components_timeline_clipblock",
-      "target": "frontend_src_editor_types",
+      "target": "ref_react",
       "relation": "imports_from",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -13846,6 +15005,18 @@
       "context": "import",
       "source_file": "frontend/src/components/timeline/ClipBlock.tsx",
       "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_components_timeline_clipblock",
+      "target": "frontend_src_editor_types",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/components/timeline/ClipBlock.tsx",
+      "source_location": "L2",
       "type_only": true,
       "weight": 1.0
     },
@@ -13858,7 +15029,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "frontend/src/components/timeline/ClipBlock.tsx",
-      "source_location": "L2",
+      "source_location": "L3",
       "weight": 1.0
     },
     {
@@ -13870,7 +15041,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "frontend/src/components/timeline/ClipBlock.tsx",
-      "source_location": "L3",
+      "source_location": "L4",
       "weight": 1.0
     },
     {
@@ -14008,6 +15179,56 @@
       "weight": 1.0
     },
     {
+      "source": "frontend_src_editor_project",
+      "target": "frontend_src_editor_types",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L2",
+      "type_only": true,
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_test",
+      "target": "ref_vitest",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/editor/project.test.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_test",
+      "target": "frontend_src_editor_types",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/editor/project.test.ts",
+      "source_location": "L3",
+      "type_only": true,
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_test",
+      "target": "frontend_src_editor_project",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/editor/project.test.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
       "source": "frontend_src_main",
       "target": "ref_react",
       "relation": "imports_from",
@@ -14077,6 +15298,31 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "frontend/src/services/ffmpeg.test.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_projectio",
+      "target": "frontend_src_editor_types",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/services/projectIO.ts",
+      "source_location": "L1",
+      "type_only": true,
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_projectio",
+      "target": "frontend_src_editor_project",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/services/projectIO.ts",
       "source_location": "L2",
       "weight": 1.0
     },
@@ -14162,7 +15408,7 @@
       "confidence_score": 1.0,
       "context": "import",
       "source_file": "frontend/src/store/editorStore.test.ts",
-      "source_location": "L3",
+      "source_location": "L4",
       "type_only": true,
       "weight": 1.0
     },
@@ -14260,6 +15506,18 @@
       "context": "parameter_type",
       "source_file": "frontend/src/store/editorStore.ts",
       "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_store_editorstore_editoractions_loadproject",
+      "target": "frontend_src_editor_types_timelinemodel",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "parameter_type",
+      "source_file": "frontend/src/store/editorStore.ts",
+      "source_location": "L30",
       "weight": 1.0
     },
     {
@@ -15545,13 +16803,24 @@
     },
     {
       "source": "docs_decisions_ai_video_studio_decision_log",
-      "target": "docs_decisions_index_of_decisions",
+      "target": "docs_decisions_d_009_versioned_project_file_format_lava_studio_json",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/DECISIONS.md",
       "source_location": "L81",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_decisions_ai_video_studio_decision_log",
+      "target": "docs_decisions_index_of_decisions",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/DECISIONS.md",
+      "source_location": "L92",
       "weight": 1.0
     },
     {
@@ -15573,7 +16842,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/FEATURES.md",
-      "source_location": "L104",
+      "source_location": "L105",
       "weight": 1.0
     },
     {
@@ -15584,7 +16853,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/FEATURES.md",
-      "source_location": "L110",
+      "source_location": "L111",
       "weight": 1.0
     },
     {
@@ -15595,7 +16864,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/FEATURES.md",
-      "source_location": "L116",
+      "source_location": "L117",
       "weight": 1.0
     },
     {
@@ -15617,7 +16886,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/FEATURES.md",
-      "source_location": "L25",
+      "source_location": "L26",
       "weight": 1.0
     },
     {
@@ -15628,7 +16897,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/FEATURES.md",
-      "source_location": "L34",
+      "source_location": "L35",
       "weight": 1.0
     },
     {
@@ -15639,7 +16908,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/FEATURES.md",
-      "source_location": "L49",
+      "source_location": "L50",
       "weight": 1.0
     },
     {
@@ -15650,7 +16919,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/FEATURES.md",
-      "source_location": "L58",
+      "source_location": "L59",
       "weight": 1.0
     },
     {
@@ -15661,7 +16930,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/FEATURES.md",
-      "source_location": "L80",
+      "source_location": "L81",
       "weight": 1.0
     },
     {
@@ -15672,7 +16941,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/FEATURES.md",
-      "source_location": "L89",
+      "source_location": "L90",
       "weight": 1.0
     },
     {
@@ -15925,7 +17194,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L27",
+      "source_location": "L28",
       "weight": 1.0
     },
     {
@@ -15936,7 +17205,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L34",
+      "source_location": "L35",
       "weight": 1.0
     },
     {
@@ -15947,7 +17216,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L42",
+      "source_location": "L43",
       "weight": 1.0
     },
     {
@@ -15958,7 +17227,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L49",
+      "source_location": "L50",
       "weight": 1.0
     },
     {
@@ -15969,7 +17238,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L56",
+      "source_location": "L57",
       "weight": 1.0
     },
     {
@@ -15980,7 +17249,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L63",
+      "source_location": "L64",
       "weight": 1.0
     },
     {
@@ -15991,7 +17260,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L70",
+      "source_location": "L71",
       "weight": 1.0
     },
     {
@@ -16002,7 +17271,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L77",
+      "source_location": "L78",
       "weight": 1.0
     },
     {
@@ -16013,7 +17282,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L83",
+      "source_location": "L84",
       "weight": 1.0
     },
     {
@@ -16035,7 +17304,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L90",
+      "source_location": "L91",
       "weight": 1.0
     },
     {
@@ -16069,6 +17338,17 @@
       "confidence_score": 1.0,
       "source_file": "docs/SESSION_LOG.md",
       "source_location": "L126",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_ai_video_studio_session_log",
+      "target": "docs_session_log_session_2026_09_12_session_4_m1_completion_save_load_clip_editing",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L165",
       "weight": 1.0
     },
     {
@@ -16322,6 +17602,83 @@
       "confidence_score": 1.0,
       "source_file": "docs/SESSION_LOG.md",
       "source_location": "L160",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_session_2026_09_12_session_4_m1_completion_save_load_clip_editing",
+      "target": "docs_session_log_purpose_why_167",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L167",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_session_2026_09_12_session_4_m1_completion_save_load_clip_editing",
+      "target": "docs_session_log_what_170",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L170",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_session_2026_09_12_session_4_m1_completion_save_load_clip_editing",
+      "target": "docs_session_log_how_176",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L176",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_session_2026_09_12_session_4_m1_completion_save_load_clip_editing",
+      "target": "docs_session_log_decisions_181",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L181",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_session_2026_09_12_session_4_m1_completion_save_load_clip_editing",
+      "target": "docs_session_log_verify_184",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L184",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_session_2026_09_12_session_4_m1_completion_save_load_clip_editing",
+      "target": "docs_session_log_limitations_188",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L188",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_session_2026_09_12_session_4_m1_completion_save_load_clip_editing",
+      "target": "docs_session_log_next_step_193",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L193",
       "weight": 1.0
     },
     {
@@ -16827,7 +18184,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "frontend/src/App.tsx",
-      "source_location": "L9",
+      "source_location": "L11",
       "weight": 1.0
     },
     {
@@ -16893,7 +18250,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "frontend/src/components/timeline/ClipBlock.tsx",
-      "source_location": "L5",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_components_timeline_clipblock",
+      "target": "frontend_src_components_timeline_clipblock_dragmode",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/components/timeline/ClipBlock.tsx",
+      "source_location": "L8",
       "weight": 1.0
     },
     {
@@ -17081,6 +18449,182 @@
       "confidence_score": 1.0,
       "source_file": "frontend/src/editor/ops.test.ts",
       "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project",
+      "target": "frontend_src_editor_project_parseprojectjson",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L102",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project",
+      "target": "frontend_src_editor_project_projecterror",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project",
+      "target": "frontend_src_editor_project_serializeproject",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project",
+      "target": "frontend_src_editor_project_toprojectjson",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project",
+      "target": "frontend_src_editor_project_isrecord",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project",
+      "target": "frontend_src_editor_project_requirerecord",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L38",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project",
+      "target": "frontend_src_editor_project_project_app",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project",
+      "target": "frontend_src_editor_project_istrack",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L43",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project",
+      "target": "frontend_src_editor_project_project_version",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project",
+      "target": "frontend_src_editor_project_isasset",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L53",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project",
+      "target": "frontend_src_editor_project_isclip",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L65",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project",
+      "target": "frontend_src_editor_project_projectfile",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project",
+      "target": "frontend_src_editor_project_parseprojectmodel",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L77",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_test",
+      "target": "frontend_src_editor_project_test_assets",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/editor/project.test.ts",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_test",
+      "target": "frontend_src_editor_project_test_clips",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/editor/project.test.ts",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_test",
+      "target": "frontend_src_editor_project_test_model",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/editor/project.test.ts",
+      "source_location": "L23",
       "weight": 1.0
     },
     {
@@ -17414,6 +18958,28 @@
       "weight": 1.0
     },
     {
+      "source": "frontend_src_services_projectio",
+      "target": "frontend_src_services_projectio_readprojectfromfile",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/services/projectIO.ts",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_projectio",
+      "target": "frontend_src_services_projectio_saveprojecttofile",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/services/projectIO.ts",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
       "source": "frontend_src_store_editorstore",
       "target": "frontend_src_store_editorstore_editoractions",
       "relation": "contains",
@@ -17432,7 +18998,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "frontend/src/store/editorStore.ts",
-      "source_location": "L32",
+      "source_location": "L33",
       "weight": 1.0
     },
     {
@@ -17443,7 +19009,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "frontend/src/store/editorStore.ts",
-      "source_location": "L34",
+      "source_location": "L35",
       "weight": 1.0
     },
     {
@@ -17454,7 +19020,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "frontend/src/store/editorStore.ts",
-      "source_location": "L44",
+      "source_location": "L45",
       "weight": 1.0
     },
     {
@@ -17476,7 +19042,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "frontend/src/store/editorStore.test.ts",
-      "source_location": "L13",
+      "source_location": "L14",
       "weight": 1.0
     },
     {
@@ -17487,7 +19053,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "frontend/src/store/editorStore.test.ts",
-      "source_location": "L5",
+      "source_location": "L6",
       "weight": 1.0
     },
     {
@@ -22833,7 +24399,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L26",
+      "source_location": "L27",
       "weight": 1.0
     },
     {
@@ -22844,7 +24410,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L43",
+      "source_location": "L44",
       "weight": 1.0
     },
     {
@@ -22855,7 +24421,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L47",
+      "source_location": "L48",
       "weight": 1.0
     },
     {
@@ -23211,6 +24777,160 @@
       "weight": 1.0
     },
     {
+      "source": "tasks_plan",
+      "target": "tasks_plan_implementation_plan_m1_completion_project_save_load_timeline_drag_trim_ux",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/plan.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "tasks_plan_implementation_plan_m1_completion_project_save_load_timeline_drag_trim_ux",
+      "target": "tasks_plan_task_list",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/plan.md",
+      "source_location": "L22",
+      "weight": 1.0
+    },
+    {
+      "source": "tasks_plan_implementation_plan_m1_completion_project_save_load_timeline_drag_trim_ux",
+      "target": "tasks_plan_overview",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/plan.md",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "tasks_plan_implementation_plan_m1_completion_project_save_load_timeline_drag_trim_ux",
+      "target": "tasks_plan_checkpoints",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/plan.md",
+      "source_location": "L56",
+      "weight": 1.0
+    },
+    {
+      "source": "tasks_plan_implementation_plan_m1_completion_project_save_load_timeline_drag_trim_ux",
+      "target": "tasks_plan_risks_and_mitigations",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/plan.md",
+      "source_location": "L61",
+      "weight": 1.0
+    },
+    {
+      "source": "tasks_plan_implementation_plan_m1_completion_project_save_load_timeline_drag_trim_ux",
+      "target": "tasks_plan_open_questions",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/plan.md",
+      "source_location": "L69",
+      "weight": 1.0
+    },
+    {
+      "source": "tasks_plan_implementation_plan_m1_completion_project_save_load_timeline_drag_trim_ux",
+      "target": "tasks_plan_architecture_decisions",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/plan.md",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "tasks_plan_task_list",
+      "target": "tasks_plan_task_1_project_serialization_editor_project_ts_s",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/plan.md",
+      "source_location": "L24",
+      "weight": 1.0
+    },
+    {
+      "source": "tasks_plan_task_list",
+      "target": "tasks_plan_task_2_loadproject_store_action_s",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/plan.md",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "tasks_plan_task_list",
+      "target": "tasks_plan_task_3_save_open_ui_topbar_services_projectio_ts_m",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/plan.md",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "tasks_plan_task_list",
+      "target": "tasks_plan_task_4_clip_drag_move_ux_m",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/plan.md",
+      "source_location": "L39",
+      "weight": 1.0
+    },
+    {
+      "source": "tasks_plan_task_list",
+      "target": "tasks_plan_task_5_clip_drag_trim_ux_edge_handles_m",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/plan.md",
+      "source_location": "L44",
+      "weight": 1.0
+    },
+    {
+      "source": "tasks_plan_task_list",
+      "target": "tasks_plan_task_6_css_verification_docs_s",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/plan.md",
+      "source_location": "L49",
+      "weight": 1.0
+    },
+    {
+      "source": "tasks_todo",
+      "target": "tasks_todo_task_list_m1_completion_project_save_load_timeline_drag_trim_ux",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/todo.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
       "source": "scripts_sidecar",
       "target": "scripts_sidecar_path",
       "relation": "defines",
@@ -23285,6 +25005,17 @@
       "confidence_score": 1.0,
       "source_file": "backend/src/lava_backend/errors.py",
       "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_editor_project_projecterror",
+      "target": "frontend_src_editor_project_projecterror_constructor",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L15",
       "weight": 1.0
     },
     {
@@ -23563,6 +25294,17 @@
       "weight": 1.0
     },
     {
+      "source": "frontend_src_store_editorstore_editoractions",
+      "target": "frontend_src_store_editorstore_editoractions_loadproject",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/store/editorStore.ts",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
       "source": "backend_src_lava_backend_config_rationale_1",
       "target": "backend_src_lava_backend_config",
       "relation": "rationale_for",
@@ -23724,7 +25466,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L24",
+      "source_location": "L25",
       "weight": 1.0
     },
     {
@@ -23735,7 +25477,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L30",
+      "source_location": "L31",
       "weight": 1.0
     },
     {
@@ -23746,7 +25488,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L31",
+      "source_location": "L32",
       "weight": 1.0
     },
     {
@@ -23757,7 +25499,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L32",
+      "source_location": "L33",
       "weight": 1.0
     },
     {
@@ -23768,7 +25510,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L33",
+      "source_location": "L34",
       "weight": 1.0
     },
     {
@@ -23779,7 +25521,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L34",
+      "source_location": "L35",
       "weight": 1.0
     },
     {
@@ -23790,7 +25532,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L36",
+      "source_location": "L37",
       "weight": 1.0
     },
     {
@@ -23801,7 +25543,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L37",
+      "source_location": "L38",
       "weight": 1.0
     },
     {
@@ -23812,7 +25554,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L45",
+      "source_location": "L46",
       "weight": 1.0
     },
     {
@@ -23887,5 +25629,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "d9531e6e0c87c297113e2bed53225d1f6e199ef7"
+  "built_at_commit": "ecf0f33220bf62cf172e3d8df09693729070be57"
 }

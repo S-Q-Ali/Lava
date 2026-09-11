@@ -50,5 +50,11 @@
   "48": "graphify reference: GitHub clone and cross-repo merge",
   "49": "graphify reference: transcribe video and audio",
   "50": "frontend/README.md",
-  "51": "extraction-spec.md"
+  "51": "extraction-spec.md",
+  "52": "main.py",
+  "53": "test_render.py",
+  "54": "Lava Studio — Backend (media sidecar)",
+  "55": "test_health.py",
+  "56": "sidecar.sh",
+  "57": "lava-backend"
 }

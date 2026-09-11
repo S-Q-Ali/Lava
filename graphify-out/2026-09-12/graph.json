@@ -108,6 +108,19 @@
       "source_location": "L11"
     },
     {
+      "id": "frontend_src_services_ffmpeg_renderclipinput",
+      "label": "RenderClipInput",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "useEditorStore",
+      "file_type": "code",
+      "norm_label": "renderclipinput",
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L1"
+    },
+    {
       "id": "frontend_src_store_editorstore_editoractions",
       "label": "EditorActions",
       "_callable": true,
@@ -147,17 +160,147 @@
       "source_location": "L32"
     },
     {
-      "id": "frontend_src_services_ffmpeg_ffmpegprobe",
-      "label": "FFmpegProbe",
+      "id": "backend_src_lava_backend_config_config",
+      "label": "Config",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
-      "community": 8,
-      "community_name": "ffmpeg.ts",
+      "community": 52,
+      "community_name": "main.py",
       "file_type": "code",
-      "norm_label": "ffmpegprobe",
-      "source_file": "frontend/src/services/ffmpeg.ts",
-      "source_location": "L1"
+      "norm_label": "config",
+      "source_file": "backend/src/lava_backend/config.py",
+      "source_location": "L21"
+    },
+    {
+      "id": "backend_src_lava_backend_config_toolversions",
+      "label": "ToolVersions",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "toolversions",
+      "source_file": "backend/src/lava_backend/config.py",
+      "source_location": "L71"
+    },
+    {
+      "id": "backend_src_lava_backend_errors_apierror",
+      "label": "ApiError",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "apierror",
+      "source_file": "backend/src/lava_backend/errors.py",
+      "source_location": "L8"
+    },
+    {
+      "id": "backend_src_lava_backend_main_clipmetadata",
+      "label": "ClipMetadata",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "clipmetadata",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L79"
+    },
+    {
+      "id": "backend_src_lava_backend_main_proberequest",
+      "label": "ProbeRequest",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "proberequest",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L51"
+    },
+    {
+      "id": "backend_src_lava_backend_main_rendersettingsmodel",
+      "label": "RenderSettingsModel",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "rendersettingsmodel",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L85"
+    },
+    {
+      "id": "backend_src_lava_backend_media_proberesult",
+      "label": "ProbeResult",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "proberesult",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L52"
+    },
+    {
+      "id": "backend_src_lava_backend_media_probestream",
+      "label": "ProbeStream",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "probestream",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L44"
+    },
+    {
+      "id": "backend_src_lava_backend_media_renderclip",
+      "label": "RenderClip",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "renderclip",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L16"
+    },
+    {
+      "id": "backend_src_lava_backend_media_renderresult",
+      "label": "RenderResult",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "renderresult",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L30"
+    },
+    {
+      "id": "backend_src_lava_backend_media_rendersettings",
+      "label": "RenderSettings",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "rendersettings",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L23"
     },
     {
       "id": "frontend_src_services_ffmpeg_ffmpegprovider",
@@ -170,7 +313,59 @@
       "file_type": "code",
       "norm_label": "ffmpegprovider",
       "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L29"
+    },
+    {
+      "id": "frontend_src_services_ffmpeg_httpffmpegprovider",
+      "label": "HttpFFmpegProvider",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "ffmpeg.ts",
+      "file_type": "code",
+      "norm_label": "httpffmpegprovider",
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L69"
+    },
+    {
+      "id": "frontend_src_services_ffmpeg_renderinput",
+      "label": "RenderInput",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "ffmpeg.ts",
+      "file_type": "code",
+      "norm_label": "renderinput",
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L23"
+    },
+    {
+      "id": "frontend_src_services_ffmpeg_renderresult",
+      "label": "RenderResult",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "ffmpeg.ts",
+      "file_type": "code",
+      "norm_label": "renderresult",
+      "source_file": "frontend/src/services/ffmpeg.ts",
       "source_location": "L13"
+    },
+    {
+      "id": "frontend_src_services_ffmpeg_rendersettings",
+      "label": "RenderSettings",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "ffmpeg.ts",
+      "file_type": "code",
+      "norm_label": "rendersettings",
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L7"
     },
     {
       "id": "frontend_src_services_ffmpeg_unavailableffmpegprovider",
@@ -183,7 +378,7 @@
       "file_type": "code",
       "norm_label": "unavailableffmpegprovider",
       "source_file": "frontend/src/services/ffmpeg.ts",
-      "source_location": "L22"
+      "source_location": "L45"
     },
     {
       "id": "frontend_src_app_app",
@@ -243,7 +438,7 @@
       "file_type": "code",
       "norm_label": "formattime()",
       "source_file": "frontend/src/components/PreviewPanel.tsx",
-      "source_location": "L5"
+      "source_location": "L7"
     },
     {
       "id": "frontend_src_components_previewpanel_previewpanel",
@@ -255,7 +450,7 @@
       "file_type": "code",
       "norm_label": "previewpanel()",
       "source_file": "frontend/src/components/PreviewPanel.tsx",
-      "source_location": "L14"
+      "source_location": "L16"
     },
     {
       "id": "frontend_src_components_timeline_clipblock_clipblock",
@@ -426,6 +621,18 @@
       "source_location": "L40"
     },
     {
+      "id": "frontend_src_media_importer_getassetfile",
+      "label": "getAssetFile()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "useEditorStore",
+      "file_type": "code",
+      "norm_label": "getassetfile()",
+      "source_file": "frontend/src/media/importer.ts",
+      "source_location": "L10"
+    },
+    {
       "id": "frontend_src_media_importer_importfiles",
       "label": "importFiles()",
       "_callable": true,
@@ -435,7 +642,7 @@
       "file_type": "code",
       "norm_label": "importfiles()",
       "source_file": "frontend/src/media/importer.ts",
-      "source_location": "L33"
+      "source_location": "L43"
     },
     {
       "id": "frontend_src_media_importer_kindof",
@@ -447,7 +654,7 @@
       "file_type": "code",
       "norm_label": "kindof()",
       "source_file": "frontend/src/media/importer.ts",
-      "source_location": "L27"
+      "source_location": "L37"
     },
     {
       "id": "frontend_src_media_importer_readimagemeta",
@@ -459,7 +666,7 @@
       "file_type": "code",
       "norm_label": "readimagemeta()",
       "source_file": "frontend/src/media/importer.ts",
-      "source_location": "L4"
+      "source_location": "L14"
     },
     {
       "id": "frontend_src_media_importer_readmediameta",
@@ -471,7 +678,31 @@
       "file_type": "code",
       "norm_label": "readmediameta()",
       "source_file": "frontend/src/media/importer.ts",
-      "source_location": "L17"
+      "source_location": "L27"
+    },
+    {
+      "id": "frontend_src_media_importer_registerassetfile",
+      "label": "registerAssetFile()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "useEditorStore",
+      "file_type": "code",
+      "norm_label": "registerassetfile()",
+      "source_file": "frontend/src/media/importer.ts",
+      "source_location": "L6"
+    },
+    {
+      "id": "frontend_src_services_ffmpeg_getffmpegprovider",
+      "label": "getFFmpegProvider()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "useEditorStore",
+      "file_type": "code",
+      "norm_label": "getffmpegprovider()",
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L134"
     },
     {
       "id": "frontend_src_store_editorstore_editoractions_addasset",
@@ -666,16 +897,472 @@
       "source_location": "L12"
     },
     {
-      "id": "frontend_src_services_ffmpeg_ffmpegprovider_probe",
-      "label": ".probe()",
+      "id": "backend_src_lava_backend_config_config_load",
+      "label": ".load()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": ".load()",
+      "source_file": "backend/src/lava_backend/config.py",
+      "source_location": "L33"
+    },
+    {
+      "id": "backend_src_lava_backend_config_get_config",
+      "label": "get_config()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "get_config()",
+      "source_file": "backend/src/lava_backend/config.py",
+      "source_location": "L58"
+    },
+    {
+      "id": "backend_src_lava_backend_config_payload",
+      "label": "_payload()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "_payload()",
+      "source_file": "backend/src/lava_backend/config.py",
+      "source_location": "L13"
+    },
+    {
+      "id": "backend_src_lava_backend_config_reset_config",
+      "label": "reset_config()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "reset_config()",
+      "source_file": "backend/src/lava_backend/config.py",
+      "source_location": "L65"
+    },
+    {
+      "id": "backend_src_lava_backend_config_tool_versions",
+      "label": "tool_versions()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "tool_versions()",
+      "source_file": "backend/src/lava_backend/config.py",
+      "source_location": "L77"
+    },
+    {
+      "id": "backend_src_lava_backend_errors_apierror_init",
+      "label": ".__init__()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": ".__init__()",
+      "source_file": "backend/src/lava_backend/errors.py",
+      "source_location": "L9"
+    },
+    {
+      "id": "backend_src_lava_backend_errors_error_response",
+      "label": "error_response()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "error_response()",
+      "source_file": "backend/src/lava_backend/errors.py",
+      "source_location": "L16"
+    },
+    {
+      "id": "backend_src_lava_backend_main_api_error_handler",
+      "label": "api_error_handler()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "api_error_handler()",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L33"
+    },
+    {
+      "id": "backend_src_lava_backend_main_health",
+      "label": "health()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "health()",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L38"
+    },
+    {
+      "id": "backend_src_lava_backend_main_probe_endpoint",
+      "label": "probe_endpoint()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "probe_endpoint()",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L56"
+    },
+    {
+      "id": "backend_src_lava_backend_main_render_endpoint",
+      "label": "render_endpoint()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "render_endpoint()",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L92"
+    },
+    {
+      "id": "backend_src_lava_backend_main_serve_render",
+      "label": "serve_render()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "serve_render()",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L160"
+    },
+    {
+      "id": "backend_src_lava_backend_media_check_binary",
+      "label": "check_binary()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "check_binary()",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L75"
+    },
+    {
+      "id": "backend_src_lava_backend_media_filter_complex",
+      "label": "_filter_complex()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "_filter_complex()",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L131"
+    },
+    {
+      "id": "backend_src_lava_backend_media_float",
+      "label": "_float()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "_float()",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L208"
+    },
+    {
+      "id": "backend_src_lava_backend_media_int",
+      "label": "_int()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "_int()",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L215"
+    },
+    {
+      "id": "backend_src_lava_backend_media_probe",
+      "label": "probe()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "probe()",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L85"
+    },
+    {
+      "id": "backend_src_lava_backend_media_render",
+      "label": "render()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "render()",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L151"
+    },
+    {
+      "id": "backend_src_lava_backend_media_run",
+      "label": "_run()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "_run()",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L60"
+    },
+    {
+      "id": "backend_tests_conftest_clean_config",
+      "label": "_clean_config()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "_clean_config()",
+      "source_file": "backend/tests/conftest.py",
+      "source_location": "L14"
+    },
+    {
+      "id": "backend_tests_conftest_client",
+      "label": "client()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "client()",
+      "source_file": "backend/tests/conftest.py",
+      "source_location": "L20"
+    },
+    {
+      "id": "backend_tests_test_probe_make_clip",
+      "label": "make_clip()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test_render.py",
+      "file_type": "code",
+      "norm_label": "make_clip()",
+      "source_file": "backend/tests/test_probe.py",
+      "source_location": "L8"
+    },
+    {
+      "id": "backend_tests_test_probe_test_probe_error_shape_consistent",
+      "label": "test_probe_error_shape_consistent()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test_render.py",
+      "file_type": "code",
+      "norm_label": "test_probe_error_shape_consistent()",
+      "source_file": "backend/tests/test_probe.py",
+      "source_location": "L53"
+    },
+    {
+      "id": "backend_tests_test_probe_test_probe_missing_path_is_400",
+      "label": "test_probe_missing_path_is_400()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test_render.py",
+      "file_type": "code",
+      "norm_label": "test_probe_missing_path_is_400()",
+      "source_file": "backend/tests/test_probe.py",
+      "source_location": "L39"
+    },
+    {
+      "id": "backend_tests_test_probe_test_probe_non_media_file_is_422",
+      "label": "test_probe_non_media_file_is_422()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test_render.py",
+      "file_type": "code",
+      "norm_label": "test_probe_non_media_file_is_422()",
+      "source_file": "backend/tests/test_probe.py",
+      "source_location": "L45"
+    },
+    {
+      "id": "backend_tests_test_probe_test_probe_reports_media_metadata",
+      "label": "test_probe_reports_media_metadata()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test_render.py",
+      "file_type": "code",
+      "norm_label": "test_probe_reports_media_metadata()",
+      "source_file": "backend/tests/test_probe.py",
+      "source_location": "L27"
+    },
+    {
+      "id": "backend_tests_test_render_make_image",
+      "label": "make_image()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test_render.py",
+      "file_type": "code",
+      "norm_label": "make_image()",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L10"
+    },
+    {
+      "id": "backend_tests_test_render_render_multipart",
+      "label": "render_multipart()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test_render.py",
+      "file_type": "code",
+      "norm_label": "render_multipart()",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L28"
+    },
+    {
+      "id": "backend_tests_test_render_test_render_file_clip_count_mismatch_is_400",
+      "label": "test_render_file_clip_count_mismatch_is_400()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test_render.py",
+      "file_type": "code",
+      "norm_label": "test_render_file_clip_count_mismatch_is_400()",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L101"
+    },
+    {
+      "id": "backend_tests_test_render_test_render_invalid_duration_is_422",
+      "label": "test_render_invalid_duration_is_422()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test_render.py",
+      "file_type": "code",
+      "norm_label": "test_render_invalid_duration_is_422()",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L114"
+    },
+    {
+      "id": "backend_tests_test_render_test_render_missing_job_404",
+      "label": "test_render_missing_job_404()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test_render.py",
+      "file_type": "code",
+      "norm_label": "test_render_missing_job_404()",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L95"
+    },
+    {
+      "id": "backend_tests_test_render_test_render_serve_endpoint",
+      "label": "test_render_serve_endpoint()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test_render.py",
+      "file_type": "code",
+      "norm_label": "test_render_serve_endpoint()",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L80"
+    },
+    {
+      "id": "backend_tests_test_render_test_render_single_image",
+      "label": "test_render_single_image()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test_render.py",
+      "file_type": "code",
+      "norm_label": "test_render_single_image()",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L39"
+    },
+    {
+      "id": "backend_tests_test_render_test_render_two_images_concat",
+      "label": "test_render_two_images_concat()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test_render.py",
+      "file_type": "code",
+      "norm_label": "test_render_two_images_concat()",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L59"
+    },
+    {
+      "id": "backend_tests_test_health_test_health_fails_without_ffmpeg_binary",
+      "label": "test_health_fails_without_ffmpeg_binary()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 55,
+      "community_name": "test_health.py",
+      "file_type": "code",
+      "norm_label": "test_health_fails_without_ffmpeg_binary()",
+      "source_file": "backend/tests/test_health.py",
+      "source_location": "L11"
+    },
+    {
+      "id": "backend_tests_test_health_test_health_reports_ffmpeg_versions",
+      "label": "test_health_reports_ffmpeg_versions()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 55,
+      "community_name": "test_health.py",
+      "file_type": "code",
+      "norm_label": "test_health_reports_ffmpeg_versions()",
+      "source_file": "backend/tests/test_health.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "frontend_src_services_ffmpeg_backendbaseurl",
+      "label": "backendBaseUrl()",
       "_callable": true,
       "_origin": "ast",
       "community": 8,
       "community_name": "ffmpeg.ts",
       "file_type": "code",
-      "norm_label": ".probe()",
+      "norm_label": "backendbaseurl()",
       "source_file": "frontend/src/services/ffmpeg.ts",
-      "source_location": "L18"
+      "source_location": "L40"
+    },
+    {
+      "id": "frontend_src_services_ffmpeg_detectprovider",
+      "label": "detectProvider()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "ffmpeg.ts",
+      "file_type": "code",
+      "norm_label": "detectprovider()",
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L139"
+    },
+    {
+      "id": "frontend_src_services_ffmpeg_ffmpegprovider_fileurl",
+      "label": ".fileUrl()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "ffmpeg.ts",
+      "file_type": "code",
+      "norm_label": ".fileurl()",
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L35"
     },
     {
       "id": "frontend_src_services_ffmpeg_ffmpegprovider_render",
@@ -687,7 +1374,7 @@
       "file_type": "code",
       "norm_label": ".render()",
       "source_file": "frontend/src/services/ffmpeg.ts",
-      "source_location": "L19"
+      "source_location": "L34"
     },
     {
       "id": "frontend_src_services_ffmpeg_ffmpegprovider_version",
@@ -699,19 +1386,103 @@
       "file_type": "code",
       "norm_label": ".version()",
       "source_file": "frontend/src/services/ffmpeg.ts",
-      "source_location": "L17"
+      "source_location": "L33"
     },
     {
-      "id": "frontend_src_services_ffmpeg_unavailableffmpegprovider_probe",
-      "label": ".probe()",
+      "id": "frontend_src_services_ffmpeg_httpffmpegprovider_constructor",
+      "label": ".constructor()",
       "_callable": true,
       "_origin": "ast",
       "community": 8,
       "community_name": "ffmpeg.ts",
       "file_type": "code",
-      "norm_label": ".probe()",
+      "norm_label": ".constructor()",
       "source_file": "frontend/src/services/ffmpeg.ts",
-      "source_location": "L32"
+      "source_location": "L74"
+    },
+    {
+      "id": "frontend_src_services_ffmpeg_httpffmpegprovider_fileurl",
+      "label": ".fileUrl()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "ffmpeg.ts",
+      "file_type": "code",
+      "norm_label": ".fileurl()",
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L126"
+    },
+    {
+      "id": "frontend_src_services_ffmpeg_httpffmpegprovider_render",
+      "label": ".render()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "ffmpeg.ts",
+      "file_type": "code",
+      "norm_label": ".render()",
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L91"
+    },
+    {
+      "id": "frontend_src_services_ffmpeg_httpffmpegprovider_version",
+      "label": ".version()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "ffmpeg.ts",
+      "file_type": "code",
+      "norm_label": ".version()",
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L78"
+    },
+    {
+      "id": "frontend_src_services_ffmpeg_resetffmpegprovider",
+      "label": "resetFFmpegProvider()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "ffmpeg.ts",
+      "file_type": "code",
+      "norm_label": "resetffmpegprovider()",
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L150"
+    },
+    {
+      "id": "frontend_src_services_ffmpeg_test_jsonresponse",
+      "label": "jsonResponse()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "ffmpeg.ts",
+      "file_type": "code",
+      "norm_label": "jsonresponse()",
+      "source_file": "frontend/src/services/ffmpeg.test.ts",
+      "source_location": "L9"
+    },
+    {
+      "id": "frontend_src_services_ffmpeg_unavailableffmpegprovider_constructor",
+      "label": ".constructor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "ffmpeg.ts",
+      "file_type": "code",
+      "norm_label": ".constructor()",
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L50"
+    },
+    {
+      "id": "frontend_src_services_ffmpeg_unavailableffmpegprovider_fileurl",
+      "label": ".fileUrl()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "ffmpeg.ts",
+      "file_type": "code",
+      "norm_label": ".fileurl()",
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L64"
     },
     {
       "id": "frontend_src_services_ffmpeg_unavailableffmpegprovider_render",
@@ -723,7 +1494,7 @@
       "file_type": "code",
       "norm_label": ".render()",
       "source_file": "frontend/src/services/ffmpeg.ts",
-      "source_location": "L36"
+      "source_location": "L60"
     },
     {
       "id": "frontend_src_services_ffmpeg_unavailableffmpegprovider_version",
@@ -735,7 +1506,7 @@
       "file_type": "code",
       "norm_label": ".version()",
       "source_file": "frontend/src/services/ffmpeg.ts",
-      "source_location": "L28"
+      "source_location": "L56"
     },
     {
       "id": "scripts_fetch_ffmpeg_download",
@@ -1367,6 +2138,17 @@
       "norm_label": "importer.ts",
       "source_file": "frontend/src/media/importer.ts",
       "source_location": "L1"
+    },
+    {
+      "id": "frontend_src_media_importer_assetfiles",
+      "label": "assetFiles",
+      "_origin": "ast",
+      "community": 1,
+      "community_name": "useEditorStore",
+      "file_type": "code",
+      "norm_label": "assetfiles",
+      "source_file": "frontend/src/media/importer.ts",
+      "source_location": "L4"
     },
     {
       "id": "frontend_src_store_editorstore",
@@ -6727,7 +7509,7 @@
       "node_kind": "heading",
       "norm_label": "milestone 10 \u2014 release hardening",
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L82"
+      "source_location": "L83"
     },
     {
       "id": "docs_roadmap_milestone_1_media_foundation",
@@ -6751,7 +7533,7 @@
       "node_kind": "heading",
       "norm_label": "milestone 2 \u2014 voice analysis",
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L26"
+      "source_location": "L27"
     },
     {
       "id": "docs_roadmap_milestone_3_semantic_image_matching",
@@ -6763,7 +7545,7 @@
       "node_kind": "heading",
       "norm_label": "milestone 3 \u2014 semantic image matching",
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L33"
+      "source_location": "L34"
     },
     {
       "id": "docs_roadmap_milestone_4_transition_animation_engine",
@@ -6775,7 +7557,7 @@
       "node_kind": "heading",
       "norm_label": "milestone 4 \u2014 transition/animation engine",
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L41"
+      "source_location": "L42"
     },
     {
       "id": "docs_roadmap_milestone_5_caption_engine",
@@ -6787,7 +7569,7 @@
       "node_kind": "heading",
       "norm_label": "milestone 5 \u2014 caption engine",
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L48"
+      "source_location": "L49"
     },
     {
       "id": "docs_roadmap_milestone_6_template_font_system",
@@ -6799,7 +7581,7 @@
       "node_kind": "heading",
       "norm_label": "milestone 6 \u2014 template/font system",
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L55"
+      "source_location": "L56"
     },
     {
       "id": "docs_roadmap_milestone_7_manhwa_extractor",
@@ -6811,7 +7593,7 @@
       "node_kind": "heading",
       "norm_label": "milestone 7 \u2014 manhwa extractor",
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L62"
+      "source_location": "L63"
     },
     {
       "id": "docs_roadmap_milestone_8_integrated_editor",
@@ -6823,7 +7605,7 @@
       "node_kind": "heading",
       "norm_label": "milestone 8 \u2014 integrated editor",
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L69"
+      "source_location": "L70"
     },
     {
       "id": "docs_roadmap_milestone_9_hardware_validation",
@@ -6835,7 +7617,7 @@
       "node_kind": "heading",
       "norm_label": "milestone 9 \u2014 hardware validation",
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L76"
+      "source_location": "L77"
     },
     {
       "id": "docs_roadmap_status_legend",
@@ -6847,7 +7629,7 @@
       "node_kind": "heading",
       "norm_label": "status legend",
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L89"
+      "source_location": "L90"
     },
     {
       "id": "docs_features_10_hardware_aware_operation",
@@ -7390,6 +8172,30 @@
       "source_location": "L66"
     },
     {
+      "id": "docs_session_log_decisions_111",
+      "label": "Decisions",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "Session 2026-09-12 \u2014 Milestone 0 bootstrap + Milestone 1 media foundation",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "decisions",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L111"
+    },
+    {
+      "id": "docs_session_log_decisions_148",
+      "label": "Decisions",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "Session 2026-09-12 \u2014 Milestone 0 bootstrap + Milestone 1 media foundation",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "decisions",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L148"
+    },
+    {
       "id": "docs_session_log_how",
       "label": "HOW",
       "_origin": "ast",
@@ -7400,6 +8206,30 @@
       "norm_label": "how",
       "source_file": "docs/SESSION_LOG.md",
       "source_location": "L59"
+    },
+    {
+      "id": "docs_session_log_how_106",
+      "label": "HOW",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "Session 2026-09-12 \u2014 Milestone 0 bootstrap + Milestone 1 media foundation",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "how",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L106"
+    },
+    {
+      "id": "docs_session_log_how_143",
+      "label": "HOW",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "Session 2026-09-12 \u2014 Milestone 0 bootstrap + Milestone 1 media foundation",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "how",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L143"
     },
     {
       "id": "docs_session_log_limitations",
@@ -7414,6 +8244,30 @@
       "source_location": "L78"
     },
     {
+      "id": "docs_session_log_limitations_117",
+      "label": "Limitations",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "Session 2026-09-12 \u2014 Milestone 0 bootstrap + Milestone 1 media foundation",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "limitations",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L117"
+    },
+    {
+      "id": "docs_session_log_limitations_154",
+      "label": "Limitations",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "Session 2026-09-12 \u2014 Milestone 0 bootstrap + Milestone 1 media foundation",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "limitations",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L154"
+    },
+    {
       "id": "docs_session_log_next_step",
       "label": "Next step",
       "_origin": "ast",
@@ -7424,6 +8278,30 @@
       "norm_label": "next step",
       "source_file": "docs/SESSION_LOG.md",
       "source_location": "L85"
+    },
+    {
+      "id": "docs_session_log_next_step_121",
+      "label": "Next step",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "Session 2026-09-12 \u2014 Milestone 0 bootstrap + Milestone 1 media foundation",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "next step",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L121"
+    },
+    {
+      "id": "docs_session_log_next_step_160",
+      "label": "Next step",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "Session 2026-09-12 \u2014 Milestone 0 bootstrap + Milestone 1 media foundation",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "next step",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L160"
     },
     {
       "id": "docs_session_log_purpose_why",
@@ -7438,6 +8316,30 @@
       "source_location": "L36"
     },
     {
+      "id": "docs_session_log_purpose_why_128",
+      "label": "Purpose (WHY)",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "Session 2026-09-12 \u2014 Milestone 0 bootstrap + Milestone 1 media foundation",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "purpose (why)",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L128"
+    },
+    {
+      "id": "docs_session_log_purpose_why_93",
+      "label": "Purpose (WHY)",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "Session 2026-09-12 \u2014 Milestone 0 bootstrap + Milestone 1 media foundation",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "purpose (why)",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L93"
+    },
+    {
       "id": "docs_session_log_session_2026_09_12_milestone_0_bootstrap_milestone_1_media_foundation",
       "label": "Session 2026-09-12 \u2014 Milestone 0 bootstrap + Milestone 1 media foundation",
       "_origin": "ast",
@@ -7448,6 +8350,30 @@
       "norm_label": "session 2026-09-12 \u2014 milestone 0 bootstrap + milestone 1 media foundation",
       "source_file": "docs/SESSION_LOG.md",
       "source_location": "L34"
+    },
+    {
+      "id": "docs_session_log_session_2026_09_12_session_2_continuity_system_commit_discipline",
+      "label": "Session 2026-09-12 \u2014 Session 2: continuity system + commit discipline",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "Session 2026-09-12 \u2014 Milestone 0 bootstrap + Milestone 1 media foundation",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "session 2026-09-12 \u2014 session 2: continuity system + commit discipline",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L91"
+    },
+    {
+      "id": "docs_session_log_session_2026_09_12_session_3_media_sidecar_real_rendering",
+      "label": "Session 2026-09-12 \u2014 Session 3: media sidecar (real rendering)",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "Session 2026-09-12 \u2014 Milestone 0 bootstrap + Milestone 1 media foundation",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "session 2026-09-12 \u2014 session 3: media sidecar (real rendering)",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L126"
     },
     {
       "id": "docs_session_log_template",
@@ -7474,6 +8400,30 @@
       "source_location": "L75"
     },
     {
+      "id": "docs_session_log_verify_114",
+      "label": "Verify",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "Session 2026-09-12 \u2014 Milestone 0 bootstrap + Milestone 1 media foundation",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "verify",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L114"
+    },
+    {
+      "id": "docs_session_log_verify_151",
+      "label": "Verify",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "Session 2026-09-12 \u2014 Milestone 0 bootstrap + Milestone 1 media foundation",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "verify",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L151"
+    },
+    {
       "id": "docs_session_log_what",
       "label": "WHAT",
       "_origin": "ast",
@@ -7484,6 +8434,30 @@
       "norm_label": "what",
       "source_file": "docs/SESSION_LOG.md",
       "source_location": "L39"
+    },
+    {
+      "id": "docs_session_log_what_131",
+      "label": "WHAT",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "Session 2026-09-12 \u2014 Milestone 0 bootstrap + Milestone 1 media foundation",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "what",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L131"
+    },
+    {
+      "id": "docs_session_log_what_96",
+      "label": "WHAT",
+      "_origin": "ast",
+      "community": 36,
+      "community_name": "Session 2026-09-12 \u2014 Milestone 0 bootstrap + Milestone 1 media foundation",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "what",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L96"
     },
     {
       "id": "docs_architecture_1_repository_layout",
@@ -7531,7 +8505,7 @@
       "node_kind": "heading",
       "norm_label": "4. voice-over \u2192 images processing graph",
       "source_file": "docs/ARCHITECTURE.md",
-      "source_location": "L57"
+      "source_location": "L58"
     },
     {
       "id": "docs_architecture_5_manhwa_webtoon_extraction_processing_graph",
@@ -7543,7 +8517,7 @@
       "node_kind": "heading",
       "norm_label": "5. manhwa / webtoon extraction processing graph",
       "source_file": "docs/ARCHITECTURE.md",
-      "source_location": "L85"
+      "source_location": "L86"
     },
     {
       "id": "docs_architecture_6_caption_processing_graph",
@@ -7555,7 +8529,7 @@
       "node_kind": "heading",
       "norm_label": "6. caption processing graph",
       "source_file": "docs/ARCHITECTURE.md",
-      "source_location": "L117"
+      "source_location": "L118"
     },
     {
       "id": "docs_architecture_7_system_boundaries",
@@ -7567,7 +8541,7 @@
       "node_kind": "heading",
       "norm_label": "7. system boundaries",
       "source_file": "docs/ARCHITECTURE.md",
-      "source_location": "L124"
+      "source_location": "L125"
     },
     {
       "id": "docs_architecture_8_design_decisions_why",
@@ -7579,7 +8553,19 @@
       "node_kind": "heading",
       "norm_label": "8. design decisions (why)",
       "source_file": "docs/ARCHITECTURE.md",
-      "source_location": "L143"
+      "source_location": "L144"
+    },
+    {
+      "id": "docs_architecture_9_media_sidecar_api",
+      "label": "9. Media Sidecar API",
+      "_origin": "ast",
+      "community": 37,
+      "community_name": "AI Video Studio \u2014 Architecture",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "9. media sidecar api",
+      "source_file": "docs/ARCHITECTURE.md",
+      "source_location": "L159"
     },
     {
       "id": "docs_architecture_ai_video_studio_architecture",
@@ -7690,6 +8676,18 @@
       "source_location": "L61"
     },
     {
+      "id": "docs_decisions_d_008_media_sidecar_http_api_fastapi",
+      "label": "D-008 \u2014 Media sidecar HTTP API (FastAPI)",
+      "_origin": "ast",
+      "community": 38,
+      "community_name": "AI Video Studio \u2014 Decision Log",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "d-008 \u2014 media sidecar http api (fastapi)",
+      "source_file": "docs/DECISIONS.md",
+      "source_location": "L70"
+    },
+    {
       "id": "docs_decisions_index_of_decisions",
       "label": "Index of decisions",
       "_origin": "ast",
@@ -7699,7 +8697,7 @@
       "node_kind": "heading",
       "norm_label": "index of decisions",
       "source_file": "docs/DECISIONS.md",
-      "source_location": "L72"
+      "source_location": "L81"
     },
     {
       "id": "opencode_skills_graphify_references_exports",
@@ -8467,7 +9465,7 @@
       "node_kind": "heading",
       "norm_label": "baseline target hardware",
       "source_file": "README.md",
-      "source_location": "L45"
+      "source_location": "L47"
     },
     {
       "id": "readme_current_status",
@@ -8503,7 +9501,7 @@
       "node_kind": "heading",
       "norm_label": "documentation",
       "source_file": "README.md",
-      "source_location": "L24"
+      "source_location": "L26"
     },
     {
       "id": "readme_how_to_work_on_this_project",
@@ -8515,7 +9513,7 @@
       "node_kind": "heading",
       "norm_label": "how to work on this project",
       "source_file": "README.md",
-      "source_location": "L41"
+      "source_location": "L43"
     },
     {
       "id": "readme_lava_ai_video_studio",
@@ -9012,6 +10010,412 @@
       "norm_label": "graphify reference: extraction subagent prompt",
       "source_file": ".opencode/skills/graphify/references/extraction-spec.md",
       "source_location": "L1"
+    },
+    {
+      "id": "backend_src_lava_backend_config",
+      "label": "config.py",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "config.py",
+      "source_file": "backend/src/lava_backend/config.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "backend_src_lava_backend_errors",
+      "label": "errors.py",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "errors.py",
+      "source_file": "backend/src/lava_backend/errors.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "backend_src_lava_backend_main",
+      "label": "main.py",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "main.py",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "backend_src_lava_backend_media",
+      "label": "media.py",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "media.py",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "backend_src_lava_backend_media_py_path",
+      "label": "Path",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "path",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "backend_tests_conftest",
+      "label": "conftest.py",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "conftest.py",
+      "source_file": "backend/tests/conftest.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "basemodel",
+      "label": "BaseModel",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "basemodel",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "exception",
+      "label": "Exception",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "exception",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "exception_handler",
+      "label": "exception_handler",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "exception_handler",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "fixture",
+      "label": "fixture",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "fixture",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "get",
+      "label": "get",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "get",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "jsonresponse",
+      "label": "JSONResponse",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "jsonresponse",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "post",
+      "label": "post",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "post",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "request",
+      "label": "Request",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "request",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "uploadfile",
+      "label": "UploadFile",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "uploadfile",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "backend_src_lava_backend_config_rationale_1",
+      "label": "Resolve Lava Studio project-local configuration and paths.",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "rationale",
+      "norm_label": "resolve lava studio project-local configuration and paths.",
+      "source_file": "backend/src/lava_backend/config.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "backend_src_lava_backend_errors_rationale_1",
+      "label": "Consistent error semantics for the sidecar API.",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "rationale",
+      "norm_label": "consistent error semantics for the sidecar api.",
+      "source_file": "backend/src/lava_backend/errors.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "backend_src_lava_backend_main_rationale_1",
+      "label": "Lava Studio local media sidecar.",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "rationale",
+      "norm_label": "lava studio local media sidecar.",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "backend_src_lava_backend_media_rationale_1",
+      "label": "FFmpeg/FFprobe subprocess helpers for the sidecar.",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "rationale",
+      "norm_label": "ffmpeg/ffprobe subprocess helpers for the sidecar.",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "backend_src_lava_backend_init",
+      "label": "__init__.py",
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test_render.py",
+      "file_type": "code",
+      "norm_label": "__init__.py",
+      "source_file": "backend/src/lava_backend/__init__.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "backend_tests_test_probe",
+      "label": "test_probe.py",
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test_render.py",
+      "file_type": "code",
+      "norm_label": "test_probe.py",
+      "source_file": "backend/tests/test_probe.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "backend_tests_test_render",
+      "label": "test_render.py",
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test_render.py",
+      "file_type": "code",
+      "norm_label": "test_render.py",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "backend_tests_test_render_py_path",
+      "label": "Path",
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test_render.py",
+      "file_type": "code",
+      "norm_label": "path",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "backend_src_lava_backend_init_rationale_1",
+      "label": "Lava Studio media sidecar package.",
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test_render.py",
+      "file_type": "rationale",
+      "norm_label": "lava studio media sidecar package.",
+      "source_file": "backend/src/lava_backend/__init__.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "backend_readme",
+      "label": "backend/README.md",
+      "_origin": "ast",
+      "community": 54,
+      "community_name": "Lava Studio \u2014 Backend (media sidecar)",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "backend/readme.md",
+      "source_file": "backend/README.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "backend_readme_api",
+      "label": "API",
+      "_origin": "ast",
+      "community": 54,
+      "community_name": "Lava Studio \u2014 Backend (media sidecar)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "api",
+      "source_file": "backend/README.md",
+      "source_location": "L16"
+    },
+    {
+      "id": "backend_readme_lava_studio_backend_media_sidecar",
+      "label": "Lava Studio \u2014 Backend (media sidecar)",
+      "_origin": "ast",
+      "community": 54,
+      "community_name": "Lava Studio \u2014 Backend (media sidecar)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "lava studio \u2014 backend (media sidecar)",
+      "source_file": "backend/README.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "backend_readme_layout",
+      "label": "Layout",
+      "_origin": "ast",
+      "community": 54,
+      "community_name": "Lava Studio \u2014 Backend (media sidecar)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "layout",
+      "source_file": "backend/README.md",
+      "source_location": "L32"
+    },
+    {
+      "id": "backend_readme_run",
+      "label": "Run",
+      "_origin": "ast",
+      "community": 54,
+      "community_name": "Lava Studio \u2014 Backend (media sidecar)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "run",
+      "source_file": "backend/README.md",
+      "source_location": "L7"
+    },
+    {
+      "id": "backend_readme_tests",
+      "label": "Tests",
+      "_origin": "ast",
+      "community": 54,
+      "community_name": "Lava Studio \u2014 Backend (media sidecar)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "tests",
+      "source_file": "backend/README.md",
+      "source_location": "L26"
+    },
+    {
+      "id": "backend_tests_test_health",
+      "label": "test_health.py",
+      "_origin": "ast",
+      "community": 55,
+      "community_name": "test_health.py",
+      "file_type": "code",
+      "norm_label": "test_health.py",
+      "source_file": "backend/tests/test_health.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "scripts_sidecar",
+      "label": "sidecar.sh",
+      "_origin": "ast",
+      "community": 56,
+      "community_name": "sidecar.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "norm_label": "sidecar.sh",
+      "source_file": "scripts/sidecar.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "scripts_sidecar_path",
+      "label": "PATH",
+      "_origin": "ast",
+      "community": 56,
+      "community_name": "sidecar.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "norm_label": "path",
+      "source_file": "scripts/sidecar.sh",
+      "source_location": "L9"
+    },
+    {
+      "id": "scripts_sidecar_sh__entry",
+      "label": "sidecar.sh script",
+      "_origin": "ast",
+      "community": 56,
+      "community_name": "sidecar.sh",
+      "file_type": "code",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "norm_label": "sidecar.sh script",
+      "source_file": "scripts/sidecar.sh",
+      "source_location": "L1"
+    },
+    {
+      "id": "pkg_lava_backend",
+      "label": "lava-backend",
+      "_origin": "ast",
+      "community": 57,
+      "community_name": "lava-backend",
+      "ecosystem": "python",
+      "file_type": "code",
+      "norm_label": "lava-backend",
+      "source_file": "backend/pyproject.toml",
+      "source_location": "L1",
+      "type": "package",
+      "version": "0.1.0"
     },
     {
       "id": "opencode_skills_code_review_and_quality_skill",
@@ -9753,26 +11157,37 @@
       "source_location": "L1"
     },
     {
-      "id": "frontend_src_services_ffmpeg_ffmpegservice",
-      "label": "ffmpegService",
+      "id": "frontend_src_services_ffmpeg_default_base_url",
+      "label": "DEFAULT_BASE_URL",
       "_origin": "ast",
       "community": 8,
       "community_name": "ffmpeg.ts",
       "file_type": "code",
-      "norm_label": "ffmpegservice",
+      "norm_label": "default_base_url",
       "source_file": "frontend/src/services/ffmpeg.ts",
-      "source_location": "L43"
+      "source_location": "L38"
     },
     {
-      "id": "frontend_src_services_ffmpeg_local",
-      "label": "local",
+      "id": "frontend_src_services_ffmpeg_test",
+      "label": "ffmpeg.test.ts",
       "_origin": "ast",
       "community": 8,
       "community_name": "ffmpeg.ts",
       "file_type": "code",
-      "norm_label": "local",
-      "source_file": "frontend/src/services/ffmpeg.ts",
-      "source_location": "L41"
+      "norm_label": "ffmpeg.test.ts",
+      "source_file": "frontend/src/services/ffmpeg.test.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "frontend_src_services_ffmpeg_test_renderinput",
+      "label": "renderInput",
+      "_origin": "ast",
+      "community": 8,
+      "community_name": "ffmpeg.ts",
+      "file_type": "code",
+      "norm_label": "renderinput",
+      "source_file": "frontend/src/services/ffmpeg.test.ts",
+      "source_location": "L16"
     },
     {
       "id": "scripts_fetch_ffmpeg",
@@ -9854,6 +11269,570 @@
   ],
   "links": [
     {
+      "source": "backend_src_lava_backend_config_config_load",
+      "target": "backend_src_lava_backend_config_payload",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/config.py",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_config_get_config",
+      "target": "backend_src_lava_backend_config_config_load",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/config.py",
+      "source_location": "L61",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_config_tool_versions",
+      "target": "backend_src_lava_backend_config_toolversions",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/config.py",
+      "source_location": "L78",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_errors_apierror_init",
+      "target": "backend_src_lava_backend_errors_apierror_init",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/errors.py",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_errors_error_response",
+      "target": "jsonresponse",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/errors.py",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main_api_error_handler",
+      "target": "backend_src_lava_backend_errors_error_response",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main_health",
+      "target": "backend_src_lava_backend_config_get_config",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L39",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main_health",
+      "target": "backend_src_lava_backend_config_tool_versions",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L40",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main_health",
+      "target": "backend_src_lava_backend_errors_error_response",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L42",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main_probe_endpoint",
+      "target": "backend_src_lava_backend_config_get_config",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L57",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main_probe_endpoint",
+      "target": "backend_src_lava_backend_media_probe",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L57",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main_render_endpoint",
+      "target": "backend_src_lava_backend_main_rendersettingsmodel",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L101",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main_render_endpoint",
+      "target": "backend_src_lava_backend_errors_apierror",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L103",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main_render_endpoint",
+      "target": "backend_src_lava_backend_config_get_config",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L115",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main_render_endpoint",
+      "target": "backend_src_lava_backend_media_render",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L135",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main_render_endpoint",
+      "target": "backend_src_lava_backend_main_clipmetadata",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L99",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main_serve_render",
+      "target": "backend_src_lava_backend_errors_apierror",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L162",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main_serve_render",
+      "target": "backend_src_lava_backend_config_get_config",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L163",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_check_binary",
+      "target": "backend_src_lava_backend_errors_apierror",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L78",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_probe",
+      "target": "backend_src_lava_backend_media_probestream",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L112",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_probe",
+      "target": "backend_src_lava_backend_media_proberesult",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L119",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_probe",
+      "target": "backend_src_lava_backend_media_float",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L121",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_probe",
+      "target": "backend_src_lava_backend_media_int",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L122",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_probe",
+      "target": "backend_src_lava_backend_media_py_path",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L86",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_probe",
+      "target": "backend_src_lava_backend_errors_apierror",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L88",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_probe",
+      "target": "backend_src_lava_backend_media_check_binary",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L90",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_probe",
+      "target": "backend_src_lava_backend_media_run",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L99",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_render",
+      "target": "backend_src_lava_backend_errors_apierror",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L158",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_render",
+      "target": "backend_src_lava_backend_media_check_binary",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L160",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_render",
+      "target": "backend_src_lava_backend_media_filter_complex",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L175",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_render",
+      "target": "backend_src_lava_backend_media_run",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L188",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_render",
+      "target": "backend_src_lava_backend_media_probe",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L192",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_render",
+      "target": "backend_src_lava_backend_media_renderresult",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L194",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_run",
+      "target": "backend_src_lava_backend_errors_apierror",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L69",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_conftest_clean_config",
+      "target": "backend_src_lava_backend_config_reset_config",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/conftest.py",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_probe_test_probe_reports_media_metadata",
+      "target": "backend_tests_test_probe_make_clip",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_probe.py",
+      "source_location": "L28",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render_test_render_file_clip_count_mismatch_is_400",
+      "target": "backend_tests_test_render_make_image",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L102",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render_test_render_file_clip_count_mismatch_is_400",
+      "target": "backend_tests_test_render_render_multipart",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L103",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render_test_render_invalid_duration_is_422",
+      "target": "backend_tests_test_render_make_image",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L115",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render_test_render_invalid_duration_is_422",
+      "target": "backend_tests_test_render_render_multipart",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L116",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render_test_render_serve_endpoint",
+      "target": "backend_tests_test_render_make_image",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L81",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render_test_render_serve_endpoint",
+      "target": "backend_tests_test_render_render_multipart",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L82",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render_test_render_single_image",
+      "target": "backend_tests_test_render_make_image",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L40",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render_test_render_single_image",
+      "target": "backend_tests_test_render_render_multipart",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L41",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render_test_render_single_image",
+      "target": "backend_tests_test_render_py_path",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L54",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render_test_render_two_images_concat",
+      "target": "backend_tests_test_render_make_image",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L60",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render_test_render_two_images_concat",
+      "target": "backend_tests_test_render_render_multipart",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L62",
+      "weight": 1.0
+    },
+    {
       "source": "frontend_src_app_app",
       "target": "frontend_src_store_editorstore_useeditorstore",
       "relation": "calls",
@@ -9863,6 +11842,18 @@
       "context": "call",
       "source_file": "frontend/src/App.tsx",
       "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_app_app",
+      "target": "frontend_src_services_ffmpeg_getffmpegprovider",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/App.tsx",
+      "source_location": "L15",
       "weight": 1.0
     },
     {
@@ -9963,6 +11954,18 @@
     },
     {
       "source": "frontend_src_components_previewpanel_previewpanel",
+      "target": "frontend_src_components_previewpanel_formattime",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/components/PreviewPanel.tsx",
+      "source_location": "L124",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_components_previewpanel_previewpanel",
       "target": "frontend_src_store_editorstore_useeditorstore",
       "relation": "calls",
       "_origin": "ast",
@@ -9970,7 +11973,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/components/PreviewPanel.tsx",
-      "source_location": "L15",
+      "source_location": "L17",
       "weight": 1.0
     },
     {
@@ -9982,7 +11985,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/components/PreviewPanel.tsx",
-      "source_location": "L23",
+      "source_location": "L28",
       "weight": 1.0
     },
     {
@@ -9994,19 +11997,31 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/components/PreviewPanel.tsx",
-      "source_location": "L38",
+      "source_location": "L43",
       "weight": 1.0
     },
     {
       "source": "frontend_src_components_previewpanel_previewpanel",
-      "target": "frontend_src_components_previewpanel_formattime",
+      "target": "frontend_src_services_ffmpeg_getffmpegprovider",
       "relation": "calls",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/components/PreviewPanel.tsx",
-      "source_location": "L64",
+      "source_location": "L53",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_components_previewpanel_previewpanel",
+      "target": "frontend_src_media_importer_getassetfile",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/components/PreviewPanel.tsx",
+      "source_location": "L65",
       "weight": 1.0
     },
     {
@@ -10162,7 +12177,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/media/importer.ts",
-      "source_location": "L40",
+      "source_location": "L50",
       "weight": 1.0
     },
     {
@@ -10174,7 +12189,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/media/importer.ts",
-      "source_location": "L44",
+      "source_location": "L54",
       "weight": 1.0
     },
     {
@@ -10186,7 +12201,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/media/importer.ts",
-      "source_location": "L44",
+      "source_location": "L54",
       "weight": 1.0
     },
     {
@@ -10198,7 +12213,79 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "frontend/src/media/importer.ts",
-      "source_location": "L47",
+      "source_location": "L57",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_media_importer_importfiles",
+      "target": "frontend_src_media_importer_registerassetfile",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/media/importer.ts",
+      "source_location": "L63",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_ffmpeg_detectprovider",
+      "target": "frontend_src_services_ffmpeg_backendbaseurl",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L140",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_ffmpeg_detectprovider",
+      "target": "frontend_src_services_ffmpeg_httpffmpegprovider",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L141",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_ffmpeg_detectprovider",
+      "target": "frontend_src_services_ffmpeg_httpffmpegprovider_version",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L143",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_ffmpeg_detectprovider",
+      "target": "frontend_src_services_ffmpeg_unavailableffmpegprovider",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L144",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_ffmpeg_getffmpegprovider",
+      "target": "frontend_src_services_ffmpeg_detectprovider",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L135",
       "weight": 1.0
     },
     {
@@ -10358,6 +12445,90 @@
       "weight": 1.0
     },
     {
+      "source": "backend_src_lava_backend_main_api_error_handler",
+      "target": "exception_handler",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "decorator",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L32",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main_health",
+      "target": "get",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "decorator",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L37",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main_probe_endpoint",
+      "target": "post",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "decorator",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L55",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main_render_endpoint",
+      "target": "post",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "decorator",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L91",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main_serve_render",
+      "target": "get",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "decorator",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L159",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_conftest_clean_config",
+      "target": "fixture",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "decorator",
+      "source_file": "backend/tests/conftest.py",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_conftest_client",
+      "target": "fixture",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "decorator",
+      "source_file": "backend/tests/conftest.py",
+      "source_location": "L19",
+      "weight": 1.0
+    },
+    {
       "source": "frontend_src_store_editorstore_editorbase",
       "target": "frontend_src_editor_types_clip",
       "relation": "references",
@@ -10391,6 +12562,174 @@
       "context": "field",
       "source_file": "frontend/src/store/editorStore.ts",
       "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main_render_endpoint",
+      "target": "uploadfile",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "generic_arg",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L92",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_filter_complex",
+      "target": "backend_src_lava_backend_media_renderclip",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "generic_arg",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L131",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_render",
+      "target": "backend_src_lava_backend_media_py_path",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "generic_arg",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L151",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_render",
+      "target": "backend_src_lava_backend_media_renderclip",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "generic_arg",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L151",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main",
+      "target": "backend_src_lava_backend_config_get_config",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main",
+      "target": "backend_src_lava_backend_config_tool_versions",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main",
+      "target": "backend_src_lava_backend_errors_apierror",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main",
+      "target": "backend_src_lava_backend_errors_error_response",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main",
+      "target": "backend_src_lava_backend_media_probe",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main",
+      "target": "backend_src_lava_backend_media_render",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main",
+      "target": "backend_src_lava_backend_media_renderclip",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main",
+      "target": "backend_src_lava_backend_media_rendersettings",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media",
+      "target": "backend_src_lava_backend_config_config",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media",
+      "target": "backend_src_lava_backend_errors_apierror",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L12",
       "weight": 1.0
     },
     {
@@ -10599,7 +12938,7 @@
     },
     {
       "source": "frontend_src_app",
-      "target": "frontend_src_services_ffmpeg_ffmpegservice",
+      "target": "frontend_src_services_ffmpeg_getffmpegprovider",
       "relation": "imports",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -10691,6 +13030,42 @@
       "context": "import",
       "source_file": "frontend/src/components/PreviewPanel.tsx",
       "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_components_previewpanel",
+      "target": "frontend_src_media_importer_getassetfile",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/components/PreviewPanel.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_components_previewpanel",
+      "target": "frontend_src_services_ffmpeg_getffmpegprovider",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/components/PreviewPanel.tsx",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_components_previewpanel",
+      "target": "frontend_src_services_ffmpeg_renderclipinput",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/components/PreviewPanel.tsx",
+      "source_location": "L5",
       "weight": 1.0
     },
     {
@@ -11030,6 +13405,54 @@
       "weight": 1.0
     },
     {
+      "source": "frontend_src_services_ffmpeg_test",
+      "target": "frontend_src_services_ffmpeg_detectprovider",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/services/ffmpeg.test.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_ffmpeg_test",
+      "target": "frontend_src_services_ffmpeg_httpffmpegprovider",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/services/ffmpeg.test.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_ffmpeg_test",
+      "target": "frontend_src_services_ffmpeg_renderinput",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/services/ffmpeg.test.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_ffmpeg_test",
+      "target": "frontend_src_services_ffmpeg_resetffmpegprovider",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/services/ffmpeg.test.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
       "source": "frontend_src_store_editorstore",
       "target": "frontend_src_editor_types_asset",
       "relation": "imports",
@@ -11099,6 +13522,114 @@
       "context": "import",
       "source_file": "frontend/src/store/editorStore.test.ts",
       "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main",
+      "target": "backend_src_lava_backend_config",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main",
+      "target": "backend_src_lava_backend_errors",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main",
+      "target": "backend_src_lava_backend_media",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media",
+      "target": "backend_src_lava_backend_config",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media",
+      "target": "backend_src_lava_backend_errors",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_conftest",
+      "target": "backend_src_lava_backend_config",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "backend/tests/conftest.py",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_conftest",
+      "target": "backend_src_lava_backend_main",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "backend/tests/conftest.py",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_probe",
+      "target": "backend_src_lava_backend_init",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "backend/tests/test_probe.py",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render",
+      "target": "backend_src_lava_backend_init",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L7",
       "weight": 1.0
     },
     {
@@ -11279,6 +13810,30 @@
       "context": "import",
       "source_file": "frontend/src/components/PreviewPanel.tsx",
       "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_components_previewpanel",
+      "target": "frontend_src_media_importer",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/components/PreviewPanel.tsx",
+      "source_location": "L4",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_components_previewpanel",
+      "target": "frontend_src_services_ffmpeg",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/components/PreviewPanel.tsx",
+      "source_location": "L5",
       "weight": 1.0
     },
     {
@@ -11502,6 +14057,30 @@
       "weight": 1.0
     },
     {
+      "source": "frontend_src_services_ffmpeg_test",
+      "target": "ref_vitest",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/services/ffmpeg.test.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_ffmpeg_test",
+      "target": "frontend_src_services_ffmpeg",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "frontend/src/services/ffmpeg.test.ts",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
       "source": "frontend_src_store_editorstore",
       "target": "ref_zustand",
       "relation": "imports_from",
@@ -11612,6 +14191,66 @@
       "weight": 1.0
     },
     {
+      "source": "backend_src_lava_backend_config_tool_versions",
+      "target": "backend_src_lava_backend_config_config",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "parameter_type",
+      "source_file": "backend/src/lava_backend/config.py",
+      "source_location": "L77",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main_api_error_handler",
+      "target": "request",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "parameter_type",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L33",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main_probe_endpoint",
+      "target": "backend_src_lava_backend_main_proberequest",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "parameter_type",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L56",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_filter_complex",
+      "target": "backend_src_lava_backend_media_rendersettings",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "parameter_type",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L131",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_render",
+      "target": "backend_src_lava_backend_media_rendersettings",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "parameter_type",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L151",
+      "weight": 1.0
+    },
+    {
       "source": "frontend_src_store_editorstore_editoractions_addasset",
       "target": "frontend_src_editor_types_asset",
       "relation": "references",
@@ -11624,6 +14263,54 @@
       "weight": 1.0
     },
     {
+      "source": "backend_src_lava_backend_config_get_config",
+      "target": "backend_src_lava_backend_config_config",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "return_type",
+      "source_file": "backend/src/lava_backend/config.py",
+      "source_location": "L58",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_check_binary",
+      "target": "backend_src_lava_backend_media_py_path",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "return_type",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L75",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render_make_image",
+      "target": "backend_tests_test_render_py_path",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "return_type",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_ffmpeg_httpffmpegprovider",
+      "target": "frontend_src_services_ffmpeg_ffmpegprovider",
+      "relation": "implements",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "type",
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L69",
+      "weight": 1.0
+    },
+    {
       "source": "frontend_src_services_ffmpeg_unavailableffmpegprovider",
       "target": "frontend_src_services_ffmpeg_ffmpegprovider",
       "relation": "implements",
@@ -11632,7 +14319,7 @@
       "confidence_score": 1.0,
       "context": "type",
       "source_file": "frontend/src/services/ffmpeg.ts",
-      "source_location": "L22",
+      "source_location": "L45",
       "weight": 1.0
     },
     {
@@ -12098,6 +14785,556 @@
       "weight": 1.0
     },
     {
+      "source": "backend_readme",
+      "target": "backend_readme_lava_studio_backend_media_sidecar",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/README.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_readme_lava_studio_backend_media_sidecar",
+      "target": "backend_readme_api",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/README.md",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_readme_lava_studio_backend_media_sidecar",
+      "target": "backend_readme_tests",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/README.md",
+      "source_location": "L26",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_readme_lava_studio_backend_media_sidecar",
+      "target": "backend_readme_layout",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/README.md",
+      "source_location": "L32",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_readme_lava_studio_backend_media_sidecar",
+      "target": "backend_readme_run",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/README.md",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_config",
+      "target": "backend_src_lava_backend_config_payload",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/config.py",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_config",
+      "target": "backend_src_lava_backend_config_config",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/config.py",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_config",
+      "target": "backend_src_lava_backend_config_get_config",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/config.py",
+      "source_location": "L58",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_config",
+      "target": "backend_src_lava_backend_config_reset_config",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/config.py",
+      "source_location": "L65",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_config",
+      "target": "backend_src_lava_backend_config_toolversions",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/config.py",
+      "source_location": "L71",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_config",
+      "target": "backend_src_lava_backend_config_tool_versions",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/config.py",
+      "source_location": "L77",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_errors",
+      "target": "backend_src_lava_backend_errors_error_response",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/errors.py",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_errors",
+      "target": "backend_src_lava_backend_errors_apierror",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/errors.py",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main",
+      "target": "backend_src_lava_backend_main_serve_render",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L160",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main",
+      "target": "backend_src_lava_backend_main_api_error_handler",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L33",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main",
+      "target": "backend_src_lava_backend_main_health",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L38",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main",
+      "target": "backend_src_lava_backend_main_proberequest",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L51",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main",
+      "target": "backend_src_lava_backend_main_probe_endpoint",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L56",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main",
+      "target": "backend_src_lava_backend_main_clipmetadata",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L79",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main",
+      "target": "backend_src_lava_backend_main_rendersettingsmodel",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L85",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main",
+      "target": "backend_src_lava_backend_main_render_endpoint",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L92",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media",
+      "target": "backend_src_lava_backend_media_filter_complex",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L131",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media",
+      "target": "backend_src_lava_backend_media_render",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L151",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media",
+      "target": "backend_src_lava_backend_media_renderclip",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media",
+      "target": "backend_src_lava_backend_media_float",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L208",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media",
+      "target": "backend_src_lava_backend_media_int",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L215",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media",
+      "target": "backend_src_lava_backend_media_rendersettings",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media",
+      "target": "backend_src_lava_backend_media_renderresult",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media",
+      "target": "backend_src_lava_backend_media_probestream",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L44",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media",
+      "target": "backend_src_lava_backend_media_proberesult",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L52",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media",
+      "target": "backend_src_lava_backend_media_run",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L60",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media",
+      "target": "backend_src_lava_backend_media_check_binary",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L75",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media",
+      "target": "backend_src_lava_backend_media_probe",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L85",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_conftest",
+      "target": "backend_tests_conftest_clean_config",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/conftest.py",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_conftest",
+      "target": "backend_tests_conftest_client",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/conftest.py",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_health",
+      "target": "backend_tests_test_health_test_health_reports_ffmpeg_versions",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_health.py",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_health",
+      "target": "backend_tests_test_health_test_health_fails_without_ffmpeg_binary",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_health.py",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_probe",
+      "target": "backend_tests_test_probe_test_probe_reports_media_metadata",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_probe.py",
+      "source_location": "L27",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_probe",
+      "target": "backend_tests_test_probe_test_probe_missing_path_is_400",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_probe.py",
+      "source_location": "L39",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_probe",
+      "target": "backend_tests_test_probe_test_probe_non_media_file_is_422",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_probe.py",
+      "source_location": "L45",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_probe",
+      "target": "backend_tests_test_probe_test_probe_error_shape_consistent",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_probe.py",
+      "source_location": "L53",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_probe",
+      "target": "backend_tests_test_probe_make_clip",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_probe.py",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render",
+      "target": "backend_tests_test_render_make_image",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render",
+      "target": "backend_tests_test_render_test_render_file_clip_count_mismatch_is_400",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L101",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render",
+      "target": "backend_tests_test_render_test_render_invalid_duration_is_422",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L114",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render",
+      "target": "backend_tests_test_render_render_multipart",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L28",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render",
+      "target": "backend_tests_test_render_test_render_single_image",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L39",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render",
+      "target": "backend_tests_test_render_test_render_two_images_concat",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L59",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render",
+      "target": "backend_tests_test_render_test_render_serve_endpoint",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L80",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render",
+      "target": "backend_tests_test_render_test_render_missing_job_404",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L95",
+      "weight": 1.0
+    },
+    {
       "source": "docs_architecture",
       "target": "docs_architecture_ai_video_studio_architecture",
       "relation": "contains",
@@ -12116,7 +15353,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ARCHITECTURE.md",
-      "source_location": "L117",
+      "source_location": "L118",
       "weight": 1.0
     },
     {
@@ -12127,7 +15364,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ARCHITECTURE.md",
-      "source_location": "L124",
+      "source_location": "L125",
       "weight": 1.0
     },
     {
@@ -12138,7 +15375,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ARCHITECTURE.md",
-      "source_location": "L143",
+      "source_location": "L144",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_architecture_ai_video_studio_architecture",
+      "target": "docs_architecture_9_media_sidecar_api",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/ARCHITECTURE.md",
+      "source_location": "L159",
       "weight": 1.0
     },
     {
@@ -12182,7 +15430,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ARCHITECTURE.md",
-      "source_location": "L57",
+      "source_location": "L58",
       "weight": 1.0
     },
     {
@@ -12193,7 +15441,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ARCHITECTURE.md",
-      "source_location": "L85",
+      "source_location": "L86",
       "weight": 1.0
     },
     {
@@ -12286,13 +15534,24 @@
     },
     {
       "source": "docs_decisions_ai_video_studio_decision_log",
+      "target": "docs_decisions_d_008_media_sidecar_http_api_fastapi",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/DECISIONS.md",
+      "source_location": "L70",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_decisions_ai_video_studio_decision_log",
       "target": "docs_decisions_index_of_decisions",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/DECISIONS.md",
-      "source_location": "L72",
+      "source_location": "L81",
       "weight": 1.0
     },
     {
@@ -12666,7 +15925,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L26",
+      "source_location": "L27",
       "weight": 1.0
     },
     {
@@ -12677,7 +15936,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L33",
+      "source_location": "L34",
       "weight": 1.0
     },
     {
@@ -12688,7 +15947,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L41",
+      "source_location": "L42",
       "weight": 1.0
     },
     {
@@ -12699,7 +15958,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L48",
+      "source_location": "L49",
       "weight": 1.0
     },
     {
@@ -12710,7 +15969,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L55",
+      "source_location": "L56",
       "weight": 1.0
     },
     {
@@ -12721,7 +15980,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L62",
+      "source_location": "L63",
       "weight": 1.0
     },
     {
@@ -12732,7 +15991,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L69",
+      "source_location": "L70",
       "weight": 1.0
     },
     {
@@ -12743,7 +16002,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L76",
+      "source_location": "L77",
       "weight": 1.0
     },
     {
@@ -12754,18 +16013,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ROADMAP.md",
-      "source_location": "L82",
-      "weight": 1.0
-    },
-    {
-      "source": "docs_roadmap_ai_video_studio_roadmap",
-      "target": "docs_roadmap_status_legend",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "docs/ROADMAP.md",
-      "source_location": "L89",
+      "source_location": "L83",
       "weight": 1.0
     },
     {
@@ -12777,6 +16025,17 @@
       "confidence_score": 1.0,
       "source_file": "docs/ROADMAP.md",
       "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_roadmap_ai_video_studio_roadmap",
+      "target": "docs_roadmap_status_legend",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/ROADMAP.md",
+      "source_location": "L90",
       "weight": 1.0
     },
     {
@@ -12803,6 +16062,17 @@
     },
     {
       "source": "docs_session_log_ai_video_studio_session_log",
+      "target": "docs_session_log_session_2026_09_12_session_3_media_sidecar_real_rendering",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L126",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_ai_video_studio_session_log",
       "target": "docs_session_log_session_2026_09_12_milestone_0_bootstrap_milestone_1_media_foundation",
       "relation": "contains",
       "_origin": "ast",
@@ -12810,6 +16080,17 @@
       "confidence_score": 1.0,
       "source_file": "docs/SESSION_LOG.md",
       "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_ai_video_studio_session_log",
+      "target": "docs_session_log_session_2026_09_12_session_2_continuity_system_commit_discipline",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L91",
       "weight": 1.0
     },
     {
@@ -12887,6 +16168,160 @@
       "confidence_score": 1.0,
       "source_file": "docs/SESSION_LOG.md",
       "source_location": "L85",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_session_2026_09_12_session_2_continuity_system_commit_discipline",
+      "target": "docs_session_log_how_106",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L106",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_session_2026_09_12_session_2_continuity_system_commit_discipline",
+      "target": "docs_session_log_decisions_111",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L111",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_session_2026_09_12_session_2_continuity_system_commit_discipline",
+      "target": "docs_session_log_verify_114",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L114",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_session_2026_09_12_session_2_continuity_system_commit_discipline",
+      "target": "docs_session_log_limitations_117",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L117",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_session_2026_09_12_session_2_continuity_system_commit_discipline",
+      "target": "docs_session_log_next_step_121",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L121",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_session_2026_09_12_session_2_continuity_system_commit_discipline",
+      "target": "docs_session_log_purpose_why_93",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L93",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_session_2026_09_12_session_2_continuity_system_commit_discipline",
+      "target": "docs_session_log_what_96",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L96",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_session_2026_09_12_session_3_media_sidecar_real_rendering",
+      "target": "docs_session_log_purpose_why_128",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L128",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_session_2026_09_12_session_3_media_sidecar_real_rendering",
+      "target": "docs_session_log_what_131",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L131",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_session_2026_09_12_session_3_media_sidecar_real_rendering",
+      "target": "docs_session_log_how_143",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L143",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_session_2026_09_12_session_3_media_sidecar_real_rendering",
+      "target": "docs_session_log_decisions_148",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L148",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_session_2026_09_12_session_3_media_sidecar_real_rendering",
+      "target": "docs_session_log_verify_151",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L151",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_session_2026_09_12_session_3_media_sidecar_real_rendering",
+      "target": "docs_session_log_limitations_154",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L154",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_session_2026_09_12_session_3_media_sidecar_real_rendering",
+      "target": "docs_session_log_next_step_160",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L160",
       "weight": 1.0
     },
     {
@@ -13436,7 +16871,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "frontend/src/components/PreviewPanel.tsx",
-      "source_location": "L14",
+      "source_location": "L16",
       "weight": 1.0
     },
     {
@@ -13447,7 +16882,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "frontend/src/components/PreviewPanel.tsx",
-      "source_location": "L5",
+      "source_location": "L7",
       "weight": 1.0
     },
     {
@@ -13749,35 +17184,13 @@
     },
     {
       "source": "frontend_src_media_importer",
-      "target": "frontend_src_media_importer_readmediameta",
+      "target": "frontend_src_media_importer_getassetfile",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "frontend/src/media/importer.ts",
-      "source_location": "L17",
-      "weight": 1.0
-    },
-    {
-      "source": "frontend_src_media_importer",
-      "target": "frontend_src_media_importer_kindof",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "frontend/src/media/importer.ts",
-      "source_location": "L27",
-      "weight": 1.0
-    },
-    {
-      "source": "frontend_src_media_importer",
-      "target": "frontend_src_media_importer_importfiles",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "frontend/src/media/importer.ts",
-      "source_location": "L33",
+      "source_location": "L10",
       "weight": 1.0
     },
     {
@@ -13788,12 +17201,67 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "frontend/src/media/importer.ts",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_media_importer",
+      "target": "frontend_src_media_importer_readmediameta",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/media/importer.ts",
+      "source_location": "L27",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_media_importer",
+      "target": "frontend_src_media_importer_kindof",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/media/importer.ts",
+      "source_location": "L37",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_media_importer",
+      "target": "frontend_src_media_importer_assetfiles",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/media/importer.ts",
       "source_location": "L4",
       "weight": 1.0
     },
     {
+      "source": "frontend_src_media_importer",
+      "target": "frontend_src_media_importer_importfiles",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/media/importer.ts",
+      "source_location": "L43",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_media_importer",
+      "target": "frontend_src_media_importer_registerassetfile",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/media/importer.ts",
+      "source_location": "L6",
+      "weight": 1.0
+    },
+    {
       "source": "frontend_src_services_ffmpeg",
-      "target": "frontend_src_services_ffmpeg_ffmpegprobe",
+      "target": "frontend_src_services_ffmpeg_renderclipinput",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -13804,7 +17272,7 @@
     },
     {
       "source": "frontend_src_services_ffmpeg",
-      "target": "frontend_src_services_ffmpeg_ffmpegprovider",
+      "target": "frontend_src_services_ffmpeg_renderresult",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -13815,35 +17283,134 @@
     },
     {
       "source": "frontend_src_services_ffmpeg",
+      "target": "frontend_src_services_ffmpeg_getffmpegprovider",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L134",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_ffmpeg",
+      "target": "frontend_src_services_ffmpeg_detectprovider",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L139",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_ffmpeg",
+      "target": "frontend_src_services_ffmpeg_resetffmpegprovider",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L150",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_ffmpeg",
+      "target": "frontend_src_services_ffmpeg_renderinput",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_ffmpeg",
+      "target": "frontend_src_services_ffmpeg_ffmpegprovider",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L29",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_ffmpeg",
+      "target": "frontend_src_services_ffmpeg_default_base_url",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L38",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_ffmpeg",
+      "target": "frontend_src_services_ffmpeg_backendbaseurl",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L40",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_ffmpeg",
       "target": "frontend_src_services_ffmpeg_unavailableffmpegprovider",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "frontend/src/services/ffmpeg.ts",
-      "source_location": "L22",
+      "source_location": "L45",
       "weight": 1.0
     },
     {
       "source": "frontend_src_services_ffmpeg",
-      "target": "frontend_src_services_ffmpeg_local",
+      "target": "frontend_src_services_ffmpeg_httpffmpegprovider",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "frontend/src/services/ffmpeg.ts",
-      "source_location": "L41",
+      "source_location": "L69",
       "weight": 1.0
     },
     {
       "source": "frontend_src_services_ffmpeg",
-      "target": "frontend_src_services_ffmpeg_ffmpegservice",
+      "target": "frontend_src_services_ffmpeg_rendersettings",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "frontend/src/services/ffmpeg.ts",
-      "source_location": "L43",
+      "source_location": "L7",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_ffmpeg_test",
+      "target": "frontend_src_services_ffmpeg_test_renderinput",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/services/ffmpeg.test.ts",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_ffmpeg_test",
+      "target": "frontend_src_services_ffmpeg_test_jsonresponse",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/services/ffmpeg.test.ts",
+      "source_location": "L9",
       "weight": 1.0
     },
     {
@@ -19266,7 +22833,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L24",
+      "source_location": "L26",
       "weight": 1.0
     },
     {
@@ -19277,7 +22844,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L41",
+      "source_location": "L43",
       "weight": 1.0
     },
     {
@@ -19288,7 +22855,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L45",
+      "source_location": "L47",
       "weight": 1.0
     },
     {
@@ -19410,6 +22977,17 @@
       "confidence_score": 1.0,
       "source_file": "scripts/fetch-ffmpeg.mjs",
       "source_location": "L94",
+      "weight": 1.0
+    },
+    {
+      "source": "scripts_sidecar",
+      "target": "scripts_sidecar_sh__entry",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "scripts/sidecar.sh",
+      "source_location": "L1",
       "weight": 1.0
     },
     {
@@ -19633,6 +23211,83 @@
       "weight": 1.0
     },
     {
+      "source": "scripts_sidecar",
+      "target": "scripts_sidecar_path",
+      "relation": "defines",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "scripts/sidecar.sh",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_errors_apierror",
+      "target": "exception",
+      "relation": "inherits",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/errors.py",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main_clipmetadata",
+      "target": "basemodel",
+      "relation": "inherits",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L79",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main_proberequest",
+      "target": "basemodel",
+      "relation": "inherits",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L51",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main_rendersettingsmodel",
+      "target": "basemodel",
+      "relation": "inherits",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L85",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_config_config",
+      "target": "backend_src_lava_backend_config_config_load",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/config.py",
+      "source_location": "L33",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_errors_apierror",
+      "target": "backend_src_lava_backend_errors_apierror_init",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/errors.py",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
       "source": "frontend_src_services_ffmpeg_ffmpegprovider",
       "target": "frontend_src_services_ffmpeg_ffmpegprovider_version",
       "relation": "method",
@@ -19640,18 +23295,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "frontend/src/services/ffmpeg.ts",
-      "source_location": "L17",
-      "weight": 1.0
-    },
-    {
-      "source": "frontend_src_services_ffmpeg_ffmpegprovider",
-      "target": "frontend_src_services_ffmpeg_ffmpegprovider_probe",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "frontend/src/services/ffmpeg.ts",
-      "source_location": "L18",
+      "source_location": "L33",
       "weight": 1.0
     },
     {
@@ -19662,7 +23306,73 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "frontend/src/services/ffmpeg.ts",
-      "source_location": "L19",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_ffmpeg_ffmpegprovider",
+      "target": "frontend_src_services_ffmpeg_ffmpegprovider_fileurl",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L35",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_ffmpeg_httpffmpegprovider",
+      "target": "frontend_src_services_ffmpeg_httpffmpegprovider_fileurl",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L126",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_ffmpeg_httpffmpegprovider",
+      "target": "frontend_src_services_ffmpeg_httpffmpegprovider_constructor",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L74",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_ffmpeg_httpffmpegprovider",
+      "target": "frontend_src_services_ffmpeg_httpffmpegprovider_version",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L78",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_ffmpeg_httpffmpegprovider",
+      "target": "frontend_src_services_ffmpeg_httpffmpegprovider_render",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L91",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_ffmpeg_unavailableffmpegprovider",
+      "target": "frontend_src_services_ffmpeg_unavailableffmpegprovider_constructor",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L50",
       "weight": 1.0
     },
     {
@@ -19673,18 +23383,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "frontend/src/services/ffmpeg.ts",
-      "source_location": "L28",
-      "weight": 1.0
-    },
-    {
-      "source": "frontend_src_services_ffmpeg_unavailableffmpegprovider",
-      "target": "frontend_src_services_ffmpeg_unavailableffmpegprovider_probe",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "frontend/src/services/ffmpeg.ts",
-      "source_location": "L32",
+      "source_location": "L56",
       "weight": 1.0
     },
     {
@@ -19695,7 +23394,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "frontend/src/services/ffmpeg.ts",
-      "source_location": "L36",
+      "source_location": "L60",
+      "weight": 1.0
+    },
+    {
+      "source": "frontend_src_services_ffmpeg_unavailableffmpegprovider",
+      "target": "frontend_src_services_ffmpeg_unavailableffmpegprovider_fileurl",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L64",
       "weight": 1.0
     },
     {
@@ -19853,6 +23563,61 @@
       "weight": 1.0
     },
     {
+      "source": "backend_src_lava_backend_config_rationale_1",
+      "target": "backend_src_lava_backend_config",
+      "relation": "rationale_for",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/config.py",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_errors_rationale_1",
+      "target": "backend_src_lava_backend_errors",
+      "relation": "rationale_for",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/errors.py",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_init_rationale_1",
+      "target": "backend_src_lava_backend_init",
+      "relation": "rationale_for",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/__init__.py",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main_rationale_1",
+      "target": "backend_src_lava_backend_main",
+      "relation": "rationale_for",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_rationale_1",
+      "target": "backend_src_lava_backend_media",
+      "relation": "rationale_for",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
       "source": "opencode_plugins_graphify_rationale_4",
       "target": "opencode_plugins_graphify",
       "relation": "rationale_for",
@@ -19871,7 +23636,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/ARCHITECTURE.md",
-      "source_location": "L145",
+      "source_location": "L146",
       "weight": 1.0
     },
     {
@@ -19959,7 +23724,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L22",
+      "source_location": "L24",
       "weight": 1.0
     },
     {
@@ -19970,7 +23735,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L28",
+      "source_location": "L30",
       "weight": 1.0
     },
     {
@@ -19981,7 +23746,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L29",
+      "source_location": "L31",
       "weight": 1.0
     },
     {
@@ -19992,7 +23757,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L30",
+      "source_location": "L32",
       "weight": 1.0
     },
     {
@@ -20003,7 +23768,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L31",
+      "source_location": "L33",
       "weight": 1.0
     },
     {
@@ -20014,7 +23779,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L32",
+      "source_location": "L34",
       "weight": 1.0
     },
     {
@@ -20025,7 +23790,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L34",
+      "source_location": "L36",
       "weight": 1.0
     },
     {
@@ -20036,7 +23801,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L35",
+      "source_location": "L37",
       "weight": 1.0
     },
     {
@@ -20047,10 +23812,80 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "README.md",
-      "source_location": "L43",
+      "source_location": "L45",
       "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main_api_error_handler",
+      "target": "backend_src_lava_backend_errors_apierror",
+      "relation": "uses",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "parameter_type",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L33",
+      "weight": 0.8
+    },
+    {
+      "source": "backend_src_lava_backend_media_check_binary",
+      "target": "backend_src_lava_backend_config_config",
+      "relation": "uses",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "parameter_type",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L75",
+      "weight": 0.8
+    },
+    {
+      "source": "backend_src_lava_backend_media_probe",
+      "target": "backend_src_lava_backend_config_config",
+      "relation": "uses",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "parameter_type",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L85",
+      "weight": 0.8
+    },
+    {
+      "source": "backend_src_lava_backend_media_render",
+      "target": "backend_src_lava_backend_config_config",
+      "relation": "uses",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "context": "parameter_type",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L152",
+      "weight": 0.8
+    },
+    {
+      "source": "backend_src_lava_backend_main_render_endpoint",
+      "target": "backend_src_lava_backend_media_renderclip",
+      "relation": "uses",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L138",
+      "weight": 0.8
+    },
+    {
+      "source": "backend_src_lava_backend_main_render_endpoint",
+      "target": "backend_src_lava_backend_media_rendersettings",
+      "relation": "uses",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L139",
+      "weight": 0.8
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "59aecff11c7c6039e1cd626013386c25f9426b17"
+  "built_at_commit": "d9531e6e0c87c297113e2bed53225d1f6e199ef7"
 }

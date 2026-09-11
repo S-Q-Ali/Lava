@@ -24,10 +24,10 @@
     "semantic_hash": "b219655317b3b81afb4288e528bc7a05"
   },
   "frontend/src/App.tsx": {
-    "mtime": 1789154145.6150422,
-    "seen": 1789154456.4948952,
-    "ast_hash": "acc5880f158082879ffed3dd8d6ad580",
-    "semantic_hash": "acc5880f158082879ffed3dd8d6ad580"
+    "mtime": 1789156397.650514,
+    "seen": 1789156820.2819872,
+    "ast_hash": "ffb1d6f2d7155141667cc92bbb4cfd0f",
+    "semantic_hash": ""
   },
   "frontend/src/components/InspectorPanel.tsx": {
     "mtime": 1789154083.9395092,
@@ -42,10 +42,10 @@
     "semantic_hash": "2d0c59cdca2006e6b8745dfd1f121314"
   },
   "frontend/src/components/PreviewPanel.tsx": {
-    "mtime": 1789154100.2773468,
-    "seen": 1789154456.494899,
-    "ast_hash": "b884f47574b00fa9011e30091862e0cb",
-    "semantic_hash": "b884f47574b00fa9011e30091862e0cb"
+    "mtime": 1789156437.3673537,
+    "seen": 1789156820.281992,
+    "ast_hash": "382678be00cb9a2224154aa21b22f918",
+    "semantic_hash": ""
   },
   "frontend/src/components/timeline/ClipBlock.tsx": {
     "mtime": 1789154404.94137,
@@ -96,16 +96,16 @@
     "semantic_hash": "787e5a07efeb2bf6209d5937195f2f68"
   },
   "frontend/src/media/importer.ts": {
-    "mtime": 1789154114.7315738,
-    "seen": 1789154456.494945,
-    "ast_hash": "490a95f729d8372af4e64cbf34dbf01f",
-    "semantic_hash": "490a95f729d8372af4e64cbf34dbf01f"
+    "mtime": 1789156359.3670406,
+    "seen": 1789156820.2820039,
+    "ast_hash": "d874dd287e3b2dab043960aa25d5ce14",
+    "semantic_hash": ""
   },
   "frontend/src/services/ffmpeg.ts": {
-    "mtime": 1789154118.8916063,
-    "seen": 1789154456.494947,
-    "ast_hash": "0aa5bd485132c7586d4a10b6d2f3505b",
-    "semantic_hash": "0aa5bd485132c7586d4a10b6d2f3505b"
+    "mtime": 1789156377.5283372,
+    "seen": 1789156820.282007,
+    "ast_hash": "c8daaab50731eece81c9934e99d060d5",
+    "semantic_hash": ""
   },
   "frontend/src/store/editorStore.test.ts": {
     "mtime": 1789154216.5513608,
@@ -342,27 +342,27 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1789155422.0043623,
-    "seen": 1789155582.408637,
-    "ast_hash": "129d45abc47f8cea2109b5db34b0dbf2",
+    "mtime": 1789156787.7647502,
+    "seen": 1789156820.282064,
+    "ast_hash": "d5d8e2013e0d5e877603de272d7820a4",
     "semantic_hash": ""
   },
   "docs/ARCHITECTURE.md": {
-    "mtime": 1789155380.5552905,
-    "seen": 1789155582.408638,
-    "ast_hash": "40bb7363c811c29f1ace986f20f91dbb",
+    "mtime": 1789156750.9652188,
+    "seen": 1789156820.282067,
+    "ast_hash": "37ca215563fe9e91e61d4f8c335c1e49",
     "semantic_hash": ""
   },
   "docs/DECISIONS.md": {
-    "mtime": 1789155354.4865026,
-    "seen": 1789155582.408639,
-    "ast_hash": "b3a50386a849395ef995998eae85f9f6",
+    "mtime": 1789156781.8688817,
+    "seen": 1789156820.282068,
+    "ast_hash": "f5fb54fa12f609aee69fc9a8948b999d",
     "semantic_hash": ""
   },
   "docs/FEATURES.md": {
-    "mtime": 1789155390.653421,
-    "seen": 1789155582.40864,
-    "ast_hash": "65bed24059f2b4b866af7066037a7f25",
+    "mtime": 1789156768.6921492,
+    "seen": 1789156820.282069,
+    "ast_hash": "a1077e5e2b08b2638215714d30208f1e",
     "semantic_hash": ""
   },
   "docs/PRODUCT_SPEC.md": {
@@ -372,15 +372,15 @@
     "semantic_hash": ""
   },
   "docs/ROADMAP.md": {
-    "mtime": 1789155364.4927037,
-    "seen": 1789155582.408643,
-    "ast_hash": "7e142983cac8fa96ef07f27e206f9145",
+    "mtime": 1789156764.8579428,
+    "seen": 1789156820.282072,
+    "ast_hash": "73dcddde3b311e74690266d817615824",
     "semantic_hash": ""
   },
   "docs/SESSION_LOG.md": {
-    "mtime": 1789155332.878121,
-    "seen": 1789155582.4086442,
-    "ast_hash": "cfb70f3c089a593d35f63bbb0f760c1a",
+    "mtime": 1789156807.4517157,
+    "seen": 1789156820.282073,
+    "ast_hash": "8df44ccf1016b07effad12a969648582",
     "semantic_hash": ""
   },
   "docs/TEST_PLAN.md": {
@@ -411,6 +411,84 @@
     "mtime": 1789153855.6805975,
     "seen": 1789155582.40865,
     "ast_hash": "7e840862161341271697daa99a40d76b",
+    "semantic_hash": ""
+  },
+  "backend/pyproject.toml": {
+    "mtime": 1789156637.00394,
+    "seen": 1789156820.281968,
+    "ast_hash": "baa190aff577a4d4f2d618521882a1f8",
+    "semantic_hash": ""
+  },
+  "backend/src/lava_backend/__init__.py": {
+    "mtime": 1789155978.6132898,
+    "seen": 1789156820.281971,
+    "ast_hash": "e066e14beb2ab3d8870dee46b75b4301",
+    "semantic_hash": ""
+  },
+  "backend/src/lava_backend/config.py": {
+    "mtime": 1789155964.925497,
+    "seen": 1789156820.281972,
+    "ast_hash": "979247f9e14e85c1e8249f29321d4b32",
+    "semantic_hash": ""
+  },
+  "backend/src/lava_backend/errors.py": {
+    "mtime": 1789155972.11574,
+    "seen": 1789156820.281974,
+    "ast_hash": "d0d84f595e8824ef9b5625cccbedd6a1",
+    "semantic_hash": ""
+  },
+  "backend/src/lava_backend/main.py": {
+    "mtime": 1789156312.189958,
+    "seen": 1789156820.281975,
+    "ast_hash": "6bcbd86161c3cbd8f8d4a9858656f61b",
+    "semantic_hash": ""
+  },
+  "backend/src/lava_backend/media.py": {
+    "mtime": 1789156218.1295168,
+    "seen": 1789156820.281976,
+    "ast_hash": "311db682e7d628db340780d0a0c9b668",
+    "semantic_hash": ""
+  },
+  "backend/tests/conftest.py": {
+    "mtime": 1789155982.550739,
+    "seen": 1789156820.2819772,
+    "ast_hash": "65122728f37c5ae85272f1176e3096d7",
+    "semantic_hash": ""
+  },
+  "backend/tests/test_health.py": {
+    "mtime": 1789156034.8245602,
+    "seen": 1789156820.2819781,
+    "ast_hash": "7c0a31706039763ebaee4d80876dd107",
+    "semantic_hash": ""
+  },
+  "backend/tests/test_probe.py": {
+    "mtime": 1789156148.429662,
+    "seen": 1789156820.2819788,
+    "ast_hash": "c4c8cb8cc0bde55c2be19fbe0a46a817",
+    "semantic_hash": ""
+  },
+  "backend/tests/test_render.py": {
+    "mtime": 1789156289.4651108,
+    "seen": 1789156820.2819798,
+    "ast_hash": "c06653713a488538ac4c22ba6d0a86a8",
+    "semantic_hash": ""
+  },
+  "frontend/src/services/ffmpeg.test.ts": {
+    "mtime": 1789156400.177252,
+    "seen": 1789156820.282006,
+    "ast_hash": "f562cf14a120f42c44332ed1fcc4b8cf",
+    "semantic_hash": ""
+  },
+  "scripts/sidecar.sh": {
+    "mtime": 1789156702.681563,
+    "seen": 1789156820.2820191,
+    "ast_hash": "e356e9258b93c81dd14b567dabd46f82",
+    "semantic_hash": ""
+  },
+  "backend/README.md": {
+    "mtime": 1789156713.8962352,
+    "seen": 1789156820.282065,
+    "ast_hash": "a6c70e283c5e51e781faff272efb0432",
     "semantic_hash": ""
   }
 }
