@@ -85,3 +85,38 @@ The repo was documentation-first (original code removed from the Lava clone). Th
 ### Next step
 - Choose next milestone slice: **(a)** `backend/` sidecar — FFmpeg probe/render over a local service (unblocks render, probe, project save/load), or **(b)** Milestone 2 voice analysis (ASR + timestamps + pauses + segmentation). Either continues from the working editor shell.
 - Ongoing: keep this log + DECISIONS.md updated; commit per increment; run `graphify update .` after code changes.
+
+---
+
+## Session 2026-09-12 — Session 2: continuity system + commit discipline
+
+### Purpose (WHY)
+User asked for a durable session-history file tracking WHAT/HOW/WHY, the same factors baked into the project documentation, and maximized small commits. This session built the cross-session continuity system and turned the working tree into 9 atomic commits.
+
+### WHAT
+- **`docs/SESSION_LOG.md`** — created append-only session log with a template and the full entry for Session 1; this entry documents Session 2.
+- **`docs/DECISIONS.md`** — created lightweight ADR log (WHAT/WHY/HOW/Alternatives/Status) with decisions D-001…D-007 + index table.
+- **WHAT/WHY/HOW orientation** — added a "How to read this doc" block to PRODUCT_SPEC, ARCHITECTURE, FEATURES, UI_SPEC, TEST_PLAN, ROADMAP, plus missing rationale (ARCHITECTURE §8 design-decisions table referencing DECISIONS.md; FEATURES pillar intents; tech table corrected: frontend = Vite + React web-first, Tauri at M10).
+- **`AGENTS.md`** — added SESSION_LOG + DECISIONS to the docs index and a "Session continuity" policy (append to SESSION_LOG at end of every session; commit small and often; Graphify tracks code state, the log tracks intent/history).
+- **`README.md`** — docs list now includes SESSION_LOG and DECISIONS.
+- **`.gitignore`** — ignored `.opencode/node_modules`, `graphify-out/cache/`, and fixed embedded-repo handling for `tools/agent-skills/`/`tools/anthropic-skills/` (whole-dir ignore prevents gitlink accidents).
+- **Git identity** — repo-local `S-Q-Ali <syedqasim963@gmail.com>`.
+- **9 atomic commits** (see `git log`): docs specs → module skeleton → opencode skills/plugin → graphify graph → ffmpeg fetch script → frontend feat → frontend test → vendor-dir ignore → graph refresh.
+
+### HOW
+- Skeleton commits preserve `.gitkeep` placeholders (git tracks files, not dirs).
+- Vendor skill directories are embedded git repos — a `dir/*` ignore still lets git add them as gitlinks on explicit `git add <dir>`; the whole-directory `tools/agent-skills/` ignore is the correct pattern.
+- Kept frontend implementation and test files in separate commits for auditability.
+
+### Decisions
+- No new architecture decisions; D-007 (session + decision logs) confirmed as active policy.
+
+### Verify
+- `git status` clean · 9 commits on `main` · frontend build ok · oxlint 0/0 · tests 17/17 pass · `graphify update .` refreshed the graph.
+
+### Limitations
+- SESSION_LOG lives at `docs/` — future sessions find it via AGENTS.md, not auto-loaded.
+- Semantic Graphify pass for docs still deferred (no LLM API key).
+
+### Next step
+- Resume M1: `backend/` FFmpeg sidecar (probe/render, project save/load) or M2 voice analysis. Both build on the committed editor shell; see Session 1 above, `DECISIONS.md`, and `graphify query` for context.
