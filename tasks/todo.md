@@ -28,6 +28,12 @@ Checkpoints:
 - [ ] Slice 3: `beat-segmentation` — transcript → visual beats (pure TS, TDD)
 - [ ] Slice 4: `semantic-matching` — match client + store autoMatch (one undo step) + clip.beatId persistence (frontend)
 - [ ] Slice 5: `matching-ui` — MatchPanel Auto-match + confidence + alternatives replace + states + CSS
+
+## M3 remainder: timing fit + manual timing override (slice-set B, closed …) — SPEC-timing-pacing.md, tasks/plan-timing.md
+- [ ] Slice 1: `timing-core` — pure timing math (`editor/timing.ts`) + tests
+- [ ] Slice 2: `store-override` — rerun preserves manual timing, `kept` count, one undo step
+- [ ] Slice 3: `panel-note` — kept-overrides line in MatchPanel
+- [ ] Slice 4: docs (D-014, ROADMAP, SESSION_LOG 7) + graphify + regression + push
 - [ ] Slice 6: docs (D-012/D-013, ROADMAP M3, SESSION_LOG 6) + graphify + review + push
 
 Checkpoints:
