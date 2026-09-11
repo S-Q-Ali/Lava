@@ -6,9 +6,11 @@ import ClipBlock from './ClipBlock'
 export default function TrackRow({
   track,
   clips,
+  durationByAsset,
 }: {
   track: Track
   clips: Clip[]
+  durationByAsset: Record<string, number | undefined>
 }) {
   const selectedClipId = useEditorStore((s) => s.selectedClipId)
   const setPlayhead = useEditorStore((s) => s.setPlayhead)
@@ -26,7 +28,12 @@ export default function TrackRow({
       }}
     >
       {sorted.map((clip) => (
-        <ClipBlock key={clip.id} clip={clip} selected={clip.id === selectedClipId} />
+        <ClipBlock
+          key={clip.id}
+          clip={clip}
+          selected={clip.id === selectedClipId}
+          maxDuration={durationByAsset[clip.assetId]}
+        />
       ))}
     </div>
   )

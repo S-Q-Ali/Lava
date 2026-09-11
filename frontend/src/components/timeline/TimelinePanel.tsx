@@ -6,8 +6,14 @@ import TrackRow from './TrackRow'
 export default function TimelinePanel() {
   const tracks = useEditorStore((s) => s.tracks)
   const clips = useEditorStore((s) => s.clips)
+  const assets = useEditorStore((s) => s.assets)
   const playhead = useEditorStore((s) => s.playhead)
   const duration = Math.max(projectDuration(clips), playhead, 10)
+
+  const durationByAsset: Record<string, number | undefined> = {}
+  for (const asset of assets) {
+    durationByAsset[asset.id] = asset.meta.duration
+  }
 
   const ticks = []
   for (let t = 0; t <= duration; t += 1) {
@@ -36,7 +42,12 @@ export default function TimelinePanel() {
         </div>
         <div className="timeline-lanes">
           {tracks.map((t) => (
-            <TrackRow key={t.id} track={t} clips={tracks.length ? clips.filter((c) => c.trackId === t.id) : []} />
+            <TrackRow
+              key={t.id}
+              track={t}
+              clips={tracks.length ? clips.filter((c) => c.trackId === t.id) : []}
+              durationByAsset={durationByAsset}
+            />
           ))}
           <div
             className="playhead"
