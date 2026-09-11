@@ -53,18 +53,17 @@ def stub_feed(embedder):
     return embedder.session.last_feed
 
 
-def test_preprocess_image_returns_normalized_chw_batch():
+def test_preprocess_image_returns_normalized_chw():
     image = Image.new("RGB", (32, 64), (128, 128, 128))
     tensor = preprocess_image(image)
-    assert tensor.shape == (1, 3, 224, 224)
+    assert tensor.shape == (3, 224, 224)
     assert tensor.dtype == np.float32
-    assert tensor[0].shape[0] == 3
 
 
-def test_preprocess_center_crops_long_short_edge_is_square():
+def test_preprocess_center_crops_to_square():
     image = Image.new("RGB", (64, 224), (255, 0, 0))
     tensor = preprocess_image(image)
-    assert tensor.shape[2] == 224 and tensor.shape[3] == 224
+    assert tensor.shape[1] == 224 and tensor.shape[2] == 224
 
 
 def test_preprocess_normalizes_pixel_range():

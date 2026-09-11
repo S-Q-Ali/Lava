@@ -13,8 +13,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
+from .clip import ClipEmbedder
 from .config import get_config, tool_versions
 from .errors import ApiError, error_response
+from .matching import Matcher, router as matching_router
 from .media import RenderClip, RenderSettings, probe, render
 from .transcribe import router as transcribe_router
 from .transcribers import WhisperTranscriber
@@ -24,6 +26,7 @@ app = FastAPI(title="Lava Studio Media Sidecar", version="0.1.0")
 app.state.tmp_dir = get_config().cache_dir / "tmp"
 app.state.tmp_dir.mkdir(parents=True, exist_ok=True)
 app.state.transcriber = WhisperTranscriber(download_root=get_config().models_dir)
+app.state.matcher = Matcher(ClipEmbedder(model_dir=get_config().clip_dir))
 
 app.add_middleware(
     CORSMiddleware,
@@ -34,6 +37,7 @@ app.add_middleware(
 
 API_V1 = "/api"
 app.include_router(transcribe_router, prefix=f"{API_V1}")
+app.include_router(matching_router, prefix=f"{API_V1}")
 
 
 @app.exception_handler(ApiError)

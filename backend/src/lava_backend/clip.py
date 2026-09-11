@@ -32,8 +32,7 @@ def preprocess_image(image: Image.Image, size: int = CLIP_SIZE) -> np.ndarray:
     cropped = resized.crop((left, top, left + size, top + size))
     array = np.asarray(cropped, dtype=np.float32) / 255.0
     array = (array - CLIP_MEAN) / CLIP_STD
-    tensor = np.transpose(array, (2, 0, 1))[None, ...]
-    return np.ascontiguousarray(tensor, dtype=np.float32)
+    return np.ascontiguousarray(np.transpose(array, (2, 0, 1)), dtype=np.float32)
 
 
 def tokenize_text(tokenizer, text: str, max_length: int = CLIP_MAX_SEQ) -> tuple[np.ndarray, np.ndarray]:
