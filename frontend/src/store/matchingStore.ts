@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import type { Beat } from '../editor/beats'
-import { matchImages, MatchError } from '../services/match'
+import { matchImages, MatchError, type MatchBeatResult } from '../services/match'
 import { getAssetFile } from '../media/importer'
 import { useEditorStore, type MatchClipInput } from './editorStore'
 
@@ -13,6 +13,7 @@ export type MatchStatus =
 interface MatchingStore {
   status: MatchStatus
   lastMatchClipIds: string[]
+  results: MatchBeatResult[]
   match(assetIds: string[], beats: Beat[]): Promise<void>
   clear(): void
 }
@@ -51,6 +52,7 @@ function inputsFrom(
 export const useMatchingStore = create<MatchingStore>()((set, get) => ({
   status: { phase: 'idle' },
   lastMatchClipIds: [],
+  results: [],
   match: async (assetIds, beats) => {
     if (get().status.phase === 'analyzing') return
     const track = imageTrackId()
@@ -82,7 +84,11 @@ export const useMatchingStore = create<MatchingStore>()((set, get) => ({
         .getState()
         .clips.filter((clip) => clip.beatId !== undefined && running.has(clip.beatId))
         .map((clip) => clip.id)
-      set({ status: { phase: 'success', count: inputs.length }, lastMatchClipIds: nextIds })
+      set({
+        status: { phase: 'success', count: inputs.length },
+        lastMatchClipIds: nextIds,
+        results: response.beats,
+      })
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Image matching failed.'
       set({ status: { phase: 'error', error: message } })

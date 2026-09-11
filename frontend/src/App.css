@@ -329,6 +329,52 @@
   color: var(--text-dim);
 }
 
+/* Image matching (semantic auto-place) */
+.match-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 6px;
+  border-top: 1px solid var(--border);
+  margin-top: 8px;
+}
+
+.match-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.match-name {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.match-confidence {
+  color: var(--track-image);
+  font-variant-numeric: tabular-nums;
+  min-width: 38px;
+  text-align: right;
+}
+
+.match-row select {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 12px;
+  max-width: 168px;
+  padding: 2px 4px;
+}
+
+.match-row select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
 /* Timeline */
 .timeline-panel {
   display: flex;
