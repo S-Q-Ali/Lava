@@ -16,8 +16,14 @@ from pydantic import BaseModel
 from .config import get_config, tool_versions
 from .errors import ApiError, error_response
 from .media import RenderClip, RenderSettings, probe, render
+from .transcribe import router as transcribe_router
+from .transcribers import FakeTranscriber
 
 app = FastAPI(title="Lava Studio Media Sidecar", version="0.1.0")
+
+app.state.tmp_dir = get_config().cache_dir / "tmp"
+app.state.tmp_dir.mkdir(parents=True, exist_ok=True)
+app.state.transcriber = FakeTranscriber()
 
 app.add_middleware(
     CORSMiddleware,
@@ -27,6 +33,7 @@ app.add_middleware(
 )
 
 API_V1 = "/api"
+app.include_router(transcribe_router, prefix=f"{API_V1}")
 
 
 @app.exception_handler(ApiError)

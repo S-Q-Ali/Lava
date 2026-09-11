@@ -25,6 +25,7 @@ class Config:
     ffprobe_bin: Path
     host: str
     port: int
+    cache_dir: Path
     uploads_dir: Path
     renders_dir: Path
     max_renders: int = 12
@@ -47,6 +48,7 @@ class Config:
             ffprobe_bin=root / str(ffmpeg_rel) / "ffprobe",
             host=host,
             port=port,
+            cache_dir=cache,
             uploads_dir=cache / "uploads",
             renders_dir=cache / "renders",
         )
