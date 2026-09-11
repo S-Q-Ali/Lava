@@ -36,8 +36,6 @@ graphify-out/cache/
 # OpenCode plugin deps (skills/config/references stay committed)
 .opencode/node_modules/
 
-# Vendor skill reference clones (re-clonable; curated copies live in .opencode/skills/)
-tools/agent-skills/*
-!tools/agent-skills/.gitkeep
-tools/anthropic-skills/*
-!tools/anthropic-skills/.gitkeep
+# Vendor skill reference clones (embedded repos; curated copies live in .opencode/skills/)
+tools/agent-skills/
+tools/anthropic-skills/
