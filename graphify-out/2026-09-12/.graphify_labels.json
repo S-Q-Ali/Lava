@@ -36,8 +36,8 @@
   "34": "Observability Checklist",
   "35": "README.md",
   "36": "Session 2026-09-12 — Milestone 0 bootstrap + Milestone 1 media foundation",
-  "37": "AI Video Studio — Architecture",
-  "38": "AI Video Studio — Decision Log",
+  "37": "AI Video Studio — Decision Log",
+  "38": "Implementation Plan: M1 completion — project save/load + timeline drag/trim UX",
   "39": "graphify reference: extra exports and benchmark",
   "40": "AI Video Studio — Test Plan",
   "41": "AI Video Studio — UI Specification",
@@ -56,5 +56,6 @@
   "54": "Lava Studio — Backend (media sidecar)",
   "55": "test_health.py",
   "56": "sidecar.sh",
-  "57": "lava-backend"
+  "57": "lava-backend",
+  "58": "todo.md"
 }

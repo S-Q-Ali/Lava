@@ -164,7 +164,10 @@ The `backend/` service exposes the FFmpeg capability the browser lacks. Contract
 - `POST /api/probe` — `{ "path" }` → media metadata (duration, streams, size).
 - `POST /api/render` — multipart upload (`files` + JSON `clips` `[{ fileName, start, duration }]` + JSON `settings` `{ width, height, fps }`) → `mp4` in `cache/backend/renders/`.
 - `GET /api/files/{jobId}` — serves the rendered `mp4` for playback.
+- `POST /api/transcribe` — multipart `file` (+ optional `language`) → narration analysis:
+  `{ text, language, segments: [{ id, text, start, end, avgLogprob, confidence, words: [{ word, start, end, confidence }] }], pauses: [{ start, end, gap }] }`.
+  Engine is the `Transcriber` interface (`app.state.transcriber`) — `WhisperTranscriber` (faster-whisper, CPU int8, `tiny`, lazy model download into `models/whisper/`) in production, `FakeTranscriber` in tests. New error codes: `NO_FILE` (400), `TRANSCRIBE_FAILED` (422).
 
-Uploads/renders live under project-local `cache/backend/` (gitignored). The frontend's `HttpFFmpegProvider` (`frontend/src/services/ffmpeg.ts`) auto-detects the sidecar via `GET /api/health` and falls back to the unavailable provider when it is not running.
+Uploads/renders live under project-local `cache/backend/` (gitignored). Whisper models live under project-local `models/whisper/` (gitignored). The frontend's `HttpFFmpegProvider` (`frontend/src/services/ffmpeg.ts`) auto-detects the sidecar via `GET /api/health` and falls back to the unavailable provider when it is not running.
 
-Current gaps (honest state): `backend/` hosts the media sidecar only — ASR, matching, caption and Manhwa pipelines are not implemented; project save/load and timeline drag/trim UX are pending.
+Current gaps (honest state): `backend/` hosts media + ASR only — semantic matching, transitions, caption and Manhwa pipelines are not implemented; transcript word edits can be made (text only), timing edits/re-segmentation are deferred to M3.

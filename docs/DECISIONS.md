@@ -89,6 +89,26 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
 
 ---
 
+## D-010 — Local faster-whisper as the ASR engine
+
+- **Date**: 2026-09-12
+- **WHAT**: Voice narration transcription runs inside the media sidecar through `faster-whisper` (CT2-based) on CPU with `int8` compute and the `tiny` model by default. Models download lazily on first use into `models/whisper` inside the project folder. Speech is exposed via `POST /api/transcribe` (multipart `file` + optional `language`), returning segments with word timestamps/confidence, plus pause list. A `Transcriber` interface keeps the endpoint testable — `FakeTranscriber` (deterministic unit tests) vs real `WhisperTranscriber` (lazy model load).
+- **WHY**: Local-first and runs on the baseline hardware (16 GB, MX250 2 GB). `tiny` fits the CPU-only path; bigger models are a config flag away. Word timestamps and (segment) confidence directly serve the voice-over differentiator and later caption highlighting.
+- **HOW**: `transcribers.py` defines `Transcriber`/`WhisperTranscriber`/`FakeTranscriber`; `transcribe_core.py` owns pure pause/confidence math (0.3s default threshold, logprob→confidence mapping). Backend dev environment pinned to Python 3.12 (`uv python pin 3.12`) because `onnxruntime` publishes macOS x86_64 wheels only up to `cp312` and numpy<2 is required by onnxruntime 1.17.3 on this machine.
+- **Alternatives considered**: whisper.cpp bindings (build complexity on macOS x86_64), transformers+Whisper (heavy, no CT2 speedup), OpenAI Whisper API (not local-first). skips VAD for now.
+- **Status**: Locked for M2. Model-size tuning (tiny/base/small) is an open knob; VAD-based silence trimming deferred.
+
+### D-011 — Transcripts persist inside the project file (version unchanged)
+
+- **Date**: 2026-09-12
+- **WHAT**: Narrations live in the editor store as `transcripts: Record<assetId, Transcript>` (temporal, undoable), persisted through an optional `model.transcripts` key in the `.lava.json` file. `parseProjectModel` validates each transcript strictly and rejects malformed ones, but a file without the key loads fine (backward compatible). Project `version` stays 1.
+- **WHY**: User word edits must survive save/reload without inventing a second file format. Storing transcripts in the model keeps undo/redo uniform (word edits undo and redo across the whole timeline state).
+- **HOW**: `voice.ts` `parseTranscript` normalizes sidecar JSON; `editorStore.setTranscript`/`updateTranscriptWord` mutate the map; `updateTranscriptWord` recomputes segment + full text from edited words; transcript analysis *status* is held in a separate non-temporal `transcriptStore` so transient "analyzing/error" state never pollutes history or the project file.
+- **Alternatives considered**: separate transcripts store persisted as a sibling top-level key (drift risk, non-undoable); IndexedDB-backed transcripts (overkill).
+- **Status**: Locked for M2; timing-edit re-segmentation (moving words in time) deferred to M3.
+
+---
+
 ## Index of decisions
 
 | ID | Decision | Status |
@@ -102,3 +122,5 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
 | D-007 | Session log + decisions log | Locked |
 | D-008 | Media sidecar HTTP API (FastAPI) | Locked |
 | D-009 | Versioned project file format (lava-studio JSON) | Locked |
+| D-010 | Local faster-whisper ASR in the sidecar | Locked |
+| D-011 | Transcripts persist in project file (version stays 1) | Locked |

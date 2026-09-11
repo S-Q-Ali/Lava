@@ -26,11 +26,13 @@ Definition of done for ANY milestone installments within it: implementation exis
 - [ ] Audio mixing in render (voice/music/SFX tracks; currently image/video tracks render)
 
 ## Milestone 2 — Voice analysis
-- ASR
-- Timestamps
-- Pauses
-- Segmentation
-- Editable transcript
+- [x] ASR engine (faster-whisper, CPU int8, project-local model cache)
+- [x] Word timestamps
+- [x] Pause detection (threshold 0.3s default)
+- [x] Segment-level transcript (whisper segments)
+- [x] Editable transcript (word-text edits, undoable, persisted in project file)
+- [ ] Timing-edit / re-segmentation from edits (deferred to M3)
+- [ ] Semantic visual-beat matching over transcript (M3)
 
 ## Milestone 3 — Semantic image matching
 - Image analysis

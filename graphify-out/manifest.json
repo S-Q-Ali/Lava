@@ -30,10 +30,10 @@
     "semantic_hash": ""
   },
   "frontend/src/components/InspectorPanel.tsx": {
-    "mtime": 1789154083.9395092,
-    "seen": 1789154456.494897,
-    "ast_hash": "9a46c6de67fa9ea0ad3fb9f64ba75355",
-    "semantic_hash": "9a46c6de67fa9ea0ad3fb9f64ba75355"
+    "mtime": 1789159610.722654,
+    "seen": 1789159983.4398441,
+    "ast_hash": "67cca020c17b9790b413b282347b3d5c",
+    "semantic_hash": ""
   },
   "frontend/src/components/MediaPanel.tsx": {
     "mtime": 1789154109.5140133,
@@ -84,10 +84,10 @@
     "semantic_hash": "205c68061e825a7be2824e98cfa9eaa9"
   },
   "frontend/src/editor/types.ts": {
-    "mtime": 1789154043.087257,
-    "seen": 1789154456.494914,
-    "ast_hash": "de28e49684e32b0d1ca36379c98feab6",
-    "semantic_hash": "de28e49684e32b0d1ca36379c98feab6"
+    "mtime": 1789159281.570271,
+    "seen": 1789159983.4398599,
+    "ast_hash": "424b8264a00db52c3d22037fad070702",
+    "semantic_hash": ""
   },
   "frontend/src/main.tsx": {
     "mtime": 1789153855.6835833,
@@ -108,15 +108,15 @@
     "semantic_hash": ""
   },
   "frontend/src/store/editorStore.test.ts": {
-    "mtime": 1789157425.4633267,
-    "seen": 1789157864.22645,
-    "ast_hash": "8474c5c96e85b674b7cad9f269179b4f",
+    "mtime": 1789159505.6321414,
+    "seen": 1789159983.439871,
+    "ast_hash": "1b52f2eaf65ef7c30b12a422e7c984b3",
     "semantic_hash": ""
   },
   "frontend/src/store/editorStore.ts": {
-    "mtime": 1789157551.6318128,
-    "seen": 1789157864.2264519,
-    "ast_hash": "369ffe37393abdb77abf77f376b54bc2",
+    "mtime": 1789159393.8762329,
+    "seen": 1789159983.439872,
+    "ast_hash": "fe10b8bc12491106980d500acc2ca447",
     "semantic_hash": ""
   },
   "frontend/tsconfig.app.json": {
@@ -348,21 +348,21 @@
     "semantic_hash": ""
   },
   "docs/ARCHITECTURE.md": {
-    "mtime": 1789156750.9652188,
-    "seen": 1789156820.282067,
-    "ast_hash": "37ca215563fe9e91e61d4f8c335c1e49",
+    "mtime": 1789159787.3388793,
+    "seen": 1789159983.439929,
+    "ast_hash": "7fb49a2da86618c72323ceeb8ccfa3bf",
     "semantic_hash": ""
   },
   "docs/DECISIONS.md": {
-    "mtime": 1789157830.6962306,
-    "seen": 1789157864.226523,
-    "ast_hash": "1466feab78d1308be6673a623efd7879",
+    "mtime": 1789159769.7860677,
+    "seen": 1789159983.4399302,
+    "ast_hash": "777c7584cddfe02606ee28ce704f453c",
     "semantic_hash": ""
   },
   "docs/FEATURES.md": {
-    "mtime": 1789157812.7913318,
-    "seen": 1789157864.2265239,
-    "ast_hash": "f3acfd20d470f0dfc8605882c921f647",
+    "mtime": 1789159745.1310978,
+    "seen": 1789159983.439931,
+    "ast_hash": "84ecb90c188aa955b802998356885ba0",
     "semantic_hash": ""
   },
   "docs/PRODUCT_SPEC.md": {
@@ -372,21 +372,21 @@
     "semantic_hash": ""
   },
   "docs/ROADMAP.md": {
-    "mtime": 1789157806.758286,
-    "seen": 1789157864.226527,
-    "ast_hash": "289dd2aaaa739e9ec232ca439ada8de4",
+    "mtime": 1789159733.9478104,
+    "seen": 1789159983.439934,
+    "ast_hash": "600c9bba4ae856945d2e9111df11bef0",
     "semantic_hash": ""
   },
   "docs/SESSION_LOG.md": {
-    "mtime": 1789157856.8891037,
-    "seen": 1789157864.226528,
-    "ast_hash": "39d403972d832b30e24e8697a601e1ee",
+    "mtime": 1789159822.229093,
+    "seen": 1789159983.439935,
+    "ast_hash": "e6b7fdf19945b65766e14e5ec464687c",
     "semantic_hash": ""
   },
   "docs/TEST_PLAN.md": {
-    "mtime": 1789155398.4328284,
-    "seen": 1789155582.4086452,
-    "ast_hash": "96ef173391a41ad31cc3508182f2af49",
+    "mtime": 1789159837.771207,
+    "seen": 1789159983.439937,
+    "ast_hash": "d1099ed0d0bd80258f2418fc19e9d9b7",
     "semantic_hash": ""
   },
   "docs/UI_SPEC.md": {
@@ -414,9 +414,9 @@
     "semantic_hash": ""
   },
   "backend/pyproject.toml": {
-    "mtime": 1789156637.00394,
-    "seen": 1789156820.281968,
-    "ast_hash": "baa190aff577a4d4f2d618521882a1f8",
+    "mtime": 1789159019.892385,
+    "seen": 1789159983.4398122,
+    "ast_hash": "b28b3e3414bfc1ead956b7a3955bce28",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/__init__.py": {
@@ -426,9 +426,9 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/config.py": {
-    "mtime": 1789155964.925497,
-    "seen": 1789156820.281972,
-    "ast_hash": "979247f9e14e85c1e8249f29321d4b32",
+    "mtime": 1789159142.4717991,
+    "seen": 1789159983.439818,
+    "ast_hash": "dd5cfb4615dca8f054053772c427615a",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/errors.py": {
@@ -438,9 +438,9 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/main.py": {
-    "mtime": 1789156312.189958,
-    "seen": 1789156820.281975,
-    "ast_hash": "6bcbd86161c3cbd8f8d4a9858656f61b",
+    "mtime": 1789159146.8569586,
+    "seen": 1789159983.439821,
+    "ast_hash": "f67fb9f4c2b96df55014d76fdf758d42",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/media.py": {
@@ -486,21 +486,21 @@
     "semantic_hash": ""
   },
   "backend/README.md": {
-    "mtime": 1789156713.8962352,
-    "seen": 1789156820.282065,
-    "ast_hash": "a6c70e283c5e51e781faff272efb0432",
+    "mtime": 1789159803.6023061,
+    "seen": 1789159983.439928,
+    "ast_hash": "1ba46afacd6b625b477b25aa68af1c65",
     "semantic_hash": ""
   },
   "frontend/src/editor/project.test.ts": {
-    "mtime": 1789157376.8284533,
-    "seen": 1789157864.2264352,
-    "ast_hash": "2468174dcb689913482e1d46aa2aa564",
+    "mtime": 1789159499.0144205,
+    "seen": 1789159983.439858,
+    "ast_hash": "35088951904193d6f1415db3db034092",
     "semantic_hash": ""
   },
   "frontend/src/editor/project.ts": {
-    "mtime": 1789157397.3226087,
-    "seen": 1789157864.226437,
-    "ast_hash": "304e6dc8cd5b5d241f75b7f667f24aaf",
+    "mtime": 1789159411.8684244,
+    "seen": 1789159983.439859,
+    "ast_hash": "8d1fcbb2c81570c90ce46f33a1de3148",
     "semantic_hash": ""
   },
   "frontend/src/services/projectIO.ts": {
@@ -510,15 +510,81 @@
     "semantic_hash": ""
   },
   "tasks/plan.md": {
-    "mtime": 1789157355.3511457,
-    "seen": 1789157864.226537,
-    "ast_hash": "2c6d1cb47b1a255a1eaf244f727aef09",
+    "mtime": 1789158515.8370192,
+    "seen": 1789159983.4399428,
+    "ast_hash": "455568d8e3e49c0759ba7b2394632e7b",
     "semantic_hash": ""
   },
   "tasks/todo.md": {
-    "mtime": 1789157364.7821658,
-    "seen": 1789157864.226541,
-    "ast_hash": "36ef3a12577a2641f80d3a26f1e6809d",
+    "mtime": 1789158523.086871,
+    "seen": 1789159983.439944,
+    "ast_hash": "17fde8f495c4a6f3edf52b534e3a1d23",
+    "semantic_hash": ""
+  },
+  "backend/src/lava_backend/transcribe.py": {
+    "mtime": 1789158672.0485387,
+    "seen": 1789159983.4398248,
+    "ast_hash": "bab0ea70279ddbb2b753db3861dca101",
+    "semantic_hash": ""
+  },
+  "backend/src/lava_backend/transcribe_core.py": {
+    "mtime": 1789158569.956505,
+    "seen": 1789159983.439827,
+    "ast_hash": "4b7201f27a10ad055855dd9353c1984b",
+    "semantic_hash": ""
+  },
+  "backend/src/lava_backend/transcribers.py": {
+    "mtime": 1789159136.4908905,
+    "seen": 1789159983.439828,
+    "ast_hash": "d14878b73fbf2177cdc8b534ec8edcc0",
+    "semantic_hash": ""
+  },
+  "backend/tests/test_transcribe_api.py": {
+    "mtime": 1789158698.3447194,
+    "seen": 1789159983.4398348,
+    "ast_hash": "baba05f5ea059c16e2d8addc950037a4",
+    "semantic_hash": ""
+  },
+  "backend/tests/test_transcribe_core.py": {
+    "mtime": 1789158549.6596937,
+    "seen": 1789159983.4398358,
+    "ast_hash": "24417a3715764da1f545678e8ce32b8a",
+    "semantic_hash": ""
+  },
+  "frontend/.prettierrc.json": {
+    "mtime": 1789159882.209902,
+    "seen": 1789159983.439839,
+    "ast_hash": "d75cf6cd1c0a90bc127d1408b222ef22",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/TranscriptPanel.tsx": {
+    "mtime": 1789159959.1938906,
+    "seen": 1789159983.439848,
+    "ast_hash": "60919d2861be76acb67890cd92d93417",
+    "semantic_hash": ""
+  },
+  "frontend/src/services/voice.test.ts": {
+    "mtime": 1789159889.1957858,
+    "seen": 1789159983.439868,
+    "ast_hash": "5391f4b147a3b39323c7d2302092a47c",
+    "semantic_hash": ""
+  },
+  "frontend/src/services/voice.ts": {
+    "mtime": 1789159889.1785452,
+    "seen": 1789159983.4398699,
+    "ast_hash": "2780ea72fae7e35276ee672bb674e9a7",
+    "semantic_hash": ""
+  },
+  "frontend/src/store/transcriptStore.ts": {
+    "mtime": 1789159889.2112012,
+    "seen": 1789159983.439873,
+    "ast_hash": "90272c28b7d04e31b21bc3ae4f644605",
+    "semantic_hash": ""
+  },
+  "docs/SPEC-voice-analysis.md": {
+    "mtime": 1789158499.5497398,
+    "seen": 1789159983.439936,
+    "ast_hash": "504d2e4f995ba412c6507609ac2a3197",
     "semantic_hash": ""
   }
 }

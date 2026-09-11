@@ -1,103 +1,89 @@
-import type {
-  Transcript,
-  TranscriptPause,
-  TranscriptWord,
-} from "../editor/types";
-import { useEditorStore } from "../store/editorStore";
-import { useTranscriptStore } from "../store/transcriptStore";
-import { getAssetFile } from "../media/importer";
+import type { Transcript, TranscriptPause, TranscriptWord } from '../editor/types'
+import { useEditorStore } from '../store/editorStore'
+import { useTranscriptStore } from '../store/transcriptStore'
+import { getAssetFile } from '../media/importer'
 
 type Node =
   | {
-      type: "word";
-      id: string;
-      segment: number;
-      index: number;
-      word: TranscriptWord;
+      type: 'word'
+      segment: number
+      index: number
+      word: TranscriptWord
     }
-  | { type: "gap" }
-  | { type: "break" };
+  | { type: 'gap' }
+  | { type: 'break' }
 
 function buildNodes(transcript: Transcript): Node[] {
-  const nodes: Node[] = [];
+  const nodes: Node[] = []
   transcript.segments.forEach((segment, segmentIndex) => {
-    if (segmentIndex > 0) nodes.push({ type: "break" });
+    if (segmentIndex > 0) nodes.push({ type: 'break' })
     segment.words.forEach((word, index) => {
       nodes.push({
-        type: "word",
-        id: word.word,
+        type: 'word',
         segment: segmentIndex,
         index,
         word,
-      });
-    });
-  });
-  return nodes;
+      })
+    })
+  })
+  return nodes
 }
 
 function attachPauses(nodes: Node[], pauses: TranscriptPause[]): Node[] {
-  if (pauses.length === 0 || nodes.length === 0) return nodes;
-  const withGaps: Node[] = [];
-  let pauseIndex = 0;
+  if (pauses.length === 0 || nodes.length === 0) return nodes
+  const withGaps: Node[] = []
+  let pauseIndex = 0
   for (let i = 0; i < nodes.length - 1; i += 1) {
-    const node = nodes[i];
-    withGaps.push(node);
-    const next = nodes[i + 1];
-    if (node.type !== "word" || next.type !== "word") continue;
-    const pause = pauses[pauseIndex];
-    if (
-      pause &&
-      node.word.end <= pause.start + 0.15 &&
-      pause.end <= next.word.start + 0.15
-    ) {
-      withGaps.push({ type: "gap" });
-      pauseIndex += 1;
+    const node = nodes[i]
+    withGaps.push(node)
+    const next = nodes[i + 1]
+    if (node.type !== 'word' || next.type !== 'word') continue
+    const pause = pauses[pauseIndex]
+    if (pause && node.word.end <= pause.start + 0.15 && pause.end <= next.word.start + 0.15) {
+      withGaps.push({ type: 'gap' })
+      pauseIndex += 1
     }
   }
-  withGaps.push(nodes[nodes.length - 1]);
-  return withGaps;
+  withGaps.push(nodes[nodes.length - 1])
+  return withGaps
 }
 
 function lowConfidence(word: TranscriptWord): boolean {
-  return typeof word.confidence === "number" && word.confidence < 0.5;
+  return typeof word.confidence === 'number' && word.confidence < 0.5
 }
 
-function confidenceLabel(segment: Transcript["segments"][number]): string {
-  return `${Math.max(0, Math.min(100, Math.round(segment.confidence)))}%`;
+function confidenceLabel(segment: Transcript['segments'][number]): string {
+  return `${Math.max(0, Math.min(100, Math.round(segment.confidence)))}%`
 }
 
 export default function TranscriptPanel() {
-  const clips = useEditorStore((s) => s.clips);
-  const assets = useEditorStore((s) => s.assets);
-  const transcripts = useEditorStore((s) => s.transcripts);
-  const setPlayhead = useEditorStore((s) => s.setPlayhead);
-  const updateTranscriptWord = useEditorStore((s) => s.updateTranscriptWord);
-  const selectedClipId = useEditorStore((s) => s.selectedClipId);
-  const analysis = useTranscriptStore((s) => s.analysis);
-  const analyze = useTranscriptStore((s) => s.analyze);
+  const clips = useEditorStore((s) => s.clips)
+  const assets = useEditorStore((s) => s.assets)
+  const transcripts = useEditorStore((s) => s.transcripts)
+  const setPlayhead = useEditorStore((s) => s.setPlayhead)
+  const updateTranscriptWord = useEditorStore((s) => s.updateTranscriptWord)
+  const selectedClipId = useEditorStore((s) => s.selectedClipId)
+  const analysis = useTranscriptStore((s) => s.analysis)
+  const analyze = useTranscriptStore((s) => s.analyze)
 
-  const selectedClip = clips.find((c) => c.id === selectedClipId);
-  const selectedAsset = assets.find((a) => a.id === selectedClip?.assetId);
-  const isVocalAudio = selectedAsset?.kind === "audio";
-  const transcript = selectedAsset && transcripts[selectedAsset.id];
+  const selectedClip = clips.find((c) => c.id === selectedClipId)
+  const selectedAsset = assets.find((a) => a.id === selectedClip?.assetId)
+  const isVocalAudio = selectedAsset?.kind === 'audio'
+  const transcript = selectedAsset && transcripts[selectedAsset.id]
 
-  if (!isVocalAudio || !selectedAsset) return null;
+  if (!isVocalAudio || !selectedAsset) return null
 
-  const file = getAssetFile(selectedAsset.id);
-  const status = analysis[selectedAsset.id];
-  const busy = status?.phase === "analyzing";
-  const content = transcript?.segments.length ? transcript : undefined;
-  const nodes = content
-    ? attachPauses(buildNodes(content), content.pauses)
-    : [];
-  const firstLow =
-    content?.segments.some((segment) => segment.words.some(lowConfidence)) ??
-    false;
+  const file = getAssetFile(selectedAsset.id)
+  const status = analysis[selectedAsset.id]
+  const busy = status?.phase === 'analyzing'
+  const content = transcript?.segments.length ? transcript : undefined
+  const nodes = content ? attachPauses(buildNodes(content), content.pauses) : []
+  const firstLow = content?.segments.some((segment) => segment.words.some(lowConfidence)) ?? false
 
-  let statusText: string | null = null;
-  if (!file) statusText = "Re-import this audio file to re-analyze narration.";
-  else if (status?.phase === "error") statusText = status.error;
-  else if (!transcript && !busy && file) statusText = "Not analyzed yet.";
+  let statusText: string | null = null
+  if (!file) statusText = 'Re-import this audio file to re-analyze narration.'
+  else if (status?.phase === 'error') statusText = status.error
+  else if (!transcript && !busy && file) statusText = 'Not analyzed yet.'
 
   return (
     <section className="transcript-panel">
@@ -110,7 +96,7 @@ export default function TranscriptPanel() {
             disabled={busy}
             onClick={() => void analyze(selectedAsset.id, file)}
           >
-            {busy ? "Analyzing…" : "Analyze narration"}
+            {busy ? 'Analyzing…' : 'Analyze narration'}
           </button>
         )}
       </div>
@@ -133,29 +119,23 @@ export default function TranscriptPanel() {
           </div>
           {firstLow && (
             <p className="transcript-hint">
-              Underscored words have low confidence — click a word to correct
-              it.
+              Underscored words have low confidence — click a word to correct it.
             </p>
           )}
           <div className="transcript-words">
             {nodes.map((node, index) => {
-              if (node.type === "break")
-                return <br key={index} className="transcript-break" />;
-              if (node.type === "gap")
+              if (node.type === 'break') return <br key={index} className="transcript-break" />
+              if (node.type === 'gap')
                 return (
-                  <span
-                    key={index}
-                    className="transcript-gap"
-                    title="detected pause"
-                  >
+                  <span key={index} className="transcript-gap" title="detected pause">
                     ⏸
                   </span>
-                );
-              const segment = content.segments[node.segment];
+                )
+              const segment = content.segments[node.segment]
               return (
                 <input
                   key={`${node.segment}-${node.index}`}
-                  className={`word-input${lowConfidence(node.word) ? " low" : ""}`}
+                  className={`word-input${lowConfidence(node.word) ? ' low' : ''}`}
                   aria-label={`word ${node.index + 1} of segment ${segment.id}`}
                   value={node.word.word}
                   maxLength={64}
@@ -167,11 +147,9 @@ export default function TranscriptPanel() {
                       event.target.value,
                     )
                   }
-                  onClick={() =>
-                    setPlayhead((selectedClip?.start ?? 0) + node.word.start)
-                  }
+                  onClick={() => setPlayhead((selectedClip?.start ?? 0) + node.word.start)}
                 />
-              );
+              )
             })}
           </div>
           <div className="transcript-segments">
@@ -188,5 +166,5 @@ export default function TranscriptPanel() {
         </>
       )}
     </section>
-  );
+  )
 }

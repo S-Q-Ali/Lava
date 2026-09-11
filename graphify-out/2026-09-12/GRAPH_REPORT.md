@@ -1,16 +1,16 @@
 # Graph Report - Lava  (2026-09-12)
 
 ## Corpus Check
-- 80 files · ~66,166 words
+- 85 files · ~69,302 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 945 nodes · 1123 edges · 58 communities (47 shown, 9 thin omitted)
-- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 6 edges (avg confidence: 0.95)
+- 994 nodes · 1223 edges · 59 communities (47 shown, 10 thin omitted)
+- Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 6 edges (avg confidence: 0.95)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `d9531e6e`
+- Built from commit: `ecf0f332`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -51,8 +51,8 @@
 - The Standing Checklist
 - Observability Checklist
 - Session 2026-09-12 — Milestone 0 bootstrap + Milestone 1 media foundation
-- AI Video Studio — Architecture
 - AI Video Studio — Decision Log
+- Implementation Plan: M1 completion — project save/load + timeline drag/trim UX
 - graphify reference: extra exports and benchmark
 - AI Video Studio — Test Plan
 - AI Video Studio — UI Specification
@@ -71,6 +71,7 @@
 - Lava Studio — Backend (media sidecar)
 - sidecar.sh
 - lava-backend
+- todo.md
 
 ## God Nodes (most connected - your core abstractions)
 1. `useEditorStore` - 26 edges
@@ -79,7 +80,7 @@
 4. `AGENTS.md — AI Video Studio` - 19 edges
 5. `compilerOptions` - 18 edges
 6. `AI Video Studio — Product Specification` - 18 edges
-7. `EditorActions` - 15 edges
+7. `EditorActions` - 16 edges
 8. `compilerOptions` - 15 edges
 9. `Security Checklist` - 15 edges
 10. `Git Workflow and Versioning` - 15 edges
@@ -99,15 +100,15 @@
 ## Import Cycles
 - None detected.
 
-## Communities (58 total, 9 thin omitted)
+## Communities (59 total, 10 thin omitted)
 
 ### Community 0 - "package.json"
 Cohesion: 0.06
 Nodes (33): dependencies, react, react-dom, zundo, zustand, devDependencies, oxlint, @types/node (+25 more)
 
 ### Community 1 - "useEditorStore"
-Cohesion: 0.06
-Nodes (51): App(), InspectorPanel(), kindOf(), MediaPanel(), formatTime(), PreviewPanel(), ClipBlock(), PX_PER_SECOND (+43 more)
+Cohesion: 0.05
+Nodes (69): App(), InspectorPanel(), kindOf(), MediaPanel(), formatTime(), PreviewPanel(), ClipBlock(), DragMode (+61 more)
 
 ### Community 2 - "localDirs"
 Cohesion: 0.10
@@ -135,7 +136,7 @@ Nodes (29): Browser Testing with DevTools, Common Rationalizations, DAMP Over DR
 
 ### Community 8 - "ffmpeg.ts"
 Cohesion: 0.11
-Nodes (11): backendBaseUrl(), DEFAULT_BASE_URL, detectProvider(), FFmpegProvider, HttpFFmpegProvider, RenderInput, RenderResult, RenderSettings (+3 more)
+Nodes (12): backendBaseUrl(), DEFAULT_BASE_URL, detectProvider(), FFmpegProvider, HttpFFmpegProvider, RenderClipInput, RenderInput, RenderResult (+4 more)
 
 ### Community 9 - "fetch-ffmpeg.mjs"
 Cohesion: 0.24
@@ -234,16 +235,16 @@ Cohesion: 0.18
 Nodes (10): Alerting, Dashboards, Distributed Tracing, Metrics, Observability Checklist, On-Call Questions (Start Here), Pre-Launch Gate, Structured Logging (+2 more)
 
 ### Community 36 - "Session 2026-09-12 — Milestone 0 bootstrap + Milestone 1 media foundation"
-Cohesion: 0.08
-Nodes (26): AI Video Studio — Session Log, Decisions, Decisions, Decisions, HOW, HOW, HOW, Limitations (+18 more)
+Cohesion: 0.06
+Nodes (34): AI Video Studio — Session Log, Decisions, Decisions, Decisions, Decisions, HOW, HOW, HOW (+26 more)
 
-### Community 37 - "AI Video Studio — Architecture"
-Cohesion: 0.20
-Nodes (10): 1. Repository Layout, 2. Design Principles, 3. Core Technology, 4. Voice-over → Images Processing Graph, 5. Manhwa / Webtoon Extraction Processing Graph, 6. Caption Processing Graph, 7. System Boundaries, 8. Design Decisions (WHY) (+2 more)
+### Community 37 - "AI Video Studio — Decision Log"
+Cohesion: 0.09
+Nodes (21): 1. Repository Layout, 2. Design Principles, 3. Core Technology, 4. Voice-over → Images Processing Graph, 5. Manhwa / Webtoon Extraction Processing Graph, 6. Caption Processing Graph, 7. System Boundaries, 8. Design Decisions (WHY) (+13 more)
 
-### Community 38 - "AI Video Studio — Decision Log"
-Cohesion: 0.20
-Nodes (10): AI Video Studio — Decision Log, D-001 — Web-first editor shell (Vite + React + TypeScript), D-002 — Zustand + Zundo for state and undo/redo, D-003 — Project-local FFmpeg binary, D-004 — FFmpeg provider abstraction, D-005 — Curated vendor skills; reference clones kept local, D-006 — Commit `graphify-out/`; code-only pass for now, D-007 — Written session log + decisions log for continuity (+2 more)
+### Community 38 - "Implementation Plan: M1 completion — project save/load + timeline drag/trim UX"
+Cohesion: 0.14
+Nodes (13): Architecture Decisions, Checkpoints, Implementation Plan: M1 completion — project save/load + timeline drag/trim UX, Open Questions, Overview, Risks and Mitigations, Task 1: Project serialization (`editor/project.ts`) — S, Task 2: `loadProject` store action — S (+5 more)
 
 ### Community 39 - "graphify reference: extra exports and benchmark"
 Cohesion: 0.22
@@ -290,24 +291,24 @@ Cohesion: 0.33
 Nodes (5): API, Lava Studio — Backend (media sidecar), Layout, Run, Tests
 
 ## Knowledge Gaps
-- **619 isolated node(s):** `$schema`, `plugin`, `lava-backend`, `$schema`, `plugins` (+614 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 679 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **9 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **643 isolated node(s):** `$schema`, `plugin`, `lava-backend`, `$schema`, `plugins` (+638 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 706 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `AI Video Studio — Session Log` connect `Session 2026-09-12 — Milestone 0 bootstrap + Milestone 1 media foundation` to `README.md`?**
-  _High betweenness centrality (0.007) - this node is a cross-community bridge._
+  _High betweenness centrality (0.009) - this node is a cross-community bridge._
 - **Why does `AI Video Studio — Product Specification` connect `AI Video Studio — Product Specification` to `README.md`?**
-  _High betweenness centrality (0.006) - this node is a cross-community bridge._
+  _High betweenness centrality (0.005) - this node is a cross-community bridge._
 - **Why does `AGENTS.md — AI Video Studio` connect `AGENTS.md — AI Video Studio` to `README.md`?**
   _High betweenness centrality (0.005) - this node is a cross-community bridge._
 - **What connects `$schema`, `plugin`, `lava-backend` to the rest of the system?**
-  _619 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _643 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `package.json` be split into smaller, more focused modules?**
   _Cohesion score 0.058823529411764705 - nodes in this community are weakly interconnected._
 - **Should `useEditorStore` be split into smaller, more focused modules?**
-  _Cohesion score 0.0620253164556962 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.05177993527508091 - nodes in this community are weakly interconnected._
 - **Should `localDirs` be split into smaller, more focused modules?**
   _Cohesion score 0.09523809523809523 - nodes in this community are weakly interconnected._

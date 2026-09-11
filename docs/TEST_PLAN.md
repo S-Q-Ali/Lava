@@ -73,6 +73,13 @@ Behavioral acceptance checks:
 - Project save/load round-trip.
 - User overrides survive background AI passes (never silently overwritten).
 - Panel metadata (id, source id, x/y/w/h, confidence, order, corrected flag) persists.
+- Transcript persistence: word edits survive save/load round-trip; malformed transcripts are rejected on open (verified in `project.test.ts`).
+
+## 5.1 Voice-analysis verification so far
+
+- Unit: pause/confidence math (`transcribe_core`); API contract + error codes + injectable transcriber; transcript store edits/undo; project round-trip with transcripts.
+- Live e2e (manual, non-committed): faster-whisper `tiny` on real narration audio — HTTP 200, segments/words/confidence/pauses returned. Sample transcription quality on Urdu/Roman-Urdu was poor (`tiny`); model-size tuning is a documented open issue.
+- Not yet verified: human in-browser pass on word-click→seek and low-confidence styling; long narration; mixed-language fixture; poor-audio fixture.
 
 ## 6. Performance Sanity (Baseline Hardware)
 

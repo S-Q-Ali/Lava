@@ -1,22 +1,22 @@
 # Graph Report - Lava  (2026-09-12)
 
 ## Corpus Check
-- 85 files · ~69,302 words
+- 96 files · ~74,316 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 994 nodes · 1223 edges · 59 communities (47 shown, 10 thin omitted)
-- Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 6 edges (avg confidence: 0.95)
+- 1105 nodes · 1448 edges · 71 communities (60 shown, 9 thin omitted)
+- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 15 edges (avg confidence: 0.94)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `ecf0f332`
+- Built from commit: `465005ba`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - package.json
-- useEditorStore
+- project.ts
 - localDirs
 - compilerOptions
 - Worked example: Agent Teams for competing-hypothesis debugging
@@ -52,7 +52,7 @@
 - Observability Checklist
 - Session 2026-09-12 — Milestone 0 bootstrap + Milestone 1 media foundation
 - AI Video Studio — Decision Log
-- Implementation Plan: M1 completion — project save/load + timeline drag/trim UX
+- Implementation Plan: M2 Voice analysis (first slice)
 - graphify reference: extra exports and benchmark
 - AI Video Studio — Test Plan
 - AI Video Studio — UI Specification
@@ -71,44 +71,56 @@
 - Lava Studio — Backend (media sidecar)
 - sidecar.sh
 - lava-backend
-- todo.md
+- Task list
+- detect_pauses
+- editorStore.ts
+- ops.ts
+- TranscriptPanel.tsx
+- useEditorStore
+- importer.ts
+- App.tsx
+- Spec: Voice Analysis (M2 first slice)
+- AI Video Studio — Architecture
+- TrackRow.tsx
+- voice.ts
+- .prettierrc.json
 
 ## God Nodes (most connected - your core abstractions)
-1. `useEditorStore` - 26 edges
+1. `useEditorStore` - 30 edges
 2. `AI Video Studio — Master Project Documentation` - 23 edges
 3. `Code Review and Quality` - 19 edges
 4. `AGENTS.md — AI Video Studio` - 19 edges
-5. `compilerOptions` - 18 edges
-6. `AI Video Studio — Product Specification` - 18 edges
-7. `EditorActions` - 16 edges
+5. `EditorActions` - 18 edges
+6. `compilerOptions` - 18 edges
+7. `AI Video Studio — Product Specification` - 18 edges
 8. `compilerOptions` - 15 edges
 9. `Security Checklist` - 15 edges
 10. `Git Workflow and Versioning` - 15 edges
 
 ## Surprising Connections (you probably didn't know these)
+- `serialize_segment()` --uses--> `Segment`  [INFERRED]
+  backend/src/lava_backend/transcribe.py → backend/src/lava_backend/transcribers.py
+- `serialize()` --uses--> `Transcription`  [INFERRED]
+  backend/src/lava_backend/transcribe.py → backend/src/lava_backend/transcribers.py
+- `ProjectFile` --references--> `TimelineModel`  [EXTRACTED]
+  frontend/src/editor/project.ts → frontend/src/editor/types.ts
 - `check_binary()` --uses--> `Config`  [INFERRED]
   backend/src/lava_backend/media.py → backend/src/lava_backend/config.py
 - `probe()` --uses--> `Config`  [INFERRED]
   backend/src/lava_backend/media.py → backend/src/lava_backend/config.py
-- `render()` --uses--> `Config`  [INFERRED]
-  backend/src/lava_backend/media.py → backend/src/lava_backend/config.py
-- `api_error_handler()` --uses--> `ApiError`  [INFERRED]
-  backend/src/lava_backend/main.py → backend/src/lava_backend/errors.py
-- `render_endpoint()` --uses--> `RenderClip`  [INFERRED]
-  backend/src/lava_backend/main.py → backend/src/lava_backend/media.py
 
 ## Import Cycles
 - None detected.
 
-## Communities (59 total, 10 thin omitted)
+## Communities (71 total, 9 thin omitted)
 
 ### Community 0 - "package.json"
 Cohesion: 0.06
-Nodes (33): dependencies, react, react-dom, zundo, zustand, devDependencies, oxlint, @types/node (+25 more)
+Nodes (32): dependencies, react, react-dom, zundo, zustand, devDependencies, oxlint, @types/node (+24 more)
 
-### Community 1 - "useEditorStore"
-Cohesion: 0.05
-Nodes (69): App(), InspectorPanel(), kindOf(), MediaPanel(), formatTime(), PreviewPanel(), ClipBlock(), DragMode (+61 more)
+### Community 1 - "project.ts"
+Cohesion: 0.17
+Nodes (21): isAsset(), isClip(), isRecord(), isTrack(), isTranscript(), parseProjectJson(), parseProjectModel(), parseTranscripts() (+13 more)
 
 ### Community 2 - "localDirs"
 Cohesion: 0.10
@@ -195,7 +207,7 @@ Cohesion: 0.10
 Nodes (20): 10. Captions System, 11. Templates / Styles / Fonts, 12. Editor / Timeline, 13. AI Control Philosophy, 14. UI / UX Direction, 15. Runtime / Hardware Strategy, 16. Key Product Principle, 1. Mission (+12 more)
 
 ### Community 25 - "AGENTS.md — AI Video Studio"
-Cohesion: 0.11
+Cohesion: 0.10
 Nodes (19): Agent skills (OpenCode), AGENTS.md — AI Video Studio, Captions, Core product, Definition of done, Documentation index, Editor, graphify (+11 more)
 
 ### Community 26 - "Planning and Task Breakdown"
@@ -235,24 +247,24 @@ Cohesion: 0.18
 Nodes (10): Alerting, Dashboards, Distributed Tracing, Metrics, Observability Checklist, On-Call Questions (Start Here), Pre-Launch Gate, Structured Logging (+2 more)
 
 ### Community 36 - "Session 2026-09-12 — Milestone 0 bootstrap + Milestone 1 media foundation"
-Cohesion: 0.06
-Nodes (34): AI Video Studio — Session Log, Decisions, Decisions, Decisions, Decisions, HOW, HOW, HOW (+26 more)
+Cohesion: 0.05
+Nodes (42): AI Video Studio — Session Log, Decisions, Decisions, Decisions, Decisions, Decisions, HOW, HOW (+34 more)
 
 ### Community 37 - "AI Video Studio — Decision Log"
-Cohesion: 0.09
-Nodes (21): 1. Repository Layout, 2. Design Principles, 3. Core Technology, 4. Voice-over → Images Processing Graph, 5. Manhwa / Webtoon Extraction Processing Graph, 6. Caption Processing Graph, 7. System Boundaries, 8. Design Decisions (WHY) (+13 more)
+Cohesion: 0.15
+Nodes (13): AI Video Studio — Decision Log, D-001 — Web-first editor shell (Vite + React + TypeScript), D-002 — Zustand + Zundo for state and undo/redo, D-003 — Project-local FFmpeg binary, D-004 — FFmpeg provider abstraction, D-005 — Curated vendor skills; reference clones kept local, D-006 — Commit `graphify-out/`; code-only pass for now, D-007 — Written session log + decisions log for continuity (+5 more)
 
-### Community 38 - "Implementation Plan: M1 completion — project save/load + timeline drag/trim UX"
+### Community 38 - "Implementation Plan: M2 Voice analysis (first slice)"
 Cohesion: 0.14
-Nodes (13): Architecture Decisions, Checkpoints, Implementation Plan: M1 completion — project save/load + timeline drag/trim UX, Open Questions, Overview, Risks and Mitigations, Task 1: Project serialization (`editor/project.ts`) — S, Task 2: `loadProject` store action — S (+5 more)
+Nodes (13): Checkpoints, Implementation Plan: M2 Voice analysis (first slice), Open Questions, Overview, Risks and Mitigations, Skills workflow (per AGENTS.md, applied per phase), Slice 1 — pause-segmentation (backend, pure, TDD), Slice 2 — transcribe-api contract (+5 more)
 
 ### Community 39 - "graphify reference: extra exports and benchmark"
 Cohesion: 0.22
 Nodes (8): graphify reference: extra exports and benchmark, Step 6b - Wiki (only if --wiki flag), Step 7 - Neo4j export (only if --neo4j or --neo4j-push flag), Step 7a - FalkorDB export (only if --falkordb or --falkordb-push flag), Step 7b - SVG export (only if --svg flag), Step 7c - GraphML export (only if --graphml flag), Step 7d - MCP server (only if --mcp flag), Step 8 - Token reduction benchmark (only if total_words > 5000)
 
 ### Community 40 - "AI Video Studio — Test Plan"
-Cohesion: 0.25
-Nodes (8): 1. Voice/Image Fixtures, 2. Manhwa Fixtures, 3. Editor / Timeline Tests, 4. Templates / Fonts Tests, 5. Persistence / Data Integrity, 6. Performance Sanity (Baseline Hardware), 7. Regression Policy, AI Video Studio — Test Plan
+Cohesion: 0.22
+Nodes (9): 1. Voice/Image Fixtures, 2. Manhwa Fixtures, 3. Editor / Timeline Tests, 4. Templates / Fonts Tests, 5.1 Voice-analysis verification so far, 5. Persistence / Data Integrity, 6. Performance Sanity (Baseline Hardware), 7. Regression Policy (+1 more)
 
 ### Community 41 - "AI Video Studio — UI Specification"
 Cohesion: 0.25
@@ -279,8 +291,8 @@ Cohesion: 0.50
 Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphify reference: incremental update and cluster-only
 
 ### Community 52 - "main.py"
-Cohesion: 0.09
-Nodes (44): Config, get_config(), _payload(), Resolve Lava Studio project-local configuration and paths., reset_config(), tool_versions(), ToolVersions, ApiError (+36 more)
+Cohesion: 0.08
+Nodes (50): Config, get_config(), _payload(), Resolve Lava Studio project-local configuration and paths., reset_config(), tool_versions(), ToolVersions, ApiError (+42 more)
 
 ### Community 53 - "test_render.py"
 Cohesion: 0.19
@@ -290,25 +302,77 @@ Nodes (11): Lava Studio media sidecar package., make_clip(), test_probe_reports_
 Cohesion: 0.33
 Nodes (5): API, Lava Studio — Backend (media sidecar), Layout, Run, Tests
 
+### Community 58 - "Task list"
+Cohesion: 0.50
+Nodes (3): M1 completion: project save/load + timeline drag/trim UX (closed 2026-09-12), M2 Voice analysis — first slice (active) — SPEC-voice-analysis, tasks/plan.md, Task list
+
+### Community 59 - "detect_pauses"
+Cohesion: 0.10
+Nodes (15): confidence_from_logprob(), detect_pauses(), Pause, Word, FakeTranscriber, Path, Segment, Transcriber (+7 more)
+
+### Community 60 - "editorStore.ts"
+Cohesion: 0.21
+Nodes (15): Asset, Clip, DEFAULT_TRACKS, TimelineModel, Track, TrackType, Transcript, TranscriptSegment (+7 more)
+
+### Community 61 - "ops.ts"
+Cohesion: 0.22
+Nodes (14): InspectorPanel(), TimelinePanel(), addClip(), ClipInput, createClip(), duplicateClip(), moveClip(), newId() (+6 more)
+
+### Community 62 - "TranscriptPanel.tsx"
+Cohesion: 0.18
+Nodes (13): attachPauses(), buildNodes(), confidenceLabel(), lowConfidence(), Node, TranscriptPanel(), TranscriptPause, TranscriptWord (+5 more)
+
+### Community 63 - "useEditorStore"
+Cohesion: 0.23
+Nodes (3): ClipBlock(), EditorActions, useEditorStore
+
+### Community 64 - "importer.ts"
+Cohesion: 0.22
+Nodes (10): kindOf(), MediaPanel(), AssetKind, AssetMeta, assetFiles, importFiles(), kindOf(), readImageMeta() (+2 more)
+
+### Community 65 - "App.tsx"
+Cohesion: 0.29
+Nodes (8): App(), formatTime(), PreviewPanel(), clipsAtTime(), getAssetFile(), getFFmpegProvider(), saveProjectToFile(), react
+
+### Community 66 - "Spec: Voice Analysis (M2 first slice)"
+Cohesion: 0.18
+Nodes (11): Boundaries, Capability Map, Code Style, Commands, Objective, Open Questions, Project Structure, Spec: Voice Analysis (M2 first slice) (+3 more)
+
+### Community 67 - "AI Video Studio — Architecture"
+Cohesion: 0.20
+Nodes (10): 1. Repository Layout, 2. Design Principles, 3. Core Technology, 4. Voice-over → Images Processing Graph, 5. Manhwa / Webtoon Extraction Processing Graph, 6. Caption Processing Graph, 7. System Boundaries, 8. Design Decisions (WHY) (+2 more)
+
+### Community 68 - "TrackRow.tsx"
+Cohesion: 0.46
+Nodes (4): DragMode, PX_PER_SECOND, TRACK_HEIGHT, TrackRow()
+
+### Community 69 - "voice.ts"
+Cohesion: 0.67
+Nodes (3): parseTranscript(), transcribeAsset(), VoiceError
+
+### Community 70 - ".prettierrc.json"
+Cohesion: 0.40
+Nodes (4): printWidth, semi, singleQuote, trailingComma
+
 ## Knowledge Gaps
-- **643 isolated node(s):** `$schema`, `plugin`, `lava-backend`, `$schema`, `plugins` (+638 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 706 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **671 isolated node(s):** `$schema`, `plugin`, `lava-backend`, `$schema`, `plugins` (+666 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 741 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **9 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `AI Video Studio — Session Log` connect `Session 2026-09-12 — Milestone 0 bootstrap + Milestone 1 media foundation` to `README.md`?**
-  _High betweenness centrality (0.009) - this node is a cross-community bridge._
-- **Why does `AI Video Studio — Product Specification` connect `AI Video Studio — Product Specification` to `README.md`?**
-  _High betweenness centrality (0.005) - this node is a cross-community bridge._
-- **Why does `AGENTS.md — AI Video Studio` connect `AGENTS.md — AI Video Studio` to `README.md`?**
-  _High betweenness centrality (0.005) - this node is a cross-community bridge._
+  _High betweenness centrality (0.008) - this node is a cross-community bridge._
+- **Why does `useEditorStore` connect `useEditorStore` to `importer.ts`, `App.tsx`, `TrackRow.tsx`, `editorStore.ts`, `ops.ts`, `TranscriptPanel.tsx`?**
+  _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **What connects `$schema`, `plugin`, `lava-backend` to the rest of the system?**
-  _643 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _671 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `package.json` be split into smaller, more focused modules?**
-  _Cohesion score 0.058823529411764705 - nodes in this community are weakly interconnected._
-- **Should `useEditorStore` be split into smaller, more focused modules?**
-  _Cohesion score 0.05177993527508091 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06060606060606061 - nodes in this community are weakly interconnected._
 - **Should `localDirs` be split into smaller, more focused modules?**
   _Cohesion score 0.09523809523809523 - nodes in this community are weakly interconnected._
+- **Should `compilerOptions` be split into smaller, more focused modules?**
+  _Cohesion score 0.1 - nodes in this community are weakly interconnected._
+- **Should `Worked example: Agent Teams for competing-hypothesis debugging` be split into smaller, more focused modules?**
+  _Cohesion score 0.0625 - nodes in this community are weakly interconnected._

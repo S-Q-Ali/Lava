@@ -192,3 +192,35 @@ Milestone 1 (media foundation) needed to reach "done": the model and rendering w
 
 ### Next step
 - M1 done → pick M2 (voice-over analysis: import narration audio, detect pauses, word timestamps) or M2-adjacent: audio mixing in render so voice/music/SFX actually reach the output. Candidates also include ripple-edit (M1 follow-up) when editing groups become annoying. Start sidecar (`./scripts/sidecar.sh`) for render/audio pre-checks.
+## Session 2026-09-12 — Session 5: M2 voice analysis (first slice)
+
+### Purpose (WHY)
+First differentiator's front half — turn narration audio into timed, segmented, editable content. The user picked faster-whisper for ASR and scoped the slice to text-edit-only transcripts (timing edits deferred). Plan-of-record lives in `docs/SPEC-voice-analysis.md`; capability map: pause-segmentation → transcribe-api → transcript-state → transcript-ui.
+
+### WHAT
+- **Slice 1 (transcribe_core)** — `Word`/`Pause` dataclasses, pause threshold 0.3s default, gap rounding, logprob→confidence. 12 unit tests.
+- **Slice 2 (transcribe-api)** — `POST /api/transcribe` (multipart `file` + optional `language`) via injectable `Transcriber`; `FakeTranscriber` for tests; response `{ text, language, segments[words], pauses }`; new errors `NO_FILE`/`TRANSCRIBE_FAILED`; tmp-file upload wire-up in `main.py` + `cache_dir` in config. 4 API tests. One real bug found: a test helper restored `app.state.transcriber` in a `finally` that ran *before* any request — dropped the restore; each test now sets its own transcriber.
+- **Slice 3 (real engine)** — Python env pinned to **3.12** (onnxruntime ships macOS x86_64 wheels only ≤ `cp312`), `numpy<2` (onnxruntime 1.17.3 ABI), `faster-whisper`. `WhisperTranscriber`: CPU, int8, model `tiny`, lazy `WhisperModel` with `download_root` → `models/whisper/` (gitignored), word timestamps on. Live e2e on generated audio: model downloaded, endpoint returned 200 with correct shape; real narration e2e (`say`-generated m4a) → 200, 16 words, confidence 0.13–0.99, one 0.3s pause.
+- **Slice 4 (state)** — `editor/types.ts` `Transcript*`; `editorStore` gains `transcripts: Record<assetId, Transcript>` (temporal — undoable), `setTranscript`, `updateTranscriptWord` (recomputes segment+full text); `services/voice.ts` client (`parseTranscript` normalizer + fetch); transient analysis status/errors in separate non-temporal `transcriptStore`; `project.ts` validates/persists optional `model.transcripts` (backward compatible, version stays 1).
+- **Slice 5 (UI)** — `TranscriptPanel` in the Inspector for audio clips: Analyze button (only when the in-session File exists), analyzing/error/empty states, inline word inputs (click-word seeks playhead), ⏸ pause chips, low-confidence dashed underscore, per-segment time+confidence meta. CSS in a new `.transcript-*` block using existing design tokens.
+
+### HOW
+- per-slice TDD: core math → API contract → real adapter → store → UI; each slice committed atomically (`c94a881`, `2299ab6`, `9ac6aab`, `26c7b3f`, slice-5 commit). Skills loaded at their slots: spec-driven-development, test-driven-development, api-and-interface-design, frontend-ui-engineering.
+- Two derived test fixes: shared module-level `model` was mutated by an earlier "malformed assets" test (fresh fixtures in new tests); a word-count mismatch in a transcript fixture (words now match text so recompute assertions hold).
+
+### Decisions
+- D-010 — faster-whisper (CPU int8, tiny default, project-local models), Python 3.12 + numpy<2 + onnxruntime pins. Locked.
+- D-011 — transcripts persist inside `model.transcripts`, project version stays 1. Locked.
+
+### Verify
+- Backend: 28 pytest pass. Frontend: 47 vitest pass, `tsc -b` build ok, oxlint 0 warnings. Live sidecar + faster-whisper e2e (synthetic + narration) verified.
+- Commits: `8abcd42` (spec+plan) · `c94a881` (core) · `2299ab6` (api) · `9ac6aab` (whisper) · `26c7b3f` (state) · slice-5 commit (UI) — docs/graph commit follows.
+
+### Limitations
+- `tiny` model quality is low for Urdu/Roman-Urdu narration (live test garbled text) — model-size knob exists; tuning is a documented open issue.
+- Transcript editing is text-only: no word moves/timing edits, no automatic re-segmentation/beat-splitting after an edit (deferred to M3).
+- Analyze needs the original File in-session (imported this session); reopening a saved project without media files can't re-analyze (nothing to upload). Same web limitation as D-009.
+- Tests skip the real model (deterministic fakes); a human in-browser pass over the word-click/seek and low-confidence styling still pending.
+
+### Next step
+- Review the full M2 diff (code-review-and-quality), then push; M3 starts semantic beat segmentation (split narration into visual beats with timing), then image matching. Also on the radar: model-size tuning (base) for Urdu quality.

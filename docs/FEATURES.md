@@ -26,11 +26,14 @@ This document is the definitive feature inventory. Nothing is complete until it 
 ## 2. Voice / Audio
 
 - Audio decode and analysis.
-- Multilingual speech-to-text (English, Urdu, Roman Urdu, mixed-language).
-- Word and sentence timestamps.
-- Pause detection and timing boundaries.
-- Narration segmentation into semantic visual beats.
-- Editable transcript.
+- Multilingual speech-to-text via local faster-whisper (CPU, int8 quantized, `tiny` default;
+  models cached inside the project's `models/` folder). Engine runs in the media sidecar.
+- Word and sentence timestamps (word-level timestamps enabled).
+- Pause detection with a default 0.3s gap threshold; pauses exposed as `{start, end, gap}`.
+- Narrator-agnostic segment grouping (whisper segments); per-word + per-segment confidence.
+- Editable transcript — word-text edits in the editor are undoable and persisted in the project file
+  (optional `model.transcripts` key, project version unchanged).
+- Narration segmentation into semantic visual beats. *(deferred to M3)*
 
 ## 3. Semantic Image Matching
 
