@@ -47,9 +47,10 @@ Lava/  (AI-VIDEO-STUDIO)
 
 | Concern | Technology |
 | --- | --- |
-| Media encoding/muxing | FFmpeg |
+| Media encoding/muxing | FFmpeg (via the local media sidecar — `backend/`, HTTP) |
 | Computer vision / image processing | OpenCV (not described as an AI model) |
 | Frontend shell | Vite + React (web-first; Tauri/native shell planned at Milestone 10) |
+| Media sidecar API | FastAPI (probe + render over HTTP, project-local `cache/backend/`) |
 | Voice analysis | Speech-to-text with word/sentence timestamps (multilingual) |
 | Semantic matching | Embeddings/features + scoring heuristics |
 | Knowledge graph | Graphify (project-scoped) |
@@ -153,5 +154,17 @@ Rationale and alternatives for the locked choices live in [DECISIONS.md](DECISIO
 | D-005 Curated skills in-repo, vendor clones gitignored | Version control the operating surface, not 18 MB of re-clonable repos |
 | D-006 Commit graphify-out, code-only pass | Durable codebase map for cold sessions; semantic pass needs an LLM key |
 | D-007 Session log + decisions log | Compaction/fresh sessions resume from written records, not chat memory |
+| D-008 Media sidecar HTTP API (FastAPI) | Browsers cannot run FFmpeg; a localhost HTTP contract keeps the web shell honest |
 
-Current gaps (honest state): `backend/` is empty — FFmpeg probe/render sidecar not started; project save/load and timeline drag/trim UX not implemented.
+## 9. Media Sidecar API
+
+The `backend/` service exposes the FFmpeg capability the browser lacks. Contract (all errors are `{ "error": { "code", "message" } }`):
+
+- `GET /api/health` — sidecar + FFmpeg/FFprobe versions.
+- `POST /api/probe` — `{ "path" }` → media metadata (duration, streams, size).
+- `POST /api/render` — multipart upload (`files` + JSON `clips` `[{ fileName, start, duration }]` + JSON `settings` `{ width, height, fps }`) → `mp4` in `cache/backend/renders/`.
+- `GET /api/files/{jobId}` — serves the rendered `mp4` for playback.
+
+Uploads/renders live under project-local `cache/backend/` (gitignored). The frontend's `HttpFFmpegProvider` (`frontend/src/services/ffmpeg.ts`) auto-detects the sidecar via `GET /api/health` and falls back to the unavailable provider when it is not running.
+
+Current gaps (honest state): `backend/` hosts the media sidecar only — ASR, matching, caption and Manhwa pipelines are not implemented; project save/load and timeline drag/trim UX are pending.

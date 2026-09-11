@@ -120,3 +120,42 @@ User asked for a durable session-history file tracking WHAT/HOW/WHY, the same fa
 
 ### Next step
 - Resume M1: `backend/` FFmpeg sidecar (probe/render, project save/load) or M2 voice analysis. Both build on the committed editor shell; see Session 1 above, `DECISIONS.md`, and `graphify query` for context.
+
+---
+
+## Session 2026-09-12 — Session 3: media sidecar (real rendering)
+
+### Purpose (WHY)
+M1 was the obvious next slice: the editor had the provider abstraction but no actual encode path. This session built `backend/` (FastAPI sidecar) so the web editor can genuinely render image/video clips to `mp4` with the project-local FFmpeg — the honest first step of "a real editor with rendering", reusing the abstraction from D-004.
+
+### WHAT
+- **`backend/`** — new FastAPI sidecar:
+  - `pyproject.toml` (fastapi/uvicorn/pydantic/python-multipart; pytest+httpx dev; hatchling build backend).
+  - `src/lava_backend/config.py` — resolves `studio.config.json` → local-first dirs + FFmpeg bin + host/port.
+  - `src/lava_backend/errors.py` — single error shape `{ "error": { "code", "message" } }`.
+  - `src/lava_backend/media.py` — ffprobe/ffmpeg subprocess helpers; render builds a filter graph (fps→scale→pad→setpts) + concat.
+  - `src/lava_backend/main.py` — routes `GET /api/health`, `POST /api/probe`, `POST /api/render` (multipart upload → `mp4` in `cache/backend/renders/`), `GET /api/files/{jobId}`.
+  - `tests/` — health (2), probe (4), render (6): single image, concat, serving, file-count mismatch, invalid duration, missing job.
+- **`frontend/`** — `src/services/ffmpeg.ts` rewritten: typed `RenderInput`/`RenderResult`, `HttpFFmpegProvider` (FormData + JSON), auto-detection via `getFFmpegProvider()` with unavailable fallback, `resetFFmpegProvider()` for tests. Importer keeps a `File` registry (`registerAssetFile`/`getAssetFile`) so render can upload the original bytes. `PreviewPanel` gained a working **Render** button (busy/error/success video states).
+- **Scripts** — `scripts/sidecar.sh` runs the sidecar (`PORT` overridable); `backend/README.md` documents run + API.
+- **Docs** — ARCHITECTURE (tech table, §8 D-008, new §9 sidecar API), FEATURES (media foundation status), ROADMAP (M1 checkboxes + status line), DECISIONS (D-008 ADR), README status.
+
+### HOW
+- FastAPI TestClient for integration tests; real FFmpeg binaries exercised against lavfi-generated test images.
+- Multipart render: browser has no file paths, so clips reference uploaded file names; render pairs files↔clips positionally; `src/` layout needed a hatchling `[build-system]` or uv couldn't editable-install the package.
+- Errors surfaced to the UI with actionable copy; undetermined state avoided.
+
+### Decisions
+- D-008 — Media sidecar HTTP API (FastAPI) locked. Renders write under project-local `cache/backend/` (gitignored); single error contract everywhere.
+
+### Verify
+- Backend pytest: 12 passed / 0 failed · Frontend vitest: 24 passed / 0 failed · frontend build ok · oxlint 0/0 · Live smoke test: sidecar health + multipart render → valid MP4 (`file` = ISO Media/MP4) served with HTTP 200 · 13 commits on `main` since session 1.
+
+### Limitations
+- Render covers image/video tracks only — no audio mixing (voice/music/SFX) yet.
+- No project save/load to disk; timeline drag/trim UX pending.
+- Sidecar must be running for `Render`; detection auto-falls back to an explanatory message otherwise.
+- Uploads accumulate in `cache/backend/` (no cleanup/GC yet).
+
+### Next step
+- M1 completion: project save/load to disk (project JSON + asset paths) and timeline drag/trim UX; then decide M2 (voice analysis) vs early audio mixing in render. Start the sidecar with `./scripts/sidecar.sh` for manual checks.

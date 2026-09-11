@@ -16,12 +16,13 @@ Definition of done for ANY milestone installments within it: implementation exis
 ## Milestone 1 — Media foundation
 - [x] Asset import (web importer: images, video, audio + metadata)
 - [x] Project model (editor store with undo/redo)
-- [x] FFmpeg wrapper (provider abstraction; web stub — local encode sidecar pending)
-- [x] Preview (image/video/audio at playhead)
+- [x] FFmpeg provider (web HTTP → `backend/` sidecar renders images/videos to `mp4`)
+- [x] Preview (image/video/audio at playhead; render button produces a real output video)
 - [x] Timeline skeleton (7 tracks, clips, playhead, split/delete/select)
+- [x] FFmpeg probe/render via local media sidecar (`backend/`, FastAPI + project-local FFmpeg)
 - [ ] Timeline editing UX (drag-move, drag-trim, ripple)
-- [ ] FFmpeg probe/render via local sidecar (Tauri/Rust or Python backend)
 - [ ] Project save/load to disk
+- [ ] Audio mixing in render (voice/music/SFX tracks; currently image/video tracks render)
 
 ## Milestone 2 — Voice analysis
 - ASR
@@ -92,4 +93,4 @@ Definition of done for ANY milestone installments within it: implementation exis
 - 🔄 In progress
 - ✅ Done
 
-Current status: Milestone 0 done. Milestone 1 in progress (first slice shipped: web editor shell with import, timeline, preview and undo/redo).
+Current status: Milestone 0 done. Milestone 1 mostly done — image/video rendering now works through the local media sidecar; remaining: timeline drag/trim UX, project save/load, and audio-track mixing in render.

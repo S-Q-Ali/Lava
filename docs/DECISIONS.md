@@ -67,6 +67,15 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
 - **Alternatives considered**: Relying on ROADMAP checkboxes only (loses rationale and detail); in-memory handoff (dies with the session).
 - **Status**: Locked — active policy.
 
+## D-008 — Media sidecar HTTP API (FastAPI)
+
+- **Date**: 2026-09-12
+- **WHAT**: `backend/` is a FastAPI service exposing `GET /api/health`, `POST /api/probe`, `POST /api/render` (multipart upload of media files + JSON clips/settings) and `GET /api/files/{jobId}` (rendered `mp4`). The frontend's `HttpFFmpegProvider` auto-detects it and falls back to an unavailable provider.
+- **WHY**: Browsers cannot run FFmpeg, but the spec requires the editor to be a real editor with rendering. A localhost HTTP contract gives the web shell honest rendering (images/videos → `mp4`) without a native shell, and the same contract can back a Tauri shell later.
+- **HOW**: Multipart render keeps media bytes on the project-local `cache/backend/`; ffmpeg filter graph (fps→scale→pad→trim→setpts→concat) built in `media.py`; single error shape `{ "error": { "code", "message" } }` via a custom exception handler; `python-multipart` for form parsing; pytest + FastAPI TestClient suite.
+- **Alternatives considered**: Tauri/Rust sidecar (no toolchain yet); Electron (no benefit on this plan); calling FFmpeg from the browser (impossible); WebAssembly builds (immature for full FFmpeg).
+- **Status**: Locked for the media slice; ASR/matching/caption/Manhwa capabilities will extend the same service or add sibling services.
+
 ---
 
 ## Index of decisions
@@ -80,3 +89,4 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
 | D-005 | Curated skills, vendor clones gitignored | Locked |
 | D-006 | Commit graphify-out; code-only pass | Locked |
 | D-007 | Session log + decisions log | Locked |
+| D-008 | Media sidecar HTTP API (FastAPI) | Locked |

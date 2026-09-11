@@ -12,12 +12,14 @@ Local-first professional AI Video Studio. A real editing tool that happens to ha
 
 ## Current status
 
-Milestone 0 (repository bootstrap) is done; Milestone 1 (media foundation) is in progress with a working web editor shell:
+Milestone 0 (repository bootstrap) is done; Milestone 1 (media foundation) is mostly done with a working editor and real rendering:
 
 - Vite + React + TypeScript editor in `frontend/` with the spec layout: left media panel, center preview, bottom timeline, right inspector.
 - Timeline model with 7 core tracks, clips, playhead, split/delete/select, and undo/redo (Zustand + Zundo).
 - Web media importer (images, video, audio with metadata) that drops imported assets onto the timeline.
-- Project-local FFmpeg bundled in `tools/ffmpeg/bin/`; a provider abstraction exists but rendering/probing needs a native sidecar (planned: Tauri/Rust or Python backend).
+- Local media sidecar (`backend/`, FastAPI) + project-local FFmpeg: `POST /api/render` turns image/video clips into a real `mp4`; `PreviewPanel > Render` shows the output. Start it with `./scripts/sidecar.sh`.
+
+Remaining for Milestone 1: timeline drag/trim UX, project save/load to disk, and audio-track mixing in render.
 
 Details: [roadmap](docs/ROADMAP.md).
 
