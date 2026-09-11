@@ -19,9 +19,10 @@ Definition of done for ANY milestone installments within it: implementation exis
 - [x] FFmpeg provider (web HTTP → `backend/` sidecar renders images/videos to `mp4`)
 - [x] Preview (image/video/audio at playhead; render button produces a real output video)
 - [x] Timeline skeleton (7 tracks, clips, playhead, split/delete/select)
+- [x] Timeline editing UX — drag-move and edge-trim on clips (one undo step per gesture); ripple-edit still open
 - [x] FFmpeg probe/render via local media sidecar (`backend/`, FastAPI + project-local FFmpeg)
-- [ ] Timeline editing UX (drag-move, drag-trim, ripple)
-- [ ] Project save/load to disk
+- [x] Project save/load to disk (versioned `lava-studio` JSON via topbar Save/Open)
+- [ ] Ripple editing + cross-track clip drag
 - [ ] Audio mixing in render (voice/music/SFX tracks; currently image/video tracks render)
 
 ## Milestone 2 — Voice analysis
@@ -93,4 +94,4 @@ Definition of done for ANY milestone installments within it: implementation exis
 - 🔄 In progress
 - ✅ Done
 
-Current status: Milestone 0 done. Milestone 1 mostly done — image/video rendering now works through the local media sidecar; remaining: timeline drag/trim UX, project save/load, and audio-track mixing in render.
+Current status: Milestone 0 done. Milestone 1 done — web editor imports media, edits clips (drag/trim/split/delete, undo/redo), saves/loads project files, and renders image/video tracks to `mp4` through the local media sidecar. Open M1 follow-ups: ripple editing, cross-track drag, audio mixing in render.

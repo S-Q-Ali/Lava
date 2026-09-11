@@ -17,9 +17,10 @@ This document is the definitive feature inventory. Nothing is complete until it 
 ## 1. Media Foundation
 
 - Asset import (images, audio, video) — web importer ships.
-- Project model and save/load — model + undo/redo ships; disk save/load pending.
+- Project model and save/load — model + undo/redo ships; versioned project files (`lava-studio` JSON) Save/Open from the topbar. Media bytes stay session-scoped in a browser; the file stores structure + asset metadata (Tauri will persist real paths).
 - Original media preservation (Manhwa source image kept intact).
 - Proxy/preview generation for performance on baseline hardware.
+- Timeline editing — clips split/delete/select, drag-move and edge-trim gestures (one undo step each); ripple editing and cross-track drag are open.
 - FFmpeg wrapper — ships as a provider abstraction; the local media sidecar (`backend/`, FastAPI) renders image/video tracks to `mp4`. Audio mixing and full muxing pending.
 
 ## 2. Voice / Audio

@@ -78,6 +78,17 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
 
 ---
 
+## D-009 — Versioned project file format (lava-studio JSON)
+
+- **Date**: 2026-09-12
+- **WHAT**: Project save/load exports a `.lava.json` envelope containing `app: 'lava-studio'`, `projectVersion: 1`, `savedAt` ISO timestamp, and a serialized `TimelineModel` (tracks, assets, clips, playhead, selection). `parseProjectJson` validates the envelope shape, rejects unknown versions or malformed contents with clear messages, and throws a `ProjectError`. The file is downloaded from the topbar "Save"; restored with "Open". Asset media bytes stay session-scoped (blob URLs) in a browser; the file stores structure and metadata. Tauri will persist real file paths later.
+- **WHY**: Web-first M1 needs a durable save format without native filesystem access. Keeping it explicit and validated prevents silent corruption and makes future migration to a richer binary or Tauri-native format straightforward.
+- **HOW**: Pure `serializeProject`/`parseProjectJson` in `editor/project.ts`; `saveProjectToFile`/`readProjectFromFile` helpers use Blob download and `FileReader`. Validation rejects bad JSON, unknown `projectVersion`, wrong `app`, and malformed assets/clips with specific `ProjectError` messages (testable via vitest).
+- **Alternatives considered**: raw `TimelineModel` JSON (no envelope/versioning); IndexedDB for assets (over-engineered for M1); binary protobuf (no benefit yet).
+- **Status**: Locked for the editor; assets will expand if media persistence or delta-based project files are added.
+
+---
+
 ## Index of decisions
 
 | ID | Decision | Status |
@@ -90,3 +101,4 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
 | D-006 | Commit graphify-out; code-only pass | Locked |
 | D-007 | Session log + decisions log | Locked |
 | D-008 | Media sidecar HTTP API (FastAPI) | Locked |
+| D-009 | Versioned project file format (lava-studio JSON) | Locked |

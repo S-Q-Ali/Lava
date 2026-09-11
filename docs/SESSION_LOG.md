@@ -159,3 +159,36 @@ M1 was the obvious next slice: the editor had the provider abstraction but no ac
 
 ### Next step
 - M1 completion: project save/load to disk (project JSON + asset paths) and timeline drag/trim UX; then decide M2 (voice analysis) vs early audio mixing in render. Start the sidecar with `./scripts/sidecar.sh` for manual checks.
+
+---
+
+## Session 2026-09-12 — Session 4: M1 completion (save/load + clip editing)
+
+### Purpose (WHY)
+Milestone 1 (media foundation) needed to reach "done": the model and rendering were shipped, but the two remaining gaps — persisting a project and direct clip editing — are what make it feel like an editor rather than a demo. This session closed both, which also de-risks M2 (voice analysis) because projects are now durable.
+
+### WHAT
+- **Project files** — `editor/project.ts`: versioned envelope (`app: 'lava-studio'`, `projectVersion: 1`, `savedAt`, full `TimelineModel`); `serializeProject`/`toProjectJson`/`parseProjectJson` validate shape and throw `ProjectError` with clear messages. `services/projectIO.ts`: Blob download + `FileReader` helpers. Topbar got **Save** (downloads `lava-project-<ts>.lava.json`) and **Open** (hidden input + parse + load; corrupt files alert and never clobber the open project).
+- **loadProject** — new store action hydrates tracks/assets/clips/playhead/selection and clears undo history. Fixed a latent zundo bug: `clear()` then `set()` records the pre-load state as an undo target, so `reset`/`loadProject` now wrap the set in `pause()`/`resume()` (`install` helper).
+- **Clip editing gestures** — `ClipBlock` gained drag-move (grab body) and edge-trim (left/right handles on the selected clip). Gestures live-update while dragging and commit as exactly one undo step via the same zundo `pause`/`resume` pattern. Trims clamp to a 0.1 s minimum and to the source asset duration when known (asset meta wiring through `TimelinePanel` → `TrackRow` → `ClipBlock`).
+- **CSS** — handles styled, `ew-resize` cursor, `dragging` visual state; the dragging flag moved from a ref to `useState` (oxlint: refs must not be read during render).
+
+### HOW
+- TDD for `project.ts` (9 tests) and `loadProject` (2 tests): wrote tests first, tripped on two real design bugs — the zundo clear-then-set history leak, and an error message that didn't match the exact `lava-studio` token grep expected.
+- Gesture math uses the gesture-start snapshot (`baseStart`/`baseDuration`) plus live pointer delta so repeated `set`s don't accumulate drift; when paused, intermediate sets update state but never pollute history.
+- Vite dev-server smoke: booted server, fetched `index` + all five touched modules (200 = successful transform).
+
+### Decisions
+- D-009 — Versioned `lava-studio` JSON project format, locked. Documented honest web limitation: media bytes are session-scoped (blob URLs); the file persists structure + metadata; Tauri will persist real paths.
+
+### Verify
+- Frontend: 35 tests pass (24 prior + 9 project + 2 loadProject) · build ok · oxlint 0/0 · Vite transform smoke 200s.
+- Commits on `main`: `9f9c65e` (serialization) · `fb0c04a` (loadProject) · `7bbcfb2` (save/open UI) · `d1695a9` (drag-move + trim gestures) — plus this session's docs/graph commit to follow.
+
+### Limitations
+- Drag gestures are visual-editing only, no ripple: moving/trimming a clip leaves following clips in place; cross-track drag not implemented (horizontal move within one track only).
+- Project files do not embed media bytes in this web build — reopening a project in a fresh session restores structure but not the audio/video/images (documented in D-009).
+- Pointer-drag needs a human in-browser pass to confirm feel (logic is unit-covered; no component test harness installed).
+
+### Next step
+- M1 done → pick M2 (voice-over analysis: import narration audio, detect pauses, word timestamps) or M2-adjacent: audio mixing in render so voice/music/SFX actually reach the output. Candidates also include ripple-edit (M1 follow-up) when editing groups become annoying. Start sidecar (`./scripts/sidecar.sh`) for render/audio pre-checks.
