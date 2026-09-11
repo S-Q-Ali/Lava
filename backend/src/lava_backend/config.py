@@ -28,6 +28,7 @@ class Config:
     cache_dir: Path
     uploads_dir: Path
     renders_dir: Path
+    models_dir: Path
     max_renders: int = 12
 
     @classmethod
@@ -51,6 +52,7 @@ class Config:
             cache_dir=cache,
             uploads_dir=cache / "uploads",
             renders_dir=cache / "renders",
+            models_dir=root / "models" / "whisper",
         )
 
 

@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from pathlib import Path
 
 from lava_backend.transcribe_core import Word
 
@@ -34,6 +35,64 @@ class Transcription:
 class Transcriber:
     def transcribe(self, path: str, language: str | None = None) -> Transcription:
         raise NotImplementedError
+
+
+class WhisperTranscriber(Transcriber):
+    def __init__(
+        self,
+        model_size: str = "tiny",
+        device: str = "cpu",
+        compute_type: str = "int8",
+        download_root: Path | None = None,
+    ) -> None:
+        self.model_size = model_size
+        self.device = device
+        self.compute_type = compute_type
+        self.download_root = download_root
+        self._model = None
+
+    def _ensure_model(self):
+        if self._model is None:
+            from faster_whisper import WhisperModel
+
+            self._model = WhisperModel(
+                self.model_size,
+                device=self.device,
+                compute_type=self.compute_type,
+                download_root=str(self.download_root) if self.download_root else None,
+            )
+        return self._model
+
+    def transcribe(self, path: str, language: str | None = None) -> Transcription:
+        model = self._ensure_model()
+        segment_iter, info = model.transcribe(
+            path,
+            language=language,
+            word_timestamps=True,
+        )
+        segments: list[Segment] = []
+        for index, segment in enumerate(segment_iter):
+            words: list[dict] = []
+            for word in segment.words or []:
+                words.append(
+                    {
+                        "word": word.word,
+                        "start": word.start,
+                        "end": word.end,
+                        "confidence": float(getattr(word, "probability", 1.0)),
+                    }
+                )
+            segments.append(
+                Segment(
+                    id=index,
+                    text=segment.text,
+                    start=segment.start,
+                    end=segment.end,
+                    avg_logprob=segment.avg_logprob,
+                    words=words,
+                )
+            )
+        return Transcription(language=str(info.language), segments=segments)
 
 
 class FakeTranscriber(Transcriber):

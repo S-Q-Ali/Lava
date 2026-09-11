@@ -17,13 +17,13 @@ from .config import get_config, tool_versions
 from .errors import ApiError, error_response
 from .media import RenderClip, RenderSettings, probe, render
 from .transcribe import router as transcribe_router
-from .transcribers import FakeTranscriber
+from .transcribers import WhisperTranscriber
 
 app = FastAPI(title="Lava Studio Media Sidecar", version="0.1.0")
 
 app.state.tmp_dir = get_config().cache_dir / "tmp"
 app.state.tmp_dir.mkdir(parents=True, exist_ok=True)
-app.state.transcriber = FakeTranscriber()
+app.state.transcriber = WhisperTranscriber(download_root=get_config().models_dir)
 
 app.add_middleware(
     CORSMiddleware,

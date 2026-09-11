@@ -12,6 +12,9 @@ dependencies = [
   "uvicorn>=0.30",
   "pydantic>=2.7",
   "python-multipart>=0.0.9",
+  "onnxruntime==1.17.3 ; platform_machine == 'x86_64' and sys_platform == 'darwin'",
+  "faster-whisper>=1.2.1",
+  "numpy<2",
 ]
 
 [project.optional-dependencies]
