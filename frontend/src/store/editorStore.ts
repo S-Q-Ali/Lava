@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { temporal } from 'zundo'
-import type { Asset, Clip, Track } from '../editor/types'
+import type { Asset, Clip, TimelineModel, Track } from '../editor/types'
 import { DEFAULT_TRACKS } from '../editor/types'
 import * as ops from '../editor/ops'
 
@@ -27,6 +27,7 @@ interface EditorActions {
   undo(): void
   redo(): void
   reset(): void
+  loadProject(model: TimelineModel): void
 }
 
 export type EditorState = EditorBase & EditorActions
@@ -43,9 +44,17 @@ function initialState(): EditorBase {
 
 export const useEditorStore = create<EditorState>()(
   temporal(
-    (set) => ({
-      ...initialState(),
-      addAsset: (asset) => set((s) => ({ assets: [...s.assets, asset] })),
+    (set) => {
+      const install = (state: EditorBase) => {
+        const temporalStore = useEditorStore.temporal.getState()
+        temporalStore.clear()
+        temporalStore.pause()
+        set(state)
+        temporalStore.resume()
+      }
+      return {
+        ...initialState(),
+        addAsset: (asset) => set((s) => ({ assets: [...s.assets, asset] })),
       removeAsset: (id) =>
         set((s) => ({
           assets: s.assets.filter((a) => a.id !== id),
@@ -76,11 +85,17 @@ export const useEditorStore = create<EditorState>()(
       selectClip: (id) => set({ selectedClipId: id }),
       undo: (): void => useEditorStore.temporal.getState().undo(),
       redo: (): void => useEditorStore.temporal.getState().redo(),
-      reset: () => {
-        useEditorStore.temporal.getState().clear()
-        set({ ...initialState() })
-      },
-    }),
+      reset: () => install(initialState()),
+      loadProject: (model) =>
+        install({
+          tracks: model.tracks,
+          assets: model.assets,
+          clips: model.clips,
+          playhead: model.playhead,
+          selectedClipId: model.selectedClipId,
+        }),
+      }
+    },
     {
       limit: 100,
       partialize: (s) => ({

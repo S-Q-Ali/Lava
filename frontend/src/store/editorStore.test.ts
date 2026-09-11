@@ -1,6 +1,7 @@
 import { describe, expect, it, beforeEach } from 'vitest'
 import { useEditorStore } from './editorStore'
-import type { Asset } from '../editor/types'
+import type { Asset, TimelineModel } from '../editor/types'
+import { DEFAULT_TRACKS } from '../editor/types'
 
 const imageAsset: Asset = {
   id: 'asset-img',
@@ -79,6 +80,52 @@ describe('editorStore timeline actions', () => {
 
     useEditorStore.getState().removeAsset(imageAsset.id)
     expect(useEditorStore.getState().clips).toHaveLength(0)
+    expect(useEditorStore.getState().assets).toHaveLength(0)
+  })
+})
+
+describe('editorStore loadProject', () => {
+  it('hydrates state and drops previous content', () => {
+    const s = useEditorStore.getState()
+    s.addAsset(imageAsset)
+    s.addClip({
+      trackId: 'track-image',
+      assetId: imageAsset.id,
+      name: imageAsset.name,
+      duration: 6,
+    })
+
+    const loaded: TimelineModel = {
+      tracks: [{ id: 'track-video', type: 'video', name: 'video' }],
+      assets: [imageAsset],
+      clips: [
+        { id: 'clip-a', trackId: 'track-video', assetId: imageAsset.id, name: 'scene.png', start: 2, duration: 4 },
+      ],
+      playhead: 3,
+      selectedClipId: 'clip-a',
+    }
+
+    useEditorStore.getState().loadProject(loaded)
+
+    const st = useEditorStore.getState()
+    expect(st.tracks).toEqual(loaded.tracks)
+    expect(st.assets).toEqual([imageAsset])
+    expect(st.clips).toEqual(loaded.clips)
+    expect(st.playhead).toBe(3)
+    expect(st.selectedClipId).toBe('clip-a')
+  })
+
+  it('clears undo history so undo after load does nothing', () => {
+    const s = useEditorStore.getState()
+    s.addAsset(imageAsset)
+    useEditorStore.getState().loadProject({
+      tracks: DEFAULT_TRACKS,
+      assets: [],
+      clips: [],
+      playhead: 0,
+      selectedClipId: null,
+    })
+    useEditorStore.getState().undo()
     expect(useEditorStore.getState().assets).toHaveLength(0)
   })
 })
