@@ -1,9 +1,9 @@
 {
   ".opencode/opencode.json": {
-    "mtime": 1789153605.0732718,
-    "seen": 1789154456.494875,
-    "ast_hash": "abcc8b9dcd80bca5f9dde6d9f0c3ae79",
-    "semantic_hash": "abcc8b9dcd80bca5f9dde6d9f0c3ae79"
+    "mtime": 1789154613.8306925,
+    "seen": 1789155582.408538,
+    "ast_hash": "e5f74d14a81702b55bdf53b33ec991d7",
+    "semantic_hash": ""
   },
   ".opencode/plugins/graphify.js": {
     "mtime": 1789153605.072948,
@@ -154,5 +154,263 @@
     "seen": 1789154456.494983,
     "ast_hash": "b807fd0509c4a7cde554e56bdd881a60",
     "semantic_hash": "b807fd0509c4a7cde554e56bdd881a60"
+  },
+  ".opencode/references/accessibility-checklist.md": {
+    "mtime": 1789153457.5938706,
+    "seen": 1789155582.408594,
+    "ast_hash": "48ca786064dea786af8a1d15579bc87c",
+    "semantic_hash": ""
+  },
+  ".opencode/references/definition-of-done.md": {
+    "mtime": 1789153457.5947165,
+    "seen": 1789155582.408596,
+    "ast_hash": "ef3cfa41831aad4e76c82b5bc8e4b174",
+    "semantic_hash": ""
+  },
+  ".opencode/references/observability-checklist.md": {
+    "mtime": 1789153457.5891256,
+    "seen": 1789155582.408598,
+    "ast_hash": "8347c542e050628df44ed94434148edd",
+    "semantic_hash": ""
+  },
+  ".opencode/references/orchestration-patterns.md": {
+    "mtime": 1789153457.5909166,
+    "seen": 1789155582.4085991,
+    "ast_hash": "17e700500bfe71c82e43f779ad56aa9e",
+    "semantic_hash": ""
+  },
+  ".opencode/references/performance-checklist.md": {
+    "mtime": 1789153457.5900037,
+    "seen": 1789155582.4086,
+    "ast_hash": "115c4782ea0e3fa7b92b843ecbe9995f",
+    "semantic_hash": ""
+  },
+  ".opencode/references/security-checklist.md": {
+    "mtime": 1789153457.59303,
+    "seen": 1789155582.408602,
+    "ast_hash": "a934729eb697a034514400e485c450ce",
+    "semantic_hash": ""
+  },
+  ".opencode/references/testing-patterns.md": {
+    "mtime": 1789153457.5920157,
+    "seen": 1789155582.408603,
+    "ast_hash": "f5f74035a84f71dc01484520e102e154",
+    "semantic_hash": ""
+  },
+  ".opencode/skills/api-and-interface-design/SKILL.md": {
+    "mtime": 1789153457.5493822,
+    "seen": 1789155582.4086049,
+    "ast_hash": "a890974341086aebb1972fd995b53945",
+    "semantic_hash": ""
+  },
+  ".opencode/skills/code-review-and-quality/SKILL.md": {
+    "mtime": 1789153457.5545988,
+    "seen": 1789155582.408606,
+    "ast_hash": "dc260b644bba88dc8a1bfcc3f01a839e",
+    "semantic_hash": ""
+  },
+  ".opencode/skills/code-simplification/SKILL.md": {
+    "mtime": 1789153457.582608,
+    "seen": 1789155582.408607,
+    "ast_hash": "239dbb2a2f3caca0de086f7e0e0ebb03",
+    "semantic_hash": ""
+  },
+  ".opencode/skills/constraint-driven-development/SKILL.md": {
+    "mtime": 1789153457.5772848,
+    "seen": 1789155582.408608,
+    "ast_hash": "99c5a737188665e5fb5a96d7edee4f08",
+    "semantic_hash": ""
+  },
+  ".opencode/skills/constraint-driven-development/references/floor-guard.md": {
+    "mtime": 1789153457.5764105,
+    "seen": 1789155582.408609,
+    "ast_hash": "327d07d19f50aeec50dc748fe945a292",
+    "semantic_hash": ""
+  },
+  ".opencode/skills/debugging-and-error-recovery/SKILL.md": {
+    "mtime": 1789153457.5706892,
+    "seen": 1789155582.408611,
+    "ast_hash": "e906de3fe5071e70402b2705d3794a34",
+    "semantic_hash": ""
+  },
+  ".opencode/skills/documentation-and-adrs/SKILL.md": {
+    "mtime": 1789153457.565199,
+    "seen": 1789155582.408612,
+    "ast_hash": "9c74a0348a7f4a928f779e27dc52446d",
+    "semantic_hash": ""
+  },
+  ".opencode/skills/frontend-ui-engineering/SKILL.md": {
+    "mtime": 1789153457.5438917,
+    "seen": 1789155582.4086132,
+    "ast_hash": "632c501a0962adc45d9bee6dfed6038a",
+    "semantic_hash": ""
+  },
+  ".opencode/skills/git-workflow-and-versioning/SKILL.md": {
+    "mtime": 1789153457.5594416,
+    "seen": 1789155582.4086149,
+    "ast_hash": "6257ade8b2491231a0a2ec068aa8815f",
+    "semantic_hash": ""
+  },
+  ".opencode/skills/graphify/SKILL.md": {
+    "mtime": 1789153605.070524,
+    "seen": 1789155582.4086158,
+    "ast_hash": "2e9858a59406dd2af786cf4cb74bc610",
+    "semantic_hash": ""
+  },
+  ".opencode/skills/graphify/references/add-watch.md": {
+    "mtime": 1789153582.2867467,
+    "seen": 1789155582.408618,
+    "ast_hash": "d59d027fe449f06aa03905a01184e779",
+    "semantic_hash": ""
+  },
+  ".opencode/skills/graphify/references/exports.md": {
+    "mtime": 1789153582.28691,
+    "seen": 1789155582.40862,
+    "ast_hash": "9da2a2152e60a22f07f05fed5158f287",
+    "semantic_hash": ""
+  },
+  ".opencode/skills/graphify/references/extraction-spec.md": {
+    "mtime": 1789153582.2871604,
+    "seen": 1789155582.408621,
+    "ast_hash": "42fef56a01698118f7fd722acdadea34",
+    "semantic_hash": ""
+  },
+  ".opencode/skills/graphify/references/github-and-merge.md": {
+    "mtime": 1789153582.2873192,
+    "seen": 1789155582.408622,
+    "ast_hash": "cde13df085e4c492aeb7ba298a996d0d",
+    "semantic_hash": ""
+  },
+  ".opencode/skills/graphify/references/hooks.md": {
+    "mtime": 1789153582.287463,
+    "seen": 1789155582.4086242,
+    "ast_hash": "3f545db6ce646650bb9de588f5512a27",
+    "semantic_hash": ""
+  },
+  ".opencode/skills/graphify/references/query.md": {
+    "mtime": 1789153582.365837,
+    "seen": 1789155582.408625,
+    "ast_hash": "3c46f8ad006874260614ed8657d02307",
+    "semantic_hash": ""
+  },
+  ".opencode/skills/graphify/references/transcribe.md": {
+    "mtime": 1789153582.366112,
+    "seen": 1789155582.4086258,
+    "ast_hash": "67b6a5fa6c0974e18f60db9f8932fbd8",
+    "semantic_hash": ""
+  },
+  ".opencode/skills/graphify/references/update.md": {
+    "mtime": 1789153582.3664443,
+    "seen": 1789155582.408627,
+    "ast_hash": "9378bd03d56baaf78bd738ab3848f142",
+    "semantic_hash": ""
+  },
+  ".opencode/skills/incremental-implementation/SKILL.md": {
+    "mtime": 1789153457.5330634,
+    "seen": 1789155582.408629,
+    "ast_hash": "4bf69e4ab81601c958335bc1e938f657",
+    "semantic_hash": ""
+  },
+  ".opencode/skills/planning-and-task-breakdown/SKILL.md": {
+    "mtime": 1789153457.527677,
+    "seen": 1789155582.4086301,
+    "ast_hash": "9e8003b2dd231261f3078eb3fa3916da",
+    "semantic_hash": ""
+  },
+  ".opencode/skills/spec-driven-development/SKILL.md": {
+    "mtime": 1789153457.5225239,
+    "seen": 1789155582.408631,
+    "ast_hash": "7214487f0bdda298a7617cc56ee1e6f4",
+    "semantic_hash": ""
+  },
+  ".opencode/skills/test-driven-development/SKILL.md": {
+    "mtime": 1789153457.538524,
+    "seen": 1789155582.408633,
+    "ast_hash": "2763d4c81c31998fdf39f687860ca353",
+    "semantic_hash": ""
+  },
+  "AGENTS.md": {
+    "mtime": 1789155412.5099394,
+    "seen": 1789155582.4086342,
+    "ast_hash": "d16722007a377274bbb2b66973944b1f",
+    "semantic_hash": ""
+  },
+  "AI_VIDEO_STUDIO_MASTER_SPEC.md": {
+    "mtime": 1789153097.7680967,
+    "seen": 1789155582.408635,
+    "ast_hash": "c3728369e1301b23429de80ee9c64f7f",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1789155422.0043623,
+    "seen": 1789155582.408637,
+    "ast_hash": "129d45abc47f8cea2109b5db34b0dbf2",
+    "semantic_hash": ""
+  },
+  "docs/ARCHITECTURE.md": {
+    "mtime": 1789155380.5552905,
+    "seen": 1789155582.408638,
+    "ast_hash": "40bb7363c811c29f1ace986f20f91dbb",
+    "semantic_hash": ""
+  },
+  "docs/DECISIONS.md": {
+    "mtime": 1789155354.4865026,
+    "seen": 1789155582.408639,
+    "ast_hash": "b3a50386a849395ef995998eae85f9f6",
+    "semantic_hash": ""
+  },
+  "docs/FEATURES.md": {
+    "mtime": 1789155390.653421,
+    "seen": 1789155582.40864,
+    "ast_hash": "65bed24059f2b4b866af7066037a7f25",
+    "semantic_hash": ""
+  },
+  "docs/PRODUCT_SPEC.md": {
+    "mtime": 1789155383.8610473,
+    "seen": 1789155582.408642,
+    "ast_hash": "0e2e1c2ed3e815434a6c6fd6ea244674",
+    "semantic_hash": ""
+  },
+  "docs/ROADMAP.md": {
+    "mtime": 1789155364.4927037,
+    "seen": 1789155582.408643,
+    "ast_hash": "7e142983cac8fa96ef07f27e206f9145",
+    "semantic_hash": ""
+  },
+  "docs/SESSION_LOG.md": {
+    "mtime": 1789155332.878121,
+    "seen": 1789155582.4086442,
+    "ast_hash": "cfb70f3c089a593d35f63bbb0f760c1a",
+    "semantic_hash": ""
+  },
+  "docs/TEST_PLAN.md": {
+    "mtime": 1789155398.4328284,
+    "seen": 1789155582.4086452,
+    "ast_hash": "96ef173391a41ad31cc3508182f2af49",
+    "semantic_hash": ""
+  },
+  "docs/UI_SPEC.md": {
+    "mtime": 1789155394.656945,
+    "seen": 1789155582.4086468,
+    "ast_hash": "7562d8c0416b1c68c480e341d5f7e903",
+    "semantic_hash": ""
+  },
+  "frontend/README.md": {
+    "mtime": 1789154515.786942,
+    "seen": 1789155582.408648,
+    "ast_hash": "3947fdeb32efabdbae0ed72c95324946",
+    "semantic_hash": ""
+  },
+  "frontend/index.html": {
+    "mtime": 1789154176.1846657,
+    "seen": 1789155582.408649,
+    "ast_hash": "762fedbb53553a5062b85ec4e09daadd",
+    "semantic_hash": ""
+  },
+  "frontend/public/favicon.svg": {
+    "mtime": 1789153855.6805975,
+    "seen": 1789155582.40865,
+    "ast_hash": "7e840862161341271697daa99a40d76b",
+    "semantic_hash": ""
   }
 }
