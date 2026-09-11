@@ -33,22 +33,20 @@ This document is the definitive feature inventory. Nothing is complete until it 
 - Narrator-agnostic segment grouping (whisper segments); per-word + per-segment confidence.
 - Editable transcript — word-text edits in the editor are undoable and persisted in the project file
   (optional `model.transcripts` key, project version unchanged).
-- Narration segmentation into semantic visual beats. *(deferred to M3)*
+- Narration segmentation into semantic visual beats — pure-TS segmentation over the transcript (`editor/beats.ts`: one beat per segment, split on pauses ≥ 0.4s, word-based labels). *(beats landed in this slice; timing-edit re-segmentation still deferred)*
 
 ## 3. Semantic Image Matching
 
-- Image analysis for visual semantics, composition and usable subject matter.
-- Embeddings/features generation.
-- Beat-to-image matching with candidate scoring:
-  - semantic relevance
-  - visual quality
-  - composition
-  - continuity
-  - repetition penalty
-  - timing fit
-- Confidence display for low-confidence decisions.
-- Automatic image duration from narration timing and pacing rules.
-- Manual replacement, trim, reorder and timing override.
+- Image analysis for visual semantics — CLIP ViT-B/32 embeddings via ONNX, project-local `models/clip/` (fp32 default; `model_key` override), preprocessing with Pillow (resize/center-crop/normalize).
+- Beat-to-image matching via `POST /api/match` (multipart images + JSON beats):
+  - semantic relevance (cosine on image/text embeddings)
+  - repetition penalty prevention (re-use-aware greedy assignment)
+  - per-beat confidence + top-3 alternatives returned
+  - injected `Embedder` keeps tests deterministic (`FakeEmbedder`), same pattern as `FakeTranscriber`.
+- Confidence display per match and per alternative in the Inspector.
+- Automatic image placement — `MatchPanel` auto-match applies the image track in a single undoable step, tagging clips with `beatId` (persisted; project version unchanged) and reusing existing `confidence`.
+- Manual replacement — alternatives dropdown replaces the matched image per beat; manual edits are never overwritten by re-runs (only clips from the *last* auto-match are replaced).
+- *(Not in this slice)* automatic image duration from narration timing/pacing rules, visual-quality & composition scoring, continuity beyond repetition, custom matcher branches.
 
 ## 4. Transitions / Animation
 

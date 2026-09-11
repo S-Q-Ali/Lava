@@ -107,6 +107,24 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
 - **Alternatives considered**: separate transcripts store persisted as a sibling top-level key (drift risk, non-undoable); IndexedDB-backed transcripts (overkill).
 - **Status**: Locked for M2; timing-edit re-segmentation (moving words in time) deferred to M3.
 
+### D-012 — CLIP ViT-B/32 ONNX (fp32) for semantic image matching
+
+- **Date**: 2026-09-12
+- **WHAT**: Beat-to-image matching uses CLIP ViT-B/32 embeddings computed on the CPU via onnxruntime inside the media sidecar. The Xenova ONNX export lazy-downloads into project-local `models/clip/`; `clip.py` provides a lazy-session `Embedder` (Pillow 12.3.0 preprocess: resize/center-crop/normalize → (3,224,224); `tokenizers` text tokenization, max 77, bos/eot) plus pure cosine/softmax helpers. `model_key` selects the export. **The Xenova quantized export produces degenerate text embeddings** (unrelated prompts → cosine 1.0), so **fp32 `model.onnx` (605.8 MB) is the default**; opset verified on onnxruntime 1.17.3.
+- **WHY**: Differentiator #1 (voice-over → semantic image matching) needs image+text in one latent space, local-first and CPU-runnable on baseline hardware. ONNX keeps the runtime as one pinned dependency already in the stack (fp32 infer on a 2 GB GPU-lite machine is CPU-only anyway).
+- **HOW**: `clip.py` `ClipEmbedder` (lazy session + tokenizer; `_pick` resolves ONNX outputs via `session.get_outputs()` names — ORT has no `.output_names`); `models/` as the gitignored root; tests use `FakeEmbedder`; real-model smoke validated assignment ordering (sunset→sunset 0.220 > cat 0.206; e2e confidences 0.34–0.35).
+- **Alternatives considered**: quantized model (failed — degenerate text embeddings); transformers/lib CLIP (heavy, adds torch); OpenAI API (not local-first). Multilingual CLIP flagged for a later Urdu/Roman-Urdu tuning pass.
+- **Status**: Locked for M3 (first slice). Speed/multilingual quality tuning open.
+
+### D-013 — Match meta persists as `clip.beatId`; one undoable auto-match
+
+- **Date**: 2026-09-12
+- **WHAT**: Auto-match result lands on the timeline as real clips with `beatId` (optional) + reused `confidence`; both persist through the existing project file (version stays 1, D-011 pattern). Applying the full match inside `zundo` `pause()/resume()` makes auto-place **one undo step**. Re-running only replaces clips created by the *last* match (`lastMatchClipIds`); user-placed or manually-edited clips are never silently overwritten.
+- **WHY**: AI edits must stay editable and reversible (product rule), and re-runs must not clobber manual work.
+- **HOW**: `editor/types.ts` `ClipInput.beatId`; `ops.ts` `addClips`/`replaceClips`; `editorStore.applyMatch(inputs, removeIds)` inside one history step; transient UI state (status/results) lives in non-temporal `matchingStore`.
+- **Alternatives considered**: separate overlay track (drift/duplication), non-undoable bulk insert (rejected — violates editability rule).
+- **Status**: Locked for M3 (first slice).
+
 ---
 
 ## Index of decisions
@@ -124,3 +142,5 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
 | D-009 | Versioned project file format (lava-studio JSON) | Locked |
 | D-010 | Local faster-whisper ASR in the sidecar | Locked |
 | D-011 | Transcripts persist in project file (version stays 1) | Locked |
+| D-012 | CLIP ViT-B/32 ONNX fp32 for image matching (quantized broken) | Locked |
+| D-013 | Match meta persists via `clip.beatId`; one undoable auto-match | Locked |

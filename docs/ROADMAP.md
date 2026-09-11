@@ -35,12 +35,14 @@ Definition of done for ANY milestone installments within it: implementation exis
 - [ ] Semantic visual-beat matching over transcript (M3)
 
 ## Milestone 3 — Semantic image matching
-- Image analysis
-- Embeddings/features
-- Scoring
-- Confidence
-- Automatic timing
-- Manual override
+- [x] CLIP ViT-B/32 ONNX embeddings (project-local `models/clip/`, fp32 default)
+- [x] `POST /api/match` — beat→image assignment with confidence + top-3 alternatives, repetition penalty
+- [x] Beat segmentation from transcript (sentence ends + pauses ≥ 0.4s)
+- [x] Auto-place image track in one undoable step (`clip.beatId`/`confidence` persist, version stays 1)
+- [x] MatchPanel UI (auto-match, per-clip confidence, alternatives replace) — M3 first slice complete
+- [ ] Manual trim/reorder of matched clips with timing override (independent edits; baseline clip editing already supports trim/reorder)
+- [ ] Timing fit/automatic duration from narration pacing (pacing rules)
+- [ ] Mixed-language (Urdu/Roman-Urdu) matching quality pass (multilingual model)
 
 ## Milestone 4 — Transition/animation engine
 - Clean cuts

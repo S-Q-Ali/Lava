@@ -167,7 +167,10 @@ The `backend/` service exposes the FFmpeg capability the browser lacks. Contract
 - `POST /api/transcribe` — multipart `file` (+ optional `language`) → narration analysis:
   `{ text, language, segments: [{ id, text, start, end, avgLogprob, confidence, words: [{ word, start, end, confidence }] }], pauses: [{ start, end, gap }] }`.
   Engine is the `Transcriber` interface (`app.state.transcriber`) — `WhisperTranscriber` (faster-whisper, CPU int8, `tiny`, lazy model download into `models/whisper/`) in production, `FakeTranscriber` in tests. New error codes: `NO_FILE` (400), `TRANSCRIBE_FAILED` (422).
+- `POST /api/match` — multipart `images` (files named by assetId) + JSON `beats` `[{ id, text, start, end }]` → beat→image assignment:
+  `{ beats: [{ beatId, imageKey, confidence, start, end, alternatives: [{ imageKey, confidence }] }] }`.
+  Engine is the `Matcher` (`app.state.matcher`) over an injectable `Embedder` — production uses CLIP ViT-B/32 ONNX fp32 from `models/clip/` (Pillow preprocessing), tests use `FakeEmbedder`. Repetition-aware greedy assignment (penalty 0.05). Error codes: `NO_IMAGES`/`NO_BEATS` (400), `EMBED_FAILED`/`MATCH_FAILED` (422).
 
-Uploads/renders live under project-local `cache/backend/` (gitignored). Whisper models live under project-local `models/whisper/` (gitignored). The frontend's `HttpFFmpegProvider` (`frontend/src/services/ffmpeg.ts`) auto-detects the sidecar via `GET /api/health` and falls back to the unavailable provider when it is not running.
+Uploads/renders live under project-local `cache/backend/` (gitignored). Whisper models live under project-local `models/whisper/` (gitignored); CLIP model under `models/clip/` (gitignored). The frontend's `HttpFFmpegProvider` (`frontend/src/services/ffmpeg.ts`) auto-detects the sidecar via `GET /api/health` and falls back to the unavailable provider when it is not running.
 
-Current gaps (honest state): `backend/` hosts media + ASR only — semantic matching, transitions, caption and Manhwa pipelines are not implemented; transcript word edits can be made (text only), timing edits/re-segmentation are deferred to M3.
+Current gaps (honest state): `backend/` hosts media + ASR + CLIP matching only — transitions, caption and Manhwa pipelines are not implemented; match *timing/automatic duration* from pacing rules is not implemented (matched clips use beat timing; manual trims never overwritten); transcript timing edits/re-segmentation are deferred.

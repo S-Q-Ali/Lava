@@ -46,8 +46,21 @@ describe('useMatchingStore.match', () => {
 
     const clips = useEditorStore.getState().clips
     expect(clips).toHaveLength(2)
-    expect(clips[0]).toMatchObject({ trackId: 'track-image', assetId: 'a', beatId: 'b0', confidence: 0.7, start: 0, duration: 2 })
-    expect(clips[1]).toMatchObject({ assetId: 'b', beatId: 'b1', confidence: 0.5, start: 2, duration: 3 })
+    expect(clips[0]).toMatchObject({
+      trackId: 'track-image',
+      assetId: 'a',
+      beatId: 'b0',
+      confidence: 0.7,
+      start: 0,
+      duration: 2,
+    })
+    expect(clips[1]).toMatchObject({
+      assetId: 'b',
+      beatId: 'b1',
+      confidence: 0.5,
+      start: 2,
+      duration: 3,
+    })
     expect(useMatchingStore.getState().status).toEqual({ phase: 'success', count: 2 })
   })
 

@@ -224,3 +224,37 @@ First differentiator's front half — turn narration audio into timed, segmented
 
 ### Next step
 - Review the full M2 diff (code-review-and-quality), then push; M3 starts semantic beat segmentation (split narration into visual beats with timing), then image matching. Also on the radar: model-size tuning (base) for Urdu quality.
+
+## Session 2026-09-12 — Session 6: M3 semantic image matching (first slice)
+
+### Purpose (WHY)
+Deliver differentiator #1's front half: turn a narration transcript + image library into an auto-placed, timed, editable image track using CLIP embeddings, honouring the locked M3 decisions (project-local ONNX model, one-undo auto-place, no silently overwriting manual edits). Plan-of-record: `docs/SPEC-image-matching.md`, `tasks/plan.md` (slices 1–6, each committed atomically).
+
+### WHAT
+- **Slice 1 (embedding-core, `5d71c5e`)** — `backend/src/lava_backend/clip.py`: lazy `ClipEmbedder` (onnxruntime session + `tokenizers`, download into root `models/clip/`), Pillow 12.3.0 preprocess → (3,224,224), `tokenize_text` (bos/eot/pad, max 77), `l2_normalize`/`cosine_similarity`/`softmax`/`_pick` (outputs resolved via `session.get_outputs()` — ORT has no `.output_names`). 14 unit tests.
+- **Slice 2 (match-api, `6fa73ef`)** — `matching.py`: `Beat` dataclass, `Matcher` (reuse-aware greedy, penalty 0.05, top-3 alternatives, `EmbedFailure` distinguishes embed vs assign), `POST /api/match` (multipart images + JSON beats; `File(default=[])` so a missing field hits `NO_IMAGES`), wiring `app.state.matcher` in `main.py` + `clip_dir` in `config.py`. 14 tests; real e2e: b1→sunset.png 0.342, b2→forest.png 0.353.
+- **Slice 3 (beat-segmentation, `5491de1`)** — `frontend/src/editor/beats.ts`: `Beat`, `segmentBeats` (one beat per segment, split on intra-segment pause ≥ 0.4s, word labels, sorted by start). 8 tests.
+- **Slice 4 (semantic-matching, `9711416`)** — `ClipInput.beatId`; `ops.ts` `addClips`/`replaceClips`; `services/match.ts` client (files named by assetId → `imageKey`==assetId); `matchingStore.ts` (status, `lastMatchClipIds`, `clear`); `editorStore.applyMatch(inputs, removeIds)` inside one zundo step. Fixed stale-snapshot bug (re-read `getState()` after apply). 5+15+5+15 tests; 70 frontend total.
+- **Slice 5 (match-ui, `a992b0b`)** — `components/MatchPanel.tsx` (mirrors TranscriptPanel): Auto-match button, status lines (analyze-first / re-import / error), per-clip confidence %, alternatives `<select>` → `replaceClipAsset` single-undo; `InspectorPanel` + `.match-*` CSS tokens. Live HTTP e2e with real CLIP verified (warm-sunset→solar, green-forest→forest). Dev-server transform smoke 200s.
+- **Slice 6 (docs+review, this commit)** — ROADMAP/FEATURES/ARCHITECTURE/DECISIONS(D-012,D-013)/TEST_PLAN/SESSION_LOG; graph refresh; full regression; prettier formatting of three test files.
+
+### HOW
+Per-slice TDD, each slice committed then re-verified (`56 passed` backend, `70 passed` frontend, build + oxlint clean). Real-model smoke drove two course corrections: (1) Xenova **quantized** export → degenerate text embeddings (cos 1.0) → **fp32 default** (`model_key` override); (2) model download location `backend/models` was NOT gitignored → moved to root `models/clip/`. Prettier (repo convention) applied to new test files.
+
+### Decisions
+- D-012 — CLIP ViT-B/32 ONNX fp32 default (quantized broken); project-local `models/`. Locked.
+- D-013 — match meta persists as `clip.beatId` (+confidence); auto-match is one undoable step; re-runs replace only last-match clips. Locked.
+
+### Verify
+- Backend `uv run pytest`: 56 passed. Frontend: `npx vitest run` 70 passed, `npm run build` ok, `npx oxlint src` 0 warnings. Dev-server transforms 200. Real-CLIP HTTP e2e (server round-trip, correct causal picks, confidence spread) verified.
+- Commits: `5d71c5e` (1) · `6fa73ef` (2) · `5491de1` (3) · `9711416` (4) · `a992b0b` (5) — this docs/graph commit closes the slice.
+
+### Limitations
+- Urdu/Roman-Urdu beat text → weak embeddings (decision 3 accepted; multilingual model flagged for a tuning pass). `tiny`-whisper quality persists from M2.
+- Automatic duration/pacing rules not yet implemented (clips use beat timing; manual trims never overwritten by re-runs).
+- Auto-match needs in-session image+voice Files (D-009 limitation) — re-import hint is in the panel.
+- Repetition penalty (0.05) and pause threshold (0.4s) are initial guesses; calibration deferred to M4/hardware pass.
+- English-only human in-browser pass on Auto-match/alternatives UI still pending.
+
+### Next step
+- Push M3 first slice (7 commits ahead of origin/main) once the user gives the go-ahead; then M3 remainder — timing/pacing rules, multilingual matching pass, manual-trim integration, and M4 transitions. Also on the radar: whisper model-size tuning (base) for Urdu.

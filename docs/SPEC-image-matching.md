@@ -29,7 +29,7 @@ Build order: `embedding-core` → `match-api` → `beat-segmentation` → `seman
 ## Tech stack
 
 - Backend (Python 3.12, FastAPI): `onnxruntime==1.17.3` (already pinned for macOS x86_64), `tokenizers` (already present via faster-whisper), **new: `Pillow`** (image decode/resize → required by CLIP preprocessing; small pure wheel — Ask-first, flagged below).
-- Model: `openai/clip-vit-base-patch32` ONNX (Xenova export) — text tokenizer + fp32/quantized model, lazy-downloaded to `models/clip/`.
+- Model: `openai/clip-vit-base-patch32` ONNX (Xenova export) — text tokenizer + **fp32 model (default)**, lazy-downloaded to `models/clip/`. `model_key` param allows switching variants. *Update after Slice 1 smoke:* the Xenova **quantized** export produces degenerate text embeddings (different prompts → cosine 1.0), so fp32 `model.onnx` (605.8 MB) is the default; opset verified on onnxruntime 1.17.3.
 - Frontend: existing zustand + zundo stacks, existing clip/`confidence` model field.
 
 ## Commands
@@ -83,6 +83,6 @@ existing `transcribers.py`/`transcribe.py` (frozen dataclasses, injectable class
 
 ## Open questions
 
-- Pillow at 2026-09-12 is wheel-only for cp312/macos — adding it is a small Ask-first dependency (justified by CLIP decision #1).
-- ONNX opset for `clip-vit-base-patch32` INT8 on `onnxruntime 1.17.3` should be verified in the real-model smoke; if the quantized graph fails, fall back to fp32 (larger download) — documented in SESSION_LOG.
+- Pillow 12.3.0 added (cp312 wheel; ratified by CLIP decision #1).
+- ONNX opset verified; the Xenova **quantized** model graph runs on `onnxruntime 1.17.3` but yields degenerate text embeddings (cos 1.0 across unrelated prompts) → **fp32 default** (`model_key` override). Recorded in DECISIONS D-012.
 - Repetition penalty constant and pause threshold (0.4s) are initial guesses; calibration is a M4/hardware pass, not this slice.

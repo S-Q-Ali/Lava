@@ -81,6 +81,12 @@ Behavioral acceptance checks:
 - Live e2e (manual, non-committed): faster-whisper `tiny` on real narration audio — HTTP 200, segments/words/confidence/pauses returned. Sample transcription quality on Urdu/Roman-Urdu was poor (`tiny`); model-size tuning is a documented open issue.
 - Not yet verified: human in-browser pass on word-click→seek and low-confidence styling; long narration; mixed-language fixture; poor-audio fixture.
 
+## 5.2 Image-matching verification so far
+
+- Unit: CLIP preprocess shape/text tokens + cosine/softmax edge cases (`test_clip.py`); match contract, repetition penalty, empty beats/corrupt image, error codes with fake embeddings (`test_matching.py`); beat segmentation boundaries (`beats.test.ts`); match client parsing (`match.test.ts`); auto-match single-undo, undo-restores, persistence round-trip, replace-vs-user-clips (`matchingStore.test.ts`, `editorStore.test.ts`).
+- Live e2e (manual, non-committed): real ClipEmbedder (fp32 `models/clip/`, ~1.1 GB incl. hub cache) — embed-directional/cosine smokes (sunset text vs sunset image 0.220 > cat 0.206; distinct texts cos 0.766); full `POST /api/match` over HTTP with real CLIP (sunset→solar image, forest→forest image, correct alternative ordering, conf 0.48–0.52).
+- Not yet verified: human in-browser pass on Auto-match + alternatives replace; Urdu/Roman-Urdu beat text quality; many-candidates performance on baseline machine; match under non-Latin text (multilingual model open issue).
+
 ## 6. Performance Sanity (Baseline Hardware)
 
 Target: HP Pavilion 15 · Intel i7 10th Gen · 16 GB RAM · MX250 2 GB.

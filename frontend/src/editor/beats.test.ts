@@ -16,8 +16,24 @@ describe('segmentBeats', () => {
   it('creates one beat per segment with no pauses', () => {
     const t = transcript({
       segments: [
-        { id: 0, text: 'Ali jungle mein gaya', start: 0, end: 3, avgLogprob: -0.1, confidence: 0.9, words: [] },
-        { id: 1, text: 'Wahan sher tha', start: 4, end: 6, avgLogprob: -0.2, confidence: 0.8, words: [] },
+        {
+          id: 0,
+          text: 'Ali jungle mein gaya',
+          start: 0,
+          end: 3,
+          avgLogprob: -0.1,
+          confidence: 0.9,
+          words: [],
+        },
+        {
+          id: 1,
+          text: 'Wahan sher tha',
+          start: 4,
+          end: 6,
+          avgLogprob: -0.2,
+          confidence: 0.8,
+          words: [],
+        },
       ],
     })
     const beats = segmentBeats(t)
