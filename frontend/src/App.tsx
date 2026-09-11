@@ -3,7 +3,7 @@ import MediaPanel from './components/MediaPanel'
 import PreviewPanel from './components/PreviewPanel'
 import InspectorPanel from './components/InspectorPanel'
 import TimelinePanel from './components/timeline/TimelinePanel'
-import { ffmpegService } from './services/ffmpeg'
+import { getFFmpegProvider } from './services/ffmpeg'
 import './App.css'
 
 function App() {
@@ -11,12 +11,13 @@ function App() {
   const undo = useEditorStore((s) => s.undo)
   const redo = useEditorStore((s) => s.redo)
 
-  const handleExport = () => {
-    if (!ffmpegService.available) {
-      window.alert(`${ffmpegService.name}: ${ffmpegService.reason}`)
+  const handleExport = async () => {
+    const provider = await getFFmpegProvider()
+    if (!provider.available) {
+      window.alert(`${provider.name}: ${provider.reason}`)
       return
     }
-    window.alert('Render queued via local FFmpeg runtime.')
+    window.alert('Render queued via local FFmpeg sidecar.')
   }
 
   return (

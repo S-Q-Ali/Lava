@@ -1,13 +1,29 @@
-export interface FFmpegProbe {
-  format?: {
-    duration?: number
-    size?: number
-  }
-  streams?: Array<{
-    codec_type: 'video' | 'audio'
-    width?: number
-    height?: number
-  }>
+export interface RenderClipInput {
+  fileName: string
+  start: number
+  duration: number
+}
+
+export interface RenderSettings {
+  width: number
+  height: number
+  fps: number
+}
+
+export interface RenderResult {
+  jobId: string
+  outputPath: string
+  duration: number
+  width: number
+  height: number
+  fps: number
+  sizeBytes: number | null
+}
+
+export interface RenderInput {
+  files: File[]
+  clips: RenderClipInput[]
+  settings: RenderSettings
 }
 
 export interface FFmpegProvider {
@@ -15,29 +31,122 @@ export interface FFmpegProvider {
   readonly available: boolean
   readonly reason?: string
   version(): Promise<string | null>
-  probe(source: string): Promise<FFmpegProbe | null>
-  render(job: unknown): Promise<{ outputPath: string }>
+  render(input: RenderInput): Promise<RenderResult>
+  fileUrl(jobId: string): string | null
+}
+
+export const DEFAULT_BASE_URL = 'http://127.0.0.1:7860'
+
+export function backendBaseUrl(): string {
+  const configured = (import.meta.env.VITE_BACKEND_URL as string | undefined)?.trim()
+  return configured || DEFAULT_BASE_URL
 }
 
 class UnavailableFFmpegProvider implements FFmpegProvider {
   readonly name = 'unavailable'
   readonly available = false
-  readonly reason =
-    'No FFmpeg runtime in the browser. A local Tauri/sidecar provider is required for encoding, probing and rendering.'
+  readonly reason: string
+
+  constructor(reason?: string) {
+    this.reason =
+      reason ??
+      'No FFmpeg sidecar reachable. Start the local media service (backend/) to enable probing and rendering.'
+  }
 
   async version(): Promise<string | null> {
     return null
   }
 
-  async probe(): Promise<FFmpegProbe | null> {
-    return null
+  async render(): Promise<RenderResult> {
+    throw new Error(this.reason)
   }
 
-  async render(): Promise<{ outputPath: string }> {
-    throw new Error('FFmpeg render unavailable: no local runtime.')
+  fileUrl(): string | null {
+    return null
   }
 }
 
-const local: FFmpegProvider = new UnavailableFFmpegProvider()
+export class HttpFFmpegProvider implements FFmpegProvider {
+  readonly name = 'http-sidecar'
+  readonly available = true
+  private readonly baseUrl: string
 
-export const ffmpegService: FFmpegProvider = local
+  constructor(baseUrl: string) {
+    this.baseUrl = baseUrl.replace(/\/$/, '')
+  }
+
+  async version(): Promise<string | null> {
+    try {
+      const res = await fetch(`${this.baseUrl}/api/health`, {
+        signal: AbortSignal.timeout(2000),
+      })
+      if (!res.ok) return null
+      const body = (await res.json()) as { ffmpegVersion?: string }
+      return body.ffmpegVersion ?? null
+    } catch {
+      return null
+    }
+  }
+
+  async render(input: RenderInput): Promise<RenderResult> {
+    if (input.clips.length === 0) {
+      throw new Error('Render requires at least one clip')
+    }
+    const form = new FormData()
+    for (const file of input.files) {
+      form.append('files', file, file.name)
+    }
+    form.append(
+      'clips',
+      JSON.stringify(
+        input.clips.map((c) => ({ fileName: c.fileName, start: c.start, duration: c.duration })),
+      ),
+    )
+    form.append(
+      'settings',
+      JSON.stringify({ width: input.settings.width, height: input.settings.height, fps: input.settings.fps }),
+    )
+
+    const res = await fetch(`${this.baseUrl}/api/render`, {
+      method: 'POST',
+      body: form,
+      signal: AbortSignal.timeout(180_000),
+    })
+    const body = (await res.json().catch(() => null)) as
+      | (RenderResult & { error?: { code?: string; message?: string } })
+      | null
+
+    if (!res.ok || !body) {
+      const message = body?.error?.message ?? `Sidecar render failed (HTTP ${res.status})`
+      throw new Error(message)
+    }
+    return body
+  }
+
+  fileUrl(jobId: string): string | null {
+    if (!/^[a-f0-9]{32}$/.test(jobId) && !/^[a-zA-Z0-9_-]+$/.test(jobId)) return null
+    return `${this.baseUrl}/api/files/${jobId}`
+  }
+}
+
+let providerPromise: Promise<FFmpegProvider> | null = null
+
+export function getFFmpegProvider(): Promise<FFmpegProvider> {
+  providerPromise ??= detectProvider()
+  return providerPromise
+}
+
+export async function detectProvider(): Promise<FFmpegProvider> {
+  const baseUrl = backendBaseUrl()
+  const trial = new HttpFFmpegProvider(baseUrl)
+  try {
+    const version = await trial.version()
+    return version ? trial : new UnavailableFFmpegProvider(`No sidecar reachable at ${baseUrl}`)
+  } catch {
+    return new UnavailableFFmpegProvider(`No sidecar reachable at ${baseUrl}`)
+  }
+}
+
+export function resetFFmpegProvider(): void {
+  providerPromise = null
+}

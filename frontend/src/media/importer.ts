@@ -1,6 +1,16 @@
 import type { Asset, AssetKind, AssetMeta } from '../editor/types'
 import { newId } from '../editor/ops'
 
+const assetFiles = new Map<string, File>()
+
+export function registerAssetFile(id: string, file: File): void {
+  assetFiles.set(id, file)
+}
+
+export function getAssetFile(id: string): File | undefined {
+  return assetFiles.get(id)
+}
+
 function readImageMeta(url: string): Promise<AssetMeta> {
   return new Promise((resolve) => {
     const img = new Image()
@@ -50,6 +60,7 @@ export async function importFiles(files: File[]): Promise<Asset[]> {
       url,
       meta,
     })
+    registerAssetFile(assets[assets.length - 1].id, file)
   }
   return assets
 }
