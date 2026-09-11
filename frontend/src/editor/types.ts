@@ -56,4 +56,35 @@ export interface TimelineModel {
   assets: Asset[]
   playhead: number
   selectedClipId: string | null
+  transcripts?: Record<string, Transcript>
+}
+
+export interface TranscriptWord {
+  word: string
+  start: number
+  end: number
+  confidence: number
+}
+
+export interface TranscriptSegment {
+  id: number
+  text: string
+  start: number
+  end: number
+  avgLogprob: number
+  confidence: number
+  words: TranscriptWord[]
+}
+
+export interface TranscriptPause {
+  start: number
+  end: number
+  gap: number
+}
+
+export interface Transcript {
+  text: string
+  language: string
+  segments: TranscriptSegment[]
+  pauses: TranscriptPause[]
 }

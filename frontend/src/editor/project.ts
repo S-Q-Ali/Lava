@@ -1,4 +1,4 @@
-import type { Asset, Clip, TimelineModel, Track } from './types'
+import type { Asset, Clip, TimelineModel, Track, Transcript } from './types'
 import { TRACK_TYPES } from './types'
 
 export const PROJECT_APP = 'lava-studio'
@@ -74,6 +74,40 @@ function isClip(value: unknown): value is Clip {
   )
 }
 
+function isTranscript(value: unknown): value is Transcript {
+  if (!isRecord(value)) return false
+  return (
+    typeof value.text === 'string' &&
+    typeof value.language === 'string' &&
+    Array.isArray(value.segments) &&
+    value.segments.every(
+      (segment) =>
+        isRecord(segment) &&
+        typeof segment.text === 'string' &&
+        typeof segment.start === 'number' &&
+        typeof segment.end === 'number' &&
+        Array.isArray(segment.words) &&
+        segment.words.every(
+          (word) => isRecord(word) && typeof word.word === 'string' && typeof word.start === 'number',
+        ),
+    ) &&
+    Array.isArray(value.pauses)
+  )
+}
+
+function parseTranscripts(value: unknown): Record<string, Transcript> | undefined {
+  if (value === undefined) return undefined
+  if (!isRecord(value)) throw new ProjectError('Project transcripts must be a record keyed by asset id.')
+  const transcripts: Record<string, Transcript> = {}
+  for (const [assetId, entry] of Object.entries(value)) {
+    if (!isTranscript(entry)) {
+      throw new ProjectError(`Project transcript for asset "${assetId}" is malformed.`)
+    }
+    transcripts[assetId] = entry
+  }
+  return transcripts
+}
+
 export function parseProjectModel(value: unknown): TimelineModel {
   const raw = requireRecord(value, 'model')
   if (!Array.isArray(raw.tracks)) throw new ProjectError('Project model is missing tracks.')
@@ -96,7 +130,8 @@ export function parseProjectModel(value: unknown): TimelineModel {
   })
   const playhead = typeof raw.playhead === 'number' ? raw.playhead : 0
   const selectedClipId = typeof raw.selectedClipId === 'string' ? raw.selectedClipId : null
-  return { tracks, assets, clips, playhead, selectedClipId }
+  const transcripts = parseTranscripts(raw.transcripts)
+  return { tracks, assets, clips, playhead, selectedClipId, transcripts }
 }
 
 export function parseProjectJson(json: string): TimelineModel {

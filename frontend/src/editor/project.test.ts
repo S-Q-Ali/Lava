@@ -85,4 +85,64 @@ describe('parseProjectJson', () => {
     file.model.assets = [{ nope: true }] as unknown as Asset[]
     expect(() => parseProjectJson(JSON.stringify(file))).toThrow(/asset|kind|name/i)
   })
+
+  it('round-trips transcripts attached to the model', () => {
+    const cleanModel: TimelineModel = {
+      tracks,
+      assets: [{ id: 'asset-2', kind: 'audio', name: 'narration.mp3', url: 'blob:2', meta: { duration: 12 } }],
+      clips: [],
+      playhead: 0,
+      selectedClipId: null,
+    }
+    const withTranscripts: TimelineModel = {
+      ...cleanModel,
+      transcripts: {
+        'asset-2': {
+          text: 'Ali jungle mein gaya.',
+          language: 'ur',
+          segments: [
+            {
+              id: 0,
+              text: 'Ali jungle mein gaya.',
+              start: 0,
+              end: 3,
+              avgLogprob: -0.4,
+              confidence: 67,
+              words: [
+                { word: 'Ali', start: 0, end: 1, confidence: 0.9 },
+                { word: 'jungle', start: 1, end: 2, confidence: 0.8 },
+              ],
+            },
+          ],
+          pauses: [{ start: 1, end: 1.8, gap: 0.8 }],
+        },
+      },
+    }
+    const restored = parseProjectJson(toProjectJson(withTranscripts))
+    expect(restored.transcripts?.['asset-2']?.segments[0]?.words[1]?.word).toBe('jungle')
+    expect(restored.transcripts?.['asset-2']?.pauses).toHaveLength(1)
+  })
+
+  it('round-trips a project with no transcripts', () => {
+    const cleanModel: TimelineModel = {
+      tracks,
+      assets: [{ id: 'asset-2', kind: 'audio', name: 'narration.mp3', url: 'blob:2', meta: { duration: 12 } }],
+      clips: [],
+      playhead: 0,
+      selectedClipId: null,
+    }
+    expect(parseProjectJson(toProjectJson(cleanModel)).transcripts).toBeUndefined()
+  })
+
+  it('rejects a project with malformed transcripts', () => {
+    const file = serializeProject({
+      tracks,
+      assets: [{ id: 'asset-2', kind: 'audio', name: 'narration.mp3', url: 'blob:2', meta: { duration: 12 } }],
+      clips: [],
+      playhead: 0,
+      selectedClipId: null,
+    })
+    file.model.transcripts = { 'asset-2': { text: 'broken' } } as unknown as TimelineModel['transcripts']
+    expect(() => parseProjectJson(JSON.stringify(file))).toThrow(/transcript/i)
+  })
 })

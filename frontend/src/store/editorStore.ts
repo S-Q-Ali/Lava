@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { temporal } from 'zundo'
-import type { Asset, Clip, TimelineModel, Track } from '../editor/types'
+import type { Asset, Clip, TimelineModel, Transcript, Track } from '../editor/types'
 import { DEFAULT_TRACKS } from '../editor/types'
 import * as ops from '../editor/ops'
 
@@ -10,6 +10,7 @@ interface EditorBase {
   clips: Clip[]
   playhead: number
   selectedClipId: string | null
+  transcripts: Record<string, Transcript>
 }
 
 interface EditorActions {
@@ -22,6 +23,8 @@ interface EditorActions {
   splitClip(id: string, at: number): void
   duplicateClip(id: string): void
   replaceClipAsset(id: string, assetId: string): void
+  setTranscript(assetId: string, transcript: Transcript): void
+  updateTranscriptWord(assetId: string, segmentId: number, wordIndex: number, text: string): void
   setPlayhead(t: number): void
   selectClip(id: string | null): void
   undo(): void
@@ -39,7 +42,12 @@ function initialState(): EditorBase {
     clips: [],
     playhead: 0,
     selectedClipId: null,
+    transcripts: {},
   }
+}
+
+function transcriptWordText(segments: Transcript['segments']): string {
+  return segments.map((segment) => segment.words.map((word) => word.word).join(' ')).join('\n')
 }
 
 export const useEditorStore = create<EditorState>()(
@@ -83,6 +91,26 @@ export const useEditorStore = create<EditorState>()(
         set((s) => ({ clips: ops.replaceClipAsset(s.clips, id, assetId) })),
       setPlayhead: (t) => set({ playhead: t }),
       selectClip: (id) => set({ selectedClipId: id }),
+      setTranscript: (assetId, transcript) =>
+        set((s) => ({ transcripts: { ...s.transcripts, [assetId]: transcript } })),
+      updateTranscriptWord: (assetId, segmentId, wordIndex, text) =>
+        set((s) => {
+          const existing = s.transcripts[assetId]
+          if (!existing) return s
+          const segments = existing.segments.map((segment) => {
+            if (segment.id !== segmentId) return segment
+            const words = segment.words.map((word, index) =>
+              index === wordIndex ? { ...word, word: text } : word,
+            )
+            return { ...segment, words, text: words.map((word) => word.word).join(' ') }
+          })
+          return {
+            transcripts: {
+              ...s.transcripts,
+              [assetId]: { ...existing, segments, text: transcriptWordText(segments) },
+            },
+          }
+        }),
       undo: (): void => useEditorStore.temporal.getState().undo(),
       redo: (): void => useEditorStore.temporal.getState().redo(),
       reset: () => install(initialState()),
@@ -93,6 +121,7 @@ export const useEditorStore = create<EditorState>()(
           clips: model.clips,
           playhead: model.playhead,
           selectedClipId: model.selectedClipId,
+          transcripts: model.transcripts ?? {},
         }),
       }
     },
@@ -102,11 +131,13 @@ export const useEditorStore = create<EditorState>()(
         tracks: s.tracks,
         assets: s.assets,
         clips: s.clips,
+        transcripts: s.transcripts,
       }),
       equality: (prev, next) =>
         prev.tracks === next.tracks &&
         prev.assets === next.assets &&
-        prev.clips === next.clips,
+        prev.clips === next.clips &&
+        prev.transcripts === next.transcripts,
     },
   ),
 )

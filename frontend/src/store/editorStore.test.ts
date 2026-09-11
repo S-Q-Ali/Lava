@@ -1,7 +1,38 @@
 import { describe, expect, it, beforeEach } from 'vitest'
 import { useEditorStore } from './editorStore'
-import type { Asset, TimelineModel } from '../editor/types'
+import type { Asset, TimelineModel, Transcript } from '../editor/types'
 import { DEFAULT_TRACKS } from '../editor/types'
+
+const transcript: Transcript = {
+  text: 'Ali jungle mein gaya.\nWahan sher tha.',
+  language: 'ur',
+  segments: [
+    {
+      id: 0,
+      text: 'Ali jungle mein gaya.',
+      start: 0,
+      end: 3,
+      avgLogprob: -0.4,
+      confidence: 67,
+      words: [
+        { word: 'Ali', start: 0, end: 1, confidence: 0.9 },
+        { word: 'jungle', start: 1, end: 2, confidence: 0.8 },
+        { word: 'mein', start: 2, end: 2.5, confidence: 0.8 },
+        { word: 'gaya.', start: 2.5, end: 3, confidence: 0.8 },
+      ],
+    },
+    {
+      id: 1,
+      text: 'Wahan sher tha.',
+      start: 3,
+      end: 5,
+      avgLogprob: -0.3,
+      confidence: 70,
+      words: [{ word: 'Wahan', start: 3, end: 3.5, confidence: 0.7 }],
+    },
+  ],
+  pauses: [{ start: 1, end: 1.5, gap: 0.5 }],
+}
 
 const imageAsset: Asset = {
   id: 'asset-img',
@@ -192,5 +223,70 @@ describe('editorStore undo/redo (zundo)', () => {
     st = useEditorStore.getState()
     expect(st.clips).toHaveLength(0)
     expect(st.assets).toHaveLength(2)
+  })
+})
+
+describe('editorStore transcripts', () => {
+  it('sets a transcript for an asset', () => {
+    useEditorStore.getState().setTranscript(audioAsset.id, transcript)
+    const t = useEditorStore.getState().transcripts[audioAsset.id]
+    expect(t?.segments).toHaveLength(2)
+    expect(t?.pauses[0]?.gap).toBe(0.5)
+  })
+
+  it('recomputes segment and overall text after a word edit', () => {
+    const s = useEditorStore.getState()
+    s.setTranscript(audioAsset.id, transcript)
+    useEditorStore.getState().updateTranscriptWord(audioAsset.id, 1, 0, 'Idhar')
+
+    const t = useEditorStore.getState().transcripts[audioAsset.id]
+    expect(t?.segments[1]?.words[0]?.word).toBe('Idhar')
+    expect(t?.segments[1]?.text).toBe('Idhar')
+    expect(t?.text).toBe('Ali jungle mein gaya.\nIdhar')
+  })
+
+  it('ignores word edits with no transcript present', () => {
+    useEditorStore.getState().updateTranscriptWord(audioAsset.id, 0, 0, 'x')
+    expect(useEditorStore.getState().transcripts).toEqual({})
+  })
+
+  it('hydrates transcripts on loadProject', () => {
+    useEditorStore.getState().loadProject({
+      tracks: DEFAULT_TRACKS,
+      assets: [audioAsset],
+      clips: [],
+      playhead: 0,
+      selectedClipId: null,
+      transcripts: { [audioAsset.id]: transcript },
+    })
+    expect(useEditorStore.getState().transcripts[audioAsset.id]?.language).toBe('ur')
+  })
+
+  it('treats a missing transcripts key as an empty map', () => {
+    useEditorStore.getState().loadProject({
+      tracks: DEFAULT_TRACKS,
+      assets: [],
+      clips: [],
+      playhead: 0,
+      selectedClipId: null,
+    })
+    expect(useEditorStore.getState().transcripts).toEqual({})
+  })
+
+  it('makes word edits undoable', () => {
+    const s = useEditorStore.getState()
+    s.setTranscript(audioAsset.id, transcript)
+    useEditorStore.getState().updateTranscriptWord(audioAsset.id, 0, 0, 'Ali Baba')
+
+    let t = useEditorStore.getState().transcripts[audioAsset.id]
+    expect(t?.segments[0]?.words[0]?.word).toBe('Ali Baba')
+
+    useEditorStore.getState().undo()
+    t = useEditorStore.getState().transcripts[audioAsset.id]
+    expect(t?.segments[0]?.words[0]?.word).toBe('Ali')
+
+    useEditorStore.getState().redo()
+    t = useEditorStore.getState().transcripts[audioAsset.id]
+    expect(t?.segments[0]?.words[0]?.word).toBe('Ali Baba')
   })
 })
