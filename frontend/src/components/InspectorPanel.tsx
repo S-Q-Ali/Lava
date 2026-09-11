@@ -1,5 +1,6 @@
 import { useEditorStore } from '../store/editorStore'
 import { projectDuration } from '../editor/ops'
+import TranscriptPanel from './TranscriptPanel'
 
 export default function InspectorPanel() {
   const clips = useEditorStore((s) => s.clips)
@@ -46,6 +47,7 @@ export default function InspectorPanel() {
           <span className="value">{projectDuration(clips).toFixed(2)}s</span>
         </div>
       </div>
+      <TranscriptPanel />
     </section>
   )
 }

@@ -225,6 +225,110 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* Transcript (narration analysis) */
+.transcript-panel {
+  border-top: 1px solid var(--border);
+  padding: 8px 0;
+  font-size: 13px;
+  max-height: 40vh;
+  overflow-y: auto;
+}
+
+.transcript-panel h4 {
+  font-size: 12px;
+  margin: 0 0 6px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.transcript-hint {
+  margin: 0 0 8px;
+  color: var(--text-dim);
+}
+
+.transcript-panel button {
+  background: var(--accent-soft);
+  color: var(--text);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.transcript-panel button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.transcript-meta {
+  display: flex;
+  gap: 14px;
+  padding: 6px 0;
+  border-top: 1px solid var(--border);
+}
+
+.transcript-meta .field {
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12px;
+}
+
+.transcript-words {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  align-items: baseline;
+  line-height: 1.9;
+  padding: 6px 0;
+}
+
+.word-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid transparent;
+  color: var(--text);
+  font: inherit;
+  padding: 0 1px;
+  text-align: center;
+}
+
+.word-input:hover,
+.word-input:focus {
+  border-bottom-color: var(--accent);
+  outline: none;
+  background: var(--panel-2);
+}
+
+.word-input.low {
+  border-bottom: 1px dashed var(--danger);
+}
+
+.transcript-break {
+  display: block;
+  content: '';
+}
+
+.transcript-gap {
+  color: var(--track-voice);
+  font-size: 11px;
+  margin: 0 3px;
+}
+
+.transcript-segments {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  border-top: 1px solid var(--border);
+  padding-top: 6px;
+}
+
+.transcript-segments .field .value:last-child {
+  margin-left: auto;
+  color: var(--text-dim);
+}
+
 /* Timeline */
 .timeline-panel {
   display: flex;
