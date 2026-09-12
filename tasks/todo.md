@@ -52,3 +52,9 @@ Checkpoints:
 Checkpoints:
 - [x] After Slice 4: frontend vitest + build + lint green
 - [ ] After Slice 5: full regression + docs + push
+
+## M4 transitions-render (active) — SPEC-transitions-render.md, tasks/plan-tr.md
+- [ ] Slice 1: pure graph builder (BetweenSpec/EdgeSpec, xfade map, offsets, fold) — TDD
+- [ ] Slice 2: render() integration (parity when empty, real dissolve render)
+- [ ] Slice 3: /api/render optional `transitions` field + error codes
+- [ ] Slice 4: docs (D-017) + regression + push (go-ahead)
