@@ -166,6 +166,7 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
 | D-015 | Multilingual matching via composed two-session embedder (no new stack) | Locked |
 | D-016 | Transitions as top-level model (cut = absence; suggestions default-clean) | Locked |
 | D-017 | Renderer fold for transitions (xfade offsets = Σdur−ΣD; wipe/zoom → 422) | Locked |
+| D-018 | Transitions editable in editor UI; suggested auto-only, edits manual, invalids resolved on request | Locked |
 ### D-016 — Transitions live as an optional top-level `transitions` list; cut = absence; suggestions default-clean
 
 - **Date**: 2026-09-12
@@ -183,3 +184,12 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
 - **HOW**: `media.py` `BetweenSpec`/`EdgeSpec`, `xfade_name`, pure `build_transition_graph` (validates + folds + computes total duration), `render(..., transitions=())`; `main.py` parses the field. 22 new backend tests (63 → 85): pure graph/offsets/parity, real-ffmpeg dissolve render (2×2s − 0.5s → 3.5s), edge fades, HTTP codes.
 - **Alternatives considered**: per-pair ffmpeg commands instead of a fold (chain explosion); backend-side suggestion of transitions (frontend only sends validated specs); mixed concat/xfade nesting rejected → implemented with labelled `concat=n=2` intermediates (verified with a real mixed graph render).
 - **Status**: Locked for M4 (module `transitions-render`). `transitions-ui` sends the specs; `image-motion` extends the same per-stream prep.
+
+### D-018 — Transitions are editor-editable: suggestions replace auto-only, manual edits win, invalids are resolved on request
+
+- **Date**: 2026-09-12
+- **WHAT**: `editorStore` now carries `transitions` + `selectedTransitionId` (transient, like `selectedClipId`). Actions: `suggestTransitions()` (runs `evaluateTransitions` and REPLACES only `auto` entries — any `manual` entry survives), `overrideTransition` (flips `source`→`manual`, clamps duration 0.1–2s; edge fades get duration edits too), `removeTransition`, `resolveInvalidTransitions` (removes exactly the entries `validateTransitions` flags). UI: `TransitionsPanel` (rationale text, type `<select>` + duration `<input>`, Remove, invalid banner with explicit resolve — never silent auto-deletion), `TransitionOverlay` chips centred on cut boundaries and track edge-fade positions, width ∝ duration clamped to 36–64px, click-to-select. No manual "add" button — creation stays suggestion-only.
+- **WHY**: PRODUCT_SPEC — "every automatic transition must be editable", "do not silently overwrite user edits", and "optimize for clarity / clean cuts are the default". Keeping creation suggestion-only preserves the no-spam bias; manual energy goes into changing/removing, and re-suggestion cannot clobber that.
+- **HOW**: All model ops reused from `transitions-core`; store is the single place that merges auto/manual per pair (`A→B`), so any future auto-suggestion source cannot overwrite a manual override. 122 frontend tests (104 → 122): 8 store (12 incl. component-flight) + 13 panel/overlay component tests, incl. re-suggest-preserves-manual and invalid-surfaced-not-deleted.
+- **Alternatives considered**: separate `transitionsStore` (rejected — transitions are model data like `clips`, need temporal undo + project round-trip); component-level pruning of orphans (rejected — that is silent deletion); manual-add button (rejected this milestone — spam risk, template-only types still 422).
+- **Status**: Locked for M4 (module `transitions-ui`). `image-motion` builds on the same store/overlay pattern.

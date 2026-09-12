@@ -62,15 +62,15 @@ Checkpoints:
 ## M4 module 3 — transitions-ui (SPEC-transitions-ui.md)
 
 ### Phase 1: Store
-- [ ] Task 1: Store state + actions (`transitions`, `selectedTransitionId`, `suggestTransitions`, `overrideTransition`, `removeTransition`, `resolveInvalidTransitions`, `setSelectedTransitionId`), initialState, loadProject, partialize/equality.
+- [x] Task 1: Store state + actions (`transitions`, `selectedTransitionId`, `suggestTransitions`, `overrideTransition`, `removeTransition`, `resolveInvalidTransitions`, `setSelectedTransitionId`), initialState, loadProject, partialize/equality.
   - Checkpoint: vitest green, build clean.
 
 ### Phase 2: Inspector pane
-- [ ] Task 2: `TransitionsPanel` + CSS; mount in `InspectorPanel`.
+- [x] Task 2: `TransitionsPanel` + CSS; mount in `InspectorPanel`.
 
 ### Phase 3: Timeline chips
-- [ ] Task 3: `TransitionOverlay` per lane (between + edge chips, click-to-select) + CSS; mount in `TrackRow`.
+- [x] Task 3: `TransitionOverlay` per lane (between + edge chips, click-to-select) + CSS; mount in `TrackRow`.
   - Checkpoint: all spec criteria pass; vitest ≥104, build, lint.
 
 ### Phase 4: Docs
-- [ ] Task 4: D-018, FEATURES, UI_SPEC, SESSION_LOG 11, ROADMAP tick, plan/todo ticks, graphify, regression; commit+push on go-ahead.
+- [x] Task 4: D-018, FEATURES, UI_SPEC, SESSION_LOG 11, ROADMAP tick, plan/todo ticks, graphify, regression; commit+push on go-ahead.

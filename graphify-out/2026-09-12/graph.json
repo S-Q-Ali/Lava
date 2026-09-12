@@ -4,39 +4,13 @@
   "graph": {},
   "nodes": [
     {
-      "id": "frontend_src_editor_project_projecterror",
-      "label": "ProjectError",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "project.ts",
-      "file_type": "code",
-      "norm_label": "projecterror",
-      "source_file": "frontend/src/editor/project.ts",
-      "source_location": "L16"
-    },
-    {
-      "id": "frontend_src_editor_project_projectfile",
-      "label": "ProjectFile",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "project.ts",
-      "file_type": "code",
-      "norm_label": "projectfile",
-      "source_file": "frontend/src/editor/project.ts",
-      "source_location": "L9"
-    },
-    {
       "id": "frontend_src_editor_transitions_betweentransition",
       "label": "BetweenTransition",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "project.ts",
+      "community_name": "transitions.ts",
       "file_type": "code",
       "norm_label": "betweentransition",
       "source_file": "frontend/src/editor/transitions.ts",
@@ -49,7 +23,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "project.ts",
+      "community_name": "transitions.ts",
       "file_type": "code",
       "norm_label": "cliplike",
       "source_file": "frontend/src/editor/transitions.ts",
@@ -62,7 +36,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "project.ts",
+      "community_name": "transitions.ts",
       "file_type": "code",
       "norm_label": "edgetransition",
       "source_file": "frontend/src/editor/transitions.ts",
@@ -75,7 +49,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "project.ts",
+      "community_name": "transitions.ts",
       "file_type": "code",
       "norm_label": "evaluateoptions",
       "source_file": "frontend/src/editor/transitions.ts",
@@ -88,24 +62,11 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "project.ts",
+      "community_name": "transitions.ts",
       "file_type": "code",
       "norm_label": "cliplike",
       "source_file": "frontend/src/editor/transitions.test.ts",
       "source_location": "L77"
-    },
-    {
-      "id": "frontend_src_editor_transitions_transition",
-      "label": "Transition",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "project.ts",
-      "file_type": "code",
-      "norm_label": "transition",
-      "source_file": "frontend/src/editor/transitions.ts",
-      "source_location": "L44"
     },
     {
       "id": "frontend_src_editor_transitions_transitionreason",
@@ -114,7 +75,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "project.ts",
+      "community_name": "transitions.ts",
       "file_type": "code",
       "norm_label": "transitionreason",
       "source_file": "frontend/src/editor/transitions.ts",
@@ -127,7 +88,7 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "project.ts",
+      "community_name": "transitions.ts",
       "file_type": "code",
       "norm_label": "transitionsource",
       "source_file": "frontend/src/editor/transitions.ts",
@@ -140,24 +101,11 @@
       "_callable_class": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "project.ts",
+      "community_name": "transitions.ts",
       "file_type": "code",
       "norm_label": "transitiontype",
       "source_file": "frontend/src/editor/transitions.ts",
       "source_location": "L3"
-    },
-    {
-      "id": "frontend_src_editor_types_timelinemodel",
-      "label": "TimelineModel",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "project.ts",
-      "file_type": "code",
-      "norm_label": "timelinemodel",
-      "source_file": "frontend/src/editor/types.ts",
-      "source_location": "L56"
     },
     {
       "id": "backend_src_lava_backend_config_config",
@@ -238,17 +186,30 @@
       "source_location": "L100"
     },
     {
-      "id": "backend_src_lava_backend_matching_embedfailure",
-      "label": "EmbedFailure",
+      "id": "backend_src_lava_backend_media_betweenspec",
+      "label": "BetweenSpec",
       "_callable": true,
       "_callable_class": true,
       "_origin": "ast",
       "community": 52,
       "community_name": "main.py",
       "file_type": "code",
-      "norm_label": "embedfailure",
-      "source_file": "backend/src/lava_backend/matching.py",
-      "source_location": "L26"
+      "norm_label": "betweenspec",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L23"
+    },
+    {
+      "id": "backend_src_lava_backend_media_edgespec",
+      "label": "EdgeSpec",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "edgespec",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L31"
     },
     {
       "id": "backend_src_lava_backend_media_proberesult",
@@ -261,7 +222,7 @@
       "file_type": "code",
       "norm_label": "proberesult",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L52"
+      "source_location": "L78"
     },
     {
       "id": "backend_src_lava_backend_media_probestream",
@@ -274,7 +235,7 @@
       "file_type": "code",
       "norm_label": "probestream",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L44"
+      "source_location": "L70"
     },
     {
       "id": "backend_src_lava_backend_media_renderclip",
@@ -300,7 +261,7 @@
       "file_type": "code",
       "norm_label": "renderresult",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L30"
+      "source_location": "L45"
     },
     {
       "id": "backend_src_lava_backend_media_rendersettings",
@@ -313,7 +274,7 @@
       "file_type": "code",
       "norm_label": "rendersettings",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L23"
+      "source_location": "L38"
     },
     {
       "id": "backend_src_lava_backend_transcribe_core_pause",
@@ -498,6 +459,19 @@
       "source_location": "L26"
     },
     {
+      "id": "frontend_src_services_ffmpeg_renderclipinput",
+      "label": "RenderClipInput",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 62,
+      "community_name": "App.tsx",
+      "file_type": "code",
+      "norm_label": "renderclipinput",
+      "source_file": "frontend/src/services/ffmpeg.ts",
+      "source_location": "L1"
+    },
+    {
       "id": "backend_src_lava_backend_matching_beat",
       "label": "Beat",
       "_callable": true,
@@ -509,6 +483,19 @@
       "norm_label": "beat",
       "source_file": "backend/src/lava_backend/matching.py",
       "source_location": "L19"
+    },
+    {
+      "id": "backend_src_lava_backend_matching_embedfailure",
+      "label": "EmbedFailure",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 63,
+      "community_name": "Matcher",
+      "file_type": "code",
+      "norm_label": "embedfailure",
+      "source_file": "backend/src/lava_backend/matching.py",
+      "source_location": "L26"
     },
     {
       "id": "backend_src_lava_backend_matching_matcher",
@@ -602,6 +589,19 @@
       "source_location": "L11"
     },
     {
+      "id": "frontend_src_editor_beats_beat",
+      "label": "Beat",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 65,
+      "community_name": "matchingStore.ts",
+      "file_type": "code",
+      "norm_label": "beat",
+      "source_file": "frontend/src/editor/beats.ts",
+      "source_location": "L3"
+    },
+    {
       "id": "frontend_src_editor_timing_timedbeat",
       "label": "TimedBeat",
       "_callable": true,
@@ -613,6 +613,97 @@
       "norm_label": "timedbeat",
       "source_file": "frontend/src/editor/timing.ts",
       "source_location": "L5"
+    },
+    {
+      "id": "frontend_src_services_match_matchalternative",
+      "label": "MatchAlternative",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 65,
+      "community_name": "matchingStore.ts",
+      "file_type": "code",
+      "norm_label": "matchalternative",
+      "source_file": "frontend/src/services/match.ts",
+      "source_location": "L11"
+    },
+    {
+      "id": "frontend_src_services_match_matchbeatresult",
+      "label": "MatchBeatResult",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 65,
+      "community_name": "matchingStore.ts",
+      "file_type": "code",
+      "norm_label": "matchbeatresult",
+      "source_file": "frontend/src/services/match.ts",
+      "source_location": "L16"
+    },
+    {
+      "id": "frontend_src_services_match_matcherror",
+      "label": "MatchError",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 65,
+      "community_name": "matchingStore.ts",
+      "file_type": "code",
+      "norm_label": "matcherror",
+      "source_file": "frontend/src/services/match.ts",
+      "source_location": "L4"
+    },
+    {
+      "id": "frontend_src_services_match_matchimageinput",
+      "label": "MatchImageInput",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 65,
+      "community_name": "matchingStore.ts",
+      "file_type": "code",
+      "norm_label": "matchimageinput",
+      "source_file": "frontend/src/services/match.ts",
+      "source_location": "L52"
+    },
+    {
+      "id": "frontend_src_services_match_matchrequest",
+      "label": "MatchRequest",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 65,
+      "community_name": "matchingStore.ts",
+      "file_type": "code",
+      "norm_label": "matchrequest",
+      "source_file": "frontend/src/services/match.ts",
+      "source_location": "L57"
+    },
+    {
+      "id": "frontend_src_services_match_matchresponse",
+      "label": "MatchResponse",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 65,
+      "community_name": "matchingStore.ts",
+      "file_type": "code",
+      "norm_label": "matchresponse",
+      "source_file": "frontend/src/services/match.ts",
+      "source_location": "L25"
+    },
+    {
+      "id": "frontend_src_store_matchingstore_matchingstore",
+      "label": "MatchingStore",
+      "_callable": true,
+      "_callable_class": true,
+      "_origin": "ast",
+      "community": 65,
+      "community_name": "matchingStore.ts",
+      "file_type": "code",
+      "norm_label": "matchingstore",
+      "source_file": "frontend/src/store/matchingStore.ts",
+      "source_location": "L14"
     },
     {
       "id": "frontend_src_store_matchingstore_matchstatus",
@@ -810,19 +901,6 @@
       "source_location": "L7"
     },
     {
-      "id": "frontend_src_editor_beats_beat",
-      "label": "Beat",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "ffmpeg.ts",
-      "file_type": "code",
-      "norm_label": "beat",
-      "source_file": "frontend/src/editor/beats.ts",
-      "source_location": "L3"
-    },
-    {
       "id": "frontend_src_services_ffmpeg_ffmpegprovider",
       "label": "FFmpegProvider",
       "_callable": true,
@@ -847,19 +925,6 @@
       "norm_label": "httpffmpegprovider",
       "source_file": "frontend/src/services/ffmpeg.ts",
       "source_location": "L69"
-    },
-    {
-      "id": "frontend_src_services_ffmpeg_renderclipinput",
-      "label": "RenderClipInput",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "ffmpeg.ts",
-      "file_type": "code",
-      "norm_label": "renderclipinput",
-      "source_file": "frontend/src/services/ffmpeg.ts",
-      "source_location": "L1"
     },
     {
       "id": "frontend_src_services_ffmpeg_renderinput",
@@ -914,84 +979,6 @@
       "source_location": "L45"
     },
     {
-      "id": "frontend_src_services_match_matchalternative",
-      "label": "MatchAlternative",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "ffmpeg.ts",
-      "file_type": "code",
-      "norm_label": "matchalternative",
-      "source_file": "frontend/src/services/match.ts",
-      "source_location": "L11"
-    },
-    {
-      "id": "frontend_src_services_match_matchbeatresult",
-      "label": "MatchBeatResult",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "ffmpeg.ts",
-      "file_type": "code",
-      "norm_label": "matchbeatresult",
-      "source_file": "frontend/src/services/match.ts",
-      "source_location": "L16"
-    },
-    {
-      "id": "frontend_src_services_match_matcherror",
-      "label": "MatchError",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "ffmpeg.ts",
-      "file_type": "code",
-      "norm_label": "matcherror",
-      "source_file": "frontend/src/services/match.ts",
-      "source_location": "L4"
-    },
-    {
-      "id": "frontend_src_services_match_matchimageinput",
-      "label": "MatchImageInput",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "ffmpeg.ts",
-      "file_type": "code",
-      "norm_label": "matchimageinput",
-      "source_file": "frontend/src/services/match.ts",
-      "source_location": "L52"
-    },
-    {
-      "id": "frontend_src_services_match_matchrequest",
-      "label": "MatchRequest",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "ffmpeg.ts",
-      "file_type": "code",
-      "norm_label": "matchrequest",
-      "source_file": "frontend/src/services/match.ts",
-      "source_location": "L57"
-    },
-    {
-      "id": "frontend_src_services_match_matchresponse",
-      "label": "MatchResponse",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "ffmpeg.ts",
-      "file_type": "code",
-      "norm_label": "matchresponse",
-      "source_file": "frontend/src/services/match.ts",
-      "source_location": "L25"
-    },
-    {
       "id": "frontend_src_services_voice_voiceerror",
       "label": "VoiceError",
       "_callable": true,
@@ -1003,19 +990,6 @@
       "norm_label": "voiceerror",
       "source_file": "frontend/src/services/voice.ts",
       "source_location": "L4"
-    },
-    {
-      "id": "frontend_src_store_matchingstore_matchingstore",
-      "label": "MatchingStore",
-      "_callable": true,
-      "_callable_class": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "ffmpeg.ts",
-      "file_type": "code",
-      "norm_label": "matchingstore",
-      "source_file": "frontend/src/store/matchingStore.ts",
-      "source_location": "L14"
     },
     {
       "id": "frontend_src_editor_types_tracktype",
@@ -1083,160 +1057,56 @@
       "source_location": "L66"
     },
     {
-      "id": "frontend_src_editor_project_isasset",
-      "label": "isAsset()",
+      "id": "frontend_src_editor_project_projecterror",
+      "label": "ProjectError",
       "_callable": true,
+      "_callable_class": true,
       "_origin": "ast",
-      "community": 1,
+      "community": 90,
       "community_name": "project.ts",
       "file_type": "code",
-      "norm_label": "isasset()",
+      "norm_label": "projecterror",
       "source_file": "frontend/src/editor/project.ts",
-      "source_location": "L55"
+      "source_location": "L16"
     },
     {
-      "id": "frontend_src_editor_project_isclip",
-      "label": "isClip()",
+      "id": "frontend_src_editor_project_projectfile",
+      "label": "ProjectFile",
       "_callable": true,
+      "_callable_class": true,
       "_origin": "ast",
-      "community": 1,
+      "community": 90,
       "community_name": "project.ts",
       "file_type": "code",
-      "norm_label": "isclip()",
+      "norm_label": "projectfile",
       "source_file": "frontend/src/editor/project.ts",
-      "source_location": "L67"
+      "source_location": "L9"
     },
     {
-      "id": "frontend_src_editor_project_isrecord",
-      "label": "isRecord()",
+      "id": "frontend_src_editor_transitions_transition",
+      "label": "Transition",
       "_callable": true,
+      "_callable_class": true,
       "_origin": "ast",
-      "community": 1,
+      "community": 90,
       "community_name": "project.ts",
       "file_type": "code",
-      "norm_label": "isrecord()",
-      "source_file": "frontend/src/editor/project.ts",
-      "source_location": "L36"
+      "norm_label": "transition",
+      "source_file": "frontend/src/editor/transitions.ts",
+      "source_location": "L44"
     },
     {
-      "id": "frontend_src_editor_project_istrack",
-      "label": "isTrack()",
+      "id": "frontend_src_editor_types_timelinemodel",
+      "label": "TimelineModel",
       "_callable": true,
+      "_callable_class": true,
       "_origin": "ast",
-      "community": 1,
+      "community": 90,
       "community_name": "project.ts",
       "file_type": "code",
-      "norm_label": "istrack()",
-      "source_file": "frontend/src/editor/project.ts",
-      "source_location": "L45"
-    },
-    {
-      "id": "frontend_src_editor_project_istranscript",
-      "label": "isTranscript()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "project.ts",
-      "file_type": "code",
-      "norm_label": "istranscript()",
-      "source_file": "frontend/src/editor/project.ts",
-      "source_location": "L79"
-    },
-    {
-      "id": "frontend_src_editor_project_parseprojectjson",
-      "label": "parseProjectJson()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "project.ts",
-      "file_type": "code",
-      "norm_label": "parseprojectjson()",
-      "source_file": "frontend/src/editor/project.ts",
-      "source_location": "L151"
-    },
-    {
-      "id": "frontend_src_editor_project_parseprojectmodel",
-      "label": "parseProjectModel()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "project.ts",
-      "file_type": "code",
-      "norm_label": "parseprojectmodel()",
-      "source_file": "frontend/src/editor/project.ts",
-      "source_location": "L124"
-    },
-    {
-      "id": "frontend_src_editor_project_parsetranscripts",
-      "label": "parseTranscripts()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "project.ts",
-      "file_type": "code",
-      "norm_label": "parsetranscripts()",
-      "source_file": "frontend/src/editor/project.ts",
-      "source_location": "L100"
-    },
-    {
-      "id": "frontend_src_editor_project_parsetransitions",
-      "label": "parseTransitions()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "project.ts",
-      "file_type": "code",
-      "norm_label": "parsetransitions()",
-      "source_file": "frontend/src/editor/project.ts",
-      "source_location": "L113"
-    },
-    {
-      "id": "frontend_src_editor_project_projecterror_constructor",
-      "label": ".constructor()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "project.ts",
-      "file_type": "code",
-      "norm_label": ".constructor()",
-      "source_file": "frontend/src/editor/project.ts",
-      "source_location": "L17"
-    },
-    {
-      "id": "frontend_src_editor_project_requirerecord",
-      "label": "requireRecord()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "project.ts",
-      "file_type": "code",
-      "norm_label": "requirerecord()",
-      "source_file": "frontend/src/editor/project.ts",
-      "source_location": "L40"
-    },
-    {
-      "id": "frontend_src_editor_project_serializeproject",
-      "label": "serializeProject()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "project.ts",
-      "file_type": "code",
-      "norm_label": "serializeproject()",
-      "source_file": "frontend/src/editor/project.ts",
-      "source_location": "L23"
-    },
-    {
-      "id": "frontend_src_editor_project_toprojectjson",
-      "label": "toProjectJson()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "project.ts",
-      "file_type": "code",
-      "norm_label": "toprojectjson()",
-      "source_file": "frontend/src/editor/project.ts",
-      "source_location": "L32"
+      "norm_label": "timelinemodel",
+      "source_file": "frontend/src/editor/types.ts",
+      "source_location": "L56"
     },
     {
       "id": "frontend_src_editor_transitions_clamptransitionduration",
@@ -1244,7 +1114,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "project.ts",
+      "community_name": "transitions.ts",
       "file_type": "code",
       "norm_label": "clamptransitionduration()",
       "source_file": "frontend/src/editor/transitions.ts",
@@ -1256,7 +1126,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "project.ts",
+      "community_name": "transitions.ts",
       "file_type": "code",
       "norm_label": "defaultduration()",
       "source_file": "frontend/src/editor/transitions.ts",
@@ -1268,7 +1138,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "project.ts",
+      "community_name": "transitions.ts",
       "file_type": "code",
       "norm_label": "evaluatetransitions()",
       "source_file": "frontend/src/editor/transitions.ts",
@@ -1280,7 +1150,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "project.ts",
+      "community_name": "transitions.ts",
       "file_type": "code",
       "norm_label": "isrecord()",
       "source_file": "frontend/src/editor/transitions.ts",
@@ -1292,7 +1162,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "project.ts",
+      "community_name": "transitions.ts",
       "file_type": "code",
       "norm_label": "istransition()",
       "source_file": "frontend/src/editor/transitions.ts",
@@ -1304,7 +1174,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "project.ts",
+      "community_name": "transitions.ts",
       "file_type": "code",
       "norm_label": "makebetweentransition()",
       "source_file": "frontend/src/editor/transitions.ts",
@@ -1316,7 +1186,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "project.ts",
+      "community_name": "transitions.ts",
       "file_type": "code",
       "norm_label": "makeedgetransition()",
       "source_file": "frontend/src/editor/transitions.ts",
@@ -1328,7 +1198,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "project.ts",
+      "community_name": "transitions.ts",
       "file_type": "code",
       "norm_label": "nextid()",
       "source_file": "frontend/src/editor/transitions.ts",
@@ -1340,7 +1210,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "project.ts",
+      "community_name": "transitions.ts",
       "file_type": "code",
       "norm_label": "overridetransition()",
       "source_file": "frontend/src/editor/transitions.ts",
@@ -1352,7 +1222,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "project.ts",
+      "community_name": "transitions.ts",
       "file_type": "code",
       "norm_label": "removetransition()",
       "source_file": "frontend/src/editor/transitions.ts",
@@ -1364,7 +1234,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "project.ts",
+      "community_name": "transitions.ts",
       "file_type": "code",
       "norm_label": "v()",
       "source_file": "frontend/src/editor/transitions.test.ts",
@@ -1376,7 +1246,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "project.ts",
+      "community_name": "transitions.ts",
       "file_type": "code",
       "norm_label": "withid()",
       "source_file": "frontend/src/editor/transitions.test.ts",
@@ -1388,23 +1258,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "project.ts",
+      "community_name": "transitions.ts",
       "file_type": "code",
       "norm_label": "validatetransitions()",
       "source_file": "frontend/src/editor/transitions.ts",
       "source_location": "L174"
-    },
-    {
-      "id": "frontend_src_store_editorstore_editoractions_loadproject",
-      "label": ".loadProject()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "project.ts",
-      "file_type": "code",
-      "norm_label": ".loadproject()",
-      "source_file": "frontend/src/store/editorStore.ts",
-      "source_location": "L44"
     },
     {
       "id": "opencode_plugins_graphify_graphifyplugin",
@@ -1560,31 +1418,43 @@
       "file_type": "code",
       "norm_label": "serve_render()",
       "source_file": "backend/src/lava_backend/main.py",
-      "source_location": "L175"
+      "source_location": "L209"
     },
     {
-      "id": "backend_src_lava_backend_matching_match",
-      "label": "match()",
+      "id": "backend_src_lava_backend_media_build_transition_graph",
+      "label": "build_transition_graph()",
       "_callable": true,
       "_origin": "ast",
       "community": 52,
       "community_name": "main.py",
       "file_type": "code",
-      "norm_label": "match()",
-      "source_file": "backend/src/lava_backend/matching.py",
-      "source_location": "L114"
+      "norm_label": "build_transition_graph()",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L181"
     },
     {
-      "id": "backend_src_lava_backend_matching_parse_beats",
-      "label": "_parse_beats()",
+      "id": "backend_src_lava_backend_media_build_transition_graph_invalid",
+      "label": "_invalid()",
       "_callable": true,
       "_origin": "ast",
       "community": 52,
       "community_name": "main.py",
       "file_type": "code",
-      "norm_label": "_parse_beats()",
-      "source_file": "backend/src/lava_backend/matching.py",
-      "source_location": "L94"
+      "norm_label": "_invalid()",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L197"
+    },
+    {
+      "id": "backend_src_lava_backend_media_build_transition_graph_stream_label",
+      "label": "stream_label()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "stream_label()",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L259"
     },
     {
       "id": "backend_src_lava_backend_media_check_binary",
@@ -1596,7 +1466,7 @@
       "file_type": "code",
       "norm_label": "check_binary()",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L75"
+      "source_location": "L101"
     },
     {
       "id": "backend_src_lava_backend_media_filter_complex",
@@ -1608,7 +1478,7 @@
       "file_type": "code",
       "norm_label": "_filter_complex()",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L131"
+      "source_location": "L157"
     },
     {
       "id": "backend_src_lava_backend_media_float",
@@ -1620,7 +1490,7 @@
       "file_type": "code",
       "norm_label": "_float()",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L208"
+      "source_location": "L342"
     },
     {
       "id": "backend_src_lava_backend_media_int",
@@ -1632,7 +1502,7 @@
       "file_type": "code",
       "norm_label": "_int()",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L215"
+      "source_location": "L349"
     },
     {
       "id": "backend_src_lava_backend_media_probe",
@@ -1644,7 +1514,7 @@
       "file_type": "code",
       "norm_label": "probe()",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L85"
+      "source_location": "L111"
     },
     {
       "id": "backend_src_lava_backend_media_render",
@@ -1656,7 +1526,7 @@
       "file_type": "code",
       "norm_label": "render()",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L151"
+      "source_location": "L284"
     },
     {
       "id": "backend_src_lava_backend_media_run",
@@ -1668,43 +1538,19 @@
       "file_type": "code",
       "norm_label": "_run()",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L60"
+      "source_location": "L86"
     },
     {
-      "id": "backend_src_lava_backend_transcribe_serialize",
-      "label": "serialize()",
+      "id": "backend_src_lava_backend_media_xfade_name",
+      "label": "xfade_name()",
       "_callable": true,
       "_origin": "ast",
       "community": 52,
       "community_name": "main.py",
       "file_type": "code",
-      "norm_label": "serialize()",
-      "source_file": "backend/src/lava_backend/transcribe.py",
-      "source_location": "L35"
-    },
-    {
-      "id": "backend_src_lava_backend_transcribe_serialize_segment",
-      "label": "serialize_segment()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 52,
-      "community_name": "main.py",
-      "file_type": "code",
-      "norm_label": "serialize_segment()",
-      "source_file": "backend/src/lava_backend/transcribe.py",
-      "source_location": "L14"
-    },
-    {
-      "id": "backend_src_lava_backend_transcribe_transcribe",
-      "label": "transcribe()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 52,
-      "community_name": "main.py",
-      "file_type": "code",
-      "norm_label": "transcribe()",
-      "source_file": "backend/src/lava_backend/transcribe.py",
-      "source_location": "L51"
+      "norm_label": "xfade_name()",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L177"
     },
     {
       "id": "backend_tests_conftest_clean_config",
@@ -1729,6 +1575,174 @@
       "norm_label": "client()",
       "source_file": "backend/tests/conftest.py",
       "source_location": "L20"
+    },
+    {
+      "id": "backend_tests_test_transition_render_clip",
+      "label": "clip()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "clip()",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L16"
+    },
+    {
+      "id": "backend_tests_test_transition_render_make_image",
+      "label": "_make_image()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "_make_image()",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L123"
+    },
+    {
+      "id": "backend_tests_test_transition_render_test_chained_dissolves_accumulate_offsets",
+      "label": "test_chained_dissolves_accumulate_offsets()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "test_chained_dissolves_accumulate_offsets()",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L45"
+    },
+    {
+      "id": "backend_tests_test_transition_render_test_edge_end_fade_applied_to_last_stream_with_st",
+      "label": "test_edge_end_fade_applied_to_last_stream_with_st()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "test_edge_end_fade_applied_to_last_stream_with_st()",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L68"
+    },
+    {
+      "id": "backend_tests_test_transition_render_test_edge_start_fade_applied_to_first_stream",
+      "label": "test_edge_start_fade_applied_to_first_stream()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "test_edge_start_fade_applied_to_first_stream()",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L59"
+    },
+    {
+      "id": "backend_tests_test_transition_render_test_invalid_transitions_raise",
+      "label": "test_invalid_transitions_raise()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "test_invalid_transitions_raise()",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L97"
+    },
+    {
+      "id": "backend_tests_test_transition_render_test_match_transitions_are_invisible_cuts",
+      "label": "test_match_transitions_are_invisible_cuts()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "test_match_transitions_are_invisible_cuts()",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L27"
+    },
+    {
+      "id": "backend_tests_test_transition_render_test_mixed_pair_folds_with_nested_concat",
+      "label": "test_mixed_pair_folds_with_nested_concat()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "test_mixed_pair_folds_with_nested_concat()",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L76"
+    },
+    {
+      "id": "backend_tests_test_transition_render_test_parity_with_empty_transitions",
+      "label": "test_parity_with_empty_transitions()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "test_parity_with_empty_transitions()",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L20"
+    },
+    {
+      "id": "backend_tests_test_transition_render_test_render_dissolve_shortens_output_duration",
+      "label": "test_render_dissolve_shortens_output_duration()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "test_render_dissolve_shortens_output_duration()",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L134"
+    },
+    {
+      "id": "backend_tests_test_transition_render_test_render_edge_fade_keeps_full_duration",
+      "label": "test_render_edge_fade_keeps_full_duration()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "test_render_edge_fade_keeps_full_duration()",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L148"
+    },
+    {
+      "id": "backend_tests_test_transition_render_test_render_wipe_raises_unsupported",
+      "label": "test_render_wipe_raises_unsupported()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "test_render_wipe_raises_unsupported()",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L162"
+    },
+    {
+      "id": "backend_tests_test_transition_render_test_single_dissolve_offset_and_duration",
+      "label": "test_single_dissolve_offset_and_duration()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "test_single_dissolve_offset_and_duration()",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L36"
+    },
+    {
+      "id": "backend_tests_test_transition_render_test_wipe_and_zoom_are_unsupported",
+      "label": "test_wipe_and_zoom_are_unsupported()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "test_wipe_and_zoom_are_unsupported()",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L111"
     },
     {
       "id": "backend_tests_test_probe_make_clip",
@@ -1815,6 +1829,42 @@
       "source_location": "L28"
     },
     {
+      "id": "backend_tests_test_render_render_multipart_with_transitions",
+      "label": "render_multipart_with_transitions()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test_render.py",
+      "file_type": "code",
+      "norm_label": "render_multipart_with_transitions()",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L126"
+    },
+    {
+      "id": "backend_tests_test_render_test_render_bad_transition_index_via_http_is_422",
+      "label": "test_render_bad_transition_index_via_http_is_422()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test_render.py",
+      "file_type": "code",
+      "norm_label": "test_render_bad_transition_index_via_http_is_422()",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L169"
+    },
+    {
+      "id": "backend_tests_test_render_test_render_dissolve_via_http",
+      "label": "test_render_dissolve_via_http()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test_render.py",
+      "file_type": "code",
+      "norm_label": "test_render_dissolve_via_http()",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L137"
+    },
+    {
       "id": "backend_tests_test_render_test_render_file_clip_count_mismatch_is_400",
       "label": "test_render_file_clip_count_mismatch_is_400()",
       "_callable": true,
@@ -1837,6 +1887,18 @@
       "norm_label": "test_render_invalid_duration_is_422()",
       "source_file": "backend/tests/test_render.py",
       "source_location": "L114"
+    },
+    {
+      "id": "backend_tests_test_render_test_render_malformed_transitions_body_is_422",
+      "label": "test_render_malformed_transitions_body_is_422()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test_render.py",
+      "file_type": "code",
+      "norm_label": "test_render_malformed_transitions_body_is_422()",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L184"
     },
     {
       "id": "backend_tests_test_render_test_render_missing_job_404",
@@ -1887,6 +1949,18 @@
       "source_location": "L59"
     },
     {
+      "id": "backend_tests_test_render_test_render_wipe_via_http_is_unsupported",
+      "label": "test_render_wipe_via_http_is_unsupported()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 53,
+      "community_name": "test_render.py",
+      "file_type": "code",
+      "norm_label": "test_render_wipe_via_http_is_unsupported()",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L154"
+    },
+    {
       "id": "backend_tests_test_health_test_health_fails_without_ffmpeg_binary",
       "label": "test_health_fails_without_ffmpeg_binary()",
       "_callable": true,
@@ -1933,6 +2007,42 @@
       "norm_label": "detect_pauses()",
       "source_file": "backend/src/lava_backend/transcribe_core.py",
       "source_location": "L21"
+    },
+    {
+      "id": "backend_src_lava_backend_transcribe_serialize",
+      "label": "serialize()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 59,
+      "community_name": "detect_pauses",
+      "file_type": "code",
+      "norm_label": "serialize()",
+      "source_file": "backend/src/lava_backend/transcribe.py",
+      "source_location": "L35"
+    },
+    {
+      "id": "backend_src_lava_backend_transcribe_serialize_segment",
+      "label": "serialize_segment()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 59,
+      "community_name": "detect_pauses",
+      "file_type": "code",
+      "norm_label": "serialize_segment()",
+      "source_file": "backend/src/lava_backend/transcribe.py",
+      "source_location": "L14"
+    },
+    {
+      "id": "backend_src_lava_backend_transcribe_transcribe",
+      "label": "transcribe()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 59,
+      "community_name": "detect_pauses",
+      "file_type": "code",
+      "norm_label": "transcribe()",
+      "source_file": "backend/src/lava_backend/transcribe.py",
+      "source_location": "L51"
     },
     {
       "id": "backend_src_lava_backend_transcribers_faketranscriber_init",
@@ -2667,16 +2777,16 @@
       "source_location": "L39"
     },
     {
-      "id": "backend_src_lava_backend_matching_matcher_assign",
-      "label": ".assign()",
+      "id": "backend_src_lava_backend_matching_match",
+      "label": "match()",
       "_callable": true,
       "_origin": "ast",
       "community": 63,
       "community_name": "Matcher",
       "file_type": "code",
-      "norm_label": ".assign()",
+      "norm_label": "match()",
       "source_file": "backend/src/lava_backend/matching.py",
-      "source_location": "L48"
+      "source_location": "L114"
     },
     {
       "id": "backend_src_lava_backend_matching_matcher_init",
@@ -2689,6 +2799,18 @@
       "norm_label": ".__init__()",
       "source_file": "backend/src/lava_backend/matching.py",
       "source_location": "L38"
+    },
+    {
+      "id": "backend_src_lava_backend_matching_parse_beats",
+      "label": "_parse_beats()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 63,
+      "community_name": "Matcher",
+      "file_type": "code",
+      "norm_label": "_parse_beats()",
+      "source_file": "backend/src/lava_backend/matching.py",
+      "source_location": "L94"
     },
     {
       "id": "backend_tests_test_matching_fakeembedder_embed_images",
@@ -3111,6 +3233,54 @@
       "source_location": "L10"
     },
     {
+      "id": "frontend_src_services_match_matcherror_constructor",
+      "label": ".constructor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 65,
+      "community_name": "matchingStore.ts",
+      "file_type": "code",
+      "norm_label": ".constructor()",
+      "source_file": "frontend/src/services/match.ts",
+      "source_location": "L5"
+    },
+    {
+      "id": "frontend_src_services_match_matchimages",
+      "label": "matchImages()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 65,
+      "community_name": "matchingStore.ts",
+      "file_type": "code",
+      "norm_label": "matchimages()",
+      "source_file": "frontend/src/services/match.ts",
+      "source_location": "L64"
+    },
+    {
+      "id": "frontend_src_services_match_parsematch",
+      "label": "parseMatch()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 65,
+      "community_name": "matchingStore.ts",
+      "file_type": "code",
+      "norm_label": "parsematch()",
+      "source_file": "frontend/src/services/match.ts",
+      "source_location": "L29"
+    },
+    {
+      "id": "frontend_src_services_match_test_jsonresponse",
+      "label": "jsonResponse()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 65,
+      "community_name": "matchingStore.ts",
+      "file_type": "code",
+      "norm_label": "jsonresponse()",
+      "source_file": "frontend/src/services/match.test.ts",
+      "source_location": "L4"
+    },
+    {
       "id": "frontend_src_store_matchingstore_imagetrackid",
       "label": "imageTrackId()",
       "_callable": true,
@@ -3133,6 +3303,30 @@
       "norm_label": "inputsfrom()",
       "source_file": "frontend/src/store/matchingStore.ts",
       "source_location": "L26"
+    },
+    {
+      "id": "frontend_src_store_matchingstore_matchingstore_clear",
+      "label": ".clear()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 65,
+      "community_name": "matchingStore.ts",
+      "file_type": "code",
+      "norm_label": ".clear()",
+      "source_file": "frontend/src/store/matchingStore.ts",
+      "source_location": "L19"
+    },
+    {
+      "id": "frontend_src_store_matchingstore_matchingstore_match",
+      "label": ".match()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 65,
+      "community_name": "matchingStore.ts",
+      "file_type": "code",
+      "norm_label": ".match()",
+      "source_file": "frontend/src/store/matchingStore.ts",
+      "source_location": "L18"
     },
     {
       "id": "frontend_src_components_timeline_trackrow_trackrow",
@@ -3469,6 +3663,18 @@
       "norm_label": "_zeros_text_feed()",
       "source_file": "backend/src/lava_backend/clip.py",
       "source_location": "L69"
+    },
+    {
+      "id": "backend_src_lava_backend_matching_matcher_assign",
+      "label": ".assign()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 69,
+      "community_name": "test_clip.py",
+      "file_type": "code",
+      "norm_label": ".assign()",
+      "source_file": "backend/src/lava_backend/matching.py",
+      "source_location": "L48"
     },
     {
       "id": "backend_tests_test_clip_encoding_init",
@@ -4251,54 +4457,6 @@
       "source_location": "L56"
     },
     {
-      "id": "frontend_src_services_match_matcherror_constructor",
-      "label": ".constructor()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "ffmpeg.ts",
-      "file_type": "code",
-      "norm_label": ".constructor()",
-      "source_file": "frontend/src/services/match.ts",
-      "source_location": "L5"
-    },
-    {
-      "id": "frontend_src_services_match_matchimages",
-      "label": "matchImages()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "ffmpeg.ts",
-      "file_type": "code",
-      "norm_label": "matchimages()",
-      "source_file": "frontend/src/services/match.ts",
-      "source_location": "L64"
-    },
-    {
-      "id": "frontend_src_services_match_parsematch",
-      "label": "parseMatch()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "ffmpeg.ts",
-      "file_type": "code",
-      "norm_label": "parsematch()",
-      "source_file": "frontend/src/services/match.ts",
-      "source_location": "L29"
-    },
-    {
-      "id": "frontend_src_services_match_test_jsonresponse",
-      "label": "jsonResponse()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "ffmpeg.ts",
-      "file_type": "code",
-      "norm_label": "jsonresponse()",
-      "source_file": "frontend/src/services/match.test.ts",
-      "source_location": "L4"
-    },
-    {
       "id": "frontend_src_services_voice_parsetranscript",
       "label": "parseTranscript()",
       "_callable": true,
@@ -4333,30 +4491,6 @@
       "norm_label": ".constructor()",
       "source_file": "frontend/src/services/voice.ts",
       "source_location": "L5"
-    },
-    {
-      "id": "frontend_src_store_matchingstore_matchingstore_clear",
-      "label": ".clear()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "ffmpeg.ts",
-      "file_type": "code",
-      "norm_label": ".clear()",
-      "source_file": "frontend/src/store/matchingStore.ts",
-      "source_location": "L19"
-    },
-    {
-      "id": "frontend_src_store_matchingstore_matchingstore_match",
-      "label": ".match()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "ffmpeg.ts",
-      "file_type": "code",
-      "norm_label": ".match()",
-      "source_file": "frontend/src/store/matchingStore.ts",
-      "source_location": "L18"
     },
     {
       "id": "frontend_src_editor_beats_labelfor",
@@ -4465,6 +4599,174 @@
       "norm_label": "main()",
       "source_file": "scripts/fetch-ffmpeg.mjs",
       "source_location": "L94"
+    },
+    {
+      "id": "frontend_src_editor_project_isasset",
+      "label": "isAsset()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 90,
+      "community_name": "project.ts",
+      "file_type": "code",
+      "norm_label": "isasset()",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L55"
+    },
+    {
+      "id": "frontend_src_editor_project_isclip",
+      "label": "isClip()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 90,
+      "community_name": "project.ts",
+      "file_type": "code",
+      "norm_label": "isclip()",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L67"
+    },
+    {
+      "id": "frontend_src_editor_project_isrecord",
+      "label": "isRecord()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 90,
+      "community_name": "project.ts",
+      "file_type": "code",
+      "norm_label": "isrecord()",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L36"
+    },
+    {
+      "id": "frontend_src_editor_project_istrack",
+      "label": "isTrack()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 90,
+      "community_name": "project.ts",
+      "file_type": "code",
+      "norm_label": "istrack()",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L45"
+    },
+    {
+      "id": "frontend_src_editor_project_istranscript",
+      "label": "isTranscript()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 90,
+      "community_name": "project.ts",
+      "file_type": "code",
+      "norm_label": "istranscript()",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L79"
+    },
+    {
+      "id": "frontend_src_editor_project_parseprojectjson",
+      "label": "parseProjectJson()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 90,
+      "community_name": "project.ts",
+      "file_type": "code",
+      "norm_label": "parseprojectjson()",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L151"
+    },
+    {
+      "id": "frontend_src_editor_project_parseprojectmodel",
+      "label": "parseProjectModel()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 90,
+      "community_name": "project.ts",
+      "file_type": "code",
+      "norm_label": "parseprojectmodel()",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L124"
+    },
+    {
+      "id": "frontend_src_editor_project_parsetranscripts",
+      "label": "parseTranscripts()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 90,
+      "community_name": "project.ts",
+      "file_type": "code",
+      "norm_label": "parsetranscripts()",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L100"
+    },
+    {
+      "id": "frontend_src_editor_project_parsetransitions",
+      "label": "parseTransitions()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 90,
+      "community_name": "project.ts",
+      "file_type": "code",
+      "norm_label": "parsetransitions()",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L113"
+    },
+    {
+      "id": "frontend_src_editor_project_projecterror_constructor",
+      "label": ".constructor()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 90,
+      "community_name": "project.ts",
+      "file_type": "code",
+      "norm_label": ".constructor()",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L17"
+    },
+    {
+      "id": "frontend_src_editor_project_requirerecord",
+      "label": "requireRecord()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 90,
+      "community_name": "project.ts",
+      "file_type": "code",
+      "norm_label": "requirerecord()",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L40"
+    },
+    {
+      "id": "frontend_src_editor_project_serializeproject",
+      "label": "serializeProject()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 90,
+      "community_name": "project.ts",
+      "file_type": "code",
+      "norm_label": "serializeproject()",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L23"
+    },
+    {
+      "id": "frontend_src_editor_project_toprojectjson",
+      "label": "toProjectJson()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 90,
+      "community_name": "project.ts",
+      "file_type": "code",
+      "norm_label": "toprojectjson()",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L32"
+    },
+    {
+      "id": "frontend_src_store_editorstore_editoractions_loadproject",
+      "label": ".loadProject()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 90,
+      "community_name": "project.ts",
+      "file_type": "code",
+      "norm_label": ".loadproject()",
+      "source_file": "frontend/src/store/editorStore.ts",
+      "source_location": "L44"
     },
     {
       "id": "frontend_package",
@@ -4841,88 +5143,11 @@
       "source_location": "L15"
     },
     {
-      "id": "frontend_src_editor_project",
-      "label": "project.ts",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "project.ts",
-      "file_type": "code",
-      "norm_label": "project.ts",
-      "source_file": "frontend/src/editor/project.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "frontend_src_editor_project_project_app",
-      "label": "PROJECT_APP",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "project.ts",
-      "file_type": "code",
-      "norm_label": "project_app",
-      "source_file": "frontend/src/editor/project.ts",
-      "source_location": "L6"
-    },
-    {
-      "id": "frontend_src_editor_project_project_version",
-      "label": "PROJECT_VERSION",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "project.ts",
-      "file_type": "code",
-      "norm_label": "project_version",
-      "source_file": "frontend/src/editor/project.ts",
-      "source_location": "L7"
-    },
-    {
-      "id": "frontend_src_editor_project_test",
-      "label": "project.test.ts",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "project.ts",
-      "file_type": "code",
-      "norm_label": "project.test.ts",
-      "source_file": "frontend/src/editor/project.test.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "frontend_src_editor_project_test_assets",
-      "label": "assets",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "project.ts",
-      "file_type": "code",
-      "norm_label": "assets",
-      "source_file": "frontend/src/editor/project.test.ts",
-      "source_location": "L13"
-    },
-    {
-      "id": "frontend_src_editor_project_test_clips",
-      "label": "clips",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "project.ts",
-      "file_type": "code",
-      "norm_label": "clips",
-      "source_file": "frontend/src/editor/project.test.ts",
-      "source_location": "L18"
-    },
-    {
-      "id": "frontend_src_editor_project_test_model",
-      "label": "model",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "project.ts",
-      "file_type": "code",
-      "norm_label": "model",
-      "source_file": "frontend/src/editor/project.test.ts",
-      "source_location": "L23"
-    },
-    {
       "id": "frontend_src_editor_transitions",
       "label": "transitions.ts",
       "_origin": "ast",
       "community": 1,
-      "community_name": "project.ts",
+      "community_name": "transitions.ts",
       "file_type": "code",
       "norm_label": "transitions.ts",
       "source_file": "frontend/src/editor/transitions.ts",
@@ -4933,7 +5158,7 @@
       "label": "DEFAULT_DURATIONS",
       "_origin": "ast",
       "community": 1,
-      "community_name": "project.ts",
+      "community_name": "transitions.ts",
       "file_type": "code",
       "norm_label": "default_durations",
       "source_file": "frontend/src/editor/transitions.ts",
@@ -4944,7 +5169,7 @@
       "label": "MAX_DURATION",
       "_origin": "ast",
       "community": 1,
-      "community_name": "project.ts",
+      "community_name": "transitions.ts",
       "file_type": "code",
       "norm_label": "max_duration",
       "source_file": "frontend/src/editor/transitions.ts",
@@ -4955,7 +5180,7 @@
       "label": "MIN_DURATION",
       "_origin": "ast",
       "community": 1,
-      "community_name": "project.ts",
+      "community_name": "transitions.ts",
       "file_type": "code",
       "norm_label": "min_duration",
       "source_file": "frontend/src/editor/transitions.ts",
@@ -4966,7 +5191,7 @@
       "label": "transitions.test.ts",
       "_origin": "ast",
       "community": 1,
-      "community_name": "project.ts",
+      "community_name": "transitions.ts",
       "file_type": "code",
       "norm_label": "transitions.test.ts",
       "source_file": "frontend/src/editor/transitions.test.ts",
@@ -4977,22 +5202,11 @@
       "label": "TRANSITION_TYPES",
       "_origin": "ast",
       "community": 1,
-      "community_name": "project.ts",
+      "community_name": "transitions.ts",
       "file_type": "code",
       "norm_label": "transition_types",
       "source_file": "frontend/src/editor/transitions.ts",
       "source_location": "L1"
-    },
-    {
-      "id": "frontend_src_editor_types_track_types",
-      "label": "TRACK_TYPES",
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "project.ts",
-      "file_type": "code",
-      "norm_label": "track_types",
-      "source_file": "frontend/src/editor/types.ts",
-      "source_location": "L3"
     },
     {
       "id": "frontend_oxlintrc",
@@ -10408,7 +10622,7 @@
       "node_kind": "heading",
       "norm_label": "10. hardware-aware operation",
       "source_file": "docs/FEATURES.md",
-      "source_location": "L124"
+      "source_location": "L125"
     },
     {
       "id": "docs_features_1_media_foundation",
@@ -10468,7 +10682,7 @@
       "node_kind": "heading",
       "norm_label": "5. captions",
       "source_file": "docs/FEATURES.md",
-      "source_location": "L66"
+      "source_location": "L67"
     },
     {
       "id": "docs_features_6_templates_styles_fonts",
@@ -10480,7 +10694,7 @@
       "node_kind": "heading",
       "norm_label": "6. templates / styles / fonts",
       "source_file": "docs/FEATURES.md",
-      "source_location": "L88"
+      "source_location": "L89"
     },
     {
       "id": "docs_features_7_manhwa_webtoon_extractor",
@@ -10492,7 +10706,7 @@
       "node_kind": "heading",
       "norm_label": "7. manhwa / webtoon extractor",
       "source_file": "docs/FEATURES.md",
-      "source_location": "L97"
+      "source_location": "L98"
     },
     {
       "id": "docs_features_8_editor_timeline",
@@ -10504,7 +10718,7 @@
       "node_kind": "heading",
       "norm_label": "8. editor / timeline",
       "source_file": "docs/FEATURES.md",
-      "source_location": "L112"
+      "source_location": "L113"
     },
     {
       "id": "docs_features_9_ai_control_editing_integrity",
@@ -10516,7 +10730,7 @@
       "node_kind": "heading",
       "norm_label": "9. ai control & editing integrity",
       "source_file": "docs/FEATURES.md",
-      "source_location": "L118"
+      "source_location": "L119"
     },
     {
       "id": "docs_features_ai_video_studio_features",
@@ -10903,18 +11117,6 @@
       "source_location": "L1"
     },
     {
-      "id": "docs_ui_spec",
-      "label": "UI_SPEC.md",
-      "_origin": "ast",
-      "community": 35,
-      "community_name": "README.md",
-      "file_type": "document",
-      "node_kind": "page",
-      "norm_label": "ui_spec.md",
-      "source_file": "docs/UI_SPEC.md",
-      "source_location": "L1"
-    },
-    {
       "id": "readme",
       "label": "README.md",
       "_origin": "ast",
@@ -11224,7 +11426,19 @@
       "node_kind": "heading",
       "norm_label": "d-016 \u2014 transitions live as an optional top-level `transitions` list; cut = absence; suggestions default-clean",
       "source_file": "docs/DECISIONS.md",
-      "source_location": "L168"
+      "source_location": "L169"
+    },
+    {
+      "id": "docs_decisions_d_017_transitions_render_through_an_ffmpeg_xfade_fold_offsets_\u03c3dur_\u03c3d_wipe_zoom_422",
+      "label": "D-017 \u2014 Transitions render through an FFmpeg xfade fold; offsets = \u03a3dur \u2212 \u03a3D; wipe/zoom \u2192 422",
+      "_origin": "ast",
+      "community": 37,
+      "community_name": "AI Video Studio \u2014 Decision Log",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "d-017 \u2014 transitions render through an ffmpeg xfade fold; offsets = \u03c3dur \u2212 \u03c3d; wipe/zoom \u2192 422",
+      "source_file": "docs/DECISIONS.md",
+      "source_location": "L178"
     },
     {
       "id": "docs_decisions_index_of_decisions",
@@ -12019,6 +12233,18 @@
       "source_location": "L1"
     },
     {
+      "id": "docs_ui_spec",
+      "label": "UI_SPEC.md",
+      "_origin": "ast",
+      "community": 41,
+      "community_name": "AI Video Studio \u2014 UI Specification",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "ui_spec.md",
+      "source_file": "docs/UI_SPEC.md",
+      "source_location": "L1"
+    },
+    {
       "id": "docs_ui_spec_1_direction",
       "label": "1. Direction",
       "_origin": "ast",
@@ -12809,50 +13035,6 @@
       "source_location": ""
     },
     {
-      "id": "backend_src_lava_backend_matching",
-      "label": "matching.py",
-      "_origin": "ast",
-      "community": 52,
-      "community_name": "main.py",
-      "file_type": "code",
-      "norm_label": "matching.py",
-      "source_file": "backend/src/lava_backend/matching.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "backend_src_lava_backend_matching_py_exception",
-      "label": "Exception",
-      "_origin": "ast",
-      "community": 52,
-      "community_name": "main.py",
-      "file_type": "code",
-      "norm_label": "exception",
-      "source_file": "",
-      "source_location": ""
-    },
-    {
-      "id": "backend_src_lava_backend_matching_py_request",
-      "label": "Request",
-      "_origin": "ast",
-      "community": 52,
-      "community_name": "main.py",
-      "file_type": "code",
-      "norm_label": "request",
-      "source_file": "",
-      "source_location": ""
-    },
-    {
-      "id": "backend_src_lava_backend_matching_py_uploadfile",
-      "label": "UploadFile",
-      "_origin": "ast",
-      "community": 52,
-      "community_name": "main.py",
-      "file_type": "code",
-      "norm_label": "uploadfile",
-      "source_file": "",
-      "source_location": ""
-    },
-    {
       "id": "backend_src_lava_backend_media",
       "label": "media.py",
       "_origin": "ast",
@@ -12875,39 +13057,6 @@
       "source_location": ""
     },
     {
-      "id": "backend_src_lava_backend_transcribe",
-      "label": "transcribe.py",
-      "_origin": "ast",
-      "community": 52,
-      "community_name": "main.py",
-      "file_type": "code",
-      "norm_label": "transcribe.py",
-      "source_file": "backend/src/lava_backend/transcribe.py",
-      "source_location": "L1"
-    },
-    {
-      "id": "backend_src_lava_backend_transcribe_py_request",
-      "label": "Request",
-      "_origin": "ast",
-      "community": 52,
-      "community_name": "main.py",
-      "file_type": "code",
-      "norm_label": "request",
-      "source_file": "",
-      "source_location": ""
-    },
-    {
-      "id": "backend_src_lava_backend_transcribe_py_uploadfile",
-      "label": "UploadFile",
-      "_origin": "ast",
-      "community": 52,
-      "community_name": "main.py",
-      "file_type": "code",
-      "norm_label": "uploadfile",
-      "source_file": "",
-      "source_location": ""
-    },
-    {
       "id": "backend_tests_conftest",
       "label": "conftest.py",
       "_origin": "ast",
@@ -12917,6 +13066,28 @@
       "norm_label": "conftest.py",
       "source_file": "backend/tests/conftest.py",
       "source_location": "L1"
+    },
+    {
+      "id": "backend_tests_test_transition_render",
+      "label": "test_transition_render.py",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "test_transition_render.py",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "backend_tests_test_transition_render_py_path",
+      "label": "Path",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "path",
+      "source_file": "",
+      "source_location": ""
     },
     {
       "id": "basemodel",
@@ -12974,6 +13145,17 @@
       "source_location": ""
     },
     {
+      "id": "parametrize",
+      "label": "parametrize",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "code",
+      "norm_label": "parametrize",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
       "id": "backend_src_lava_backend_config_rationale_1",
       "label": "Resolve Lava Studio project-local configuration and paths.",
       "_origin": "ast",
@@ -13007,17 +13189,6 @@
       "source_location": "L1"
     },
     {
-      "id": "backend_src_lava_backend_matching_rationale_27",
-      "label": "Embedding/model step failed; distinguishes embed errors from assignment errors.",
-      "_origin": "ast",
-      "community": 52,
-      "community_name": "main.py",
-      "file_type": "rationale",
-      "norm_label": "embedding/model step failed; distinguishes embed errors from assignment errors.",
-      "source_file": "backend/src/lava_backend/matching.py",
-      "source_location": "L27"
-    },
-    {
       "id": "backend_src_lava_backend_media_rationale_1",
       "label": "FFmpeg/FFprobe subprocess helpers for the sidecar.",
       "_origin": "ast",
@@ -13027,6 +13198,17 @@
       "norm_label": "ffmpeg/ffprobe subprocess helpers for the sidecar.",
       "source_file": "backend/src/lava_backend/media.py",
       "source_location": "L1"
+    },
+    {
+      "id": "backend_src_lava_backend_media_rationale_186",
+      "label": "Return (filter_complex, total_duration) for a clip fold with transitions. Pure\u2026",
+      "_origin": "ast",
+      "community": 52,
+      "community_name": "main.py",
+      "file_type": "rationale",
+      "norm_label": "return (filter_complex, total_duration) for a clip fold with transitions. pure...",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L186"
     },
     {
       "id": "backend_src_lava_backend_init",
@@ -13298,6 +13480,18 @@
       "source_location": "L45"
     },
     {
+      "id": "tasks_todo_m4_transitions_render_active_spec_transitions_render_md_tasks_plan_tr_md",
+      "label": "M4 transitions-render (active) \u2014 SPEC-transitions-render.md, tasks/plan-tr.md",
+      "_origin": "ast",
+      "community": 58,
+      "community_name": "Task list",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "m4 transitions-render (active) \u2014 spec-transitions-render.md, tasks/plan-tr.md",
+      "source_file": "tasks/todo.md",
+      "source_location": "L56"
+    },
+    {
       "id": "tasks_todo_task_list",
       "label": "Task list",
       "_origin": "ast",
@@ -13310,6 +13504,17 @@
       "source_location": "L1"
     },
     {
+      "id": "backend_src_lava_backend_transcribe",
+      "label": "transcribe.py",
+      "_origin": "ast",
+      "community": 59,
+      "community_name": "detect_pauses",
+      "file_type": "code",
+      "norm_label": "transcribe.py",
+      "source_file": "backend/src/lava_backend/transcribe.py",
+      "source_location": "L1"
+    },
+    {
       "id": "backend_src_lava_backend_transcribe_core",
       "label": "transcribe_core.py",
       "_origin": "ast",
@@ -13319,6 +13524,28 @@
       "norm_label": "transcribe_core.py",
       "source_file": "backend/src/lava_backend/transcribe_core.py",
       "source_location": "L1"
+    },
+    {
+      "id": "backend_src_lava_backend_transcribe_py_request",
+      "label": "Request",
+      "_origin": "ast",
+      "community": 59,
+      "community_name": "detect_pauses",
+      "file_type": "code",
+      "norm_label": "request",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "backend_src_lava_backend_transcribe_py_uploadfile",
+      "label": "UploadFile",
+      "_origin": "ast",
+      "community": 59,
+      "community_name": "detect_pauses",
+      "file_type": "code",
+      "norm_label": "uploadfile",
+      "source_file": "",
+      "source_location": ""
     },
     {
       "id": "backend_src_lava_backend_transcribers",
@@ -13872,6 +14099,50 @@
       "source_location": "L13"
     },
     {
+      "id": "backend_src_lava_backend_matching",
+      "label": "matching.py",
+      "_origin": "ast",
+      "community": 63,
+      "community_name": "Matcher",
+      "file_type": "code",
+      "norm_label": "matching.py",
+      "source_file": "backend/src/lava_backend/matching.py",
+      "source_location": "L1"
+    },
+    {
+      "id": "backend_src_lava_backend_matching_py_exception",
+      "label": "Exception",
+      "_origin": "ast",
+      "community": 63,
+      "community_name": "Matcher",
+      "file_type": "code",
+      "norm_label": "exception",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "backend_src_lava_backend_matching_py_request",
+      "label": "Request",
+      "_origin": "ast",
+      "community": 63,
+      "community_name": "Matcher",
+      "file_type": "code",
+      "norm_label": "request",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
+      "id": "backend_src_lava_backend_matching_py_uploadfile",
+      "label": "UploadFile",
+      "_origin": "ast",
+      "community": 63,
+      "community_name": "Matcher",
+      "file_type": "code",
+      "norm_label": "uploadfile",
+      "source_file": "",
+      "source_location": ""
+    },
+    {
       "id": "backend_tests_test_matching",
       "label": "test_matching.py",
       "_origin": "ast",
@@ -13881,6 +14152,17 @@
       "norm_label": "test_matching.py",
       "source_file": "backend/tests/test_matching.py",
       "source_location": "L1"
+    },
+    {
+      "id": "backend_src_lava_backend_matching_rationale_27",
+      "label": "Embedding/model step failed; distinguishes embed errors from assignment errors.",
+      "_origin": "ast",
+      "community": 63,
+      "community_name": "Matcher",
+      "file_type": "rationale",
+      "norm_label": "embedding/model step failed; distinguishes embed errors from assignment errors.",
+      "source_file": "backend/src/lava_backend/matching.py",
+      "source_location": "L27"
     },
     {
       "id": "backend_src_lava_backend_matching_rationale_31",
@@ -14002,6 +14284,39 @@
       "norm_label": "timing_epsilon",
       "source_file": "frontend/src/editor/timing.ts",
       "source_location": "L1"
+    },
+    {
+      "id": "frontend_src_services_match",
+      "label": "match.ts",
+      "_origin": "ast",
+      "community": 65,
+      "community_name": "matchingStore.ts",
+      "file_type": "code",
+      "norm_label": "match.ts",
+      "source_file": "frontend/src/services/match.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "frontend_src_services_match_test",
+      "label": "match.test.ts",
+      "_origin": "ast",
+      "community": 65,
+      "community_name": "matchingStore.ts",
+      "file_type": "code",
+      "norm_label": "match.test.ts",
+      "source_file": "frontend/src/services/match.test.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "frontend_src_services_match_test_beat",
+      "label": "beat",
+      "_origin": "ast",
+      "community": 65,
+      "community_name": "matchingStore.ts",
+      "file_type": "code",
+      "norm_label": "beat",
+      "source_file": "frontend/src/services/match.test.ts",
+      "source_location": "L12"
     },
     {
       "id": "frontend_src_store_matchingstore",
@@ -15754,39 +16069,6 @@
       "source_location": "L16"
     },
     {
-      "id": "frontend_src_services_match",
-      "label": "match.ts",
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "ffmpeg.ts",
-      "file_type": "code",
-      "norm_label": "match.ts",
-      "source_file": "frontend/src/services/match.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "frontend_src_services_match_test",
-      "label": "match.test.ts",
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "ffmpeg.ts",
-      "file_type": "code",
-      "norm_label": "match.test.ts",
-      "source_file": "frontend/src/services/match.test.ts",
-      "source_location": "L1"
-    },
-    {
-      "id": "frontend_src_services_match_test_beat",
-      "label": "beat",
-      "_origin": "ast",
-      "community": 8,
-      "community_name": "ffmpeg.ts",
-      "file_type": "code",
-      "norm_label": "beat",
-      "source_file": "frontend/src/services/match.test.ts",
-      "source_location": "L12"
-    },
-    {
       "id": "frontend_src_services_voice",
       "label": "voice.ts",
       "_origin": "ast",
@@ -16416,6 +16698,17 @@
       "source_location": "L15"
     },
     {
+      "id": "frontend_src_editor_types_track_types",
+      "label": "TRACK_TYPES",
+      "_origin": "ast",
+      "community": 85,
+      "community_name": "types.ts",
+      "file_type": "code",
+      "norm_label": "track_types",
+      "source_file": "frontend/src/editor/types.ts",
+      "source_location": "L3"
+    },
+    {
       "id": "frontend_src_store_editorstore_test",
       "label": "editorStore.test.ts",
       "_origin": "ast",
@@ -17002,6 +17295,407 @@
       "norm_label": "sources",
       "source_file": "scripts/fetch-ffmpeg.mjs",
       "source_location": "L32"
+    },
+    {
+      "id": "frontend_src_editor_project",
+      "label": "project.ts",
+      "_origin": "ast",
+      "community": 90,
+      "community_name": "project.ts",
+      "file_type": "code",
+      "norm_label": "project.ts",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "frontend_src_editor_project_project_app",
+      "label": "PROJECT_APP",
+      "_origin": "ast",
+      "community": 90,
+      "community_name": "project.ts",
+      "file_type": "code",
+      "norm_label": "project_app",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L6"
+    },
+    {
+      "id": "frontend_src_editor_project_project_version",
+      "label": "PROJECT_VERSION",
+      "_origin": "ast",
+      "community": 90,
+      "community_name": "project.ts",
+      "file_type": "code",
+      "norm_label": "project_version",
+      "source_file": "frontend/src/editor/project.ts",
+      "source_location": "L7"
+    },
+    {
+      "id": "frontend_src_editor_project_test",
+      "label": "project.test.ts",
+      "_origin": "ast",
+      "community": 90,
+      "community_name": "project.ts",
+      "file_type": "code",
+      "norm_label": "project.test.ts",
+      "source_file": "frontend/src/editor/project.test.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "frontend_src_editor_project_test_assets",
+      "label": "assets",
+      "_origin": "ast",
+      "community": 90,
+      "community_name": "project.ts",
+      "file_type": "code",
+      "norm_label": "assets",
+      "source_file": "frontend/src/editor/project.test.ts",
+      "source_location": "L13"
+    },
+    {
+      "id": "frontend_src_editor_project_test_clips",
+      "label": "clips",
+      "_origin": "ast",
+      "community": 90,
+      "community_name": "project.ts",
+      "file_type": "code",
+      "norm_label": "clips",
+      "source_file": "frontend/src/editor/project.test.ts",
+      "source_location": "L18"
+    },
+    {
+      "id": "frontend_src_editor_project_test_model",
+      "label": "model",
+      "_origin": "ast",
+      "community": 90,
+      "community_name": "project.ts",
+      "file_type": "code",
+      "norm_label": "model",
+      "source_file": "frontend/src/editor/project.test.ts",
+      "source_location": "L23"
+    },
+    {
+      "id": "docs_spec_transitions_render",
+      "label": "SPEC-transitions-render.md",
+      "_origin": "ast",
+      "community": 91,
+      "community_name": "Spec: `transitions-render` \u2014 transitions in the FFmpeg render pipeline",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "spec-transitions-render.md",
+      "source_file": "docs/SPEC-transitions-render.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_spec_transitions_render_behaviour_acceptance",
+      "label": "Behaviour / acceptance",
+      "_origin": "ast",
+      "community": 91,
+      "community_name": "Spec: `transitions-render` \u2014 transitions in the FFmpeg render pipeline",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "behaviour / acceptance",
+      "source_file": "docs/SPEC-transitions-render.md",
+      "source_location": "L47"
+    },
+    {
+      "id": "docs_spec_transitions_render_boundaries",
+      "label": "Boundaries",
+      "_origin": "ast",
+      "community": 91,
+      "community_name": "Spec: `transitions-render` \u2014 transitions in the FFmpeg render pipeline",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "boundaries",
+      "source_file": "docs/SPEC-transitions-render.md",
+      "source_location": "L89"
+    },
+    {
+      "id": "docs_spec_transitions_render_code_style",
+      "label": "Code style",
+      "_origin": "ast",
+      "community": 91,
+      "community_name": "Spec: `transitions-render` \u2014 transitions in the FFmpeg render pipeline",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "code style",
+      "source_file": "docs/SPEC-transitions-render.md",
+      "source_location": "L75"
+    },
+    {
+      "id": "docs_spec_transitions_render_commands",
+      "label": "Commands",
+      "_origin": "ast",
+      "community": 91,
+      "community_name": "Spec: `transitions-render` \u2014 transitions in the FFmpeg render pipeline",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "commands",
+      "source_file": "docs/SPEC-transitions-render.md",
+      "source_location": "L59"
+    },
+    {
+      "id": "docs_spec_transitions_render_data_contract_backend",
+      "label": "Data contract (backend)",
+      "_origin": "ast",
+      "community": 91,
+      "community_name": "Spec: `transitions-render` \u2014 transitions in the FFmpeg render pipeline",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "data contract (backend)",
+      "source_file": "docs/SPEC-transitions-render.md",
+      "source_location": "L16"
+    },
+    {
+      "id": "docs_spec_transitions_render_objective",
+      "label": "Objective",
+      "_origin": "ast",
+      "community": 91,
+      "community_name": "Spec: `transitions-render` \u2014 transitions in the FFmpeg render pipeline",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "objective",
+      "source_file": "docs/SPEC-transitions-render.md",
+      "source_location": "L9"
+    },
+    {
+      "id": "docs_spec_transitions_render_spec_transitions_render_transitions_in_the_ffmpeg_render_pipeline",
+      "label": "Spec: `transitions-render` \u2014 transitions in the FFmpeg render pipeline",
+      "_origin": "ast",
+      "community": 91,
+      "community_name": "Spec: `transitions-render` \u2014 transitions in the FFmpeg render pipeline",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "spec: `transitions-render` \u2014 transitions in the ffmpeg render pipeline",
+      "source_file": "docs/SPEC-transitions-render.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "docs_spec_transitions_render_structure_files",
+      "label": "Structure / files",
+      "_origin": "ast",
+      "community": 91,
+      "community_name": "Spec: `transitions-render` \u2014 transitions in the FFmpeg render pipeline",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "structure / files",
+      "source_file": "docs/SPEC-transitions-render.md",
+      "source_location": "L65"
+    },
+    {
+      "id": "docs_spec_transitions_render_success_criteria",
+      "label": "Success criteria",
+      "_origin": "ast",
+      "community": 91,
+      "community_name": "Spec: `transitions-render` \u2014 transitions in the FFmpeg render pipeline",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "success criteria",
+      "source_file": "docs/SPEC-transitions-render.md",
+      "source_location": "L99"
+    },
+    {
+      "id": "docs_spec_transitions_render_testing_strategy",
+      "label": "Testing strategy",
+      "_origin": "ast",
+      "community": 91,
+      "community_name": "Spec: `transitions-render` \u2014 transitions in the FFmpeg render pipeline",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "testing strategy",
+      "source_file": "docs/SPEC-transitions-render.md",
+      "source_location": "L80"
+    },
+    {
+      "id": "docs_session_log_decisions_428",
+      "label": "Decisions",
+      "_origin": "ast",
+      "community": 92,
+      "community_name": "Session 2026-09-12 \u2014 Session 10: M4 module 2 \u2014 transitions-render",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "decisions",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L428"
+    },
+    {
+      "id": "docs_session_log_how_415",
+      "label": "HOW",
+      "_origin": "ast",
+      "community": 92,
+      "community_name": "Session 2026-09-12 \u2014 Session 10: M4 module 2 \u2014 transitions-render",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "how",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L415"
+    },
+    {
+      "id": "docs_session_log_limitations_436",
+      "label": "Limitations",
+      "_origin": "ast",
+      "community": 92,
+      "community_name": "Session 2026-09-12 \u2014 Session 10: M4 module 2 \u2014 transitions-render",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "limitations",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L436"
+    },
+    {
+      "id": "docs_session_log_next_step_443",
+      "label": "Next step",
+      "_origin": "ast",
+      "community": 92,
+      "community_name": "Session 2026-09-12 \u2014 Session 10: M4 module 2 \u2014 transitions-render",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "next step",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L443"
+    },
+    {
+      "id": "docs_session_log_session_2026_09_12_session_10_m4_module_2_transitions_render",
+      "label": "Session 2026-09-12 \u2014 Session 10: M4 module 2 \u2014 transitions-render",
+      "_origin": "ast",
+      "community": 92,
+      "community_name": "Session 2026-09-12 \u2014 Session 10: M4 module 2 \u2014 transitions-render",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "session 2026-09-12 \u2014 session 10: m4 module 2 \u2014 transitions-render",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L405"
+    },
+    {
+      "id": "docs_session_log_verify_431",
+      "label": "Verify",
+      "_origin": "ast",
+      "community": 92,
+      "community_name": "Session 2026-09-12 \u2014 Session 10: M4 module 2 \u2014 transitions-render",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "verify",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L431"
+    },
+    {
+      "id": "docs_session_log_what_407",
+      "label": "WHAT",
+      "_origin": "ast",
+      "community": 92,
+      "community_name": "Session 2026-09-12 \u2014 Session 10: M4 module 2 \u2014 transitions-render",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "what",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L407"
+    },
+    {
+      "id": "docs_session_log_why_423",
+      "label": "WHY",
+      "_origin": "ast",
+      "community": 92,
+      "community_name": "Session 2026-09-12 \u2014 Session 10: M4 module 2 \u2014 transitions-render",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "why",
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L423"
+    },
+    {
+      "id": "tasks_plan_tr",
+      "label": "plan-tr.md",
+      "_origin": "ast",
+      "community": 93,
+      "community_name": "Implementation Plan: `transitions-render` (M4 module 2)",
+      "file_type": "document",
+      "node_kind": "page",
+      "norm_label": "plan-tr.md",
+      "source_file": "tasks/plan-tr.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "tasks_plan_tr_checkpoints",
+      "label": "Checkpoints",
+      "_origin": "ast",
+      "community": 93,
+      "community_name": "Implementation Plan: `transitions-render` (M4 module 2)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "checkpoints",
+      "source_file": "tasks/plan-tr.md",
+      "source_location": "L31"
+    },
+    {
+      "id": "tasks_plan_tr_implementation_plan_transitions_render_m4_module_2",
+      "label": "Implementation Plan: `transitions-render` (M4 module 2)",
+      "_origin": "ast",
+      "community": 93,
+      "community_name": "Implementation Plan: `transitions-render` (M4 module 2)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "implementation plan: `transitions-render` (m4 module 2)",
+      "source_file": "tasks/plan-tr.md",
+      "source_location": "L1"
+    },
+    {
+      "id": "tasks_plan_tr_risks",
+      "label": "Risks",
+      "_origin": "ast",
+      "community": 93,
+      "community_name": "Implementation Plan: `transitions-render` (M4 module 2)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "risks",
+      "source_file": "tasks/plan-tr.md",
+      "source_location": "L36"
+    },
+    {
+      "id": "tasks_plan_tr_slice_1_pure_graph_builder_media_py_tdd",
+      "label": "Slice 1 \u2014 pure graph builder (media.py, TDD)",
+      "_origin": "ast",
+      "community": 93,
+      "community_name": "Implementation Plan: `transitions-render` (M4 module 2)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "slice 1 \u2014 pure graph builder (media.py, tdd)",
+      "source_file": "tasks/plan-tr.md",
+      "source_location": "L5"
+    },
+    {
+      "id": "tasks_plan_tr_slice_2_render_integration",
+      "label": "Slice 2 \u2014 render integration",
+      "_origin": "ast",
+      "community": 93,
+      "community_name": "Implementation Plan: `transitions-render` (M4 module 2)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "slice 2 \u2014 render integration",
+      "source_file": "tasks/plan-tr.md",
+      "source_location": "L15"
+    },
+    {
+      "id": "tasks_plan_tr_slice_3_api_contract",
+      "label": "Slice 3 \u2014 API contract",
+      "_origin": "ast",
+      "community": 93,
+      "community_name": "Implementation Plan: `transitions-render` (M4 module 2)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "slice 3 \u2014 api contract",
+      "source_file": "tasks/plan-tr.md",
+      "source_location": "L20"
+    },
+    {
+      "id": "tasks_plan_tr_slice_4_docs_regression_commit_push",
+      "label": "Slice 4 \u2014 docs + regression + commit + push",
+      "_origin": "ast",
+      "community": 93,
+      "community_name": "Implementation Plan: `transitions-render` (M4 module 2)",
+      "file_type": "document",
+      "node_kind": "heading",
+      "norm_label": "slice 4 \u2014 docs + regression + commit + push",
+      "source_file": "tasks/plan-tr.md",
+      "source_location": "L27"
     }
   ],
   "links": [
@@ -17362,7 +18056,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "backend/src/lava_backend/main.py",
-      "source_location": "L114",
+      "source_location": "L115",
       "weight": 1.0
     },
     {
@@ -17374,7 +18068,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "backend/src/lava_backend/main.py",
-      "source_location": "L116",
+      "source_location": "L117",
       "weight": 1.0
     },
     {
@@ -17386,7 +18080,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "backend/src/lava_backend/main.py",
-      "source_location": "L118",
+      "source_location": "L119",
       "weight": 1.0
     },
     {
@@ -17398,7 +18092,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "backend/src/lava_backend/main.py",
-      "source_location": "L130",
+      "source_location": "L163",
       "weight": 1.0
     },
     {
@@ -17410,7 +18104,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "backend/src/lava_backend/main.py",
-      "source_location": "L150",
+      "source_location": "L183",
       "weight": 1.0
     },
     {
@@ -17422,7 +18116,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "backend/src/lava_backend/main.py",
-      "source_location": "L177",
+      "source_location": "L211",
       "weight": 1.0
     },
     {
@@ -17434,7 +18128,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "backend/src/lava_backend/main.py",
-      "source_location": "L178",
+      "source_location": "L212",
       "weight": 1.0
     },
     {
@@ -17510,6 +18204,54 @@
       "weight": 1.0
     },
     {
+      "source": "backend_src_lava_backend_media_build_transition_graph",
+      "target": "backend_src_lava_backend_errors_apierror",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L198",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_build_transition_graph",
+      "target": "backend_src_lava_backend_media_xfade_name",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L228",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_build_transition_graph",
+      "target": "backend_src_lava_backend_media_filter_complex",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L230",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_build_transition_graph_invalid",
+      "target": "backend_src_lava_backend_errors_apierror",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L198",
+      "weight": 1.0
+    },
+    {
       "source": "backend_src_lava_backend_media_check_binary",
       "target": "backend_src_lava_backend_errors_apierror",
       "relation": "calls",
@@ -17518,55 +18260,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L78",
-      "weight": 1.0
-    },
-    {
-      "source": "backend_src_lava_backend_media_probe",
-      "target": "backend_src_lava_backend_media_probestream",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L112",
-      "weight": 1.0
-    },
-    {
-      "source": "backend_src_lava_backend_media_probe",
-      "target": "backend_src_lava_backend_media_proberesult",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L119",
-      "weight": 1.0
-    },
-    {
-      "source": "backend_src_lava_backend_media_probe",
-      "target": "backend_src_lava_backend_media_float",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L121",
-      "weight": 1.0
-    },
-    {
-      "source": "backend_src_lava_backend_media_probe",
-      "target": "backend_src_lava_backend_media_int",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L122",
+      "source_location": "L104",
       "weight": 1.0
     },
     {
@@ -17578,7 +18272,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L86",
+      "source_location": "L112",
       "weight": 1.0
     },
     {
@@ -17590,7 +18284,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L88",
+      "source_location": "L114",
       "weight": 1.0
     },
     {
@@ -17602,7 +18296,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L90",
+      "source_location": "L116",
       "weight": 1.0
     },
     {
@@ -17614,7 +18308,55 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L99",
+      "source_location": "L125",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_probe",
+      "target": "backend_src_lava_backend_media_probestream",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L138",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_probe",
+      "target": "backend_src_lava_backend_media_proberesult",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L145",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_probe",
+      "target": "backend_src_lava_backend_media_float",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L147",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_probe",
+      "target": "backend_src_lava_backend_media_int",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L148",
       "weight": 1.0
     },
     {
@@ -17626,7 +18368,19 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L158",
+      "source_location": "L292",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_render",
+      "target": "backend_src_lava_backend_media_build_transition_graph",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L294",
       "weight": 1.0
     },
     {
@@ -17638,19 +18392,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L160",
-      "weight": 1.0
-    },
-    {
-      "source": "backend_src_lava_backend_media_render",
-      "target": "backend_src_lava_backend_media_filter_complex",
-      "relation": "calls",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "context": "call",
-      "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L175",
+      "source_location": "L295",
       "weight": 1.0
     },
     {
@@ -17662,7 +18404,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L188",
+      "source_location": "L322",
       "weight": 1.0
     },
     {
@@ -17674,7 +18416,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L192",
+      "source_location": "L326",
       "weight": 1.0
     },
     {
@@ -17686,7 +18428,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L194",
+      "source_location": "L328",
       "weight": 1.0
     },
     {
@@ -17698,7 +18440,7 @@
       "confidence_score": 1.0,
       "context": "call",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L69",
+      "source_location": "L95",
       "weight": 1.0
     },
     {
@@ -18938,6 +19680,54 @@
       "weight": 1.0
     },
     {
+      "source": "backend_tests_test_render_test_render_bad_transition_index_via_http_is_422",
+      "target": "backend_tests_test_render_make_image",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L170",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render_test_render_bad_transition_index_via_http_is_422",
+      "target": "backend_tests_test_render_render_multipart_with_transitions",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L172",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render_test_render_dissolve_via_http",
+      "target": "backend_tests_test_render_make_image",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L138",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render_test_render_dissolve_via_http",
+      "target": "backend_tests_test_render_render_multipart_with_transitions",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L140",
+      "weight": 1.0
+    },
+    {
       "source": "backend_tests_test_render_test_render_file_clip_count_mismatch_is_400",
       "target": "backend_tests_test_render_make_image",
       "relation": "calls",
@@ -18983,6 +19773,30 @@
       "context": "call",
       "source_file": "backend/tests/test_render.py",
       "source_location": "L116",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render_test_render_malformed_transitions_body_is_422",
+      "target": "backend_tests_test_render_make_image",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L185",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render_test_render_malformed_transitions_body_is_422",
+      "target": "backend_tests_test_render_render_multipart_with_transitions",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L186",
       "weight": 1.0
     },
     {
@@ -19067,6 +19881,30 @@
       "context": "call",
       "source_file": "backend/tests/test_render.py",
       "source_location": "L62",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render_test_render_wipe_via_http_is_unsupported",
+      "target": "backend_tests_test_render_make_image",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L155",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render_test_render_wipe_via_http_is_unsupported",
+      "target": "backend_tests_test_render_render_multipart_with_transitions",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L157",
       "weight": 1.0
     },
     {
@@ -19451,6 +20289,366 @@
       "context": "call",
       "source_file": "backend/tests/test_transcribe_core.py",
       "source_location": "L62",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_clip",
+      "target": "backend_src_lava_backend_media_renderclip",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_chained_dissolves_accumulate_offsets",
+      "target": "backend_tests_test_transition_render_clip",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L46",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_chained_dissolves_accumulate_offsets",
+      "target": "backend_src_lava_backend_media_build_transition_graph",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L47",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_edge_end_fade_applied_to_last_stream_with_st",
+      "target": "backend_tests_test_transition_render_clip",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L69",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_edge_end_fade_applied_to_last_stream_with_st",
+      "target": "backend_src_lava_backend_media_build_transition_graph",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L70",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_edge_start_fade_applied_to_first_stream",
+      "target": "backend_tests_test_transition_render_clip",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L60",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_edge_start_fade_applied_to_first_stream",
+      "target": "backend_src_lava_backend_media_build_transition_graph",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L61",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_invalid_transitions_raise",
+      "target": "backend_src_lava_backend_media_build_transition_graph",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L100",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_invalid_transitions_raise",
+      "target": "backend_tests_test_transition_render_clip",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L98",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_match_transitions_are_invisible_cuts",
+      "target": "backend_tests_test_transition_render_clip",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L28",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_match_transitions_are_invisible_cuts",
+      "target": "backend_src_lava_backend_media_build_transition_graph",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L29",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_match_transitions_are_invisible_cuts",
+      "target": "backend_src_lava_backend_media_filter_complex",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L32",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_mixed_pair_folds_with_nested_concat",
+      "target": "backend_tests_test_transition_render_clip",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L77",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_mixed_pair_folds_with_nested_concat",
+      "target": "backend_src_lava_backend_media_build_transition_graph",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L78",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_parity_with_empty_transitions",
+      "target": "backend_tests_test_transition_render_clip",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_parity_with_empty_transitions",
+      "target": "backend_src_lava_backend_media_build_transition_graph",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L22",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_parity_with_empty_transitions",
+      "target": "backend_src_lava_backend_media_filter_complex",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_render_dissolve_shortens_output_duration",
+      "target": "backend_tests_test_transition_render_make_image",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L136",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_render_dissolve_shortens_output_duration",
+      "target": "backend_src_lava_backend_media_renderclip",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L137",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_render_dissolve_shortens_output_duration",
+      "target": "backend_src_lava_backend_media_render",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L138",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_render_edge_fade_keeps_full_duration",
+      "target": "backend_tests_test_transition_render_make_image",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L150",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_render_edge_fade_keeps_full_duration",
+      "target": "backend_src_lava_backend_media_renderclip",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L151",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_render_edge_fade_keeps_full_duration",
+      "target": "backend_src_lava_backend_media_render",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L152",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_render_wipe_raises_unsupported",
+      "target": "backend_tests_test_transition_render_make_image",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L164",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_render_wipe_raises_unsupported",
+      "target": "backend_src_lava_backend_media_renderclip",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L165",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_render_wipe_raises_unsupported",
+      "target": "backend_src_lava_backend_media_render",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L167",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_single_dissolve_offset_and_duration",
+      "target": "backend_tests_test_transition_render_clip",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L37",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_single_dissolve_offset_and_duration",
+      "target": "backend_src_lava_backend_media_build_transition_graph",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L38",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_wipe_and_zoom_are_unsupported",
+      "target": "backend_tests_test_transition_render_clip",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L112",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_wipe_and_zoom_are_unsupported",
+      "target": "backend_src_lava_backend_media_build_transition_graph",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L114",
       "weight": 1.0
     },
     {
@@ -21014,6 +22212,30 @@
       "weight": 1.0
     },
     {
+      "source": "backend_src_lava_backend_media_build_transition_graph",
+      "target": "backend_src_lava_backend_media_build_transition_graph_invalid",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L197",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_build_transition_graph",
+      "target": "backend_src_lava_backend_media_build_transition_graph_stream_label",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "call",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L259",
+      "weight": 1.0
+    },
+    {
       "source": "backend_src_lava_backend_main_api_error_handler",
       "target": "exception_handler",
       "relation": "references",
@@ -21070,7 +22292,7 @@
       "confidence_score": 1.0,
       "context": "decorator",
       "source_file": "backend/src/lava_backend/main.py",
-      "source_location": "L174",
+      "source_location": "L208",
       "weight": 1.0
     },
     {
@@ -21119,6 +22341,30 @@
       "context": "decorator",
       "source_file": "backend/tests/conftest.py",
       "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_invalid_transitions_raise",
+      "target": "parametrize",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "decorator",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L86",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_wipe_and_zoom_are_unsupported",
+      "target": "parametrize",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "decorator",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L104",
       "weight": 1.0
     },
     {
@@ -21266,6 +22512,42 @@
       "weight": 1.0
     },
     {
+      "source": "backend_src_lava_backend_media_build_transition_graph",
+      "target": "backend_src_lava_backend_media_betweenspec",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "generic_arg",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L181",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_build_transition_graph",
+      "target": "backend_src_lava_backend_media_edgespec",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "generic_arg",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L181",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media_build_transition_graph",
+      "target": "backend_src_lava_backend_media_renderclip",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "generic_arg",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L181",
+      "weight": 1.0
+    },
+    {
       "source": "backend_src_lava_backend_media_filter_complex",
       "target": "backend_src_lava_backend_media_renderclip",
       "relation": "references",
@@ -21274,7 +22556,7 @@
       "confidence_score": 1.0,
       "context": "generic_arg",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L131",
+      "source_location": "L157",
       "weight": 1.0
     },
     {
@@ -21286,7 +22568,7 @@
       "confidence_score": 1.0,
       "context": "generic_arg",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L151",
+      "source_location": "L284",
       "weight": 1.0
     },
     {
@@ -21298,7 +22580,7 @@
       "confidence_score": 1.0,
       "context": "generic_arg",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L151",
+      "source_location": "L284",
       "weight": 1.0
     },
     {
@@ -21419,6 +22701,30 @@
       "context": "import",
       "source_file": "backend/src/lava_backend/main.py",
       "source_location": "L19",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main",
+      "target": "backend_src_lava_backend_media_betweenspec",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_main",
+      "target": "backend_src_lava_backend_media_edgespec",
+      "relation": "imports",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L20",
       "weight": 1.0
     },
     {
@@ -23786,6 +25092,42 @@
       "weight": 1.0
     },
     {
+      "source": "backend_tests_test_transition_render",
+      "target": "backend_src_lava_backend_init",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L119",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render",
+      "target": "backend_src_lava_backend_media",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L120",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render",
+      "target": "backend_src_lava_backend_errors",
+      "relation": "imports_from",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "import",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
       "source": "frontend_src_app",
       "target": "frontend_src_store_editorstore",
       "relation": "imports_from",
@@ -25042,6 +26384,18 @@
       "weight": 1.0
     },
     {
+      "source": "backend_src_lava_backend_media_build_transition_graph",
+      "target": "backend_src_lava_backend_media_rendersettings",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "parameter_type",
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L181",
+      "weight": 1.0
+    },
+    {
       "source": "backend_src_lava_backend_media_filter_complex",
       "target": "backend_src_lava_backend_media_rendersettings",
       "relation": "references",
@@ -25050,7 +26404,7 @@
       "confidence_score": 1.0,
       "context": "parameter_type",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L131",
+      "source_location": "L157",
       "weight": 1.0
     },
     {
@@ -25062,7 +26416,7 @@
       "confidence_score": 1.0,
       "context": "parameter_type",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L151",
+      "source_location": "L284",
       "weight": 1.0
     },
     {
@@ -25338,7 +26692,7 @@
       "confidence_score": 1.0,
       "context": "return_type",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L75",
+      "source_location": "L101",
       "weight": 1.0
     },
     {
@@ -25363,6 +26717,18 @@
       "context": "return_type",
       "source_file": "backend/tests/test_render.py",
       "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render_make_image",
+      "target": "backend_tests_test_transition_render_py_path",
+      "relation": "references",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "context": "return_type",
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L123",
       "weight": 1.0
     },
     {
@@ -26167,7 +27533,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "backend/src/lava_backend/main.py",
-      "source_location": "L175",
+      "source_location": "L209",
       "weight": 1.0
     },
     {
@@ -26282,24 +27648,35 @@
     },
     {
       "source": "backend_src_lava_backend_media",
+      "target": "backend_src_lava_backend_media_check_binary",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L101",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media",
+      "target": "backend_src_lava_backend_media_probe",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L111",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media",
       "target": "backend_src_lava_backend_media_filter_complex",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L131",
-      "weight": 1.0
-    },
-    {
-      "source": "backend_src_lava_backend_media",
-      "target": "backend_src_lava_backend_media_render",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L151",
+      "source_location": "L157",
       "weight": 1.0
     },
     {
@@ -26315,29 +27692,29 @@
     },
     {
       "source": "backend_src_lava_backend_media",
-      "target": "backend_src_lava_backend_media_float",
+      "target": "backend_src_lava_backend_media_xfade_name",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L208",
+      "source_location": "L177",
       "weight": 1.0
     },
     {
       "source": "backend_src_lava_backend_media",
-      "target": "backend_src_lava_backend_media_int",
+      "target": "backend_src_lava_backend_media_build_transition_graph",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L215",
+      "source_location": "L181",
       "weight": 1.0
     },
     {
       "source": "backend_src_lava_backend_media",
-      "target": "backend_src_lava_backend_media_rendersettings",
+      "target": "backend_src_lava_backend_media_betweenspec",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -26348,13 +27725,68 @@
     },
     {
       "source": "backend_src_lava_backend_media",
+      "target": "backend_src_lava_backend_media_render",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L284",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media",
+      "target": "backend_src_lava_backend_media_edgespec",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media",
+      "target": "backend_src_lava_backend_media_float",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L342",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media",
+      "target": "backend_src_lava_backend_media_int",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L349",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media",
+      "target": "backend_src_lava_backend_media_rendersettings",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L38",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_src_lava_backend_media",
       "target": "backend_src_lava_backend_media_renderresult",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L30",
+      "source_location": "L45",
       "weight": 1.0
     },
     {
@@ -26365,7 +27797,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L44",
+      "source_location": "L70",
       "weight": 1.0
     },
     {
@@ -26376,7 +27808,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L52",
+      "source_location": "L78",
       "weight": 1.0
     },
     {
@@ -26387,29 +27819,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L60",
-      "weight": 1.0
-    },
-    {
-      "source": "backend_src_lava_backend_media",
-      "target": "backend_src_lava_backend_media_check_binary",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L75",
-      "weight": 1.0
-    },
-    {
-      "source": "backend_src_lava_backend_media",
-      "target": "backend_src_lava_backend_media_probe",
-      "relation": "contains",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L85",
+      "source_location": "L86",
       "weight": 1.0
     },
     {
@@ -27096,6 +28506,61 @@
     },
     {
       "source": "backend_tests_test_render",
+      "target": "backend_tests_test_render_render_multipart_with_transitions",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L126",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render",
+      "target": "backend_tests_test_render_test_render_dissolve_via_http",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L137",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render",
+      "target": "backend_tests_test_render_test_render_wipe_via_http_is_unsupported",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L154",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render",
+      "target": "backend_tests_test_render_test_render_bad_transition_index_via_http_is_422",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L169",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render",
+      "target": "backend_tests_test_render_test_render_malformed_transitions_body_is_422",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_render.py",
+      "source_location": "L184",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_render",
       "target": "backend_tests_test_render_render_multipart",
       "relation": "contains",
       "_origin": "ast",
@@ -27213,6 +28678,160 @@
       "confidence_score": 1.0,
       "source_file": "backend/tests/test_transcribe_core.py",
       "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render",
+      "target": "backend_tests_test_transition_render_test_wipe_and_zoom_are_unsupported",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L111",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render",
+      "target": "backend_tests_test_transition_render_make_image",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L123",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render",
+      "target": "backend_tests_test_transition_render_test_render_dissolve_shortens_output_duration",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L134",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render",
+      "target": "backend_tests_test_transition_render_test_render_edge_fade_keeps_full_duration",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L148",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render",
+      "target": "backend_tests_test_transition_render_clip",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render",
+      "target": "backend_tests_test_transition_render_test_render_wipe_raises_unsupported",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L162",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render",
+      "target": "backend_tests_test_transition_render_test_parity_with_empty_transitions",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render",
+      "target": "backend_tests_test_transition_render_test_match_transitions_are_invisible_cuts",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L27",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render",
+      "target": "backend_tests_test_transition_render_test_single_dissolve_offset_and_duration",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L36",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render",
+      "target": "backend_tests_test_transition_render_test_chained_dissolves_accumulate_offsets",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L45",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render",
+      "target": "backend_tests_test_transition_render_test_edge_start_fade_applied_to_first_stream",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L59",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render",
+      "target": "backend_tests_test_transition_render_test_edge_end_fade_applied_to_last_stream_with_st",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L68",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render",
+      "target": "backend_tests_test_transition_render_test_mixed_pair_folds_with_nested_concat",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L76",
+      "weight": 1.0
+    },
+    {
+      "source": "backend_tests_test_transition_render",
+      "target": "backend_tests_test_transition_render_test_invalid_transitions_raise",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L97",
       "weight": 1.0
     },
     {
@@ -27520,7 +29139,18 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/DECISIONS.md",
-      "source_location": "L168",
+      "source_location": "L169",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_decisions_index_of_decisions",
+      "target": "docs_decisions_d_017_transitions_render_through_an_ffmpeg_xfade_fold_offsets_\u03c3dur_\u03c3d_wipe_zoom_422",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/DECISIONS.md",
+      "source_location": "L178",
       "weight": 1.0
     },
     {
@@ -27542,7 +29172,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/FEATURES.md",
-      "source_location": "L112",
+      "source_location": "L113",
       "weight": 1.0
     },
     {
@@ -27553,7 +29183,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/FEATURES.md",
-      "source_location": "L118",
+      "source_location": "L119",
       "weight": 1.0
     },
     {
@@ -27564,7 +29194,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/FEATURES.md",
-      "source_location": "L124",
+      "source_location": "L125",
       "weight": 1.0
     },
     {
@@ -27619,7 +29249,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/FEATURES.md",
-      "source_location": "L66",
+      "source_location": "L67",
       "weight": 1.0
     },
     {
@@ -27630,7 +29260,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/FEATURES.md",
-      "source_location": "L88",
+      "source_location": "L89",
       "weight": 1.0
     },
     {
@@ -27641,7 +29271,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "docs/FEATURES.md",
-      "source_location": "L97",
+      "source_location": "L98",
       "weight": 1.0
     },
     {
@@ -28119,6 +29749,17 @@
     },
     {
       "source": "docs_session_log_ai_video_studio_session_log",
+      "target": "docs_session_log_session_2026_09_12_session_10_m4_module_2_transitions_render",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L405",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_ai_video_studio_session_log",
       "target": "docs_session_log_session_2026_09_12_session_2_continuity_system_commit_discipline",
       "relation": "contains",
       "_origin": "ast",
@@ -28203,6 +29844,83 @@
       "confidence_score": 1.0,
       "source_file": "docs/SESSION_LOG.md",
       "source_location": "L85",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_session_2026_09_12_session_10_m4_module_2_transitions_render",
+      "target": "docs_session_log_what_407",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L407",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_session_2026_09_12_session_10_m4_module_2_transitions_render",
+      "target": "docs_session_log_how_415",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L415",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_session_2026_09_12_session_10_m4_module_2_transitions_render",
+      "target": "docs_session_log_why_423",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L423",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_session_2026_09_12_session_10_m4_module_2_transitions_render",
+      "target": "docs_session_log_decisions_428",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L428",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_session_2026_09_12_session_10_m4_module_2_transitions_render",
+      "target": "docs_session_log_verify_431",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L431",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_session_2026_09_12_session_10_m4_module_2_transitions_render",
+      "target": "docs_session_log_limitations_436",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L436",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_session_log_session_2026_09_12_session_10_m4_module_2_transitions_render",
+      "target": "docs_session_log_next_step_443",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SESSION_LOG.md",
+      "source_location": "L443",
       "weight": 1.0
     },
     {
@@ -29391,6 +31109,116 @@
       "confidence_score": 1.0,
       "source_file": "docs/SPEC-transitions-core.md",
       "source_location": "L95",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_spec_transitions_render",
+      "target": "docs_spec_transitions_render_spec_transitions_render_transitions_in_the_ffmpeg_render_pipeline",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SPEC-transitions-render.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_spec_transitions_render_spec_transitions_render_transitions_in_the_ffmpeg_render_pipeline",
+      "target": "docs_spec_transitions_render_data_contract_backend",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SPEC-transitions-render.md",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_spec_transitions_render_spec_transitions_render_transitions_in_the_ffmpeg_render_pipeline",
+      "target": "docs_spec_transitions_render_behaviour_acceptance",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SPEC-transitions-render.md",
+      "source_location": "L47",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_spec_transitions_render_spec_transitions_render_transitions_in_the_ffmpeg_render_pipeline",
+      "target": "docs_spec_transitions_render_commands",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SPEC-transitions-render.md",
+      "source_location": "L59",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_spec_transitions_render_spec_transitions_render_transitions_in_the_ffmpeg_render_pipeline",
+      "target": "docs_spec_transitions_render_structure_files",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SPEC-transitions-render.md",
+      "source_location": "L65",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_spec_transitions_render_spec_transitions_render_transitions_in_the_ffmpeg_render_pipeline",
+      "target": "docs_spec_transitions_render_code_style",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SPEC-transitions-render.md",
+      "source_location": "L75",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_spec_transitions_render_spec_transitions_render_transitions_in_the_ffmpeg_render_pipeline",
+      "target": "docs_spec_transitions_render_testing_strategy",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SPEC-transitions-render.md",
+      "source_location": "L80",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_spec_transitions_render_spec_transitions_render_transitions_in_the_ffmpeg_render_pipeline",
+      "target": "docs_spec_transitions_render_boundaries",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SPEC-transitions-render.md",
+      "source_location": "L89",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_spec_transitions_render_spec_transitions_render_transitions_in_the_ffmpeg_render_pipeline",
+      "target": "docs_spec_transitions_render_objective",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SPEC-transitions-render.md",
+      "source_location": "L9",
+      "weight": 1.0
+    },
+    {
+      "source": "docs_spec_transitions_render_spec_transitions_render_transitions_in_the_ffmpeg_render_pipeline",
+      "target": "docs_spec_transitions_render_success_criteria",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "docs/SPEC-transitions-render.md",
+      "source_location": "L99",
       "weight": 1.0
     },
     {
@@ -38029,6 +39857,83 @@
       "weight": 1.0
     },
     {
+      "source": "tasks_plan_tr",
+      "target": "tasks_plan_tr_implementation_plan_transitions_render_m4_module_2",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/plan-tr.md",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "tasks_plan_tr_implementation_plan_transitions_render_m4_module_2",
+      "target": "tasks_plan_tr_slice_2_render_integration",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/plan-tr.md",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "tasks_plan_tr_implementation_plan_transitions_render_m4_module_2",
+      "target": "tasks_plan_tr_slice_3_api_contract",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/plan-tr.md",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "tasks_plan_tr_implementation_plan_transitions_render_m4_module_2",
+      "target": "tasks_plan_tr_slice_4_docs_regression_commit_push",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/plan-tr.md",
+      "source_location": "L27",
+      "weight": 1.0
+    },
+    {
+      "source": "tasks_plan_tr_implementation_plan_transitions_render_m4_module_2",
+      "target": "tasks_plan_tr_checkpoints",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/plan-tr.md",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
+      "source": "tasks_plan_tr_implementation_plan_transitions_render_m4_module_2",
+      "target": "tasks_plan_tr_risks",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/plan-tr.md",
+      "source_location": "L36",
+      "weight": 1.0
+    },
+    {
+      "source": "tasks_plan_tr_implementation_plan_transitions_render_m4_module_2",
+      "target": "tasks_plan_tr_slice_1_pure_graph_builder_media_py_tdd",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/plan-tr.md",
+      "source_location": "L5",
+      "weight": 1.0
+    },
+    {
       "source": "tasks_todo",
       "target": "tasks_todo_task_list",
       "relation": "contains",
@@ -38092,6 +39997,17 @@
       "confidence_score": 1.0,
       "source_file": "tasks/todo.md",
       "source_location": "L45",
+      "weight": 1.0
+    },
+    {
+      "source": "tasks_todo_task_list",
+      "target": "tasks_todo_m4_transitions_render_active_spec_transitions_render_md_tasks_plan_tr_md",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "tasks/todo.md",
+      "source_location": "L56",
       "weight": 1.0
     },
     {
@@ -39481,6 +41397,17 @@
       "weight": 1.0
     },
     {
+      "source": "backend_src_lava_backend_media_rationale_186",
+      "target": "backend_src_lava_backend_media_build_transition_graph",
+      "relation": "rationale_for",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "backend/src/lava_backend/media.py",
+      "source_location": "L186",
+      "weight": 1.0
+    },
+    {
       "source": "opencode_plugins_graphify_rationale_4",
       "target": "opencode_plugins_graphify",
       "relation": "rationale_for",
@@ -39733,7 +41660,7 @@
       "confidence_score": 0.95,
       "context": "parameter_type",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L75",
+      "source_location": "L101",
       "weight": 0.8
     },
     {
@@ -39745,7 +41672,7 @@
       "confidence_score": 0.95,
       "context": "parameter_type",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L85",
+      "source_location": "L111",
       "weight": 0.8
     },
     {
@@ -39757,7 +41684,7 @@
       "confidence_score": 0.95,
       "context": "parameter_type",
       "source_file": "backend/src/lava_backend/media.py",
-      "source_location": "L152",
+      "source_location": "L285",
       "weight": 0.8
     },
     {
@@ -39786,13 +41713,35 @@
     },
     {
       "source": "backend_src_lava_backend_main_render_endpoint",
+      "target": "backend_src_lava_backend_media_betweenspec",
+      "relation": "uses",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L133",
+      "weight": 0.8
+    },
+    {
+      "source": "backend_src_lava_backend_main_render_endpoint",
+      "target": "backend_src_lava_backend_media_edgespec",
+      "relation": "uses",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "backend/src/lava_backend/main.py",
+      "source_location": "L142",
+      "weight": 0.8
+    },
+    {
+      "source": "backend_src_lava_backend_main_render_endpoint",
       "target": "backend_src_lava_backend_media_renderclip",
       "relation": "uses",
       "_origin": "ast",
       "confidence": "INFERRED",
       "confidence_score": 0.95,
       "source_file": "backend/src/lava_backend/main.py",
-      "source_location": "L153",
+      "source_location": "L186",
       "weight": 0.8
     },
     {
@@ -39803,7 +41752,7 @@
       "confidence": "INFERRED",
       "confidence_score": 0.95,
       "source_file": "backend/src/lava_backend/main.py",
-      "source_location": "L154",
+      "source_location": "L187",
       "weight": 0.8
     },
     {
@@ -39959,8 +41908,173 @@
       "source_file": "backend/tests/test_transcribe_core.py",
       "source_location": "L11",
       "weight": 0.8
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_chained_dissolves_accumulate_offsets",
+      "target": "backend_src_lava_backend_media_betweenspec",
+      "relation": "uses",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L50",
+      "weight": 0.8
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_edge_end_fade_applied_to_last_stream_with_st",
+      "target": "backend_src_lava_backend_media_edgespec",
+      "relation": "uses",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L71",
+      "weight": 0.8
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_edge_start_fade_applied_to_first_stream",
+      "target": "backend_src_lava_backend_media_edgespec",
+      "relation": "uses",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L62",
+      "weight": 0.8
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_invalid_transitions_raise",
+      "target": "backend_src_lava_backend_errors_apierror",
+      "relation": "uses",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L99",
+      "weight": 0.8
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_match_transitions_are_invisible_cuts",
+      "target": "backend_src_lava_backend_media_betweenspec",
+      "relation": "uses",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L30",
+      "weight": 0.8
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_mixed_pair_folds_with_nested_concat",
+      "target": "backend_src_lava_backend_media_betweenspec",
+      "relation": "uses",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L79",
+      "weight": 0.8
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_render_dissolve_shortens_output_duration",
+      "target": "backend_src_lava_backend_media_rendersettings",
+      "relation": "uses",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L142",
+      "weight": 0.8
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_render_dissolve_shortens_output_duration",
+      "target": "backend_src_lava_backend_media_betweenspec",
+      "relation": "uses",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L143",
+      "weight": 0.8
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_render_edge_fade_keeps_full_duration",
+      "target": "backend_src_lava_backend_media_rendersettings",
+      "relation": "uses",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L156",
+      "weight": 0.8
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_render_edge_fade_keeps_full_duration",
+      "target": "backend_src_lava_backend_media_edgespec",
+      "relation": "uses",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L157",
+      "weight": 0.8
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_render_wipe_raises_unsupported",
+      "target": "backend_src_lava_backend_errors_apierror",
+      "relation": "uses",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L166",
+      "weight": 0.8
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_render_wipe_raises_unsupported",
+      "target": "backend_src_lava_backend_media_rendersettings",
+      "relation": "uses",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L171",
+      "weight": 0.8
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_render_wipe_raises_unsupported",
+      "target": "backend_src_lava_backend_media_betweenspec",
+      "relation": "uses",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L172",
+      "weight": 0.8
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_single_dissolve_offset_and_duration",
+      "target": "backend_src_lava_backend_media_betweenspec",
+      "relation": "uses",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L39",
+      "weight": 0.8
+    },
+    {
+      "source": "backend_tests_test_transition_render_test_wipe_and_zoom_are_unsupported",
+      "target": "backend_src_lava_backend_errors_apierror",
+      "relation": "uses",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "backend/tests/test_transition_render.py",
+      "source_location": "L113",
+      "weight": 0.8
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "cae96cb4a29b073a9b9f5acc0148429a938a4143"
+  "built_at_commit": "94bba9aa4c71b8ad904c581d31c585b08326ce65"
 }

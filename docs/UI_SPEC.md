@@ -80,3 +80,10 @@ Every feature surface requires useful states:
 - Error (recoverable, actionable, non-technical copy).
 - Confidence/warning (AI uncertain, user override available).
 - Success (rendered/exported, path shown).
+
+## 8. Transitions UI (M4 `transitions-ui`)
+
+- **Timeline chips**: between chips centred on the cut boundary; width ∝ transition duration (clamped 36–64px); edge chips at the first/last clip of a track; click-to-select. Selected chip gets a visible outline.
+- **Inspector pane**: lists every transition with its human rationale, a type `<select>` (between only) and duration input; manual edits flip the transition to `manual` and are preserved on re-suggest. Remove deletes exactly the targeted transition.
+- **Invalid banner**: orphaned or otherwise invalid transitions stay in the list and surface a visible banner; the user resolves them explicitly — there is no silent auto-deletion.
+- **No manual "add" button**: creation stays suggestion-only to preserve the clean-cut bias. Manual energy goes into editing or removing what the tool suggested.

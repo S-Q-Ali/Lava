@@ -443,3 +443,57 @@ rule (the renderer only filters what the frontend sends).
 ### Next step
 - `transitions-ui` (timeline chips + explainable override UI) — fresh spec review, then TDD. Push
   `transitions-render` commits on user go-ahead.
+
+---
+
+## Session 2026-09-12 — Session 11: M4 module 3 — transitions-ui
+
+### WHAT
+Transitions are now a live, editable part of the editor. `editorStore` carries
+`transitions` + `selectedTransitionId`. `suggestTransitions()` reconciles the auto list
+(replaces only `auto` entries; `manual` overrides always survive). `overrideTransition`
+flips `source → manual` with clamped durations (also for edge fades), `removeTransition`
+and `resolveInvalidTransitions` are targeted. UI: `TransitionsPanel` in the inspector
+(rationale per suggestion, type `<select>`, duration input, Remove, and an invalid banner
+that resolves orphans only when asked), plus `TransitionOverlay` chips in each timeline lane
+(between chips centred on the cut boundary, edge fades at track first/last clip, click to
+select, width ∝ duration clamped 36–64px). No manual "add" button — creation stays
+suggestion-only. Recommend zero new dependencies except devDep `jsdom` (from the App mount
+regression guard).
+
+### HOW
+All model ops reused lock-step from `transitions-core`; the store is the pair-key (`A→B`)
+merge point so future suggestion sources cannot overwrite manual edits. jdom-gated component
+tests render panels/overlay, drive selects/inputs/number-inputs via native value setters +
+React 19 events, and assert store effect (type→manual, duration clamp, remove, resolve-only-
+invalid). One real-integration fix: lane ids are `track-*`; matched clips arrive with full
+track id, so the overlay keys off the already-lane-scoped `clips` prop instead of re-filtering
+(which would have silently matched nothing).
+
+### WHY
+Completes the transitions promise from PRODUCT_SPEC: suggestions explainable, editable,
+overridable, removable; never silently overwritten; clean-cuts remain the default. The UI
+layer is the last gap before the full Auto-image → matched clips → transitions → render loop
+is vertex in-browser.
+
+### Decisions
+- D-018 — suggestion auto-only replacement, manual wins, invalids resolved on request.
+
+### Verify
+- `npx vitest run`: 122 passed (104 → 122). `npm run build` clean. `npm run lint` 0.
+  Browser regression guard (jsdom App mount) still green; timeline+inspector panels render
+  with chips under real state.
+- Commits: `342e446` (spec+plan) · `9e7255a` (store) · `eca2384` (panel) · `ae7e69b` (chips) as
+  this log/graph/doc commit closes.
+
+### Limitations
+- `wipe`/`zoom` remain template-only (renderer 422) — overriding a suggestion to them records
+  the manual edit but cannot render until a template runner exists.
+- Panel hint text is long; chips may crowd tight boundaries (min 36px) — acceptable at current
+  PX_PER_SECOND.
+- `selectedTransitionId` is transient UI state; it is not persisted (intentional).
+
+### Next step
+- Push `transitions-ui` on go-ahead; then final M4 module: `image-motion` (per-capability-map
+  spec) — e.g. Ken Burns / drift on stills with editable severity, rendered via the same
+  per-stream prep + renderer fold. Update docs/ROADMAP M4 as module completes.
