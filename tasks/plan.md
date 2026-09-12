@@ -57,7 +57,7 @@ Narration transcript + candidate images → auto-placed, timed, editable image t
 ### Slice 6 — docs, review, push
 - [x] ROADMAP M3 checkboxes, FEATURES §3 status, DECISIONS D-012/D-013, ARCHITECTURE §9 endpoint, TEST_PLAN §5.2, SESSION_LOG Session 6, backend README
 - [x] graphify update; full regression (backend 56, frontend 70)
-- [ ] code-review pass noted; push 7 commits — **on user go-ahead**
+- [x] code-review pass noted; push 7 commits — **on user go-ahead**
 
 ## Checkpoints
 
@@ -65,7 +65,7 @@ Narration transcript + candidate images → auto-placed, timed, editable image t
 - [x] After Slice 2-3: backend + frontend focused suites green
 - [x] After Slice 4: undo-restores-timeline test green; persistence round-trip green
 - [x] After Slice 5: dev transform smoke; real-CLIP HTTP e2e documented
-- [ ] After Slice 6: full suites + docs + review + push (push pending user go-ahead)
+- [x] After Slice 6: full suites + docs + review + push (push pending user go-ahead)
 
 ## Risks and mitigations
 

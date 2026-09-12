@@ -30,8 +30,8 @@ Spec: `docs/SPEC-transitions-render.md`. Backend-only, slices each verified + co
 
 ## Checkpoints
 - [x] Spec approved
-- [ ] After Slice 3: HTTP e2e involves a real dissolve render; full backend green (~78 tests)
-- [ ] After Slice 4: docs + graph + commit; push pending go-ahead
+- [x] After Slice 3: HTTP e2e involves a real dissolve render; full backend green (~78 tests)
+- [x] After Slice 4: docs + graph + commit; push pending go-ahead
 
 ## Risks
 | Risk | Mitigation |

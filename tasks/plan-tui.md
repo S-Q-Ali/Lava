@@ -23,7 +23,7 @@ deps, project version stays `1`.
 ## Task List
 
 ### Phase 1: Store (slice 1)
-- [ ] Task 1: Store state + actions (`transitions`, `selectedTransitionId`,
+- [x] Task 1: Store state + actions (`transitions`, `selectedTransitionId`,
       `suggestTransitions`, `overrideTransition`, `removeTransition`,
       `resolveInvalidTransitions`, `setSelectedTransitionId`), `initialState`,
       `loadProject`, partialize/equality.
@@ -33,10 +33,10 @@ deps, project version stays `1`.
   - Files: `frontend/src/store/editorStore.ts`, `frontend/src/store/transitions.test.ts` (new).
 
 ### Checkpoint: 1–2
-- [ ] `npx vitest run` green, `npm run build` clean.
+- [x] `npx vitest run` green, `npm run build` clean.
 
 ### Phase 2: Inspector pane (slice 2)
-- [ ] Task 2: `TransitionsPanel` component (+ empty guidance, Suggest button, rationale,
+- [x] Task 2: `TransitionsPanel` component (+ empty guidance, Suggest button, rationale,
       type select, duration input, Remove, invalid banner + resolve) and CSS; mount in
       `InspectorPanel`.
   - Acceptance: criteria 1–2, 7, 9 from spec pass as component/store tests.
@@ -45,10 +45,10 @@ deps, project version stays `1`.
       `frontend/src/components/InspectorPanel.tsx`, `App.css`.
 
 ### Checkpoint: 2
-- [ ] Panel shows suggestion rationales; editing type flips to manual; resolve cleans invalid.
+- [x] Panel shows suggestion rationales; editing type flips to manual; resolve cleans invalid.
 
 ### Phase 3: Timeline chips (slice 3)
-- [ ] Task 3: `TransitionOverlay` per lane (between chip at boundary, edge chips at track
+- [x] Task 3: `TransitionOverlay` per lane (between chip at boundary, edge chips at track
       ends, click-to-select, z-index over blocks) + CSS; mount in `TrackRow`.
   - Acceptance: criterion 8 passes; existing `App.test.tsx` mount stays green.
   - Verify: component tests + browser check.
@@ -56,10 +56,10 @@ deps, project version stays `1`.
       `frontend/src/components/timeline/TrackRow.tsx`, `App.css`.
 
 ### Checkpoint: full
-- [ ] All spec criteria pass; `npx vitest run` (≥104), `npm run build`, `npm run lint`.
+- [x] All spec criteria pass; `npx vitest run` (≥104), `npm run build`, `npm run lint`.
 
 ### Phase 4: Docs (slice 4)
-- [ ] Task 4: D-018 in `DECISIONS.md`, FEATURES §4, UI_SPEC editor notes, SESSION_LOG 11,
+- [x] Task 4: D-018 in `DECISIONS.md`, FEATURES §4, UI_SPEC editor notes, SESSION_LOG 11,
       ROADMAP M4 module tick, plan/todo ticks, `graphify update .`, backend regression check.
   - Files: `docs/*.md`, `tasks/*`.
   - Commit + push on user go-ahead.

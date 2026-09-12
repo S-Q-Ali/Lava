@@ -34,8 +34,8 @@ Spec: `docs/SPEC-transitions-core.md`. Pure frontend, TDD per slice, each slice 
 
 ## Checkpoints
 - [x] Spec approved by human (`SPEC-transitions-core.md`)
-- [ ] After Slice 4: full frontend suite green + build + lint clean
-- [ ] After Slice 5: docs + graphify + commit; push pending user go-ahead
+- [x] After Slice 4: full frontend suite green + build + lint clean
+- [x] After Slice 5: docs + graphify + commit; push pending user go-ahead
 
 ## Risks
 | Risk | Mitigation |

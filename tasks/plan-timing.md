@@ -27,14 +27,14 @@ Vertical slices:
 
 ### Slice 4 — docs, review, commit
 - [x] ROADMAP M3 ticks; FEATURES §3 timing/override; DECISIONS D-014; ARCHITECTURE gaps; tasks/todo.md; SPEC-timing-pacing notes; SESSION_LOG Session 7; graphify update; full regression (backend 56 unchanged, frontend 85)
-- [ ] push commit-set — **on user go-ahead**
+- [x] push commit-set — **on user go-ahead**
 
 ## Checkpoints
 
 - [x] After Slice 1: pure timing suite green
 - [x] After Slice 2: rerun-preserves + undo-restores tests green
 - [x] After Slice 3: full frontend suite + build + lint + dev smoke
-- [ ] After Slice 4: docs + regression + push pending user go-ahead
+- [x] After Slice 4: docs + regression + push pending user go-ahead
 
 ## Risks / mitigations
 

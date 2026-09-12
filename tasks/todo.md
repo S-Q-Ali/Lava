@@ -1,84 +1,69 @@
 # Task list
 
-## M1 completion: project save/load + timeline drag/trim UX (closed 2026-09-12)
-- [x] Task 1: project serialization (`editor/project.ts`) — 9 tests green
-- [x] Task 2: `loadProject` store action + tests — 2 tests green
-- [x] Task 3: Save/Open UI (topbar + `services/projectIO.ts`) — build/lint green
-- [x] Task 4: clip drag-move UX — one undo step, live preview
-- [x] Task 5: clip drag-trim UX — left/right handles, clamped
-- [x] Task 6: CSS + full verification + docs (D-009, Session 4) + graphify + commits
+> Living status file — mirrors `docs/ROADMAP.md`. Plan files: `tasks/plan-*.md` (per-module,
+> closed when their module closes). Pushed = commit listed; authoritative status is ROADMAP/SESSION_LOG.
 
-## M2 Voice analysis — first slice (closed 2026-09-12, pushed @ e864f18)
-- [x] Slice 1: `pause-segmentation` — pure word-gap pause/segment logic + unit tests (12 green)
-- [x] Slice 2: `transcribe-api` — Transcriber interface + fake, `POST /api/transcribe` contract + tests (4 green)
-- [x] Slice 3: faster-whisper adapter — CPU int8, project-local model cache, real-narration smoke (HTTP 200)
-- [x] Slice 4: `transcript-state` — frontend client + store slice + project `transcripts` key + tests
-- [x] Slice 5: `transcript-ui` — InspectorPanel Analyze/transcript/word-seek/word-edit + states + CSS
-- [x] Slice 6: docs (D-010/D-011, ROADMAP, SESSION_LOG 5) + graphify + review + push
+## M1 — Media foundation (closed, pushed)
+- [x] Slice 1: project serialization (`editor/project.ts`) — 9 tests
+- [x] Slice 2: `loadProject` store action + tests — 2 tests
+- [x] Slice 3: Save/Open UI (topbar + `services/projectIO.ts`)
+- [x] Slice 4: clip drag-move UX — one undo step, live preview
+- [x] Slice 5: clip drag-trim UX — left/right handles, clamped
+- [x] Slice 6: CSS + verification + docs (D-009, Session 4) + graphify + commits
+- Open M1 follow-ups (not in this list): ripple editing, cross-track drag, audio mixing in render.
 
-Checkpoints:
-- [x] After Slice 3: backend pytest green (28) + real-model smoke
-- [x] After Slice 4: frontend tests (47) + build + lint green
-- [x] After Slice 5: dev-server transform smoke (200s on all new modules); HUMAN BROWSER PASS still outstanding
-- [x] After Slice 6: full suites + docs + code-review + push
+## M2 — Voice analysis (closed, pushed @ `e864f18`)
+- [x] Slice 1: `pause-segmentation` pure word-gap pause/segment logic (12 tests)
+- [x] Slice 2: `transcribe-api` contract + fake + tests (4 tests)
+- [x] Slice 3: faster-whisper adapter — CPU int8, project-local model cache, real smoke
+- [x] Slice 4: `transcript-state` — frontend client + store slice + project `transcripts` key
+- [x] Slice 5: `transcript-ui` — InspectorPanel Analyze/transcript/word-seek/word-edit
+- [x] Slice 6: docs (D-010/D-011) + graphify + review + push
 
-## M3 Semantic image matching — first slice (active) — SPEC-image-matching.md, tasks/plan.md
-- [ ] Slice 1: `embedding-core` — CLIP ONNX lazy loader + Pillow preprocess + text encode + scoring helpers (backend, TDD)
-- [ ] Slice 2: `match-api` — `POST /api/match` repetition-aware assignments/confidence/alternatives/timings (backend, TDD)
-- [ ] Slice 3: `beat-segmentation` — transcript → visual beats (pure TS, TDD)
-- [ ] Slice 4: `semantic-matching` — match client + store autoMatch (one undo step) + clip.beatId persistence (frontend)
-- [ ] Slice 5: `matching-ui` — MatchPanel Auto-match + confidence + alternatives replace + states + CSS
+## M3 — Semantic image matching (closed, pushed @ `79b2fb2`; timing set closed @ `ca1dd23`)
+- [x] Slice 1: `embedding-core` — CLIP ONNX loader + Pillow preprocess + text encode + scoring
+- [x] Slice 2: `match-api` — `POST /api/match` repetition-aware assignment/confidence/alternatives
+- [x] Slice 3: `beat-segmentation` — transcript → visual beats (pure TS)
+- [x] Slice 4: `semantic-matching` — match client + store autoMatch (one undo) + `clip.beatId`
+- [x] Slice 5: `matching-ui` — MatchPanel Auto-match + confidence + alternatives replace
+- [x] Slice 6: docs (D-012/D-013, SESSION_LOG 6) + graphify + review + push
+- [x] Slice-set B (timing fit + manual override): `timing-core` (`0bace75`) + `store-override` (`ca7f02b`) + `panel-note` (`3e52173`) + docs (D-014, SESSION_LOG 7, `ca1dd23`)
+- [x] Multilingual pass: spec+plan (`d0ce01b`) → multi-session embedder + auto-select (`79b2fb2`); D-015, SESSION_LOG 8
 
-## M3 remainder: timing fit + manual timing override (slice-set B, closed 2026-09-12) — SPEC-timing-pacing.md, tasks/plan-timing.md
-- [x] Slice 1: `timing-core` — pure timing math (`editor/timing.ts`) + 11 tests — `0bace75`
-- [x] Slice 2: `store-override` — re-match preserves manual timing, `kept` count, one undo step — `ca7f02b`
-- [x] Slice 3: `panel-note` — kept-overrides line + narration-duration horizon in MatchPanel — `3e52173`
-- [ ] Slice 4: docs (D-014, ROADMAP, SESSION_LOG 7) + graphify + regression + **push (user go-ahead)**
-- [ ] Slice 6: docs (D-012/D-013, ROADMAP M3, SESSION_LOG 6) + graphify + review + push
-
-Checkpoints:
-- [ ] After Slice 1: real-model Embedder smoke on this machine (onnxruntime 1.17.3 opset)
-- [ ] After Slice 2-3: backend + frontend focused suites green
-- [ ] After Slice 4: undo-restore test + persistence round-trip green
-- [ ] After Slice 5: dev transform smoke; human browser pass documented
-- [ ] After Slice 6: full suites + docs + review + push
-## M4 transitions-core (active) — SPEC-m4-capability-map.md, SPEC-transitions-core.md, tasks/plan-tc.md
+## M4 — Transition/animation engine (closed, pushed @ `0234747`)
+### Module 1 — transitions-core (closed, pushed)
 - [x] Slice 1: model + constants + clamps (`transitions.ts`)
 - [x] Slice 2: heuristics `evaluateTransitions` (continuity→match, gap≥0.5→dissolve, default cut, no wipe/zoom)
 - [x] Slice 3: `validateTransitions` + `overrideTransition`/`removeTransition` ops
 - [x] Slice 4: `TimelineModel.transitions` + project round-trip (version 1)
-- [x] Slice 5: docs (D-016, ROADMAP, FEATURES, SESSION_LOG 9) + graphify + regression + push (go-ahead)
+- [x] Slice 5: docs (D-016, SESSION_LOG 9) + graphify + regression + push — `0141a89` → `7a6d51d`
 
-Checkpoints:
-- [x] After Slice 4: frontend vitest + build + lint green
-- [ ] After Slice 5: full regression + docs + push
-
-## M4 transitions-render (active) — SPEC-transitions-render.md, tasks/plan-tr.md
-- [x] Slice 1: pure graph builder (BetweenSpec/EdgeSpec, xfade map, offsets, fold) — TDD
+### Module 2 — transitions-render (closed, pushed)
+- [x] Slice 1: pure graph builder (BetweenSpec/EdgeSpec, xfade map, offsets, fold)
 - [x] Slice 2: render() integration (parity when empty, real dissolve render)
 - [x] Slice 3: /api/render optional `transitions` field + error codes
-- [ ] Slice 4: docs (D-017) + regression + push (go-ahead)
+- [x] Slice 4: docs (D-017, SESSION_LOG 10) + regression + push — `e876a34` → `b304ce7`
 
-## M4 module 3 — transitions-ui (SPEC-transitions-ui.md)
+### Module 3 — transitions-ui (closed, pushed)
+- [x] Task 1: store state + actions + loadProject + partialize/equality — `9e7255a`
+- [x] Task 2: TransitionsPanel (suggest/rationale/type+duration/remove/invalid-resolve) — `eca2384`
+- [x] Task 3: TransitionOverlay chips per lane (between + edge, click-select) — `ae7e69b`
+- [x] Task 4: docs D-018/ROADMAP/FEATURES/UI_SPEC/SESSION_LOG 11 + graphify + regression — `d263222`
+- [x] (was-fix) React 19 `useShallow` getSnapshot fix + App mount regression guard — `28a078f`
 
-### Phase 1: Store
-- [x] Task 1: Store state + actions (`transitions`, `selectedTransitionId`, `suggestTransitions`, `overrideTransition`, `removeTransition`, `resolveInvalidTransitions`, `setSelectedTransitionId`), initialState, loadProject, partialize/equality.
-  - Checkpoint: vitest green, build clean.
+### Module 4 — image-motion (closed, pushed @ `0234747`) — final M4 module
+- [x] Task 1 (slice 1): MotionSpec, `RenderClip.motion`, `_motion_filters` (zoompan), `_prep_chain`, parity, MOTION_INVALID
+- [x] Task 2 (slice 2): /api/render optional `motion` parse + validate (image-only) + pass-through
+- [x] Task 3 (slice 3): `MotionSpec`/`MotionType` types, `Clip.motion?`, `setClipMotion`, round-trip
+- [x] Task 4 (slice 4): InspectorPanel `MotionPanel` (type + strength) + ClipBlock marker + CSS
+- [x] Task 5 (slice 5): docs D-019/ROADMAP M4 done/FEATURES/UI_SPEC/SESSION_LOG 12 + graphify + regression + push
+- 5 commits: `60895b9` (spec) · `4008923` (slices 1-2) · `28c68cc` (slice 3) · `d31a92b` (slice 4) · `250e9f7`/`0234747` (docs/graph)
 
-### Phase 2: Inspector pane
-- [x] Task 2: `TransitionsPanel` + CSS; mount in `InspectorPanel`.
+## M4 open
+- [ ] Retention-oriented heuristics (measurable only, no viral claims) — dimensions to be defined in M5+ planning
 
-### Phase 3: Timeline chips
-- [x] Task 3: `TransitionOverlay` per lane (between + edge chips, click-to-select) + CSS; mount in `TrackRow`.
-  - Checkpoint: all spec criteria pass; vitest ≥104, build, lint.
+## Next milestone — M5 Caption engine (not started)
+- [ ] Draft `SPEC-caption-engine.md` → plan → todo slices (multilingual ASR already shippable from M3)
 
-### Phase 4: Docs
-- [x] Task 4: D-018, FEATURES, UI_SPEC, SESSION_LOG 11, ROADMAP tick, plan/todo ticks, graphify, regression; commit+push on go-ahead.
-
-## M4 module 4 — image-motion (SPEC-image-motion.md)
-
-- [x] Task 1 (slice 1): MotionSpec, RenderClip.motion, _motion_filters, _prep_chain refactor, MOTION_INVALID.
-- [x] Task 2 (slice 2): /api/render optional motion parse+validate+pass-through.
-- [x] Task 3 (slice 3): MotionType/MotionSpec types, Clip.motion?, setClipMotion store action, round-trip.
-- [x] Task 4 (slice 4): InspectorPanel MotionControls (type select + strength range) + ClipBlock marker + CSS.
-- [x] Task 5 (slice 5): docs D-019, FEATURES, ROADMAP M4 complete, SESSION_LOG 12, UI_SPEC, graphify, regression; commit+push on go-ahead.
+## Milestones 6–10 (not started)
+- M6 Template/font system · M7 Manhwa extractor · M8 Integrated editor · M9 Hardware validation · M10 Release hardening
