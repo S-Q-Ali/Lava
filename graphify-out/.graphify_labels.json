@@ -1,6 +1,6 @@
 {
   "0": "package.json",
-  "1": "project.ts",
+  "1": "transitions.ts",
   "2": "localDirs",
   "3": "compilerOptions",
   "4": "Worked example: Agent Teams for competing-hypothesis debugging",
@@ -88,5 +88,9 @@
   "86": "Spec: `transitions-core` — transition model, heuristics, persistence",
   "87": "Implementation Plan: `transitions-core` (M4 module 1)",
   "88": "Session 2026-09-12 — Session 9: M4 module 1 — transitions-core",
-  "89": "Capability Map: M4 — Transition / Animation Engine"
+  "89": "Capability Map: M4 — Transition / Animation Engine",
+  "90": "project.ts",
+  "91": "Spec: `transitions-render` — transitions in the FFmpeg render pipeline",
+  "92": "Session 2026-09-12 — Session 10: M4 module 2 — transitions-render",
+  "93": "Implementation Plan: `transitions-render` (M4 module 2)"
 }

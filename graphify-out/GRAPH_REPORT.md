@@ -1,22 +1,22 @@
 # Graph Report - Lava  (2026-09-12)
 
 ## Corpus Check
-- 119 files · ~92,307 words
+- 122 files · ~95,403 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1424 nodes · 2021 edges · 90 communities (78 shown, 10 thin omitted)
-- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 23 edges (avg confidence: 0.95)
+- 1482 nodes · 2145 edges · 94 communities (82 shown, 10 thin omitted)
+- Extraction: 98% EXTRACTED · 2% INFERRED · 0% AMBIGUOUS · INFERRED: 40 edges (avg confidence: 0.95)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `cae96cb4`
+- Built from commit: `94bba9aa`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - package.json
-- project.ts
+- transitions.ts
 - localDirs
 - compilerOptions
 - Worked example: Agent Teams for competing-hypothesis debugging
@@ -103,24 +103,28 @@
 - Implementation Plan: `transitions-core` (M4 module 1)
 - Session 2026-09-12 — Session 9: M4 module 1 — transitions-core
 - Capability Map: M4 — Transition / Animation Engine
+- project.ts
+- Spec: `transitions-render` — transitions in the FFmpeg render pipeline
+- Session 2026-09-12 — Session 10: M4 module 2 — transitions-render
+- Implementation Plan: `transitions-render` (M4 module 2)
 
 ## God Nodes (most connected - your core abstractions)
 1. `useEditorStore` - 35 edges
 2. `AI Video Studio — Master Project Documentation` - 23 edges
-3. `Matcher` - 21 edges
-4. `EditorActions` - 19 edges
-5. `Code Review and Quality` - 19 edges
-6. `AGENTS.md — AI Video Studio` - 19 edges
-7. `compilerOptions` - 18 edges
-8. `AI Video Studio — Product Specification` - 18 edges
-9. `ApiError` - 17 edges
-10. `FakeEmbedder` - 16 edges
+3. `ApiError` - 22 edges
+4. `Matcher` - 21 edges
+5. `build_transition_graph()` - 21 edges
+6. `EditorActions` - 19 edges
+7. `Code Review and Quality` - 19 edges
+8. `AGENTS.md — AI Video Studio` - 19 edges
+9. `compilerOptions` - 18 edges
+10. `AI Video Studio — Product Specification` - 18 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `serialize_segment()` --uses--> `Segment`  [INFERRED]
-  backend/src/lava_backend/transcribe.py → backend/src/lava_backend/transcribers.py
-- `serialize()` --uses--> `Transcription`  [INFERRED]
-  backend/src/lava_backend/transcribe.py → backend/src/lava_backend/transcribers.py
+- `match()` --uses--> `ApiError`  [INFERRED]
+  backend/src/lava_backend/matching.py → backend/src/lava_backend/errors.py
+- `transcribe()` --uses--> `ApiError`  [INFERRED]
+  backend/src/lava_backend/transcribe.py → backend/src/lava_backend/errors.py
 - `test_preprocess_center_crops_to_square()` --calls--> `preprocess_image()`  [EXTRACTED]
   backend/tests/test_clip.py → backend/src/lava_backend/clip.py
 - `test_preprocess_image_returns_normalized_chw()` --calls--> `preprocess_image()`  [EXTRACTED]
@@ -131,15 +135,15 @@
 ## Import Cycles
 - None detected.
 
-## Communities (90 total, 10 thin omitted)
+## Communities (94 total, 10 thin omitted)
 
 ### Community 0 - "package.json"
 Cohesion: 0.06
 Nodes (32): dependencies, react, react-dom, zundo, zustand, devDependencies, oxlint, @types/node (+24 more)
 
-### Community 1 - "project.ts"
-Cohesion: 0.08
-Nodes (45): isAsset(), isClip(), isRecord(), isTrack(), isTranscript(), parseProjectJson(), parseProjectModel(), parseTranscripts() (+37 more)
+### Community 1 - "transitions.ts"
+Cohesion: 0.13
+Nodes (23): BetweenTransition, clampTransitionDuration(), ClipLike, DEFAULT_DURATIONS, defaultDuration(), EdgeTransition, EvaluateOptions, evaluateTransitions() (+15 more)
 
 ### Community 2 - "localDirs"
 Cohesion: 0.10
@@ -166,8 +170,8 @@ Cohesion: 0.07
 Nodes (29): Browser Testing with DevTools, Common Rationalizations, DAMP Over DRY in Tests, Decision Guide, Discover the Stack First, Name Tests Descriptively, One Assertion Per Concept, Overview (+21 more)
 
 ### Community 8 - "ffmpeg.ts"
-Cohesion: 0.06
-Nodes (26): Beat, backendBaseUrl(), DEFAULT_BASE_URL, detectProvider(), FFmpegProvider, HttpFFmpegProvider, RenderClipInput, RenderInput (+18 more)
+Cohesion: 0.10
+Nodes (14): backendBaseUrl(), DEFAULT_BASE_URL, detectProvider(), FFmpegProvider, HttpFFmpegProvider, RenderInput, RenderResult, RenderSettings (+6 more)
 
 ### Community 9 - "fetch-ffmpeg.mjs"
 Cohesion: 0.24
@@ -271,7 +275,7 @@ Nodes (8): Decisions, HOW, Limitations, Next step, Purpose (WHY), Session 2026-0
 
 ### Community 37 - "AI Video Studio — Decision Log"
 Cohesion: 0.11
-Nodes (18): AI Video Studio — Decision Log, D-001 — Web-first editor shell (Vite + React + TypeScript), D-002 — Zustand + Zundo for state and undo/redo, D-003 — Project-local FFmpeg binary, D-004 — FFmpeg provider abstraction, D-005 — Curated vendor skills; reference clones kept local, D-006 — Commit `graphify-out/`; code-only pass for now, D-007 — Written session log + decisions log for continuity (+10 more)
+Nodes (19): AI Video Studio — Decision Log, D-001 — Web-first editor shell (Vite + React + TypeScript), D-002 — Zustand + Zundo for state and undo/redo, D-003 — Project-local FFmpeg binary, D-004 — FFmpeg provider abstraction, D-005 — Curated vendor skills; reference clones kept local, D-006 — Commit `graphify-out/`; code-only pass for now, D-007 — Written session log + decisions log for continuity (+11 more)
 
 ### Community 38 - "Implementation Plan: M3 — Semantic image matching (first slice)"
 Cohesion: 0.14
@@ -286,7 +290,7 @@ Cohesion: 0.20
 Nodes (10): 1. Voice/Image Fixtures, 2. Manhwa Fixtures, 3. Editor / Timeline Tests, 4. Templates / Fonts Tests, 5.1 Voice-analysis verification so far, 5.2 Image-matching verification so far, 5. Persistence / Data Integrity, 6. Performance Sanity (Baseline Hardware) (+2 more)
 
 ### Community 41 - "AI Video Studio — UI Specification"
-Cohesion: 0.25
+Cohesion: 0.22
 Nodes (8): 1. Direction, 2. Avoid, 3. Prefer, 4. Primary Layout, 5. Manhwa Correction View, 6. Voice-over → Timeline View, 7. State Requirements, AI Video Studio — UI Specification
 
 ### Community 42 - "graphify reference: query, path, explain"
@@ -311,23 +315,23 @@ Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphif
 
 ### Community 52 - "main.py"
 Cohesion: 0.07
-Nodes (55): Config, get_config(), _payload(), Resolve Lava Studio project-local configuration and paths., reset_config(), tool_versions(), ToolVersions, ApiError (+47 more)
+Nodes (65): Config, get_config(), _payload(), Resolve Lava Studio project-local configuration and paths., reset_config(), tool_versions(), ToolVersions, ApiError (+57 more)
 
 ### Community 53 - "test_render.py"
-Cohesion: 0.19
-Nodes (11): Lava Studio media sidecar package., make_clip(), test_probe_reports_media_metadata(), make_image(), Path, render_multipart(), test_render_file_clip_count_mismatch_is_400(), test_render_invalid_duration_is_422() (+3 more)
+Cohesion: 0.17
+Nodes (16): Lava Studio media sidecar package., make_clip(), test_probe_reports_media_metadata(), make_image(), Path, render_multipart(), render_multipart_with_transitions(), test_render_bad_transition_index_via_http_is_422() (+8 more)
 
 ### Community 54 - "Lava Studio — Backend (media sidecar)"
 Cohesion: 0.33
 Nodes (5): API, Lava Studio — Backend (media sidecar), Layout, Run, Tests
 
 ### Community 58 - "Task list"
-Cohesion: 0.29
-Nodes (6): M1 completion: project save/load + timeline drag/trim UX (closed 2026-09-12), M2 Voice analysis — first slice (closed 2026-09-12, pushed @ e864f18), M3 remainder: timing fit + manual timing override (slice-set B, closed 2026-09-12) — SPEC-timing-pacing.md, tasks/plan-timing.md, M3 Semantic image matching — first slice (active) — SPEC-image-matching.md, tasks/plan.md, M4 transitions-core (active) — SPEC-m4-capability-map.md, SPEC-transitions-core.md, tasks/plan-tc.md, Task list
+Cohesion: 0.25
+Nodes (7): M1 completion: project save/load + timeline drag/trim UX (closed 2026-09-12), M2 Voice analysis — first slice (closed 2026-09-12, pushed @ e864f18), M3 remainder: timing fit + manual timing override (slice-set B, closed 2026-09-12) — SPEC-timing-pacing.md, tasks/plan-timing.md, M3 Semantic image matching — first slice (active) — SPEC-image-matching.md, tasks/plan.md, M4 transitions-core (active) — SPEC-m4-capability-map.md, SPEC-transitions-core.md, tasks/plan-tc.md, M4 transitions-render (active) — SPEC-transitions-render.md, tasks/plan-tr.md, Task list
 
 ### Community 59 - "detect_pauses"
-Cohesion: 0.10
-Nodes (15): confidence_from_logprob(), detect_pauses(), Pause, Word, FakeTranscriber, Path, Segment, Transcriber (+7 more)
+Cohesion: 0.09
+Nodes (20): confidence_from_logprob(), detect_pauses(), Pause, Word, Request, UploadFile, serialize(), serialize_segment() (+12 more)
 
 ### Community 60 - "importer.ts"
 Cohesion: 0.14
@@ -338,20 +342,20 @@ Cohesion: 0.21
 Nodes (3): ClipBlock(), EditorActions, useEditorStore
 
 ### Community 62 - "App.tsx"
-Cohesion: 0.32
-Nodes (8): App(), formatTime(), PreviewPanel(), clipsAtTime(), getFFmpegProvider(), readProjectFromFile(), saveProjectToFile(), react
+Cohesion: 0.29
+Nodes (9): App(), formatTime(), PreviewPanel(), clipsAtTime(), getFFmpegProvider(), RenderClipInput, readProjectFromFile(), saveProjectToFile() (+1 more)
 
 ### Community 63 - "Matcher"
-Cohesion: 0.17
-Nodes (10): Beat, Matcher, Repetition-aware greedy assignment of CLIP embeddings to narration beats.…, FakeEmbedder, make_image(), make_route_client(), png_bytes(), post() (+2 more)
+Cohesion: 0.13
+Nodes (17): Beat, EmbedFailure, match(), Matcher, _parse_beats(), Exception, Request, UploadFile (+9 more)
 
 ### Community 64 - "TranscriptPanel.tsx"
 Cohesion: 0.21
 Nodes (11): attachPauses(), buildNodes(), confidenceLabel(), lowConfidence(), Node, TranscriptPanel(), AnalysisStatus, overwrite() (+3 more)
 
 ### Community 65 - "matchingStore.ts"
-Cohesion: 0.26
-Nodes (12): MatchPanel(), hasTimingOverride(), MIN_AUTO_DURATION, pacedEnd(), TAIL_HOLD, TimedBeat, TIMING_EPSILON, getAssetFile() (+4 more)
+Cohesion: 0.12
+Nodes (23): MatchPanel(), Beat, hasTimingOverride(), MIN_AUTO_DURATION, pacedEnd(), TAIL_HOLD, TimedBeat, TIMING_EPSILON (+15 more)
 
 ### Community 66 - "Spec: Voice Analysis (M2 first slice)"
 Cohesion: 0.18
@@ -426,8 +430,8 @@ Cohesion: 0.25
 Nodes (7): Checkpoints, Implementation Plan: M3 final — multilingual image matching, Risks / mitigation, Slice 1 — multilingual core (backend, TDD), Slice 2 — wiring (auto-select), Slice 3 — real-model smoke (manual, non-committed), Slice 4 — docs, review, commit, push
 
 ### Community 85 - "types.ts"
-Cohesion: 0.16
-Nodes (15): labelFor(), PAUSE_BEAT_THRESHOLD, segmentBeats(), splitSegment(), wordsInPart(), DEFAULT_TRACKS, TrackType, Transcript (+7 more)
+Cohesion: 0.15
+Nodes (16): labelFor(), PAUSE_BEAT_THRESHOLD, segmentBeats(), splitSegment(), wordsInPart(), DEFAULT_TRACKS, TRACK_TYPES, TrackType (+8 more)
 
 ### Community 86 - "Spec: `transitions-core` — transition model, heuristics, persistence"
 Cohesion: 0.14
@@ -445,25 +449,41 @@ Nodes (8): Decisions, HOW, Limitations, Next step, Session 2026-09-12 — Sessio
 Cohesion: 0.29
 Nodes (6): Boundaries, Build order, Capability Map: M4 — Transition / Animation Engine, Dependency direction notes, Open questions, Per-module gating
 
+### Community 90 - "project.ts"
+Cohesion: 0.17
+Nodes (21): isAsset(), isClip(), isRecord(), isTrack(), isTranscript(), parseProjectJson(), parseProjectModel(), parseTranscripts() (+13 more)
+
+### Community 91 - "Spec: `transitions-render` — transitions in the FFmpeg render pipeline"
+Cohesion: 0.18
+Nodes (10): Behaviour / acceptance, Boundaries, Code style, Commands, Data contract (backend), Objective, Spec: `transitions-render` — transitions in the FFmpeg render pipeline, Structure / files (+2 more)
+
+### Community 92 - "Session 2026-09-12 — Session 10: M4 module 2 — transitions-render"
+Cohesion: 0.25
+Nodes (8): Decisions, HOW, Limitations, Next step, Session 2026-09-12 — Session 10: M4 module 2 — transitions-render, Verify, WHAT, WHY
+
+### Community 93 - "Implementation Plan: `transitions-render` (M4 module 2)"
+Cohesion: 0.25
+Nodes (7): Checkpoints, Implementation Plan: `transitions-render` (M4 module 2), Risks, Slice 1 — pure graph builder (media.py, TDD), Slice 2 — render integration, Slice 3 — API contract, Slice 4 — docs + regression + commit + push
+
 ## Knowledge Gaps
-- **794 isolated node(s):** `$schema`, `plugin`, `lava-backend`, `$schema`, `plugins` (+789 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 915 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **818 isolated node(s):** `$schema`, `plugin`, `lava-backend`, `$schema`, `plugins` (+813 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 944 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `AI Video Studio — Session Log` connect `AI Video Studio — Session Log` to `README.md`, `Session 2026-09-12 — Milestone 0 bootstrap + Milestone 1 media foundation`, `Session 2026-09-12 — Session 2: continuity system + commit discipline`, `Session 2026-09-12 — Session 3: media sidecar (real rendering)`, `Session 2026-09-12 — Session 4: M1 completion (save/load + clip editing)`, `Session 2026-09-12 — Session 5: M2 voice analysis (first slice)`, `Session 2026-09-12 — Session 6: M3 semantic image matching (first slice)`, `Session 2026-09-12 — Session 7: M3 remainder — timing fit + manual timing override`, `Session 2026-09-12 — Session 8: M3 final pass — multilingual image matching (Urdu/Roman-Urdu)`, `Session 2026-09-12 — Session 9: M4 module 1 — transitions-core`?**
-  _High betweenness centrality (0.011) - this node is a cross-community bridge._
-- **Why does `vitest` connect `types.ts` to `package.json`, `project.ts`, `matchingStore.ts`, `ffmpeg.ts`, `ops.ts`, `importer.ts`?**
+- **Why does `AI Video Studio — Session Log` connect `AI Video Studio — Session Log` to `README.md`, `Session 2026-09-12 — Milestone 0 bootstrap + Milestone 1 media foundation`, `Session 2026-09-12 — Session 2: continuity system + commit discipline`, `Session 2026-09-12 — Session 3: media sidecar (real rendering)`, `Session 2026-09-12 — Session 4: M1 completion (save/load + clip editing)`, `Session 2026-09-12 — Session 5: M2 voice analysis (first slice)`, `Session 2026-09-12 — Session 6: M3 semantic image matching (first slice)`, `Session 2026-09-12 — Session 7: M3 remainder — timing fit + manual timing override`, `Session 2026-09-12 — Session 8: M3 final pass — multilingual image matching (Urdu/Roman-Urdu)`, `Session 2026-09-12 — Session 9: M4 module 1 — transitions-core`, `Session 2026-09-12 — Session 10: M4 module 2 — transitions-render`?**
+  _High betweenness centrality (0.015) - this node is a cross-community bridge._
+- **Why does `vitest` connect `types.ts` to `package.json`, `matchingStore.ts`, `transitions.ts`, `ffmpeg.ts`, `ops.ts`, `project.ts`, `importer.ts`?**
   _High betweenness centrality (0.008) - this node is a cross-community bridge._
-- **Why does `Matcher` connect `Matcher` to `main.py`?**
-  _High betweenness centrality (0.005) - this node is a cross-community bridge._
+- **Why does `Matcher` connect `Matcher` to `main.py`, `test_clip.py`?**
+  _High betweenness centrality (0.006) - this node is a cross-community bridge._
+- **Are the 6 inferred relationships involving `ApiError` (e.g. with `api_error_handler()` and `match()`) actually correct?**
+  _`ApiError` has 6 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 2 inferred relationships involving `Matcher` (e.g. with `TestMatchEndpoint` and `TestMatcherAlgorithm`) actually correct?**
   _`Matcher` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `$schema`, `plugin`, `lava-backend` to the rest of the system?**
-  _794 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _818 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `package.json` be split into smaller, more focused modules?**
   _Cohesion score 0.06060606060606061 - nodes in this community are weakly interconnected._
-- **Should `project.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.07619738751814223 - nodes in this community are weakly interconnected._

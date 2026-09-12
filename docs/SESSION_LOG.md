@@ -399,3 +399,47 @@ model honest; rationale strings make suggestions explainable in the UI module.
 ### Next step
 - Push on go-ahead; then `transitions-render` module (FFmpeg xfade/dissolve/fade with transition-aware
   clip offsets) — needs a fresh spec review. `transitions-ui` and `image-motion` follow.
+
+---
+
+## Session 2026-09-12 — Session 10: M4 module 2 — transitions-render
+
+### WHAT
+Render pipeline now produces actual transition effects via FFmpeg. `POST /api/render` accepts an optional
+`transitions` JSON form field (between/edge specs by clip index). Between-transitions fold the ordered
+clip list: `dissolve` → `xfade=fade`, `fade` → `xfade=fadeblack`; edges wrap the first/last stream with
+`fade=t=in|out`; `match`/cut = plain concat (no duration cost); `wipe`/`zoom` rejected with
+`TRANSITION_UNSUPPORTED`. Offset formula: `offset_k = Σdur(prev) − ΣD(prev)`; result duration =
+`Σdur − ΣD`. The existing parity path is preserved when no renderable transitions exist.
+
+### HOW
+Pure graph builder (`build_transition_graph`) validated with 15 unit tests (offsets, parity,
+validation errors, edge fold). Real-ffmpeg integration (3 tests): two-image dissolve → 3.5s,
+edge fade keeps full duration, wipe → 422. HTTP tests (4): dissolve 201 + duration, wipe 422
+`TRANSITION_UNSUPPORTED`, bad index → 422 `TRANSITION_INVALID`, malformed transitions → 422
+`INVALID_BODY`. A mixed concat + xfade nested graph was verified as a real render (not just
+assertion) — intermediate `concat=n=2` labels fed into a subsequent `xfade`.
+
+### WHY
+PRODUCT_SPEC §Transitions: "transition decisions must be explainable, editable and user-overridable."
+Making them *actually render* completes the model's promise while keeping the "avoid transition spam"
+rule (the renderer only filters what the frontend sends).
+
+### Decisions
+- D-017 — renderer fold; wipe/zoom template-only; 422 codes; locked.
+
+### Verify
+- Backend: `uv run pytest` 85 passed (63 → 85). `uv run pytest tests/test_render.py` shows the HTTP
+  dissolve render e2e (duration ≈ 3.5s, wipe → 422). Project-local FFmpeg validated.
+- Commits: `e876a34` (spec+plan) · `94bba9a` (slices 1-3 + docs) — this log/graph commit closes.
+
+### Limitations
+- `wipe`/`zoom` need a template renderer before they render (currently 422).
+- Edge fades currently only valid at timeline first/last clip (index 0 / index n−1); multi-track edge
+  cases handled by `transitions-ui` in the next module.
+- Transition duration resolution beyond 1/30s (`settings.fps`) is not snap-quantised; small probe
+  drift is expected and accepted (± 0.1s).
+
+### Next step
+- `transitions-ui` (timeline chips + explainable override UI) — fresh spec review, then TDD. Push
+  `transitions-render` commits on user go-ahead.

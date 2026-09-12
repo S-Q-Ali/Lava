@@ -165,6 +165,7 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
 | D-014 | Timing overrides survive re-matches (transient derivation, kept count) | Locked |
 | D-015 | Multilingual matching via composed two-session embedder (no new stack) | Locked |
 | D-016 | Transitions as top-level model (cut = absence; suggestions default-clean) | Locked |
+| D-017 | Renderer fold for transitions (xfade offsets = Σdur−ΣD; wipe/zoom → 422) | Locked |
 ### D-016 — Transitions live as an optional top-level `transitions` list; cut = absence; suggestions default-clean
 
 - **Date**: 2026-09-12
@@ -173,3 +174,12 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
 - **HOW**: `frontend/src/editor/transitions.ts` + `transitions.test.ts` (model, clamps, `evaluateTransitions`, `validateTransitions`, override/remove, `isTransition` guard); `types.ts` gains `transitions?`; `project.ts` parses/re-emits the optional key; 33 new tests (frontend 85 → 118).
 - **Alternatives considered**: per-clip transition fields (split semantics, anchor ambiguity); materialising "cut" objects (spam in the model, validation noise); suggestion confidence numbers (rationale strings beat scores for explainability in this module). Render direction/offsets belong to `transitions-render`, not here.
 - **Status**: Locked for M4 (module `transitions-core`). Render + UI + image-motion are follow-on modules.
+
+### D-017 — Transitions render through an FFmpeg xfade fold; offsets = Σdur − ΣD; wipe/zoom → 422
+
+- **Date**: 2026-09-12
+- **WHAT**: `POST /api/render` accepts an optional `transitions` JSON form field (between/edge specs by clip *index*). Rendering folds the ordered clip list: per-stream prep stays identical, then each adjacent pair is either a nested `concat` (cut or `match`) or an `xfade` (`dissolve`→`fade`, between `fade`→`fadeblack`) at `offset = Σdur(previous) − ΣD(previous transitions)`; edge transitions wrap the first/last stream with a `fade=t=in|out` filter (`st` = 0 or clipDur−D). Result duration = Σdur − ΣD (edges cost nothing). `wipe`/`zoom` are template-only → `TRANSITION_UNSUPPORTED`; semantic errors → `TRANSITION_INVALID`; malformed body → `INVALID_BODY`. Parity path: no renderable transitions produces byte-identical graph + behaviour to the pre-transition renderer.
+- **WHY**: PRODUCT_SPEC — clean cuts stay cheap, "restrained transitions" are still actual render effects, and the model/UI (modules 1/3) must not leak encoder math. Keeping `match` encodable as cut means continuity cuts add zero render cost.
+- **HOW**: `media.py` `BetweenSpec`/`EdgeSpec`, `xfade_name`, pure `build_transition_graph` (validates + folds + computes total duration), `render(..., transitions=())`; `main.py` parses the field. 22 new backend tests (63 → 85): pure graph/offsets/parity, real-ffmpeg dissolve render (2×2s − 0.5s → 3.5s), edge fades, HTTP codes.
+- **Alternatives considered**: per-pair ffmpeg commands instead of a fold (chain explosion); backend-side suggestion of transitions (frontend only sends validated specs); mixed concat/xfade nesting rejected → implemented with labelled `concat=n=2` intermediates (verified with a real mixed graph render).
+- **Status**: Locked for M4 (module `transitions-render`). `transitions-ui` sends the specs; `image-motion` extends the same per-stream prep.
