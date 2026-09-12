@@ -11,6 +11,13 @@ import {
   clampTransitionDuration,
 } from '../editor/transitions'
 import type { Transition, TransitionType } from '../editor/transitions'
+import {
+  segmentCaptions,
+  updateCaptionText as patchCaptionText,
+  updateCaptionTiming as patchCaptionTiming,
+  removeCaption as omitCaption,
+} from '../editor/captions'
+import type { CaptionItem } from '../editor/captions'
 
 export interface MatchClipInput {
   trackId: string
@@ -31,6 +38,7 @@ interface EditorBase {
   selectedTransitionId: string | null
   transitions: Transition[]
   transcripts: Record<string, Transcript>
+  captions: CaptionItem[]
 }
 
 interface EditorActions {
@@ -54,6 +62,10 @@ interface EditorActions {
   overrideTransition(id: string, type: TransitionType, duration?: number): void
   removeTransition(id: string): void
   resolveInvalidTransitions(): void
+  generateCaptions(assetId: string): void
+  updateCaptionText(id: string, text: string): void
+  updateCaptionTiming(id: string, patch: { start?: number; duration?: number }): void
+  removeCaption(id: string): void
   undo(): void
   redo(): void
   reset(): void
@@ -72,6 +84,7 @@ function initialState(): EditorBase {
     selectedTransitionId: null,
     transitions: [],
     transcripts: {},
+    captions: [],
   }
 }
 
@@ -163,6 +176,24 @@ export const useEditorStore = create<EditorState>()(
           )
           return { transitions: s.transitions.filter((t) => !invalid.has(t.id)) }
         }),
+      generateCaptions: (assetId) =>
+        set((s) => {
+          const transcript = s.transcripts[assetId]
+          if (!transcript) return s
+          const fresh = segmentCaptions(transcript)
+          const manual = s.captions.filter((c) => c.source === 'manual')
+          return { captions: [...manual, ...fresh] }
+        }),
+      updateCaptionText: (id, text) =>
+        set((s) => ({
+          captions: s.captions.map((c) => (c.id === id ? patchCaptionText(c, text) : c)),
+        })),
+      updateCaptionTiming: (id, patch) =>
+        set((s) => ({
+          captions: s.captions.map((c) => (c.id === id ? patchCaptionTiming(c, patch) : c)),
+        })),
+      removeCaption: (id) =>
+        set((s) => ({ captions: omitCaption(s.captions, id) })),
       setTranscript: (assetId, transcript) =>
         set((s) => ({ transcripts: { ...s.transcripts, [assetId]: transcript } })),
       updateTranscriptWord: (assetId, segmentId, wordIndex, text) =>
@@ -212,6 +243,7 @@ export const useEditorStore = create<EditorState>()(
           selectedTransitionId: null,
           transitions: model.transitions ?? [],
           transcripts: model.transcripts ?? {},
+          captions: model.captions ?? [],
         }),
       }
     },
@@ -223,13 +255,15 @@ export const useEditorStore = create<EditorState>()(
         clips: s.clips,
         transcripts: s.transcripts,
         transitions: s.transitions,
+        captions: s.captions,
       }),
       equality: (prev, next) =>
         prev.tracks === next.tracks &&
         prev.assets === next.assets &&
         prev.clips === next.clips &&
         prev.transcripts === next.transcripts &&
-        prev.transitions === next.transitions,
+        prev.transitions === next.transitions &&
+        prev.captions === next.captions,
     },
   ),
 )

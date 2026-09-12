@@ -2,7 +2,6 @@ import { describe, expect, it } from 'vitest'
 import {
   CAPTION_PAUSE_SPLIT_THRESHOLD,
   CAPTION_TRACK_ID,
-  CaptionItem,
   DEFAULT_CAPTION_STYLE_ID,
   MIN_CAPTION_DURATION,
   clampCaptionDuration,
