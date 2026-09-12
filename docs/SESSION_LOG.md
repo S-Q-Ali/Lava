@@ -544,3 +544,91 @@ established prep+fold so transitions and motion compose with zero architecture c
 - Push M4 (image-motion) on go-ahead. ROADMAP M4 then only lacks the measurable-only
   retention bullet. Next milestone: M5 caption engine (multilingual ASR already in M3) — draft
   `SPEC-caption-engine.md`.
+
+---
+
+## Session 13 — M5 caption engine complete (all four modules)
+
+### Purpose (WHY)
+Session 12's next step was M5. The approved capability map
+(`docs/SPEC-m5-capability-map.md`, committed `9851231`) defined four modules:
+caption-core → caption-styles → caption-render → caption-ui. This session shipped
+all four with per-slice TDD, closing the M5 milestone.
+
+### WHAT
+- **caption-core** — `frontend/src/editor/captions.ts`: `CaptionItem`
+  (`{ id: 'cap-*', trackId: 'track-captions', start, duration, text, styleId,
+  words?, source }`), `segmentCaptions` (one caption per segment, split on
+  pauses ≥ 0.4s — same rule as beat segmentation so captions align with matched
+  image beats; word timings copied onto items), pure edit ops
+  (`updateCaptionText` manual + drops stale words, `updateCaptionTiming` clamped,
+  `removeCaption`, `validateCaptions` with epsilon drift tolerance, `isCaption`).
+  `TimelineModel.captions?` + `project.ts` round-trip (version stays 1).
+  Store: `captions` state (temporal), `generateCaptions(assetId)` replaces only
+  `auto` items — manual captions always survive (D-018 rule), one undo step;
+  `updateCaptionText`/`updateCaptionTiming`/`setCaptionStyle`/`removeCaption`;
+  `loadProject`/`reset`/partialize/equality wired. Commits: `94b606d` (slices 1-3,
+  17 tests) · `cf7d9df` (round-trip) · `0e69e50` (store, 8 tests).
+- **caption-styles** — `captionStyles.ts`: 15 original static presets (normal,
+  word-highlight, karaoke, important-word pop, punctuation, hook, manga/anime,
+  cinematic, meme, storytelling, urdu RTL, roman-urdu, english, mixed,
+  emoji-optional). Safe font stacks, `#RRGGBB` colors, alignment, mode flags
+  (`karaoke`/`wordHighlight`/`importantWordPop`/`punctuation`/`rtl`/`emoji`).
+  No trending claims. Commit: `5557f2a` (7 tests).
+- **caption-render** — `docs/SPEC-caption-render.md` + backend `captions.py`
+  (pure ASS generator: PlayRes-relative sizes, `#RRGGBB`→`&HAABBGGRR`,
+  bottom/middle/top alignment map, `{\k}` karaoke centiseconds from word
+  timings, `{\rtl}`, HTML escaping, uppercase) + `media.py` per-job `.ass`
+  write + `ass=` filter appended to the final stream (empty/absent =
+  byte-identical parity) + `main.py` optional `captions` form field with
+  `CAPTION_INVALID` (422). Real-ffmpeg pixel-diff smoke proves the burned
+  caption changes the bottom strip. Commit: `9b97b2b` (backend 111 → 140).
+- **caption-ui** — `CaptionPanel` (analyze-first empty state, Generate per
+  analyzed voice asset, per-caption text/duration/style/remove + source badge),
+  timeline caption blocks on the captions lane (click seeks, dashed = manual),
+  `captionsRenderPayload` wire mapper, Render button sends captions, CSS in
+  existing tokens. Commit: `83f2cc0` (frontend 133 → 174).
+- **Docs closure** — D-020 (+ D-019 index row fix), ROADMAP M5 all ticked +
+  status line, FEATURES §5 "Shipped" block, UI_SPEC captions entry, todo M5
+  closed, this log, graph refresh.
+
+### HOW
+Per-slice TDD as in M2–M4: pure layer first (RED exposed two test-expectation
+fixes: `makeCaption` clamps negative start so validation tests must inject
+malformed values directly; empty captions array is the parity path, not an
+error). One real bug caught by tests: the `ass=` filter append initially missed
+the `;` chain separator → ffmpeg 500 → fixed to `[vout];[vout]ass=…[voutc]`.
+ASS path escaping handles `\`, `:`, `'`. Fonts: first family of the safe stack
+is sent; libass falls back for missing fonts (M6 bundles fonts).
+
+### Decisions
+- D-020 — captions as optional top-level list; transcript-generated,
+  override-first edits, libass burn-in; animated treatments + user fonts → M6,
+  live preview overlay → M8. Locked.
+
+### Verify
+- Backend: `uv run pytest` 140 passed (111 → 140: +20 captions unit, +6 render
+  HTTP incl. pixel smoke).
+- Frontend: `npx vitest run` 174 passed (133 → 174: +17 captions, +3 round-trip,
+  +8 store, +7 styles, +6 CaptionPanel component). `npm run build` ok,
+  `npm run lint` 0 errors.
+- Commits: `9851231` (capability map) · `94b606d` · `cf7d9df` · `0e69e50` ·
+  `5557f2a` · `9b97b2b` · `83f2cc0` + this docs/graph commit.
+
+### Limitations
+- Burn-in uses fonts installed on the machine; missing fonts fall back via
+  libass (font bundling + license metadata = M6).
+- Animated kinetic/manga/meme/cinematic/storytelling treatments render as
+  static styled lines only (M6 templates).
+- No live caption preview overlay (M8 polish per capability map).
+- Emoji rendering depends on installed emoji fonts; the flag is optional
+  per-style, never mandatory.
+- In-browser human feel-check of CaptionPanel + caption blocks still pending
+  (logic is component-test covered).
+
+### Next step
+- Push M5 (8 commits) on user go-ahead. Next milestone candidates: M6
+  template/font system (font import + license metadata + animated caption
+  treatments) or M1 follow-ups (audio mixing in render — now needed for voice
+  to reach the output; ripple editing). M4 retention heuristics stay open
+  (measurable-only).

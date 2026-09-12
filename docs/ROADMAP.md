@@ -55,11 +55,11 @@ Definition of done for ANY milestone installments within it: implementation exis
 - [ ] Retention-oriented heuristics (measurable only, no viral claims)
 
 ## Milestone 5 — Caption engine
-- Multilingual ASR
-- Word timestamps
-- Caption renderer
-- All requested preset families
-- Editable caption track
+- [x] Multilingual ASR (already shipped in M2/M3: faster-whisper + multilingual beat text)
+- [x] Word timestamps (M2 transcript words reused onto caption items)
+- [x] Caption renderer — libass `.ass` burn-in via `/api/render` optional `captions` field; karaoke `\k`, `{\rtl}` RTL, parity when absent, `CAPTION_INVALID` validation (`caption-render` complete)
+- [x] All requested preset families — 15 original presets: normal, word-highlight, karaoke, important-word pop, punctuation, hook, manga/anime, cinematic, meme, storytelling, urdu (RTL), roman-urdu, english, mixed, emoji-optional (`caption-styles` complete)
+- [x] Editable caption track — `CaptionItem` on `TimelineModel.captions` (version 1), transcript generation (pause-split, word timings), override-first re-generation (manual survives), CaptionPanel text/duration/style/remove, timeline caption blocks, render wire-up (`caption-core` + `caption-ui` complete)
 
 ## Milestone 6 — Template/font system
 - Preset registry
@@ -101,4 +101,4 @@ Definition of done for ANY milestone installments within it: implementation exis
 - 🔄 In progress
 - ✅ Done
 
-Current status: Milestone 0 done. Milestone 1 done — web editor imports media, edits clips (drag/trim/split/delete, undo/redo), saves/loads project files, and renders image/video tracks to `mp4` through the local media sidecar. Open M1 follow-ups: ripple editing, cross-track drag, audio mixing in render.
+Current status: Milestones 0–4 done. Milestone 5 (caption engine) done — transcript-generated editable captions with 15 original style presets and libass burn-in; animated treatments and user fonts deferred to M6, live preview overlay to M8. Open follow-ups: M1 ripple editing / cross-track drag / audio mixing in render; M4 retention heuristics (dimensions defined in M5+ planning).

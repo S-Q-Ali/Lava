@@ -62,19 +62,22 @@
 ## M4 open
 - [ ] Retention-oriented heuristics (measurable only, no viral claims) — dimensions to be defined in M5+ planning
 
-## M5 — Caption engine (in progress)
+## M5 — Caption engine (closed, pushed)
 - [x] Capability map approved + committed (`9851231`)
-### Module 1 — caption-core (in progress)
-- [ ] Slice 1: caption model + constants + clamps + `isCaption`
-- [ ] Slice 2: `segmentCaptions` generation from transcript
-- [ ] Slice 3: edit ops (text/timing/remove/validate)
-- [ ] Slice 4: `TimelineModel.captions` + project round-trip
-- [ ] Slice 5: store state + actions (override-first generate, one undo)
-- [ ] Slice 6: docs (D-020, SESSION_LOG 13) + graphify + regression
-### Modules 2–4 (not started)
-- [ ] caption-styles — preset catalog
-- [ ] caption-render — backend ASS burn-in
-- [ ] caption-ui — CaptionPanel + timeline blocks
+### Module 1 — caption-core (closed)
+- [x] Slice 1: caption model + constants + clamps + `isCaption`
+- [x] Slice 2: `segmentCaptions` generation from transcript
+- [x] Slice 3: edit ops (text/timing/remove/validate)
+- [x] Slices 1-3 committed — `94b606d` (17 tests)
+- [x] Slice 4: `TimelineModel.captions` + project round-trip — `cf7d9df`
+- [x] Slice 5: store state + actions (override-first generate, one undo) — `0e69e50` (8 tests)
+### Module 2 — caption-styles (closed)
+- [x] Preset catalog (15 families, safe stacks) + 7 tests — `5557f2a`
+### Module 3 — caption-render (closed)
+- [x] Spec (`docs/SPEC-caption-render.md`) + `captions.py` ASS generator + `/api/render` burn-in + parity + `CAPTION_INVALID` + real-ffmpeg pixel smoke — `9b97b2b` (backend 140 tests)
+### Module 4 — caption-ui (closed)
+- [x] CaptionPanel + timeline caption blocks + render wire-up + CSS — `83f2cc0` (frontend 174 tests)
+- [x] Docs closure: D-020, ROADMAP M5 done, FEATURES §5, UI_SPEC, SESSION_LOG 13 + graphify + regression
 
 ## Milestones 6–10 (not started)
 - M6 Template/font system · M7 Manhwa extractor · M8 Integrated editor · M9 Hardware validation · M10 Release hardening

@@ -25,6 +25,7 @@ The UI must feel like a real professional editor, not an AI landing page. Do not
 - Functional icons.
 - Restrained motion.
 - **Motion controls (M4 `image-motion`)**: for a selected image clip, the inspector `MotionPanel` shows a type `<select>` (none + 6 presets) and — once a preset is chosen — a strength range slider (0.1–1) with numeric readout; choosing `none` clears motion. Blocks carry a small uppercase `.clip-motion` marker when motion is set. No motion UI for non-image clips.
+- **Captions (M5 `caption-ui`)**: the inspector ends with a `CaptionPanel`. Without an analyzed transcript it shows an analyze-first hint (no fake buttons). With one, it offers a Generate button per analyzed voice asset; generated captions list with per-item time range + auto/manual source badge, text input (edit flips to manual), style `<select>` over the 15 presets, duration input (clamped ≥ 0.2s) and Remove. The captions timeline lane renders caption blocks (width ∝ duration, min 24px, dashed border when manual, click seeks the playhead). Re-generation never overwrites manual captions. Burn-in preview belongs to Render (no live overlay in M5).
 - Explicit states.
 - Visible manual controls.
 - Confidence indicators.

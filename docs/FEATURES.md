@@ -88,6 +88,14 @@ Caption modes:
 
 Pipeline: ASR → timestamps → sentence/phrase segmentation → word timestamps → style renderer → editable caption track.
 
+**Shipped (M5 caption engine complete):**
+- **Caption model** — typed `CaptionItem` on the top-level `captions` key (project version stays 1): `{ id, trackId: 'track-captions', start, duration, text, styleId, words?, source: 'auto'|'manual' }`. Word timings from the transcript ride on every generated item (karaoke/word-highlight ready).
+- **Transcript generation** — `segmentCaptions` produces one caption per segment, split on pauses ≥ 0.4s (same rule as beat segmentation, so captions stay aligned with matched image beats); text falls back to the segment text when a part has no words.
+- **Editable caption track** — inspector `CaptionPanel`: Generate buttons per analyzed voice asset (analyze-first empty state otherwise), per-caption text edit, duration edit (clamped ≥ 0.2s), style select, Remove, and an auto/manual source badge. Timeline shows caption blocks on the captions lane (click seeks; dashed border = manual). Re-generation replaces only `auto` captions — **manual edits always survive**.
+- **Style presets** — 15 original static presets covering the mode list above: normal, word-highlight, karaoke, important-word pop, punctuation, hook, manga/anime, cinematic, meme, storytelling, urdu (RTL), roman-urdu, english, mixed, emoji-optional. Safe font stacks only; no trending claims; user font import + license metadata arrive with M6.
+- **Burn-in renderer** — `/api/render` accepts an optional `captions` field; the sidecar generates a libass `.ass` document (PlayRes-relative sizes, `#RRGGBB`→ASS colors, bottom/middle/top alignment, `{\k}` karaoke centiseconds from word timings, `{\rtl}` for RTL lines, HTML escaping, uppercase) and overlays it on the output. Absent/empty captions keep the filter graph byte-identical (parity); malformed captions → `CAPTION_INVALID` (422). Validated with a real-ffmpeg pixel-diff smoke (burned caption visibly changes the frame).
+- *(Deferred by design)*: animated kinetic/manga/meme treatments and complete-video template presets → M6; live preview overlay → M8; user fonts + license metadata → M6.
+
 ## 6. Templates / Styles / Fonts
 
 - Built-in original preset library.
