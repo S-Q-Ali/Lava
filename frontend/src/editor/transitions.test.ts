@@ -10,6 +10,9 @@ import {
   evaluateTransitions,
   makeBetweenTransition,
   makeEdgeTransition,
+  overrideTransition,
+  removeTransition,
+  validateTransitions,
 } from './transitions'
 
 describe('transition constants', () => {
@@ -89,6 +92,8 @@ const V = (id: string, trackId: string, assetId: string, start: number, duration
   beatId,
 })
 
+
+const withId = <T>(t: T): T => ({ ...(t as object), id: 't' }) as T
 const RATIONALE_CONTINUITY =
   'Same image continues across the cut — match cut keeps continuity.'
 const RATIONALE_PASSAGE =
@@ -178,5 +183,109 @@ describe('evaluateTransitions', () => {
     const before = JSON.stringify(clips)
     evaluateTransitions(clips)
     expect(JSON.stringify(clips)).toBe(before)
+  })
+})
+
+const CONTIG_TOLERANCE = 0.08
+
+describe('validateTransitions', () => {
+  const clips: ClipLike[] = [
+    V('a', 't0', 'img1', 0, 2),
+    V('b', 't0', 'img2', 2, 2),
+    V('c', 't1', 'img3', 0, 2),
+  ]
+
+  it('accepts a valid between transition', () => {
+    const t = makeBetweenTransition('a', 'b', 'dissolve', 0.5)
+    expect(validateTransitions(clips, [t])).toEqual([])
+  })
+
+  it('flags transitions anchored to missing clips', () => {
+    const t = withId(makeBetweenTransition('a', 'nope', 'dissolve'))
+    expect(validateTransitions(clips, [t])).toEqual([
+      'Transition t references missing clips: a, nope.',
+    ])
+  })
+
+  it('flags cross-track anchors', () => {
+    const t = withId(makeBetweenTransition('a', 'c', 'dissolve'))
+    expect(validateTransitions(clips, [t])).toEqual([
+      'Transition t spans tracks t0 and t1 — a between transition needs two consecutive clips on the same track.',
+    ])
+  })
+
+  it('flags non-contiguous clips beyond tolerance', () => {
+    const t = makeBetweenTransition('a', 'b', 'dissolve', 0.5)
+    const shifted = clips.map((c) => (c.id === 'b' ? V('b', 't0', 'img2', 2.5, 2) : c))
+    expect(validateTransitions(shifted, [t])).toHaveLength(1)
+  })
+
+  it('flags over-long durations that exceed the shorter clip', () => {
+    const t = withId(makeBetweenTransition('a', 'b', 'dissolve', 0.5))
+    const short = clips.map((c) => (c.id === 'b' ? V('b', 't0', 'img2', 2, 0.2) : c))
+    expect(validateTransitions(short, [t])).toEqual([
+      'Transition t duration 0.5 exceeds what both clips can cover.',
+    ])
+  })
+
+  it('flags unknown kinds and types', () => {
+    const bad = { kind: 'edge', at: 'start', clipId: 'a', type: 'wipe', duration: 0.5 } as unknown as Transition
+    expect(validateTransitions(clips, [bad])).toEqual([
+      'Transition with kind edge must be a fade type.',
+    ])
+  })
+
+  it('accepts a valid fade edge on a reel edge clip', () => {
+    const t = makeEdgeTransition('start', 'a', 0.5)
+    expect(validateTransitions(clips, [t])).toEqual([])
+  })
+
+  it('flags edge fades anchored to non-edge clips', () => {
+    const t = makeEdgeTransition('start', 'b', 0.5)
+    expect(validateTransitions(clips, [t])).toHaveLength(1)
+  })
+
+  it('flags duplicate between transitions for the same pair', () => {
+    const one = makeBetweenTransition('a', 'b', 'dissolve', 0.5)
+    const two = makeBetweenTransition('a', 'b', 'fade', 0.5)
+    expect(validateTransitions(clips, [one, two])).toEqual([
+      'Duplicate transition on pair a→b.',
+    ])
+  })
+})
+
+describe('overrideTransition', () => {
+  it('changes type, clamps duration and flips source to manual', () => {
+    const t = makeBetweenTransition('a', 'b', 'dissolve', 0.5)
+    const overridden = overrideTransition(t, 'fade', 9)
+    expect(overridden.type).toBe('fade')
+    expect(overridden.duration).toBe(MAX_DURATION)
+    expect(overridden.source).toBe('manual')
+    expect(overridden.id).toBe(t.id)
+  })
+
+  it('does not mutate the original', () => {
+    const t = makeBetweenTransition('a', 'b', 'dissolve', 0.5)
+    const overridden = overrideTransition(t, 'fade', 0.8)
+    expect(t.type).toBe('dissolve')
+    expect(t.source).toBe('auto')
+    expect(overridden).not.toBe(t)
+  })
+})
+
+describe('removeTransition', () => {
+  it('removes only the targeted transition', () => {
+    const one = makeBetweenTransition('a', 'b', 'dissolve', 0.5)
+    const two = makeBetweenTransition('b', 'a', 'fade', 0.4)
+    const left = removeTransition([one, two], two.id)
+    expect(left).toEqual([one])
+  })
+
+  it('returns a new array and does not mutate the input list', () => {
+    const one = makeBetweenTransition('a', 'b', 'dissolve', 0.5)
+    const before = JSON.stringify([one])
+    const left = removeTransition([one], 'missing')
+    expect(left).toHaveLength(1)
+    expect(JSON.stringify([one])).toBe(before)
   })
 })

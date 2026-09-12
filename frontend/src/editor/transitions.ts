@@ -168,3 +168,87 @@ export function evaluateTransitions(
   }
   return suggestions
 }
+
+const CONTIG_TOLERANCE = 0.08
+
+export function validateTransitions(
+  clips: ClipLike[],
+  transitions: Transition[],
+): string[] {
+  const byId = new Map(clips.map((c) => [c.id, c]))
+  const errors: string[] = []
+  const seenPairs = new Set<string>()
+  for (const t of transitions) {
+    if (t.kind === 'between') {
+      const a = byId.get(t.clipAId)
+      const b = byId.get(t.clipBId)
+      if (!a || !b) {
+        errors.push(`Transition ${t.id} references missing clips: ${t.clipAId}, ${t.clipBId}.`)
+        continue
+      }
+      const key = `${t.clipAId}→${t.clipBId}`
+      if (seenPairs.has(key)) {
+        errors.push(`Duplicate transition on pair ${key}.`)
+        continue
+      }
+      seenPairs.add(key)
+      if (a.trackId !== b.trackId) {
+        errors.push(
+          `Transition ${t.id} spans tracks ${a.trackId} and ${b.trackId} — a between transition needs two consecutive clips on the same track.`,
+        )
+        continue
+      }
+      if (Math.abs(b.start - (a.start + a.duration)) > CONTIG_TOLERANCE) {
+        errors.push(`Transition ${t.id} sits between non-contiguous clips on track ${a.trackId}.`)
+        continue
+      }
+      if (t.duration > Math.min(a.duration, b.duration)) {
+        errors.push(`Transition ${t.id} duration ${t.duration} exceeds what both clips can cover.`)
+      }
+    } else if (t.kind === 'edge') {
+      if (t.type !== 'fade') {
+        errors.push('Transition with kind edge must be a fade type.')
+        continue
+      }
+      const clip = byId.get(t.clipId)
+      if (!clip) {
+        errors.push(`Transition ${t.id} references missing clips: ${t.clipId}.`)
+        continue
+      }
+      const siblings = clips
+        .filter((c) => c.trackId === clip.trackId && c.id !== clip.id)
+        .sort((x, y) => x.start - y.start)
+      const isStartEdge =
+        t.at === 'start' && siblings.every((c) => c.start >= clip.start - CONTIG_TOLERANCE)
+      const isEndEdge =
+        t.at === 'end' &&
+        siblings.every((c) => c.start + c.duration <= clip.start + clip.duration + CONTIG_TOLERANCE)
+      if (!(t.at === 'start' ? isStartEdge : isEndEdge)) {
+        errors.push(`Transition ${t.id} edge fade is not on the ${t.at} edge of its track.`)
+      }
+    } else {
+      errors.push(`Transition ${t.id} has unknown kind.`)
+    }
+  }
+  return errors
+}
+
+export function overrideTransition(
+  transition: BetweenTransition,
+  type: TransitionType,
+  duration?: number,
+): BetweenTransition {
+  return {
+    ...transition,
+    type,
+    duration: clampTransitionDuration(duration ?? defaultDuration(type)),
+    source: 'manual' as const,
+  }
+}
+
+export function removeTransition(
+  transitions: Transition[],
+  id: string,
+): Transition[] {
+  return transitions.filter((t) => t.id !== id)
+}
