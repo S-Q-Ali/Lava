@@ -74,3 +74,11 @@ Checkpoints:
 
 ### Phase 4: Docs
 - [x] Task 4: D-018, FEATURES, UI_SPEC, SESSION_LOG 11, ROADMAP tick, plan/todo ticks, graphify, regression; commit+push on go-ahead.
+
+## M4 module 4 — image-motion (SPEC-image-motion.md)
+
+- [ ] Task 1 (slice 1): MotionSpec, RenderClip.motion, _motion_filters, _prep_chain refactor, MOTION_INVALID.
+- [ ] Task 2 (slice 2): /api/render optional motion parse+validate+pass-through.
+- [ ] Task 3 (slice 3): MotionType/MotionSpec types, Clip.motion?, setClipMotion store action, round-trip.
+- [ ] Task 4 (slice 4): InspectorPanel MotionControls (type select + strength range) + ClipBlock marker + CSS.
+- [ ] Task 5 (slice 5): docs D-019, FEATURES, ROADMAP M4 complete, SESSION_LOG 12, UI_SPEC, graphify, regression; commit+push on go-ahead.
