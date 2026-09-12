@@ -8,6 +8,7 @@ import {
   overrideTransition as patchTransition,
   removeTransition as omitTransition,
   validateTransitions,
+  clampTransitionDuration,
 } from '../editor/transitions'
 import type { Transition, TransitionType } from '../editor/transitions'
 
@@ -134,11 +135,15 @@ export const useEditorStore = create<EditorState>()(
         }),
       overrideTransition: (id, type, duration) =>
         set((s) => ({
-          transitions: s.transitions.map((t) =>
-            t.id === id && t.kind === 'between'
-              ? patchTransition(t, type, duration)
-              : t,
-          ),
+          transitions: s.transitions.map((t) => {
+            if (t.id !== id) return t
+            if (t.kind === 'between') return patchTransition(t, type, duration)
+            return {
+              ...t,
+              duration: clampTransitionDuration(duration ?? t.duration),
+              source: 'manual' as const,
+            }
+          }),
         })),
       removeTransition: (id) =>
         set((s) => ({ transitions: omitTransition(s.transitions, id) })),

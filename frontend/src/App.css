@@ -262,6 +262,131 @@
   cursor: default;
 }
 
+/* Transitions */
+.transitions-panel {
+  border-top: 1px solid var(--border);
+  padding: 8px 0;
+  font-size: 13px;
+  max-height: 40vh;
+  overflow-y: auto;
+}
+
+.transitions-panel h4 {
+  font-size: 12px;
+  margin: 0 0 6px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.transitions-panel button {
+  background: var(--accent-soft);
+  color: var(--text);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.transitions-panel button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.transition-errors {
+  border: 1px solid #c33;
+  border-radius: 4px;
+  padding: 6px 8px;
+  margin-bottom: 8px;
+  background: rgba(255, 60, 60, 0.08);
+}
+
+.transition-errors p {
+  margin: 0 0 6px;
+  color: #e66;
+}
+
+.transition-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.transition-row {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 6px 8px;
+  cursor: pointer;
+  background: var(--panel-2);
+}
+
+.transition-row.selected {
+  border-color: var(--accent);
+}
+
+.transition-row-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: space-between;
+}
+
+.transition-label {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.transition-manual {
+  color: var(--accent);
+  font-size: 11px;
+}
+
+.transition-invalid {
+  color: #e66;
+  font-size: 11px;
+}
+
+.transition-controls {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.transition-controls select,
+.transition-controls input[type='number'] {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 12px;
+}
+
+.transition-controls input[type='number'] {
+  width: 56px;
+}
+
+.transition-controls button {
+  margin-left: auto;
+}
+
+.transition-rationale {
+  margin: 6px 0 0;
+  color: var(--text-dim);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.transition-empty {
+  color: var(--text-dim);
+  margin: 8px 0 0;
+}
+
 .transcript-meta {
   display: flex;
   gap: 14px;

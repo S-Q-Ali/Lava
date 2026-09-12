@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it } from 'vitest'
 import { useEditorStore } from './editorStore'
 import type { Asset } from '../editor/types'
+import type { EdgeTransition } from '../editor/transitions'
 
 const imageA: Asset = { id: 'a', kind: 'image', name: 'sunset.png', url: 'blob:a', meta: {} }
 const imageB: Asset = { id: 'b', kind: 'image', name: 'forest.png', url: 'blob:b', meta: {} }
@@ -100,7 +101,6 @@ describe('editorStore transitions state', () => {
     useEditorStore.getState().suggestTransitions()
     const state = useEditorStore.getState()
     const model = {
-      version: 1,
       tracks: state.tracks,
       assets: state.assets,
       clips: state.clips,
@@ -115,7 +115,6 @@ describe('editorStore transitions state', () => {
     )
 
     useEditorStore.getState().loadProject({
-      version: 1,
       tracks: state.tracks,
       assets: state.assets,
       clips: clips,
@@ -123,6 +122,35 @@ describe('editorStore transitions state', () => {
       selectedClipId: null,
     })
     expect(useEditorStore.getState().transitions).toEqual([])
+  })
+
+  it('overrideTransition also works for edge fades', () => {
+    const clips = applyVideoClips()
+    const state = useEditorStore.getState()
+    const edge: EdgeTransition = {
+      kind: 'edge',
+      id: 'e1',
+      at: 'start',
+      clipId: clips[0].id,
+      type: 'fade',
+      duration: 0.4,
+      source: 'auto',
+    }
+    useEditorStore
+      .getState()
+      .loadProject({
+          tracks: state.tracks,
+        assets: state.assets,
+        clips,
+        playhead: 0,
+        selectedClipId: null,
+        transitions: [edge],
+      })
+    useEditorStore.getState().overrideTransition('e1', 'fade', 1.0)
+    const t = useEditorStore.getState().transitions.find((x) => x.id === 'e1')
+    expect(t?.kind === 'edge' && t).toBeTruthy()
+    expect(t?.duration).toBe(1)
+    expect(t?.source).toBe('manual')
   })
 
   it('setSelectedTransitionId tracks the selected chip', () => {

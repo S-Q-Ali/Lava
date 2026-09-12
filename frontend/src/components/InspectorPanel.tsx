@@ -2,6 +2,7 @@ import { useEditorStore } from '../store/editorStore'
 import { projectDuration } from '../editor/ops'
 import TranscriptPanel from './TranscriptPanel'
 import MatchPanel from './MatchPanel'
+import TransitionsPanel from './TransitionsPanel'
 
 export default function InspectorPanel() {
   const clips = useEditorStore((s) => s.clips)
@@ -50,6 +51,7 @@ export default function InspectorPanel() {
       </div>
       <TranscriptPanel />
       <MatchPanel />
+      <TransitionsPanel />
     </section>
   )
 }
