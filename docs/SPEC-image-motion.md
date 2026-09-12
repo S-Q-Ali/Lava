@@ -110,6 +110,7 @@ Backend: frozen dataclasses, pure filter-string helpers returning `list[str]`, e
 
 ## Open questions
 
-- None blocking. Zoom amplitude is baked as `F = 1 + 0.15·strength`; the strength slider maps
-  linearly to `F`, and duration-based `t` drives drift. Sub-frame floored crop widths are
-  normalised by a trailing `scale=W:H` for zoom presets.
+- Resolved during implementation: `crop` evaluates w/h/x/y at filter-init time, so a `t`-animated
+  crop is rejected by ffmpeg at graph config. The 6 presets instead use `zoompan` (evaluates
+  `z`/`x`/`y` per output frame `on`) over a `scale=iw*3:ih*3` upscale. `F = 1 + 0.15·strength`
+  remains the amplitude law; strength maps linearly to `F`.

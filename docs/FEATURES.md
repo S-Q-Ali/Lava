@@ -62,6 +62,7 @@ This document is the definitive feature inventory. Nothing is complete until it 
 - Contextual transitions driven by pacing, continuity and narrative/emotional intent.
 - Match/continuity cut, short dissolve, fade, wipe/graphic, zoom/whip/glitch where justified.
 - Image motion/ken-burns style animation.
+- **Restrained still-clip motion (M4 `image-motion` complete)**: per-clip optional `motion` (`zoom-in/zoom-out/pan-left/pan-right/pan-up/pan-down` + `strength` 0–1, default off). User-set only — auto-match never invents motion. Editable in the inspector (`MotionPanel`: type select + strength slider) and visible as a marker on timeline blocks; `none` clears. Persists in project files (version stays 1). Renders through the shared per-stream prep (`scale=iw*3:ih*3` headroom → `zoompan` with `F = 1 + 0.15·strength`) so motion composes with the xfade transition fold and the no-motion graph stays byte-identical. Non-image clips reject motion with `MOTION_INVALID` (422).
 - Retention-oriented heuristics (no “viral score” claims).
 - Every transition decision editable and overridable.
 

@@ -29,23 +29,23 @@ everywhere, version stays 1.
 ## Task List
 
 ### Phase 1: Backend motion filters (slice 1)
-- [ ] Task 1: `MotionSpec`, `RenderClip.motion`, `_motion_filters`,
+- [x] Task 1: `MotionSpec`, `RenderClip.motion`, `_motion_filters`,
       `_prep_chain` refactor (both paths), validation (`MOTION_INVALID`).
   - Acceptance: criteria 5–6, 8 (parity) pass as pure + smoke tests.
   - Verify: `uv run pytest tests/test_image_motion.py` (RED first) then full backend suite.
   - Files: `backend/src/lava_backend/media.py`, `backend/tests/test_image_motion.py` (new).
 
 ### Phase 2: API contract (slice 2)
-- [ ] Task 2: `/api/render` optional `motion` per clip (parse + validate + pass through).
+- [x] Task 2: `/api/render` optional `motion` per clip (parse + validate + pass through).
   - Acceptance: criteria 6–7; real-ffmpeg HTTP smoke.
   - Verify: `uv run pytest tests/test_render.py`.
   - Files: `backend/src/lava_backend/main.py`, `backend/tests/test_render.py`.
 
 ### Checkpoint: 1–2
-- [ ] Backend suite green (85 + n), filter parity preserved.
+- [x] Backend suite green (85 + n), filter parity preserved.
 
 ### Phase 3: Frontend model + store (slice 3)
-- [ ] Task 3: `MotionType`/`MotionSpec` in `editor/types.ts`, `Clip.motion?`,
+- [x] Task 3: `MotionType`/`MotionSpec` in `editor/types.ts`, `Clip.motion?`,
       `setClipMotion` action, round-trip test.
   - Acceptance: criteria 1–2.
   - Verify: `npx vitest run src/store/...` (RED first) then full frontend suite.
@@ -53,7 +53,7 @@ everywhere, version stays 1.
       `frontend/src/store/...test.ts`.
 
 ### Phase 4: Inspector controls + clip marker (slice 4)
-- [ ] Task 4: `MotionControls` in `InspectorPanel` (type select + strength range), motion
+- [x] Task 4: `MotionControls` in `InspectorPanel` (type select + strength range), motion
       marker in `ClipBlock`, CSS.
   - Acceptance: criteria 3–4; `App.test.tsx` mount stays green.
   - Verify: component tests + full frontend suite (122 + n), build, lint.
@@ -61,10 +61,10 @@ everywhere, version stays 1.
       frontend tests, `App.css`.
 
 ### Checkpoint: full
-- [ ] All 8 criteria pass; frontend suite + build + lint, backend suite all green.
+- [x] All 8 criteria pass; frontend suite + build + lint, backend suite all green.
 
 ### Phase 5: Docs (slice 5)
-- [ ] Task 5: D-019 in `DECISIONS.md`, FEATURES §4, ROADMAP M4 complete,
+- [x] Task 5: D-019 in `DECISIONS.md`, FEATURES §4, ROADMAP M4 complete,
       SESSION_LOG 12, UI_SPEC §8 note, plan/todo ticks, `graphify update .`, regression.
   - Files: `docs/*.md`, `tasks/*`. Commit + push on go-ahead.
 

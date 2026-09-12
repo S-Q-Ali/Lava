@@ -497,3 +497,50 @@ is vertex in-browser.
 - Push `transitions-ui` on go-ahead; then final M4 module: `image-motion` (per-capability-map
   spec) — e.g. Ken Burns / drift on stills with editable severity, rendered via the same
   per-stream prep + renderer fold. Update docs/ROADMAP M4 as module completes.
+
+## Session 12 — M4 module 4: image-motion (Ken Burns/drift on stills)
+
+### WHAT
+Shipped the final M4 module. Still-image clips can carry an optional `motion`
+(`zoom-in|zoom-out|pan-left|pan-right|pan-up|pan-down` + `strength` 0–1), it is editable
+from the inspector (type select + strength slider, marker on the timeline block), survives
+project round-trips (version stays 1), and renders through the same per-stream prep as
+transitions `("fps → scale/pad → scale=iw*3 → zoompan → setsar → trim → setpts")` so it
+composes with the xfade fold. No-motion clips keep byte-identical filter graphs (parity
+tests preserved).
+
+### HOW
+Backend `media.py`: `MotionSpec` frozen dataclass, `RenderClip.motion?`, `_motion_filters`
+(zoompan `z`/`x`/`y` animated from `on` over the clip, `F = 1 + 0.15·strength`, upscaled
+source `*3` for headroom so zoom-out never shows edges), `_prep_chain` shared by
+`_filter_complex` and `build_transition_graph` (identical output when motion absent),
+`MOTION_INVALID` (422) for unknown type/out-of-range strength. `/api/render` parses optional
+per-clip `motion`; `MOTION_INVALID` when motion targets a non-image clip. Frontend:
+`MotionSpec`/`MotionType` in types, `Clip.motion?`, `setClipMotion` store action, `MotionPanel`
+(render-less for non-image clips; `none` clears), `.clip-motion` marker on blocks. Crop-based
+attempt was dropped after ffmpeg rejected `t`-animated crop config — zoompan is the canonical
+Ken Burns filter.
+
+### WHY
+Stills matched to narration need restrained life without gimmickry; motion is user-set only
+(never auto-suggested), fixed amplitudes scaled by strength, editable everywhere, and uses the
+established prep+fold so transitions and motion compose with zero architecture change.
+
+### Verify
+- Backend `uv run pytest tests/`: 111 passed (85 → 111). Includes parity tests, 6-preset
+  string coverage, real-ffmpeg motion smoke, motion+dissolve smoke (3.5s), HTTP cases
+  (201 render, 422 `MOTION_INVALID` x3).
+- Frontend `npx vitest run`: 133 passed (122 → 133). `npm run build` clean, `npm run lint` 0.
+- Commits: `60895b9` (spec+plan) · `4008923` (slices 1-2) · `28c68cc` (slice 3) · `d31a92b`
+  (slice 4) · this one (docs D-019).
+
+### Limitations
+- Pan/zoom helper upsamples source `*3`; very large stills cost memory during prep.
+- Strength slider maps linearly to amplitude; no keyframe/customisation per clip.
+- `selectedTransitionId`/motion UI remain transient-ish: motion persists (clip field); only the
+  inspector state itself is not persisted (intentional).
+
+### Next step
+- Push M4 (image-motion) on go-ahead. ROADMAP M4 then only lacks the measurable-only
+  retention bullet. Next milestone: M5 caption engine (multilingual ASR already in M3) — draft
+  `SPEC-caption-engine.md`.

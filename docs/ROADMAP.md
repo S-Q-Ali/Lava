@@ -51,7 +51,7 @@ Definition of done for ANY milestone installments within it: implementation exis
 - [x] Editable transition decisions — manual override/remove are pure ops, persist, never overwritten
 - [x] Transitions in the renderer — `xfade` (dissolve→fade, between fade→fadeblack), edge `fade` filters, match/cut = plain concat; offsets = Σdur−ΣD; wipe/zoom → 422 (`transitions-render` complete)
 - [x] Transition timeline UI — chips on the cut boundary/edges, click-select, inspector pane with rationale + type/duration override + remove + invalid-resolve (`transitions-ui` complete)
-- [ ] Image motion (ken-burns) — `image-motion` module
+- [x] Image motion (ken-burns) — `image-motion` module complete: per-clip pan/zoom presets + strength, inspector + marker, zoompan prep, composes with xfade fold, parity preserved
 - [ ] Retention-oriented heuristics (measurable only, no viral claims)
 
 ## Milestone 5 — Caption engine

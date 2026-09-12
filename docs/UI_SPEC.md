@@ -24,6 +24,7 @@ The UI must feel like a real professional editor, not an AI landing page. Do not
 - Inspector/tool panels.
 - Functional icons.
 - Restrained motion.
+- **Motion controls (M4 `image-motion`)**: for a selected image clip, the inspector `MotionPanel` shows a type `<select>` (none + 6 presets) and — once a preset is chosen — a strength range slider (0.1–1) with numeric readout; choosing `none` clears motion. Blocks carry a small uppercase `.clip-motion` marker when motion is set. No motion UI for non-image clips.
 - Explicit states.
 - Visible manual controls.
 - Confidence indicators.
