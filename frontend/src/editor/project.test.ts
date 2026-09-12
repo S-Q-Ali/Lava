@@ -147,3 +147,36 @@ describe('parseProjectJson', () => {
     expect(() => parseProjectJson(JSON.stringify(file))).toThrow(/transcript/i)
   })
 })
+describe('transition persistence', () => {
+  const transition = {
+    kind: 'between',
+    id: 't1',
+    clipAId: 'clip-1',
+    clipBId: 'clip-2',
+    type: 'dissolve',
+    duration: 0.5,
+    source: 'auto',
+    reason: 'passage',
+    rationale: 'Between matched narration beats.',
+  } as const
+
+  const cleanModel: TimelineModel = { tracks, assets, clips, playhead: 0, selectedClipId: null }
+
+  it('round-trips transitions attached to the model', () => {
+    const withTransition: TimelineModel = { ...cleanModel, transitions: [transition] }
+    const restored = parseProjectJson(toProjectJson(withTransition))
+    expect(restored.transitions).toEqual([transition])
+    expect(restored.transitions?.[0]).toMatchObject({ clipAId: 'clip-1', clipBId: 'clip-2' })
+  })
+
+  it('leaves transitions undefined when absent', () => {
+    const restored = parseProjectJson(toProjectJson(cleanModel))
+    expect(restored.transitions).toBeUndefined()
+  })
+
+  it('rejects a project with a malformed transition', () => {
+    const file = serializeProject({ ...cleanModel })
+    file.model.transitions = [{ kind: 'between' }] as unknown as TimelineModel['transitions']
+    expect(() => parseProjectJson(JSON.stringify(file))).toThrow(/transition/i)
+  })
+})

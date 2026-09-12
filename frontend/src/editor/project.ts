@@ -1,5 +1,7 @@
 import type { Asset, Clip, TimelineModel, Track, Transcript } from './types'
 import { TRACK_TYPES } from './types'
+import { isTransition } from './transitions'
+import type { Transition } from './transitions'
 
 export const PROJECT_APP = 'lava-studio'
 export const PROJECT_VERSION = 1
@@ -108,6 +110,17 @@ function parseTranscripts(value: unknown): Record<string, Transcript> | undefine
   return transcripts
 }
 
+function parseTransitions(raw: unknown): Transition[] | undefined {
+  if (raw === undefined) return undefined
+  if (!Array.isArray(raw)) throw new ProjectError('Project transitions must be an array.')
+  for (const entry of raw) {
+    if (!isTransition(entry)) {
+      throw new ProjectError('Project model contains a malformed transition.')
+    }
+  }
+  return raw
+}
+
 export function parseProjectModel(value: unknown): TimelineModel {
   const raw = requireRecord(value, 'model')
   if (!Array.isArray(raw.tracks)) throw new ProjectError('Project model is missing tracks.')
@@ -131,7 +144,8 @@ export function parseProjectModel(value: unknown): TimelineModel {
   const playhead = typeof raw.playhead === 'number' ? raw.playhead : 0
   const selectedClipId = typeof raw.selectedClipId === 'string' ? raw.selectedClipId : null
   const transcripts = parseTranscripts(raw.transcripts)
-  return { tracks, assets, clips, playhead, selectedClipId, transcripts }
+  const transitions = parseTransitions(raw.transitions)
+  return { tracks, assets, clips, playhead, selectedClipId, transcripts, transitions }
 }
 
 export function parseProjectJson(json: string): TimelineModel {

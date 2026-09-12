@@ -1,3 +1,5 @@
+import type { Transition } from './transitions'
+
 export const TRACK_TYPES = [
   'video',
   'image',
@@ -58,6 +60,7 @@ export interface TimelineModel {
   playhead: number
   selectedClipId: string | null
   transcripts?: Record<string, Transcript>
+  transitions?: Transition[]
 }
 
 export interface TranscriptWord {

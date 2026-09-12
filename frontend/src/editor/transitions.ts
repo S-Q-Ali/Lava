@@ -226,8 +226,6 @@ export function validateTransitions(
       if (!(t.at === 'start' ? isStartEdge : isEndEdge)) {
         errors.push(`Transition ${t.id} edge fade is not on the ${t.at} edge of its track.`)
       }
-    } else {
-      errors.push(`Transition ${t.id} has unknown kind.`)
     }
   }
   return errors
@@ -251,4 +249,32 @@ export function removeTransition(
   id: string,
 ): Transition[] {
   return transitions.filter((t) => t.id !== id)
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null
+}
+
+export function isTransition(value: unknown): value is Transition {
+  if (!isRecord(value)) return false
+  if (value.kind === 'between') {
+    return (
+      typeof value.id === 'string' &&
+      typeof value.clipAId === 'string' &&
+      typeof value.clipBId === 'string' &&
+      typeof value.type === 'string' &&
+      TRANSITION_TYPES.includes(value.type as TransitionType) &&
+      typeof value.duration === 'number'
+    )
+  }
+  if (value.kind === 'edge') {
+    return (
+      typeof value.id === 'string' &&
+      (value.at === 'start' || value.at === 'end') &&
+      typeof value.clipId === 'string' &&
+      value.type === 'fade' &&
+      typeof value.duration === 'number'
+    )
+  }
+  return false
 }

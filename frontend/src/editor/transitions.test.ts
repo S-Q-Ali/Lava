@@ -4,7 +4,6 @@ import {
   MAX_DURATION,
   MIN_DURATION,
   TRANSITION_TYPES,
-  Transition,
   clampTransitionDuration,
   defaultDuration,
   evaluateTransitions,
@@ -14,6 +13,7 @@ import {
   removeTransition,
   validateTransitions,
 } from './transitions'
+import type { Transition } from './transitions'
 
 describe('transition constants', () => {
   it('declares exactly the five types', () => {
@@ -186,7 +186,6 @@ describe('evaluateTransitions', () => {
   })
 })
 
-const CONTIG_TOLERANCE = 0.08
 
 describe('validateTransitions', () => {
   const clips: ClipLike[] = [
