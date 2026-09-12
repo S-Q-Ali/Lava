@@ -17,7 +17,7 @@ from .clip import ClipEmbedder, MultilingualClipEmbedder
 from .config import get_config, tool_versions
 from .errors import ApiError, error_response
 from .matching import Matcher, router as matching_router
-from .media import RenderClip, RenderSettings, probe, render
+from .media import BetweenSpec, EdgeSpec, RenderClip, RenderSettings, probe, render
 from .transcribe import router as transcribe_router
 from .transcribers import WhisperTranscriber
 
@@ -107,6 +107,7 @@ class RenderSettingsModel(BaseModel):
 async def render_endpoint(
     clips: str = Form(...),
     settings: str = Form(...),
+    transitions: str | None = Form(None),
     files: list[UploadFile] = File(...),
 ):
     try:
@@ -116,6 +117,38 @@ async def render_endpoint(
         settings_model = RenderSettingsModel(**json.loads(settings))
     except (json.JSONDecodeError, TypeError, ValueError) as exc:
         raise ApiError(422, "INVALID_BODY", f"clips/settings must be valid JSON") from exc
+
+    transition_specs: list = []
+    if transitions is not None and transitions.strip():
+        try:
+            parsed_transitions = json.loads(transitions)
+        except json.JSONDecodeError as exc:
+            raise ApiError(422, "INVALID_BODY", "transitions must be valid JSON") from exc
+        if not isinstance(parsed_transitions, list):
+            raise ApiError(422, "INVALID_BODY", "transitions must be a JSON array")
+        try:
+            for item in parsed_transitions:
+                if item.get("kind") == "between":
+                    transition_specs.append(
+                        BetweenSpec(
+                            first=int(item["first"]),
+                            second=int(item["second"]),
+                            type=str(item["type"]),
+                            duration=float(item["duration"]),
+                        )
+                    )
+                elif item.get("kind") == "edge":
+                    transition_specs.append(
+                        EdgeSpec(
+                            at=str(item["at"]),
+                            index=int(item["index"]),
+                            duration=float(item["duration"]),
+                        )
+                    )
+                else:
+                    raise ApiError(422, "INVALID_BODY", "transition entry must have kind between|edge")
+        except (KeyError, TypeError, ValueError) as exc:
+            raise ApiError(422, "INVALID_BODY", f"malformed transition entry: {exc}") from exc
 
     if not clips_model:
         raise ApiError(422, "NO_CLIPS", "Render requires at least one clip")
@@ -156,6 +189,7 @@ async def render_endpoint(
                 height=settings_model.height,
                 fps=settings_model.fps,
             ),
+            transitions=transition_specs,
         )
     except Exception:
         shutil.rmtree(upload_root, ignore_errors=True)

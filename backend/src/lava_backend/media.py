@@ -19,6 +19,21 @@ class RenderClip:
     duration: float
 
 
+@dataclass(frozen=True)
+class BetweenSpec:
+    first: int
+    second: int
+    type: str
+    duration: float
+
+
+@dataclass(frozen=True)
+class EdgeSpec:
+    at: str
+    index: int
+    duration: float
+
+
 @dataclass
 class RenderSettings:
     width: int = 1280
@@ -38,6 +53,17 @@ class RenderResult:
 
 
 IMAGE_SUFFIXES = {".png", ".jpg", ".jpeg", ".webp", ".bmp", ".gif"}
+
+MIN_TRANSITION_DURATION = 0.1
+MAX_TRANSITION_DURATION = 2.0
+
+_XFADE_BY_TYPE = {
+    "dissolve": "fade",
+    "fade": "fadeblack",
+    "match": None,
+}
+
+_UNSUPPORTED_TYPES = {"wipe", "zoom"}
 
 
 @dataclass
@@ -148,15 +174,124 @@ def _filter_complex(clips: list[RenderClip], settings: RenderSettings) -> str:
     return ";".join(parts)
 
 
+def xfade_name(transition_type: str) -> str | None:
+    return _XFADE_BY_TYPE.get(transition_type)
+
+
+def build_transition_graph(
+    clips: list[RenderClip],
+    transitions: list[BetweenSpec] | list[EdgeSpec],
+    settings: RenderSettings = RenderSettings(),
+) -> tuple[str, float]:
+    """Return (filter_complex, total_duration) for a clip fold with transitions.
+
+    Pure — no ffmpeg. Between transitions overlap adjacent clips via xfade;
+    edge transitions wrap the first/last streams with a fade filter; 'match'
+    and absent transitions are plain cuts (no duration cost). Wipe/zoom are
+    template-only and rejected here by design.
+    """
+    between = [t for t in transitions if isinstance(t, BetweenSpec)]
+    edges = [t for t in transitions if isinstance(t, EdgeSpec)]
+    count = len(clips)
+
+    def _invalid(message: str) -> ApiError:
+        return ApiError(422, "TRANSITION_INVALID", message)
+
+    for t in between:
+        if not (0 <= t.first < count and 0 <= t.second < count):
+            raise _invalid(
+                f"between transition references clip index ({t.first}, {t.second}) out of range"
+            )
+        if t.second != t.first + 1:
+            raise _invalid("between transition must reference consecutive clips")
+        if not (MIN_TRANSITION_DURATION <= t.duration <= MAX_TRANSITION_DURATION):
+            raise _invalid("transition duration must be between 0.1s and 2s")
+        if t.duration > min(clips[t.first].duration, clips[t.second].duration):
+            raise _invalid("transition duration exceeds the shorter clip")
+        if t.type in _UNSUPPORTED_TYPES:
+            raise ApiError(
+                422,
+                "TRANSITION_UNSUPPORTED",
+                f"{t.type} transitions are template-only and not supported by the renderer yet.",
+            )
+        if t.type not in _XFADE_BY_TYPE:
+            raise _invalid(f"unknown transition type: {t.type}")
+
+    for e in edges:
+        if not (0 <= e.index < count and ((e.at == "start" and e.index == 0) or (e.at == "end" and e.index == count - 1))):
+            raise _invalid(f"edge transition must anchor to the first/last clip (index 0 or {count - 1})")
+        if not (MIN_TRANSITION_DURATION <= e.duration <= MAX_TRANSITION_DURATION):
+            raise _invalid("transition duration must be between 0.1s and 2s")
+        if e.duration > clips[e.index].duration:
+            raise _invalid("edge transition duration exceeds its clip")
+
+    if not edges and not any(xfade_name(t.type) for t in between):
+        return (
+            _filter_complex(clips, settings),
+            sum(clip.duration for clip in clips),
+        )
+
+    parts = []
+    for i, clip in enumerate(clips):
+        parts.append(
+            f"[{i}:v]fps={settings.fps},"
+            f"scale={settings.width}:{settings.height}:"
+            f"force_original_aspect_ratio=decrease,"
+            f"pad={settings.width}:{settings.height}:(ow-iw)/2:(oh-ih)/2,"
+            f"setsar=1,"
+            f"trim=duration={clip.duration},"
+            f"setpts=PTS-STARTPTS[v{i}]"
+        )
+
+    edge_at = {e.index: e for e in edges}
+    for e in edges:
+        if e.at == "start":
+            wrap = f"[v{e.index}]fade=t=in:st=0:d={e.duration}"
+        else:
+            st = clips[e.index].duration - e.duration
+            wrap = f"[v{e.index}]fade=t=out:st={st:.6g}:d={e.duration}"
+        parts.append(f"{wrap}[v{e.index}e]")
+
+    pair_map: dict[tuple[int, int], BetweenSpec] = {
+        (t.first, t.second): t for t in between
+    }
+
+    def stream_label(index: int) -> str:
+        return f"[v{index}e]" if index in edge_at else f"[v{index}]"
+
+    prev_label = stream_label(0)
+    total = clips[0].duration
+    for k in range(1, count):
+        t = pair_map.get((k - 1, k))
+        xfade = xfade_name(t.type) if t else None
+        next_in = stream_label(k)
+        if xfade:
+            offset = total - t.duration
+            parts.append(
+                f"{prev_label}{next_in}xfade=transition={xfade}:duration={t.duration}:offset={offset:.6g}[x{k}]"
+            )
+            prev_label = f"[x{k}]"
+            total += clips[k].duration - t.duration
+        else:
+            parts.append(f"{prev_label}{next_in}concat=n=2:v=1:a=0[tmp{k}]")
+            prev_label = f"[tmp{k}]"
+            total += clips[k].duration
+
+    parts.append(f"{prev_label}null[vout]")
+    return ";".join(parts), total
+
+
 def render(
     config: Config,
     files: list[Path],
     clips: list[RenderClip],
     settings: RenderSettings,
+    transitions: list = (),
 ) -> RenderResult:
     if not clips:
         raise ApiError(422, "NO_CLIPS", "Render requires at least one clip")
 
+    filter_complex, expected_duration = build_transition_graph(clips, list(transitions), settings)
     ffmpeg = check_binary(config, "ffmpeg")
     job_id = uuid.uuid4().hex
     config.renders_dir.mkdir(parents=True, exist_ok=True)
@@ -172,7 +307,6 @@ def render(
         else:
             cmd += ["-ss", str(clip.start), "-i", str(inp), "-t", str(clip.duration)]
 
-    filter_complex = _filter_complex(clips, settings)
     cmd += [
         "-filter_complex", filter_complex,
         "-map", "[vout]",
@@ -194,7 +328,7 @@ def render(
     return RenderResult(
         jobId=job_id,
         outputPath=str(out_path),
-        duration=probe_result.duration or settings.fps * sum(c.duration for c in clips) / settings.fps,
+        duration=probe_result.duration or expected_duration,
         width=settings.width,
         height=settings.height,
         fps=settings.fps,

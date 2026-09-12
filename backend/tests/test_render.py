@@ -122,3 +122,74 @@ def test_render_invalid_duration_is_422(client, tmp_path):
     )
     assert resp.status_code == 422
     assert resp.json()["error"]["code"] == "INVALID_DURATION"
+
+def render_multipart_with_transitions(client, tmp_path, clips, settings, transitions, file_pairs):
+    data = {"clips": json.dumps(clips), "settings": json.dumps(settings)}
+    if transitions is not None:
+        data["transitions"] = json.dumps(transitions)
+    return client.post(
+        "/api/render",
+        data=data,
+        files=[("files", (name, data2, mime)) for name, data2, mime in file_pairs],
+    )
+
+
+def test_render_dissolve_via_http(client, tmp_path):
+    a = make_image(tmp_path, "a.png")
+    b = make_image(tmp_path, "b.png")
+    resp = render_multipart_with_transitions(
+        client,
+        tmp_path,
+        clips=[{"fileName": "a.png", "duration": 2.0}, {"fileName": "b.png", "duration": 2.0}],
+        settings={"width": 64, "height": 48, "fps": 10},
+        transitions=[
+            {"kind": "between", "first": 0, "second": 1, "type": "dissolve", "duration": 0.5}
+        ],
+        file_pairs=[("a.png", a.read_bytes(), "image/png"), ("b.png", b.read_bytes(), "image/png")],
+    )
+    assert resp.status_code == 201
+    assert resp.json()["duration"] == pytest.approx(3.5, abs=0.2)
+
+
+def test_render_wipe_via_http_is_unsupported(client, tmp_path):
+    a = make_image(tmp_path, "a.png")
+    b = make_image(tmp_path, "b.png")
+    resp = render_multipart_with_transitions(
+        client,
+        tmp_path,
+        clips=[{"fileName": "a.png", "duration": 2.0}, {"fileName": "b.png", "duration": 2.0}],
+        settings={"width": 64, "height": 48, "fps": 10},
+        transitions=[{"kind": "between", "first": 0, "second": 1, "type": "wipe", "duration": 0.5}],
+        file_pairs=[("a.png", a.read_bytes(), "image/png"), ("b.png", b.read_bytes(), "image/png")],
+    )
+    assert resp.status_code == 422
+    assert resp.json()["error"]["code"] == "TRANSITION_UNSUPPORTED"
+
+
+def test_render_bad_transition_index_via_http_is_422(client, tmp_path):
+    a = make_image(tmp_path, "a.png")
+    b = make_image(tmp_path, "b.png")
+    resp = render_multipart_with_transitions(
+        client,
+        tmp_path,
+        clips=[{"fileName": "a.png", "duration": 2.0}, {"fileName": "b.png", "duration": 2.0}],
+        settings={"width": 64, "height": 48, "fps": 10},
+        transitions=[{"kind": "between", "first": 0, "second": 2, "type": "dissolve", "duration": 0.5}],
+        file_pairs=[("a.png", a.read_bytes(), "image/png"), ("b.png", b.read_bytes(), "image/png")],
+    )
+    assert resp.status_code == 422
+    assert resp.json()["error"]["code"] == "TRANSITION_INVALID"
+
+
+def test_render_malformed_transitions_body_is_422(client, tmp_path):
+    a = make_image(tmp_path, "a.png")
+    resp = render_multipart_with_transitions(
+        client,
+        tmp_path,
+        clips=[{"fileName": "a.png", "duration": 2.0}],
+        settings={"width": 64, "height": 48, "fps": 10},
+        transitions=[{"kind": "nope"}],
+        file_pairs=[("a.png", a.read_bytes(), "image/png")],
+    )
+    assert resp.status_code == 422
+    assert resp.json()["error"]["code"] == "INVALID_BODY"
