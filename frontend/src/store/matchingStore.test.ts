@@ -61,7 +61,7 @@ describe('useMatchingStore.match', () => {
       start: 2,
       duration: 3,
     })
-    expect(useMatchingStore.getState().status).toEqual({ phase: 'success', count: 2 })
+    expect(useMatchingStore.getState().status).toEqual({ phase: 'success', count: 2, kept: 0 })
   })
 
   it('undoes the whole auto-match as a single step', async () => {
@@ -115,5 +115,70 @@ describe('useMatchingStore.match', () => {
     if (status.phase === 'error') {
       expect(status.error).toMatch(/no image files/i)
     }
+  })
+
+  it('preserves a trimmed clip timing across a re-match', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse(matchResponse())))
+    await useMatchingStore.getState().match(['a', 'b'], beats)
+    const clip = useEditorStore.getState().clips.find((c) => c.beatId === 'b0')!
+    useEditorStore.getState().trimClip(clip.id, { duration: 1 })
+
+    await useMatchingStore.getState().match(['a', 'b'], beats)
+
+    const kept = useEditorStore.getState().clips.find((c) => c.beatId === 'b0')!
+    expect(kept.start).toBeCloseTo(0)
+    expect(kept.duration).toBeCloseTo(1)
+    expect(useMatchingStore.getState().status).toEqual({ phase: 'success', count: 2, kept: 1 })
+  })
+
+  it('preserves a moved clip start across a re-match', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse(matchResponse())))
+    await useMatchingStore.getState().match(['a', 'b'], beats)
+    const clip = useEditorStore.getState().clips.find((c) => c.beatId === 'b0')!
+    useEditorStore.getState().moveClip(clip.id, 4)
+
+    await useMatchingStore.getState().match(['a', 'b'], beats)
+
+    const kept = useEditorStore.getState().clips.find((c) => c.beatId === 'b0')!
+    expect(kept.start).toBeCloseTo(4)
+    expect(kept.duration).toBeCloseTo(2)
+    expect(useMatchingStore.getState().status).toEqual({ phase: 'success', count: 2, kept: 1 })
+  })
+
+  it('refits untouched clips to the new response timings', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse(matchResponse())))
+    await useMatchingStore.getState().match(['a', 'b'], beats)
+
+    const beats2: Beat[] = [
+      { id: 'b0', text: 'sunset', start: 0, end: 3 },
+      { id: 'b1', text: 'forest', start: 3, end: 6 },
+    ]
+    const response2 = {
+      beats: [
+        { beatId: 'b0', imageKey: 'a', confidence: 0.6, start: 0, end: 3, alternatives: [] },
+        { beatId: 'b1', imageKey: 'b', confidence: 0.4, start: 3, end: 6, alternatives: [] },
+      ],
+    }
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse(response2)))
+    await useMatchingStore.getState().match(['a', 'b'], beats2)
+
+    const refitted = useEditorStore.getState().clips.find((c) => c.beatId === 'b0')!
+    expect(refitted.start).toBeCloseTo(0)
+    expect(refitted.duration).toBeCloseTo(3)
+    expect(useMatchingStore.getState().status).toEqual({ phase: 'success', count: 2, kept: 0 })
+  })
+
+  it('revert of a re-match undo restores the exact pre-rerun timeline', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse(matchResponse())))
+    await useMatchingStore.getState().match(['a', 'b'], beats)
+    const clip = useEditorStore.getState().clips.find((c) => c.beatId === 'b0')!
+    useEditorStore.getState().trimClip(clip.id, { duration: 1 })
+
+    await useMatchingStore.getState().match(['a', 'b'], beats)
+    useEditorStore.getState().undo()
+
+    const clips = useEditorStore.getState().clips
+    expect(clips).toHaveLength(2)
+    expect(clips.find((c) => c.beatId === 'b0')).toMatchObject({ start: 0, duration: 1 })
   })
 })

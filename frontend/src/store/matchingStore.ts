@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import type { Beat } from '../editor/beats'
+import { hasTimingOverride, pacedEnd } from '../editor/timing'
 import { matchImages, MatchError, type MatchBeatResult } from '../services/match'
 import { getAssetFile } from '../media/importer'
 import { useEditorStore, type MatchClipInput } from './editorStore'
@@ -7,14 +8,14 @@ import { useEditorStore, type MatchClipInput } from './editorStore'
 export type MatchStatus =
   | { phase: 'idle' }
   | { phase: 'analyzing' }
-  | { phase: 'success'; count: number }
+  | { phase: 'success'; count: number; kept: number }
   | { phase: 'error'; error: string }
 
 interface MatchingStore {
   status: MatchStatus
   lastMatchClipIds: string[]
   results: MatchBeatResult[]
-  match(assetIds: string[], beats: Beat[]): Promise<void>
+  match(assetIds: string[], beats: Beat[], opts?: { horizon?: number }): Promise<void>
   clear(): void
 }
 
@@ -26,6 +27,8 @@ function inputsFrom(
   response: Awaited<ReturnType<typeof matchImages>>,
   track: string,
   assetIds: string[],
+  overrides: ReadonlyMap<string, { start: number; duration: number }>,
+  horizon?: number,
 ): MatchClipInput[] {
   const files = new Map(
     assetIds.flatMap((assetId) => {
@@ -33,15 +36,27 @@ function inputsFrom(
       return file ? [[assetId, file.name] as const] : []
     }),
   )
+  const regionEnd = response.beats.reduce((max, result) => Math.max(max, result.end), 0)
   return response.beats.flatMap((result) => {
     if (!files.has(result.imageKey)) return []
+    const override = overrides.get(result.beatId)
+    const start = override ? override.start : result.start
+    const end = override
+      ? start + override.duration
+      : pacedEnd(
+          { start: result.start, end: result.end },
+          {
+            isFinal: result.end >= regionEnd - 1e-9,
+            horizon: horizon ?? result.end,
+          },
+        )
     return [
       {
         trackId: track,
         assetId: result.imageKey,
         name: files.get(result.imageKey) ?? result.imageKey,
-        start: result.start,
-        end: result.end,
+        start,
+        end,
         confidence: result.confidence,
         beatId: result.beatId,
       },
@@ -53,7 +68,7 @@ export const useMatchingStore = create<MatchingStore>()((set, get) => ({
   status: { phase: 'idle' },
   lastMatchClipIds: [],
   results: [],
-  match: async (assetIds, beats) => {
+  match: async (assetIds, beats, opts) => {
     if (get().status.phase === 'analyzing') return
     const track = imageTrackId()
     if (!track) {
@@ -72,20 +87,35 @@ export const useMatchingStore = create<MatchingStore>()((set, get) => ({
     set({ status: { phase: 'analyzing' } })
     try {
       const response = await matchImages({ beats, images })
-      const inputs = inputsFrom(response, track, assetIds)
+
+      const previous = get().results
+      const priorIds = get().lastMatchClipIds
+      const store = useEditorStore.getState()
+      const overrides = new Map<string, { start: number; duration: number }>()
+      for (const clipId of priorIds) {
+        const clip = store.clips.find((c) => c.id === clipId)
+        if (!clip?.beatId) continue
+        const recorded = previous.find((r) => r.beatId === clip.beatId)
+        if (!recorded) continue
+        if (hasTimingOverride(clip, recorded)) {
+          overrides.set(clip.beatId, { start: clip.start, duration: clip.duration })
+        }
+      }
+
+      const inputs = inputsFrom(response, track, assetIds, overrides, opts?.horizon)
       if (inputs.length === 0) {
         throw new MatchError('The sidecar returned images not present in this session.')
       }
 
-      const store = useEditorStore.getState()
-      store.applyMatch(inputs, get().lastMatchClipIds)
+      store.applyMatch(inputs, priorIds)
+      const kept = inputs.filter((input) => input.beatId !== undefined && overrides.has(input.beatId)).length
       const running = new Set(inputs.map((input) => input.beatId))
       const nextIds = useEditorStore
         .getState()
         .clips.filter((clip) => clip.beatId !== undefined && running.has(clip.beatId))
         .map((clip) => clip.id)
       set({
-        status: { phase: 'success', count: inputs.length },
+        status: { phase: 'success', count: inputs.length, kept },
         lastMatchClipIds: nextIds,
         results: response.beats,
       })
