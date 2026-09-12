@@ -3,6 +3,7 @@ import { projectDuration } from '../editor/ops'
 import TranscriptPanel from './TranscriptPanel'
 import MatchPanel from './MatchPanel'
 import TransitionsPanel from './TransitionsPanel'
+import MotionPanel from './MotionPanel'
 
 export default function InspectorPanel() {
   const clips = useEditorStore((s) => s.clips)
@@ -31,6 +32,7 @@ export default function InspectorPanel() {
             <span className="label">Track</span>
             <span className="value">{selectedClip.trackId}</span>
           </div>
+          <MotionPanel clip={selectedClip} />
         </div>
       ) : (
         <p className="empty">Select a clip to inspect.</p>

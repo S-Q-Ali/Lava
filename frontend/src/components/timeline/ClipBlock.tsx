@@ -104,6 +104,11 @@ export default function ClipBlock({
       title={`${clip.name} · ${clip.start.toFixed(2)}s → ${(clip.start + clip.duration).toFixed(2)}s`}
     >
       <span className="clip-title">{clip.name}</span>
+      {clip.motion && (
+        <span className="clip-motion" title={`Motion: ${clip.motion.type}`}>
+          {clip.motion.type}
+        </span>
+      )}
       {selected && (
         <>
           <div

@@ -671,6 +671,27 @@
   max-width: calc(100% - 8px);
 }
 
+.clip-motion {
+  position: absolute;
+  right: 4px;
+  top: 2px;
+  font-size: 9px;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.motion-panel {
+  margin-top: 12px;
+}
+
+.motion-panel .hint {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 0 0 8px;
+}
+
 .timeline-lane[data-track='video'] .clip-block {
   border-color: var(--track-video);
 }
