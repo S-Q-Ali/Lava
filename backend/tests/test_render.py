@@ -193,3 +193,90 @@ def test_render_malformed_transitions_body_is_422(client, tmp_path):
     )
     assert resp.status_code == 422
     assert resp.json()["error"]["code"] == "INVALID_BODY"
+
+
+def render_multipart_motion(client, tmp_path, clips, settings, transitions, file_pairs):
+    data = {
+        "clips": json.dumps(clips),
+        "settings": json.dumps(settings),
+    }
+    if transitions is not None:
+        data["transitions"] = json.dumps(transitions)
+    return client.post(
+        "/api/render",
+        data=data,
+        files=[("files", (name, data_f, mime)) for name, data_f, mime in file_pairs],
+    )
+
+
+def test_render_motion_via_http(client, tmp_path):
+    a = make_image(tmp_path, "a.png")
+    data = a.read_bytes()
+    clips = [
+        {"fileName": "a.png", "start": 0, "duration": 2.0, "motion": {"type": "zoom-in", "strength": 1.0}}
+    ]
+    resp = render_multipart_motion(
+        client, tmp_path, clips, {"width": 32, "height": 24, "fps": 10}, None,
+        [("a.png", data, "image/png")],
+    )
+    assert resp.status_code == 201
+    body = resp.json()
+    assert body["duration"] == pytest.approx(2.0, abs=0.15)
+
+
+def test_render_motion_with_transition_via_http(client, tmp_path):
+    a = make_image(tmp_path, "a.png")
+    b = make_image(tmp_path, "b.png")
+    da, db = a.read_bytes(), b.read_bytes()
+    clips = [
+        {"fileName": "a.png", "start": 0, "duration": 2.0, "motion": {"type": "pan-right", "strength": 1.0}},
+        {"fileName": "b.png", "start": 2.0, "duration": 2.0},
+    ]
+    transitions = [{"kind": "between", "first": 0, "second": 1, "type": "dissolve", "duration": 0.5}]
+    resp = render_multipart_motion(
+        client, tmp_path, clips, {"width": 32, "height": 24, "fps": 10}, transitions,
+        [("a.png", da, "image/png"), ("b.png", db, "image/png")],
+    )
+    assert resp.status_code == 201
+    assert resp.json()["duration"] == pytest.approx(3.5, abs=0.2)
+
+
+def test_render_motion_unknown_type_via_http_is_422(client, tmp_path):
+    a = make_image(tmp_path, "a.png")
+    clips = [
+        {"fileName": "a.png", "start": 0, "duration": 2.0, "motion": {"type": "spiral", "strength": 0.5}}
+    ]
+    resp = render_multipart_motion(
+        client, tmp_path, clips, {"width": 32, "height": 24, "fps": 10}, None,
+        [("a.png", a.read_bytes(), "image/png")],
+    )
+    assert resp.status_code == 422
+    assert resp.json()["error"]["code"] == "MOTION_INVALID"
+
+
+def test_render_motion_strength_out_of_range_via_http_is_422(client, tmp_path):
+    a = make_image(tmp_path, "a.png")
+    clips = [
+        {"fileName": "a.png", "start": 0, "duration": 2.0, "motion": {"type": "zoom-in", "strength": 1.5}}
+    ]
+    resp = render_multipart_motion(
+        client, tmp_path, clips, {"width": 32, "height": 24, "fps": 10}, None,
+        [("a.png", a.read_bytes(), "image/png")],
+    )
+    assert resp.status_code == 422
+    assert resp.json()["error"]["code"] == "MOTION_INVALID"
+
+
+def test_render_motion_on_video_clip_is_422(client, tmp_path):
+    a = make_image(tmp_path, "a.png")
+    b = make_image(tmp_path, "b.png")
+    clips = [
+        {"fileName": "a.png", "start": 0, "duration": 2.0},
+        {"fileName": "b.mov", "start": 2.0, "duration": 2.0, "motion": {"type": "zoom-in", "strength": 0.5}},
+    ]
+    resp = render_multipart_motion(
+        client, tmp_path, clips, {"width": 32, "height": 24, "fps": 10}, None,
+        [("a.png", a.read_bytes(), "image/png"), ("b.mov", b.read_bytes(), "video/quicktime")],
+    )
+    assert resp.status_code == 422
+    assert resp.json()["error"]["code"] == "MOTION_INVALID"

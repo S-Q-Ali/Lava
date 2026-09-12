@@ -17,6 +17,7 @@ class RenderClip:
     file_index: int
     start: float
     duration: float
+    motion: MotionSpec | None = None
 
 
 @dataclass(frozen=True)
@@ -32,6 +33,12 @@ class EdgeSpec:
     at: str
     index: int
     duration: float
+
+
+@dataclass(frozen=True)
+class MotionSpec:
+    type: str
+    strength: float
 
 
 @dataclass
@@ -64,6 +71,51 @@ _XFADE_BY_TYPE = {
 }
 
 _UNSUPPORTED_TYPES = {"wipe", "zoom"}
+
+_MOTION_TYPES = {"pan-right", "pan-left", "pan-up", "pan-down", "zoom-in", "zoom-out"}
+
+
+def _validate_motion(motion: MotionSpec) -> None:
+    if motion.type not in _MOTION_TYPES:
+        raise ApiError(422, "MOTION_INVALID", f"unknown motion type: {motion.type}")
+    if not (0.0 <= motion.strength <= 1.0):
+        raise ApiError(422, "MOTION_INVALID", "motion strength must be between 0 and 1")
+
+
+def _motion_filters(motion: MotionSpec, settings: RenderSettings, duration: float) -> list[str]:
+    """Zoom/pan FX via zoompan (per-frame z/x/y), scaled for source headroom."""
+    _validate_motion(motion)
+    if motion.strength <= 0.0:
+        return []
+    F = 1 + 0.15 * motion.strength
+    W, H = settings.width, settings.height
+    N = max(2, int(round(duration * settings.fps)))
+    span = f"on/{N - 1:g}"
+    upscale = "scale=iw*3:ih*3:flags=bicubic"
+    slide_x = f"(iw-iw/{F:g})"
+    slide_y = f"(ih-ih/{F:g})"
+    center_x = f"{slide_x}/2"
+    center_y = f"{slide_y}/2"
+    if motion.type == "pan-right":
+        zoom = f"z='{F:g}'"
+        x, y = f"{slide_x}*{span}", center_y
+    elif motion.type == "pan-left":
+        zoom = f"z='{F:g}'"
+        x, y = f"{slide_x}*(1-{span})", center_y
+    elif motion.type == "pan-down":
+        zoom = f"z='{F:g}'"
+        x, y = center_x, f"{slide_y}*{span}"
+    elif motion.type == "pan-up":
+        zoom = f"z='{F:g}'"
+        x, y = center_x, f"{slide_y}*(1-{span})"
+    elif motion.type == "zoom-in":
+        zoom = f"z='{F:g}-({F:g}-1)*{span}'"
+        x, y = center_x, center_y
+    else:  # zoom-out
+        zoom = f"z='1+({F:g}-1)*{span}'"
+        x, y = center_x, center_y
+    pan = f"zoompan=d=1:s={W}x{H}:fps={settings.fps}:{zoom}:x='{x}':y='{y}'"
+    return [upscale, pan]
 
 
 @dataclass
@@ -154,20 +206,25 @@ def probe(config: Config, path: str) -> ProbeResult:
 # --- Render ---
 
 
+def _prep_chain(clip: RenderClip, index: int, settings: RenderSettings) -> str:
+    parts = [
+        f"[{index}:v]fps={settings.fps}",
+        f"scale={settings.width}:{settings.height}:"
+        f"force_original_aspect_ratio=decrease",
+        f"pad={settings.width}:{settings.height}:(ow-iw)/2:(oh-ih)/2",
+    ]
+    if clip.motion is not None:
+        parts.extend(_motion_filters(clip.motion, settings, clip.duration))
+    parts.extend([
+        "setsar=1",
+        f"trim=duration={clip.duration}",
+        "setpts=PTS-STARTPTS",
+    ])
+    return ",".join(parts) + f"[v{index}]"
+
+
 def _filter_complex(clips: list[RenderClip], settings: RenderSettings) -> str:
-    parts: list[str] = []
-    for i, clip in enumerate(clips):
-        # fps+scale+pad+trim+setpts for both image and video inputs
-        # For video inputs the -ss/-t before -i already trims; setpts normalises pts.
-        parts.append(
-            f"[{i}:v]fps={settings.fps},"
-            f"scale={settings.width}:{settings.height}:"
-            f"force_original_aspect_ratio=decrease,"
-            f"pad={settings.width}:{settings.height}:(ow-iw)/2:(oh-ih)/2,"
-            f"setsar=1,"
-            f"trim=duration={clip.duration},"
-            f"setpts=PTS-STARTPTS[v{i}]"
-        )
+    parts = [_prep_chain(clip, i, settings) for i, clip in enumerate(clips)]
     concat = "".join(f"[v{i}]" for i in range(len(clips)))
     concat += f"concat=n={len(clips)}:v=1:a=0[vout]"
     parts.append(concat)
@@ -231,17 +288,7 @@ def build_transition_graph(
             sum(clip.duration for clip in clips),
         )
 
-    parts = []
-    for i, clip in enumerate(clips):
-        parts.append(
-            f"[{i}:v]fps={settings.fps},"
-            f"scale={settings.width}:{settings.height}:"
-            f"force_original_aspect_ratio=decrease,"
-            f"pad={settings.width}:{settings.height}:(ow-iw)/2:(oh-ih)/2,"
-            f"setsar=1,"
-            f"trim=duration={clip.duration},"
-            f"setpts=PTS-STARTPTS[v{i}]"
-        )
+    parts = [_prep_chain(clip, i, settings) for i, clip in enumerate(clips)]
 
     edge_at = {e.index: e for e in edges}
     for e in edges:

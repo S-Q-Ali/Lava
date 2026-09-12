@@ -17,7 +17,16 @@ from .clip import ClipEmbedder, MultilingualClipEmbedder
 from .config import get_config, tool_versions
 from .errors import ApiError, error_response
 from .matching import Matcher, router as matching_router
-from .media import BetweenSpec, EdgeSpec, RenderClip, RenderSettings, probe, render
+from .media import (
+    IMAGE_SUFFIXES,
+    BetweenSpec,
+    EdgeSpec,
+    MotionSpec,
+    RenderClip,
+    RenderSettings,
+    probe,
+    render,
+)
 from .transcribe import router as transcribe_router
 from .transcribers import WhisperTranscriber
 
@@ -95,6 +104,12 @@ class ClipMetadata(BaseModel):
     fileName: str
     start: float = 0.0
     duration: float
+    motion: MotionModel | None = None
+
+
+class MotionModel(BaseModel):
+    type: str
+    strength: float
 
 
 class RenderSettingsModel(BaseModel):
@@ -159,6 +174,8 @@ async def render_endpoint(
             raise ApiError(422, "INVALID_DURATION", "clip duration must be positive")
         if not SAFE_FILENAME.match(clip.fileName) or clip.fileName.startswith("."):
             raise ApiError(422, "INVALID_FILENAME", f"invalid clip file name: {clip.fileName}")
+        if clip.motion is not None and Path(clip.fileName).suffix.lower() not in IMAGE_SUFFIXES:
+            raise ApiError(422, "MOTION_INVALID", "motion is only supported on image clips")
 
     config = get_config()
     job_id = uuid.uuid4().hex
@@ -180,10 +197,18 @@ async def render_endpoint(
         raise ApiError(400, "CLIP_FILE_MISSING", f"no uploaded file for clip(s): {sorted(set(missing))}")
 
     try:
+        render_clips = []
+        for i, c in enumerate(clips_model):
+            motion = None
+            if c.motion is not None:
+                motion = MotionSpec(type=c.motion.type, strength=c.motion.strength)
+            render_clips.append(
+                RenderClip(file_index=i, start=c.start, duration=c.duration, motion=motion)
+            )
         result = render(
             config,
             paths,
-            [RenderClip(file_index=i, start=c.start, duration=c.duration) for i, c in enumerate(clips_model)],
+            render_clips,
             RenderSettings(
                 width=settings_model.width,
                 height=settings_model.height,
