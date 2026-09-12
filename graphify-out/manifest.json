@@ -30,9 +30,9 @@
     "semantic_hash": ""
   },
   "frontend/src/components/InspectorPanel.tsx": {
-    "mtime": 1789216878.0635662,
-    "seen": 1789217496.846806,
-    "ast_hash": "740c51e94e83cd3419f014a9b1d076c4",
+    "mtime": 1789218831.0935473,
+    "seen": 1789219026.0166159,
+    "ast_hash": "f367929d1ee4e1a5488af3e689332c95",
     "semantic_hash": ""
   },
   "frontend/src/components/MediaPanel.tsx": {
@@ -48,9 +48,9 @@
     "semantic_hash": ""
   },
   "frontend/src/components/timeline/ClipBlock.tsx": {
-    "mtime": 1789157764.123342,
-    "seen": 1789157864.226424,
-    "ast_hash": "d595a1437fe733126ffb8bf4b4be58f8",
+    "mtime": 1789218822.9430342,
+    "seen": 1789219026.016633,
+    "ast_hash": "94a97bf5254d02ae30eb39abdf929a8d",
     "semantic_hash": ""
   },
   "frontend/src/components/timeline/TimelinePanel.tsx": {
@@ -84,9 +84,9 @@
     "semantic_hash": ""
   },
   "frontend/src/editor/types.ts": {
-    "mtime": 1789214336.6019385,
-    "seen": 1789214622.672122,
-    "ast_hash": "549450e480481b29e3bce2d4cbc95e17",
+    "mtime": 1789218585.7512648,
+    "seen": 1789219026.016664,
+    "ast_hash": "02244f5cb8a974baa7f503c57d78ff9c",
     "semantic_hash": ""
   },
   "frontend/src/main.tsx": {
@@ -108,9 +108,9 @@
     "semantic_hash": ""
   },
   "frontend/src/store/editorStore.ts": {
-    "mtime": 1789216795.0823197,
-    "seen": 1789217496.8468611,
-    "ast_hash": "e9f5ecee916031a0400d709c532b6cb5",
+    "mtime": 1789218657.903311,
+    "seen": 1789219026.016682,
+    "ast_hash": "bc75ae5f5097ed0daea68151586fe90c",
     "semantic_hash": ""
   },
   "frontend/tsconfig.app.json": {
@@ -348,15 +348,15 @@
     "semantic_hash": ""
   },
   "docs/DECISIONS.md": {
-    "mtime": 1789217473.0707011,
-    "seen": 1789217496.8469381,
-    "ast_hash": "a0f2d92b737e2cbe9327838c565f49ec",
+    "mtime": 1789218978.5582156,
+    "seen": 1789219026.016762,
+    "ast_hash": "e5af17ab94037bb317cc8a20a0b94539",
     "semantic_hash": ""
   },
   "docs/FEATURES.md": {
-    "mtime": 1789217460.4349294,
-    "seen": 1789217496.8469388,
-    "ast_hash": "ada6063aef8f8c2825294984a0546daf",
+    "mtime": 1789218990.2812886,
+    "seen": 1789219026.016763,
+    "ast_hash": "620159230ebaf2d07bb6077c6cede9fb",
     "semantic_hash": ""
   },
   "docs/PRODUCT_SPEC.md": {
@@ -366,15 +366,15 @@
     "semantic_hash": ""
   },
   "docs/ROADMAP.md": {
-    "mtime": 1789217460.4345758,
-    "seen": 1789217496.846942,
-    "ast_hash": "57c24b476fd497ecce0538ce0dd5e751",
+    "mtime": 1789218982.6500301,
+    "seen": 1789219026.016767,
+    "ast_hash": "ed6878278e3f835db61861bb5434802b",
     "semantic_hash": ""
   },
   "docs/SESSION_LOG.md": {
-    "mtime": 1789217491.8750284,
-    "seen": 1789217496.846943,
-    "ast_hash": "f6f3bdf7b4355269048d2c377a81e588",
+    "mtime": 1789218964.623036,
+    "seen": 1789219026.016768,
+    "ast_hash": "a6a04450045c120b1624b359aa8ad1f3",
     "semantic_hash": ""
   },
   "docs/TEST_PLAN.md": {
@@ -384,9 +384,9 @@
     "semantic_hash": ""
   },
   "docs/UI_SPEC.md": {
-    "mtime": 1789155394.656945,
-    "seen": 1789155582.4086468,
-    "ast_hash": "7562d8c0416b1c68c480e341d5f7e903",
+    "mtime": 1789218996.8711116,
+    "seen": 1789219026.016789,
+    "ast_hash": "d3b1595f75c11318d501ac4486aa6941",
     "semantic_hash": ""
   },
   "frontend/README.md": {
@@ -432,15 +432,15 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/main.py": {
-    "mtime": 1789215203.828154,
-    "seen": 1789215321.320482,
-    "ast_hash": "684334ebf812853a0dc72d4ab0648b5a",
+    "mtime": 1789218535.8724713,
+    "seen": 1789219026.016567,
+    "ast_hash": "93755ba5e14e4ca5b6b8aa6d2e1fe1c9",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/media.py": {
-    "mtime": 1789215155.2952805,
-    "seen": 1789215321.3204858,
-    "ast_hash": "79420d2760af0e1c3d021b54c85baa2f",
+    "mtime": 1789218404.9512618,
+    "seen": 1789219026.016573,
+    "ast_hash": "99430b31971be7417af1e6cbb5d49b9c",
     "semantic_hash": ""
   },
   "backend/tests/conftest.py": {
@@ -462,9 +462,9 @@
     "semantic_hash": ""
   },
   "backend/tests/test_render.py": {
-    "mtime": 1789215213.0424335,
-    "seen": 1789215321.3205,
-    "ast_hash": "a4f5b602fd73b6088242de72d97fb9b6",
+    "mtime": 1789218520.4438496,
+    "seen": 1789219026.016598,
+    "ast_hash": "bb1a403577833ca0d5287cdc16c6540c",
     "semantic_hash": ""
   },
   "frontend/src/services/ffmpeg.test.ts": {
@@ -510,9 +510,9 @@
     "semantic_hash": ""
   },
   "tasks/todo.md": {
-    "mtime": 1789217491.9107735,
-    "seen": 1789217496.846975,
-    "ast_hash": "f8b659f7393520b6ced666649419f8bd",
+    "mtime": 1789219003.6443229,
+    "seen": 1789219026.016804,
+    "ast_hash": "33f1aae840ab68df75c9c99e82b61da3",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/transcribe.py": {
@@ -783,6 +783,42 @@
     "mtime": 1789216609.6635337,
     "seen": 1789217496.846972,
     "ast_hash": "e7c24abc700b018a2f0d3186a9512fa6",
+    "semantic_hash": ""
+  },
+  "backend/tests/test_image_motion.py": {
+    "mtime": 1789218432.221988,
+    "seen": 1789219026.0165918,
+    "ast_hash": "116ebd047e2fc00d45ff7be0f0ef07fc",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/MotionPanel.test.tsx": {
+    "mtime": 1789218873.1763225,
+    "seen": 1789219026.016622,
+    "ast_hash": "952714b6bc51459476811f15c2b5f723",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/MotionPanel.tsx": {
+    "mtime": 1789218775.5020409,
+    "seen": 1789219026.0166242,
+    "ast_hash": "9b0470fba7111ee9e90222f4b204dec2",
+    "semantic_hash": ""
+  },
+  "frontend/src/store/motion.test.ts": {
+    "mtime": 1789218687.023288,
+    "seen": 1789219026.0166872,
+    "ast_hash": "5c21006f9f5617a496098c7e5e414ac9",
+    "semantic_hash": ""
+  },
+  "docs/SPEC-image-motion.md": {
+    "mtime": 1789219003.6461513,
+    "seen": 1789219026.016772,
+    "ast_hash": "20c9bf666136c5e9df86685270b09fe9",
+    "semantic_hash": ""
+  },
+  "tasks/plan-im.md": {
+    "mtime": 1789219003.6452572,
+    "seen": 1789219026.016793,
+    "ast_hash": "99e001ac769e23cdb034d1b39ce8b425",
     "semantic_hash": ""
   }
 }

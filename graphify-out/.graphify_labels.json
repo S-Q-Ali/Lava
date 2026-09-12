@@ -63,7 +63,7 @@
   "61": "useEditorStore",
   "62": "App.tsx",
   "63": "Matcher",
-  "64": "transcriptStore.ts",
+  "64": "Task List",
   "65": "matchingStore.ts",
   "66": "Spec: Voice Analysis (M2 first slice)",
   "67": "AI Video Studio — Architecture",
@@ -93,12 +93,9 @@
   "91": "Spec: `transitions-render` — transitions in the FFmpeg render pipeline",
   "92": "Session 2026-09-12 — Session 10: M4 module 2 — transitions-render",
   "93": "Implementation Plan: `transitions-render` (M4 module 2)",
-  "94": "TransitionsPanel.tsx",
+  "94": "vitest",
   "95": "Spec: transitions-ui (M4 module 3)",
-  "96": "devDependencies",
-  "97": "TranscriptPanel.tsx",
-  "98": "Session 2026-09-12 — Session 11: M4 module 3 — transitions-ui",
-  "99": "voice.ts",
-  "100": "dependencies",
-  "101": "scripts"
+  "96": "Spec: image-motion (M4 module 4)",
+  "97": "test_probe.py",
+  "98": "Session 2026-09-12 — Session 11: M4 module 3 — transitions-ui"
 }
