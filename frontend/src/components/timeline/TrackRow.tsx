@@ -2,6 +2,7 @@ import type { Clip, Track } from '../../editor/types'
 import { useEditorStore } from '../../store/editorStore'
 import { PX_PER_SECOND } from './scale'
 import ClipBlock from './ClipBlock'
+import TransitionOverlay from './TransitionOverlay'
 
 export default function TrackRow({
   track,
@@ -35,6 +36,7 @@ export default function TrackRow({
           maxDuration={durationByAsset[clip.assetId]}
         />
       ))}
+      <TransitionOverlay clips={sorted} />
     </div>
   )
 }

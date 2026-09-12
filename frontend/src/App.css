@@ -636,6 +636,30 @@
   border-left-color: #fff;
 }
 
+.transition-chip {
+  position: absolute;
+  top: 20px;
+  height: 16px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--track-image), var(--accent));
+  color: #000;
+  border: 1px solid #fff;
+  font-size: 10px;
+  line-height: 14px;
+  text-align: center;
+  padding: 0 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.transition-chip.selected {
+  outline: 2px solid #fff;
+  box-shadow: 0 0 0 4px var(--accent);
+}
+
 .clip-title {
   position: absolute;
   left: 6px;
