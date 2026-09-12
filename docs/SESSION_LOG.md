@@ -355,3 +355,47 @@ changes no API, and images stay untouched since both towers share the OpenAI CLI
 ### Next step
 - Push this slice (spec+plan + this closing commit) on user go-ahead. Remaining radar: stable beat ids,
   whisper `base` tuning for Urdu ASR, in-browser feel-check of kept-note, M4 transitions.
+
+---
+
+## Session 2026-09-12 — Session 9: M4 module 1 — transitions-core
+
+### WHAT
+Started M4 via the spec-driven Phase 0 map (`docs/SPEC-m4-capability-map.md` — transitions-core →
+transitions-render → transitions-ui → image-motion, approved). Then wrote + approved the first module's
+spec (`docs/SPEC-transitions-core.md`). Shipped the model + heuristics + persistence: transitions are
+typed objects (between/edge, 5 types, duration 0.1–2s, source, reason, rationale) on an optional
+top-level `transitions` key (version still 1); a clean cut is the *absence* of a transition object.
+Deterministic suggestions: same-asset continuity → match cut; ≥ 0.5s gap between matched beats →
+dissolve; everything else stays cut; wipe/zoom never auto-suggested. Manual override/remove are pure ops.
+
+### HOW
+TDD per slice (4 commits): slice 1 model/constants/clamps (8 tests), slice 2 `evaluateTransitions`
+heuristics, slice 3 `validateTransitions`/override/remove, slice 4 `TimelineModel.transitions` +
+project round-trip + `isTransition` guard. One design fix mid-slice: validation edge logic was inverted
+(start-edge = no sibling starts before; end-edge = no sibling ends after). Discovered a latent fixture
+bug in existing tests (a test mutates the shared `model` via `serializeProject`'s reference), worked
+around it with fresh fixtures.
+
+### WHY
+PRODUCT_SPEC §Transitions: favor clean cuts, explainable + editable decisions. Cut-as-absence keeps the
+model honest; rationale strings make suggestions explainable in the UI module.
+
+### Decisions
+- D-016 — transitions as optional top-level list; cut = absence; default-clean heuristics; lock for M4.
+
+### Verify
+- Frontend: `npx vitest run` 118 passed (85 → 118), `npm run build` ok, oxlint 0/0. Backend untouched.
+- Commits: `7d88051` (capability map) · `0141a89` (spec+plan+todo) · `8a7ab40` (slices 1-2) ·
+  `0da2ad3` (slice 3) · `cae96cb` (slice 4) — this docs/graph commit closes.
+
+### Limitations
+- Heuristics are deliberately conservative — no dissolve/match on unlabeled sequences; image-motion and
+  renderer transitions are separate modules, not yet built.
+- Transition `rationale` strings are English only for now (UI module can localize later).
+- Mixing between+edge transitions on the same boundary isn't collision-checked yet (validation covers
+  duplicates and edge validity; cross-boundary checks are a `transitions-ui` concern).
+
+### Next step
+- Push on go-ahead; then `transitions-render` module (FFmpeg xfade/dissolve/fade with transition-aware
+  clip offsets) — needs a fresh spec review. `transitions-ui` and `image-motion` follow.

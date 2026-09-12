@@ -59,7 +59,7 @@
   "57": "lava-backend",
   "58": "Task list",
   "59": "detect_pauses",
-  "60": "types.ts",
+  "60": "importer.ts",
   "61": "useEditorStore",
   "62": "App.tsx",
   "63": "Matcher",
@@ -83,5 +83,10 @@
   "81": "Session 2026-09-12 — Session 7: M3 remainder — timing fit + manual timing override",
   "82": "Spec: Multilingual image matching (Urdu/Roman-Urdu quality pass)",
   "83": "Session 2026-09-12 — Session 8: M3 final pass — multilingual image matching (Urdu/Roman-Urdu)",
-  "84": "Implementation Plan: M3 final — multilingual image matching"
+  "84": "Implementation Plan: M3 final — multilingual image matching",
+  "85": "types.ts",
+  "86": "Spec: `transitions-core` — transition model, heuristics, persistence",
+  "87": "Implementation Plan: `transitions-core` (M4 module 1)",
+  "88": "Session 2026-09-12 — Session 9: M4 module 1 — transitions-core",
+  "89": "Capability Map: M4 — Transition / Animation Engine"
 }

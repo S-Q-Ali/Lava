@@ -53,7 +53,10 @@ This document is the definitive feature inventory. Nothing is complete until it 
 
 ## 4. Transitions / Animation
 
-- Clean cut as the default.
+- Clean cut as the default — a cut needs no model entry (no transition object = cut).
+- Transition model + persistence: typed `between`/`edge` transitions with duration, source (`auto`/`manual`), reason and explainable rationale; stored on the top-level `transitions` key, project version stays 1; legacy files load unchanged.
+- Explainable, deterministic suggestions (`evaluateTransitions`): same-asset continuity → match cut; ≥ 0.5s gap between matched narration beats → short dissolve; everything else stays cut; `wipe`/`zoom` are never auto-suggested (template-only).
+- Editable decisions: `overrideTransition` / `removeTransition` are pure ops; manual overrides flip `source` to `manual` and survive save/load and any future re-suggestions.
 - Contextual transitions driven by pacing, continuity and narrative/emotional intent.
 - Match/continuity cut, short dissolve, fade, wipe/graphic, zoom/whip/glitch where justified.
 - Image motion/ken-burns style animation.

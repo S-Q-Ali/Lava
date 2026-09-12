@@ -45,11 +45,14 @@ Definition of done for ANY milestone installments within it: implementation exis
 - [x] Mixed-language (Urdu/Roman-Urdu) matching quality pass (multilingual model)
 
 ## Milestone 4 — Transition/animation engine
-- Clean cuts
-- Contextual transitions
-- Image motion
-- Retention-oriented heuristics
-- Editable transition decisions
+- [x] Clean cuts — the default; no transition object in the model means cut (transitions-core)
+- [x] Transition model + persistence — typed between/edge transitions, top-level `transitions` key, version stays 1
+- [x] Contextual suggestion heuristics — continuity → match cut, matched-beat gap ≥ 0.5s → dissolve; everything else stays cut; never suggests wipe/zoom
+- [x] Editable transition decisions — manual override/remove are pure ops, persist, never overwritten
+- [ ] Transitions in the renderer (xfade/dissolve/fade) — `transitions-render` module
+- [ ] Transition timeline UI (chips, select/override/explain) — `transitions-ui` module
+- [ ] Image motion (ken-burns) — `image-motion` module
+- [ ] Retention-oriented heuristics (measurable only, no viral claims)
 
 ## Milestone 5 — Caption engine
 - Multilingual ASR
