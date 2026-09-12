@@ -168,3 +168,10 @@ export const useEditorStore = create<EditorState>()(
     },
   ),
 )
+export interface SaveProjectModel {
+  tracks: Track[]
+  assets: Asset[]
+  clips: Clip[]
+  playhead: number
+  selectedClipId: string | null
+}

@@ -1,4 +1,5 @@
 import { useEditorStore } from './store/editorStore'
+import { useShallow } from 'zustand/react/shallow'
 import MediaPanel from './components/MediaPanel'
 import PreviewPanel from './components/PreviewPanel'
 import InspectorPanel from './components/InspectorPanel'
@@ -36,13 +37,15 @@ function App() {
     }
   }
 
-  const model = useEditorStore((s) => ({
-    tracks: s.tracks,
-    assets: s.assets,
-    clips: s.clips,
-    playhead: s.playhead,
-    selectedClipId: s.selectedClipId,
-  }))
+  const model = useEditorStore(
+    useShallow((s) => ({
+      tracks: s.tracks,
+      assets: s.assets,
+      clips: s.clips,
+      playhead: s.playhead,
+      selectedClipId: s.selectedClipId,
+    })),
+  )
   const handleSave = () => saveProjectToFile(model)
 
   return (
