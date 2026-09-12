@@ -42,3 +42,13 @@ Checkpoints:
 - [ ] After Slice 4: undo-restore test + persistence round-trip green
 - [ ] After Slice 5: dev transform smoke; human browser pass documented
 - [ ] After Slice 6: full suites + docs + review + push
+## M4 transitions-core (active) — SPEC-m4-capability-map.md, SPEC-transitions-core.md, tasks/plan-tc.md
+- [ ] Slice 1: model + constants + clamps (`transitions.ts`)
+- [ ] Slice 2: heuristics `evaluateTransitions` (continuity→match, gap≥0.5→dissolve, default cut, no wipe/zoom)
+- [ ] Slice 3: `validateTransitions` + `overrideTransition`/`removeTransition` ops
+- [ ] Slice 4: `TimelineModel.transitions` + project round-trip (version 1)
+- [ ] Slice 5: docs (D-016, ROADMAP, FEATURES, SESSION_LOG 9) + graphify + regression + push (go-ahead)
+
+Checkpoints:
+- [ ] After Slice 4: frontend vitest + build + lint green
+- [ ] After Slice 5: full regression + docs + push
