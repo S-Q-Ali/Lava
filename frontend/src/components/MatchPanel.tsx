@@ -28,6 +28,8 @@ export default function MatchPanel() {
   const busy = status.phase === 'analyzing'
   const canRun = imageAssets.length > 0 && beats.length > 0
   const matchedClips = clips.filter((clip) => clip.beatId !== undefined)
+  const horizon =
+    typeof selectedAsset.meta.duration === 'number' ? selectedAsset.meta.duration : undefined
 
   let statusLine: string | null = null
   if (status.phase === 'error') statusLine = status.error
@@ -35,7 +37,12 @@ export default function MatchPanel() {
   else if (imageAssets.length === 0) statusLine = 'Re-import image files to run image matching.'
   else if (!canRun) statusLine = 'The narration has no beats to match yet.'
   else if (status.phase === 'success')
-    statusLine = `${status.count} beat${status.count === 1 ? '' : 's'} matched — undo anytime.`
+    statusLine =
+      `${status.count} beat${status.count === 1 ? '' : 's'} matched` +
+      (status.kept > 0
+        ? ` · ${status.kept} timing override${status.kept === 1 ? '' : 's'} kept`
+        : '') +
+      ' — undo anytime.'
 
   return (
     <section className="transcript-panel">
@@ -50,6 +57,7 @@ export default function MatchPanel() {
               void match(
                 imageAssets.map((asset) => asset.id),
                 beats,
+                { horizon },
               )
             }
           >
