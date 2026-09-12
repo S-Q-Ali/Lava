@@ -1,16 +1,16 @@
 # Graph Report - Lava  (2026-09-12)
 
 ## Corpus Check
-- 112 files · ~85,596 words
+- 114 files · ~87,803 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1299 nodes · 1842 edges · 82 communities (70 shown, 10 thin omitted)
-- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 21 edges (avg confidence: 0.95)
+- 1355 nodes · 1924 edges · 85 communities (73 shown, 10 thin omitted)
+- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 23 edges (avg confidence: 0.95)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `3e521737`
+- Built from commit: `d0ce01bd`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -77,7 +77,7 @@
 - useEditorStore
 - App.tsx
 - Matcher
-- importer.ts
+- TranscriptPanel.tsx
 - matchingStore.ts
 - Spec: Voice Analysis (M2 first slice)
 - AI Video Studio — Architecture
@@ -95,6 +95,9 @@
 - Spec: Timing fit + manual timing override (M3 remainder, slice-set B)
 - Implementation Plan: M3 remainder — timing fit + manual timing override
 - Session 2026-09-12 — Session 7: M3 remainder — timing fit + manual timing override
+- Spec: Multilingual image matching (Urdu/Roman-Urdu quality pass)
+- Session 2026-09-12 — Session 8: M3 final pass — multilingual image matching (Urdu/Roman-Urdu)
+- Implementation Plan: M3 final — multilingual image matching
 
 ## God Nodes (most connected - your core abstractions)
 1. `useEditorStore` - 35 edges
@@ -123,14 +126,14 @@
 ## Import Cycles
 - None detected.
 
-## Communities (82 total, 10 thin omitted)
+## Communities (85 total, 10 thin omitted)
 
 ### Community 0 - "package.json"
 Cohesion: 0.06
 Nodes (32): dependencies, react, react-dom, zundo, zustand, devDependencies, oxlint, @types/node (+24 more)
 
 ### Community 1 - "project.ts"
-Cohesion: 0.20
+Cohesion: 0.18
 Nodes (20): isAsset(), isClip(), isRecord(), isTrack(), isTranscript(), parseProjectJson(), parseProjectModel(), parseTranscripts() (+12 more)
 
 ### Community 2 - "localDirs"
@@ -158,8 +161,8 @@ Cohesion: 0.07
 Nodes (29): Browser Testing with DevTools, Common Rationalizations, DAMP Over DRY in Tests, Decision Guide, Discover the Stack First, Name Tests Descriptively, One Assertion Per Concept, Overview (+21 more)
 
 ### Community 8 - "ffmpeg.ts"
-Cohesion: 0.12
-Nodes (10): DEFAULT_BASE_URL, detectProvider(), FFmpegProvider, HttpFFmpegProvider, RenderInput, RenderResult, RenderSettings, resetFFmpegProvider() (+2 more)
+Cohesion: 0.11
+Nodes (11): DEFAULT_BASE_URL, detectProvider(), FFmpegProvider, HttpFFmpegProvider, RenderClipInput, RenderInput, RenderResult, RenderSettings (+3 more)
 
 ### Community 9 - "fetch-ffmpeg.mjs"
 Cohesion: 0.24
@@ -263,7 +266,7 @@ Nodes (8): Decisions, HOW, Limitations, Next step, Purpose (WHY), Session 2026-0
 
 ### Community 37 - "AI Video Studio — Decision Log"
 Cohesion: 0.12
-Nodes (16): AI Video Studio — Decision Log, D-001 — Web-first editor shell (Vite + React + TypeScript), D-002 — Zustand + Zundo for state and undo/redo, D-003 — Project-local FFmpeg binary, D-004 — FFmpeg provider abstraction, D-005 — Curated vendor skills; reference clones kept local, D-006 — Commit `graphify-out/`; code-only pass for now, D-007 — Written session log + decisions log for continuity (+8 more)
+Nodes (17): AI Video Studio — Decision Log, D-001 — Web-first editor shell (Vite + React + TypeScript), D-002 — Zustand + Zundo for state and undo/redo, D-003 — Project-local FFmpeg binary, D-004 — FFmpeg provider abstraction, D-005 — Curated vendor skills; reference clones kept local, D-006 — Commit `graphify-out/`; code-only pass for now, D-007 — Written session log + decisions log for continuity (+9 more)
 
 ### Community 38 - "Implementation Plan: M3 — Semantic image matching (first slice)"
 Cohesion: 0.14
@@ -322,28 +325,28 @@ Cohesion: 0.09
 Nodes (20): confidence_from_logprob(), detect_pauses(), Pause, Word, Request, UploadFile, serialize(), serialize_segment() (+12 more)
 
 ### Community 60 - "types.ts"
-Cohesion: 0.17
-Nodes (10): AssetKind, AssetMeta, DEFAULT_TRACKS, TRACK_TYPES, TrackType, Transcript, audioAsset, imageAsset (+2 more)
+Cohesion: 0.11
+Nodes (20): labelFor(), PAUSE_BEAT_THRESHOLD, wordsInPart(), AssetKind, AssetMeta, TRACK_TYPES, TrackType, TranscriptPause (+12 more)
 
 ### Community 61 - "useEditorStore"
-Cohesion: 0.24
+Cohesion: 0.23
 Nodes (3): ClipBlock(), EditorActions, useEditorStore
 
 ### Community 62 - "App.tsx"
-Cohesion: 0.23
-Nodes (11): App(), InspectorPanel(), formatTime(), PreviewPanel(), TimelinePanel(), clipsAtTime(), projectDuration(), getFFmpegProvider() (+3 more)
+Cohesion: 0.21
+Nodes (12): App(), InspectorPanel(), kindOf(), MediaPanel(), formatTime(), PreviewPanel(), TimelinePanel(), clipsAtTime() (+4 more)
 
 ### Community 63 - "Matcher"
 Cohesion: 0.12
 Nodes (18): softmax(), Beat, EmbedFailure, match(), Matcher, _parse_beats(), Exception, Request (+10 more)
 
-### Community 64 - "importer.ts"
-Cohesion: 0.26
-Nodes (9): kindOf(), MediaPanel(), Asset, assetFiles, importFiles(), kindOf(), readImageMeta(), readMediaMeta() (+1 more)
+### Community 64 - "TranscriptPanel.tsx"
+Cohesion: 0.17
+Nodes (14): attachPauses(), buildNodes(), confidenceLabel(), lowConfidence(), Node, TranscriptPanel(), parseTranscript(), transcribeAsset() (+6 more)
 
 ### Community 65 - "matchingStore.ts"
-Cohesion: 0.05
-Nodes (50): MatchPanel(), attachPauses(), buildNodes(), confidenceLabel(), lowConfidence(), Node, TranscriptPanel(), Beat (+42 more)
+Cohesion: 0.11
+Nodes (27): MatchPanel(), Beat, segmentBeats(), splitSegment(), hasTimingOverride(), MIN_AUTO_DURATION, pacedEnd(), TAIL_HOLD (+19 more)
 
 ### Community 66 - "Spec: Voice Analysis (M2 first slice)"
 Cohesion: 0.18
@@ -354,12 +357,12 @@ Cohesion: 0.20
 Nodes (10): 1. Repository Layout, 2. Design Principles, 3. Core Technology, 4. Voice-over → Images Processing Graph, 5. Manhwa / Webtoon Extraction Processing Graph, 6. Caption Processing Graph, 7. System Boundaries, 8. Design Decisions (WHY) (+2 more)
 
 ### Community 68 - "editorStore.ts"
-Cohesion: 0.26
-Nodes (10): DragMode, PX_PER_SECOND, TRACK_HEIGHT, TrackRow(), Clip, Track, EditorBase, EditorState (+2 more)
+Cohesion: 0.15
+Nodes (16): DragMode, PX_PER_SECOND, TRACK_HEIGHT, TrackRow(), Asset, Clip, DEFAULT_TRACKS, Track (+8 more)
 
 ### Community 69 - "test_clip.py"
-Cohesion: 0.09
-Nodes (31): ClipEmbedder, cosine_similarity(), l2_normalize(), _output_names(), _pick(), preprocess_image(), CLIP ViT-B/32 embeddings through a fused ONNX session (Xenova export). Model…, tokenize_text() (+23 more)
+Cohesion: 0.05
+Nodes (47): ClipEmbedder, cosine_similarity(), l2_normalize(), MultilingualClipEmbedder, _output_names(), _pick(), _pick_by_names(), preprocess_image() (+39 more)
 
 ### Community 70 - ".prettierrc.json"
 Cohesion: 0.40
@@ -405,24 +408,36 @@ Nodes (10): Checkpoints, Implementation Plan: M3 remainder — timing fit + manu
 Cohesion: 0.25
 Nodes (8): Decisions, HOW, Limitations, Next step, Purpose (WHY), Session 2026-09-12 — Session 7: M3 remainder — timing fit + manual timing override, Verify, WHAT
 
+### Community 82 - "Spec: Multilingual image matching (Urdu/Roman-Urdu quality pass)"
+Cohesion: 0.18
+Nodes (10): Behaviour / acceptance, Boundaries, Commands, Design, Key finding (validated on the downloaded model), Objective, Spec: Multilingual image matching (Urdu/Roman-Urdu quality pass), Structure (+2 more)
+
+### Community 83 - "Session 2026-09-12 — Session 8: M3 final pass — multilingual image matching (Urdu/Roman-Urdu)"
+Cohesion: 0.25
+Nodes (8): Decisions, HOW, Limitations, Next step, Session 2026-09-12 — Session 8: M3 final pass — multilingual image matching (Urdu/Roman-Urdu), Verify, WHAT, WHY
+
+### Community 84 - "Implementation Plan: M3 final — multilingual image matching"
+Cohesion: 0.25
+Nodes (7): Checkpoints, Implementation Plan: M3 final — multilingual image matching, Risks / mitigation, Slice 1 — multilingual core (backend, TDD), Slice 2 — wiring (auto-select), Slice 3 — real-model smoke (manual, non-committed), Slice 4 — docs, review, commit, push
+
 ## Knowledge Gaps
-- **730 isolated node(s):** `$schema`, `plugin`, `lava-backend`, `$schema`, `plugins` (+725 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 831 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **753 isolated node(s):** `$schema`, `plugin`, `lava-backend`, `$schema`, `plugins` (+748 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 869 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `AI Video Studio — Session Log` connect `AI Video Studio — Session Log` to `README.md`, `Session 2026-09-12 — Milestone 0 bootstrap + Milestone 1 media foundation`, `Session 2026-09-12 — Session 2: continuity system + commit discipline`, `Session 2026-09-12 — Session 3: media sidecar (real rendering)`, `Session 2026-09-12 — Session 4: M1 completion (save/load + clip editing)`, `Session 2026-09-12 — Session 5: M2 voice analysis (first slice)`, `Session 2026-09-12 — Session 6: M3 semantic image matching (first slice)`, `Session 2026-09-12 — Session 7: M3 remainder — timing fit + manual timing override`?**
+- **Why does `AI Video Studio — Session Log` connect `AI Video Studio — Session Log` to `README.md`, `Session 2026-09-12 — Milestone 0 bootstrap + Milestone 1 media foundation`, `Session 2026-09-12 — Session 2: continuity system + commit discipline`, `Session 2026-09-12 — Session 3: media sidecar (real rendering)`, `Session 2026-09-12 — Session 4: M1 completion (save/load + clip editing)`, `Session 2026-09-12 — Session 5: M2 voice analysis (first slice)`, `Session 2026-09-12 — Session 6: M3 semantic image matching (first slice)`, `Session 2026-09-12 — Session 7: M3 remainder — timing fit + manual timing override`, `Session 2026-09-12 — Session 8: M3 final pass — multilingual image matching (Urdu/Roman-Urdu)`?**
   _High betweenness centrality (0.012) - this node is a cross-community bridge._
-- **Why does `useEditorStore` connect `useEditorStore` to `importer.ts`, `matchingStore.ts`, `editorStore.ts`, `ops.ts`, `types.ts`, `App.tsx`?**
-  _High betweenness centrality (0.009) - this node is a cross-community bridge._
-- **Why does `vitest` connect `types.ts` to `package.json`, `project.ts`, `matchingStore.ts`, `ffmpeg.ts`, `ops.ts`?**
+- **Why does `useEditorStore` connect `useEditorStore` to `TranscriptPanel.tsx`, `matchingStore.ts`, `editorStore.ts`, `ops.ts`, `types.ts`, `App.tsx`?**
+  _High betweenness centrality (0.007) - this node is a cross-community bridge._
+- **Why does `Matcher` connect `Matcher` to `main.py`?**
   _High betweenness centrality (0.006) - this node is a cross-community bridge._
 - **Are the 2 inferred relationships involving `Matcher` (e.g. with `TestMatchEndpoint` and `TestMatcherAlgorithm`) actually correct?**
   _`Matcher` has 2 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `$schema`, `plugin`, `lava-backend` to the rest of the system?**
-  _730 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _753 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `package.json` be split into smaller, more focused modules?**
   _Cohesion score 0.06060606060606061 - nodes in this community are weakly interconnected._
 - **Should `localDirs` be split into smaller, more focused modules?**

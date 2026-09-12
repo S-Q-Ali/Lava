@@ -309,3 +309,49 @@ zundo step because `applyMatch` keeps its `pause()/resume()` wrapper.
 - Push this slice-set (4 new commits) on user go-ahead; then M3 remainder — multilingual matching quality
   pass (needs a multilingual model decision), then M4 transitions. Stable beat ids + whisper base tuning stay
   on the radar.
+
+---
+
+## Session 2026-09-12 — Session 8: M3 final pass — multilingual image matching (Urdu/Roman-Urdu)
+
+### WHAT
+English-only CLIP misread non-English beats. The user manually downloaded the multilingual ONNX text
+tower (`yashvardhan7/clip-ViT-B-32-multilingual-v1-onnx` → `models/clip-multilingual/`). I verified the
+downloaded graph, then shipped an auto-selected **composed embedder**: images keep the existing fp32 CLIP
+ViT-B/32 session, text swaps to the sentence-transformers multilingual DistilBERT tower
+(`sentence_embedding` is already projected in the 512-d CLIP space). Wired at startup when the model dir
+exists; otherwise behaviour is byte-identical to before. This closes the ROADMAP M3 checkbox.
+
+### HOW
+Spec+plan committed first (`d0ce01b`). TDD slice 1 (RED): `tokenize_multilingual` (WordPiece batch,
+77-wide, PAD+mask), `_pick_by_names` (exact-name preference, falls back to last output), and
+`MultilingualClipEmbedder(base, model_dir, session, tokenizer)` — lazy sessions, `text_embed` →
+`input_ids`/`attention_mask` → `sentence_embedding` → L2. 7 new fakes-only unit tests; two layouts handled
+for the module (`model.onnx` flat or `onnx/model.onnx` — the download's real layout caught this). Slice 2
+wiring: `config.clip_multilingual_dir` + `main.py` auto-select. Slice 3 real smoke: UR script forest
+0.284>0.222, EN 0.275>0.201, Roman-Urdu 0.241>0.228, UR noise tie — plus live `POST /api/match` 200 with
+the Urdu beat resolving to forest.png.
+
+### WHY
+Mixed-language narration is a product requirement; alternatives were all worse (M-CLIP needs torch;
+other exports missing preproc/bloated). Composing two ONNX sessions keeps the CPU/ONNX/local-first stack,
+changes no API, and images stay untouched since both towers share the OpenAI CLIP image space.
+
+### Decisions
+- D-015 — composed two-session multilingual embedder; auto-select by folder presence; English fallback
+  when absent. Locked.
+
+### Verify
+- Backend: `uv run pytest` 63 passed (56 → 63: +7 multilingual unit tests), no model files touched.
+- Real-model smoke + live `/api/match` both green (scores above). Frontend untouched (85 tests remain).
+- Commits: `d0ce01b` (spec+plan) · this doc/graph commit closes the slice.
+
+### Limitations
+- Roman-Urdu transliteration separates weakly from noise (scripted-tokenizer limitation; verified
+  numerically, accepted — not a regression). Urdu-script works well.
+- The multilingual folder is user-downloaded; machines without it get English-only parity (intended).
+- `preprocessor_config.json` is NOT needed for the text-only tower (image preproc unchanged); no copy made.
+
+### Next step
+- Push this slice (spec+plan + this closing commit) on user go-ahead. Remaining radar: stable beat ids,
+  whisper `base` tuning for Urdu ASR, in-browser feel-check of kept-note, M4 transitions.

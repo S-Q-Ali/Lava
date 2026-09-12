@@ -4,10 +4,13 @@ from PIL import Image
 
 from lava_backend.clip import (
     ClipEmbedder,
+    MultilingualClipEmbedder,
+    _pick_by_names,
     cosine_similarity,
     l2_normalize,
     preprocess_image,
     softmax,
+    tokenize_multilingual,
     tokenize_text,
 )
 
@@ -161,3 +164,94 @@ def test_preprocess_rejects_non_rgb():
     gray = Image.new("L", (50, 50), 128)
     with pytest.raises(ValueError):
         preprocess_image(gray)
+
+class FakeBatchTokenizer:
+    def __init__(self, encodings, pad_id=0):
+        self._encodings = list(encodings)
+        self._pad_id = pad_id
+
+    def encode_batch(self, texts):
+        return [type("E", (), {"ids": self._encodings[i]}) for i in range(len(texts))]
+
+    def token_to_id(self, token):
+        return self._pad_id
+
+
+class MultilingualStubSession:
+    output_names = ("token_embeddings", "sentence_embedding")
+
+    def __init__(self):
+        self.last_feed = None
+
+    def get_outputs(self):
+        return [type("N", (), {"name": n}) for n in self.output_names]
+
+    def run(self, output_names, feed):
+        self.last_feed = feed
+        rows = int(feed["input_ids"].shape[0])
+        return [np.eye(512)[:rows], np.eye(512)[:rows] + 1]
+
+
+def make_multilingual_embedder():
+    base = ClipEmbedder(model_dir=None, session=StubSession(), tokenizer=FakeTokenizer({"x": [1]}))
+    text_tokenizer = FakeBatchTokenizer([[101, 102], [202, 203]])
+    return MultilingualClipEmbedder(
+        base=base, model_dir=None, session=MultilingualStubSession(), tokenizer=text_tokenizer
+    )
+
+
+def test_tokenize_multilingual_pads_and_masks():
+    tok = FakeBatchTokenizer([[101, 102]])
+    ids, mask = tokenize_multilingual(tok, ["hi"], max_length=6)
+    assert ids.shape == (1, 6)
+    assert ids.dtype == np.int64
+    assert int(ids[0, 0]) == 101
+    assert int(ids[0, 2]) == 0
+    assert int(mask[0, 0]) == 1
+    assert int(mask[0, 1]) == 1
+    assert int(mask[0, 2]) == 0
+
+
+def test_tokenize_multilingual_truncates_long_input():
+    tok = FakeBatchTokenizer([[1, 2, 3]])
+    ids, mask = tokenize_multilingual(tok, ["a" * 30], max_length=2)
+    assert ids.shape == (1, 2)
+    assert list(ids[0]) == [1, 2]
+    assert int(mask[0, 0]) == 1
+    assert int(mask[0, 1]) == 1
+
+
+def test_tokenize_multilingual_batches_rows():
+    tok = FakeBatchTokenizer([[1], [2]])
+    ids, mask = tokenize_multilingual(tok, ["a", "b"], max_length=5)
+    assert ids.shape == (2, 5)
+    assert mask.shape == (2, 5)
+
+
+def test_pick_by_names_returns_preferred_output():
+    out = [np.zeros((1, 768)), np.ones((2, 512))]
+    picked = _pick_by_names(out, MultilingualStubSession(), ["sentence_embedding"])
+    assert picked.shape == (2, 512)
+    assert picked.min() >= 1
+
+
+def test_pick_by_names_falls_back_to_last():
+    out = [np.zeros((2, 512)), np.ones((2, 512))]
+    picked = _pick_by_names(out, MultilingualStubSession(), ["nonexistent"])
+    assert not np.array_equal(picked, out[0])
+
+
+def test_multilingual_embedder_text_feed_and_output():
+    embedder = make_multilingual_embedder()
+    row = embedder.text_embed("hi")
+    assert row.shape == (1, 512)
+    assert np.allclose(np.linalg.norm(row, axis=1), 1.0)
+    feed = embedder.session.last_feed
+    assert feed["input_ids"].shape == (1, 77)
+    assert feed["attention_mask"].shape == (1, 77)
+
+
+def test_multilingual_embedder_delegates_images_to_base():
+    embedder = make_multilingual_embedder()
+    batch = np.zeros((1, 3, 224, 224), dtype=np.float32)
+    assert np.allclose(embedder.embed_images(batch), embedder._base.embed_images(batch))

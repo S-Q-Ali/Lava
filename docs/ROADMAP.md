@@ -42,7 +42,7 @@ Definition of done for ANY milestone installments within it: implementation exis
 - [x] MatchPanel UI (auto-match, per-clip confidence, alternatives replace) — M3 first slice complete
 - [x] Manual trim/reorder of matched clips — re-matches preserve user timing edits (override-first, `kept` count); baseline trim/move/split already editable
 - [x] Timing fit/automatic duration from narration pacing — edge-only floor (`MIN_AUTO_DURATION` 0.5s) + tail hold (0.3s) bounded by narration-audio horizon; interior beats never extended (sync-first)
-- [ ] Mixed-language (Urdu/Roman-Urdu) matching quality pass (multilingual model)
+- [x] Mixed-language (Urdu/Roman-Urdu) matching quality pass (multilingual model)
 
 ## Milestone 4 — Transition/animation engine
 - Clean cuts

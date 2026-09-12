@@ -90,6 +90,39 @@ def _output_names(session):
     return getattr(session, "output_names", None)
 
 
+def tokenize_multilingual(tokenizer, texts, max_length: int = CLIP_MAX_SEQ) -> tuple[np.ndarray, np.ndarray]:
+    """WordPiece batch tokenization for the multilingual text tower.
+
+    ``sentence-transformers/clip-ViT-B-32-multilingual-v1`` uses a multilingual
+    DistilBERT tokenizer whose own specials apply (via ``encode_batch``). Pads
+    with the tokenizer's PAD id and builds an alignment mask, both 77-wide.
+    """
+    encodings = tokenizer.encode_batch(list(texts))
+    pad = int(tokenizer.token_to_id("[PAD]") or 0)
+    ids, masks = [], []
+    for enc in encodings:
+        raw = enc.ids[:max_length]
+        effective = len(raw)
+        ids.append(raw + [pad] * (max_length - effective))
+        masks.append([1] * effective + [0] * (max_length - effective))
+    return np.asarray(ids, dtype=np.int64), np.asarray(masks, dtype=np.int64)
+
+
+def _pick_by_names(outputs: list, session, names: list[str]) -> np.ndarray:
+    """Return the output matching one of ``names`` (case-insensitive, exact).
+
+    Falls back to the last output so fused graphs whose names differ keep
+    working. Reshapes to (rows, emb_dim) like :func:`_pick`.
+    """
+    actual = _output_names(session) or []
+    wanted = {n.lower() for n in names}
+    for name, output in zip(actual, outputs):
+        if name.lower() in wanted:
+            return np.asarray(output, dtype=np.float64).reshape(output.shape[0], -1)
+    output = outputs[-1]
+    return np.asarray(output, dtype=np.float64).reshape(output.shape[0], -1)
+
+
 def _pick(outputs: list, session, wants: str) -> np.ndarray:
     names = _output_names(session)
     if names:
@@ -180,3 +213,70 @@ class ClipEmbedder:
 
     def embed_texts(self, texts: list[str]) -> np.ndarray:
         return np.concatenate([self.text_embed(text) for text in texts], axis=0)
+
+class MultilingualClipEmbedder:
+    """Composed multilingual CLIP: images from a base ClipEmbedder, text from
+    the sentence-transformers multilingual text tower (DistilBERT-backed).
+
+    Keeps the ``Matcher`` interface (``embed_images``/``text_embed``) and stays
+    ONNX-only/CPU. Sessions and tokenizers are injectable for tests; otherwise
+    they load from ``model_dir`` (already-downloaded files only, no hub fetch).
+    """
+
+    def __init__(
+        self,
+        base,
+        model_dir=None,
+        session=None,
+        tokenizer=None,
+        max_length: int = CLIP_MAX_SEQ,
+    ) -> None:
+        self._base = base
+        self.model_dir = model_dir
+        self._session = session
+        self._tokenizer = tokenizer
+        self._max_length = max_length
+
+    @property
+    def base(self):
+        return self._base
+
+    @property
+    def session(self):
+        return self._session
+
+    def _ensure(self):
+        if self._session is not None and self._tokenizer is not None:
+            return
+        if self.model_dir is None:
+            raise RuntimeError("multilingual clip model_dir is required when no session/tokenizer are injected.")
+        onnx_file = self.model_dir / "model.onnx"
+        if not onnx_file.exists():
+            nested = self.model_dir / "onnx" / "model.onnx"
+            if nested.exists():
+                onnx_file = nested
+        tokenizer_file = self.model_dir / "tokenizer.json"
+        missing = [p.name for p in (onnx_file, tokenizer_file) if not p.exists()]
+        if missing:
+            raise RuntimeError(
+                "Multilingual model files missing in the project folder "
+                f"({self.model_dir}): {missing}. Download "
+                "yashvardhan7/clip-ViT-B-32-multilingual-v1-onnx and place its "
+                "onnx/model.onnx + tokenizer.json here."
+            )
+        import onnxruntime as ort
+
+        self._session = ort.InferenceSession(str(onnx_file), providers=["CPUExecutionProvider"])
+        from tokenizers import Tokenizer
+
+        self._tokenizer = Tokenizer.from_file(str(tokenizer_file))
+
+    def embed_images(self, batch: np.ndarray) -> np.ndarray:
+        return self._base.embed_images(batch)
+
+    def text_embed(self, text: str) -> np.ndarray:
+        self._ensure()
+        ids, mask = tokenize_multilingual(self._tokenizer, [text], max_length=self._max_length)
+        outputs = self._session.run(None, {"input_ids": ids, "attention_mask": mask})
+        embedding = _pick_by_names(outputs, self._session, ["sentence_embedding"])
+        return l2_normalize(embedding)

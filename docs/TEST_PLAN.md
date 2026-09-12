@@ -83,9 +83,10 @@ Behavioral acceptance checks:
 
 ## 5.2 Image-matching verification so far
 
-- Unit: CLIP preprocess shape/text tokens + cosine/softmax edge cases (`test_clip.py`); match contract, repetition penalty, empty beats/corrupt image, error codes with fake embeddings (`test_matching.py`); beat segmentation boundaries (`beats.test.ts`); match client parsing (`match.test.ts`); auto-match single-undo, undo-restores, persistence round-trip, replace-vs-user-clips (`matchingStore.test.ts`, `editorStore.test.ts`).
+- Unit: CLIP preprocess shape/text tokens + cosine/softmax edge cases (`test_clip.py` — incl. multilingual `tokenize_multilingual` padding/masking/truncation/batches, `_pick_by_names` exact-name + fallback, `MultilingualClipEmbedder` text-feed + image delegation via fakes); match contract, repetition penalty, empty beats/corrupt image, error codes with fake embeddings (`test_matching.py`); beat segmentation boundaries (`beats.test.ts`); match client parsing (`match.test.ts`); auto-match single-undo, undo-restores, persistence round-trip, replace-vs-user-clips (`matchingStore.test.ts`, `editorStore.test.ts`).
 - Live e2e (manual, non-committed): real ClipEmbedder (fp32 `models/clip/`, ~1.1 GB incl. hub cache) — embed-directional/cosine smokes (sunset text vs sunset image 0.220 > cat 0.206; distinct texts cos 0.766); full `POST /api/match` over HTTP with real CLIP (sunset→solar image, forest→forest image, correct alternative ordering, conf 0.48–0.52).
-- Not yet verified: human in-browser pass on Auto-match + alternatives replace; Urdu/Roman-Urdu beat text quality; many-candidates performance on baseline machine; match under non-Latin text (multilingual model open issue).
+- Multilingual pass (manual, non-committed): real `MultilingualClipEmbedder` (fp32 image tower + multilingual DistilBERT text tower) — Urdu-script "گھنا سبز جنگل کی تصویر" → forest image 0.284 > sunset 0.222, EN forest 0.275 > 0.201, Roman-Urdu forest 0.241 > 0.228 (weak margin), UR noise 0.214≈0.214 (tie); live `POST /api/match` 200, Urdu beat → forest.png.
+- Not yet verified: human in-browser pass on Auto-match + alternatives replace; Roman-Urdu beat quality (weak margin documented); many-candidates performance on baseline machine.
 
 ## 6. Performance Sanity (Baseline Hardware)
 

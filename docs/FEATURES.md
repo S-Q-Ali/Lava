@@ -48,6 +48,7 @@ This document is the definitive feature inventory. Nothing is complete until it 
 - Manual replacement — alternatives dropdown replaces the matched image per beat; manual edits are never overwritten by re-runs (only clips from the *last* auto-match are replaced).
 - **Timing fit / pacing rules** — auto-placed clips use narration beat timing, refined at the edges only: `MIN_AUTO_DURATION` 0.5s floor + `TAIL_HOLD` 0.3s settle for the final image, bounded by the narration-audio duration; interior beats are never extended (sync-first, clean adjacency).
 - **Timing overrides survive re-matches** — trimmed/moved matched clips keep their timing across re-runs (override-first, transient derivation); success status reports how many were kept.
+- **Multilingual matching (auto-select)** — when `models/clip-multilingual/` is present, beat text runs through the sentence-transformers multilingual CLIP text tower (DistilBERT wordpiece; `sentence_embedding` projected into the same CLIP space) while images reuse the existing ViT-B/32 image tower (`MultilingualClipEmbedder` composes both ONNX sessions, CPU-only). Urdu-script beats match their images correctly (validated real-model). Roman-Urdu transliteration still separates weakly (scripted-tokenizer limitation). Absent the folder, matching falls back to English-only CLIP unchanged.
 - *(Not in this slice)* visual-quality & composition scoring, continuity beyond repetition, automatic image duration from pacing rules anywhere outside narration airtime.
 
 ## 4. Transitions / Animation

@@ -134,6 +134,15 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
 - **Alternatives considered**: a persisted `timingLocked` flag on clips (extra schema/UI — rejected for this slice); auto-locking all matched clips after any edit (fragile vs single-trim). Beat ids remain positional — a transcript edit can map an override onto a different beat position (open issue reserved for stable-id work).
 - **Status**: Locked for M3 remainder.
 
+### D-015 — Multilingual matching via a composed two-session embedder (no new stack)
+
+- **Date**: 2026-09-12
+- **WHAT**: Urdu-script beat text now matches images correctly by swapping only the text tower. `MultilingualClipEmbedder` composes two ONNX sessions: images through the existing `ClipEmbedder` (OpenAI CLIP ViT-B/32, fp32 — the same image room as before) and text through the sentence-transformers **multilingual** CLIP text tower (DistilBERT wordpiece, vocab 119547) while it is present as a user-downloaded `models/clip-multilingual/{onnx/model.onnx, tokenizer.json}`. Auto-selected at startup when `model.onnx` exists (flat or `onnx/`); otherwise English-only behaviour is unchanged. Text is WordPiece-tokenized (77-wide, PAD + mask), the graph's `sentence_embedding` output is picked by exact name and L2-normalized; images keep the fused-graph full-feed pattern.
+- **WHY**: English-only CLIP misreads non-English beats; the requirement is mixed-language narration support (product spec). The ST multilingual export mirrors CLIP's image side exactly, so image embeddings stay untouched — no re-embedding, no API change, ONNX/CPU-only.
+- **HOW**: `clip.py` (`tokenize_multilingual`, `_pick_by_names`, `MultilingualClipEmbedder`), `config.clip_multilingual_dir`, `main.py` start-up auto-select. Unit tests use fakes (no model files); real-model smoke: Urdu "گھنا سبز جنگل کی تصویر" → forest image 0.284 > sunset 0.222, EN 0.275 > 0.201, Roman-Urdu 0.241 > 0.228 (weak margin), noise ties — and live `POST /api/match` returns the Urdu beat → forest.png.
+- **Alternatives considered**: `M-CLIP/XLM-Roberta-Large-Vit-B-32` for Roman-Urdu (PyTorch — adds torch, out of scope); `canavar/clip-ViT-B-32-multilingual-v1-ONNX` (ST-layout export, no preproc file, larger); `Marqo` ONNX repo (empty). Roman-Urdu weakness is inherent to scripted-tokenizer models — documented open issue, not a regression.
+- **Status**: Locked for M3 final pass.
+
 ---
 
 ## Index of decisions
@@ -154,3 +163,4 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
 | D-012 | CLIP ViT-B/32 ONNX fp32 for image matching (quantized broken) | Locked |
 | D-013 | Match meta persists via `clip.beatId`; one undoable auto-match | Locked |
 | D-014 | Timing overrides survive re-matches (transient derivation, kept count) | Locked |
+| D-015 | Multilingual matching via composed two-session embedder (no new stack) | Locked |

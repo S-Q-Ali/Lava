@@ -354,15 +354,15 @@
     "semantic_hash": ""
   },
   "docs/DECISIONS.md": {
-    "mtime": 1789209458.798214,
-    "seen": 1789209516.6501582,
-    "ast_hash": "eb27e2dbb4dc0d76732b5b86ecbc75e3",
+    "mtime": 1789212702.4410226,
+    "seen": 1789212763.4694662,
+    "ast_hash": "0bb260812f7ff02eae83ea4bee73d7c3",
     "semantic_hash": ""
   },
   "docs/FEATURES.md": {
-    "mtime": 1789209447.036876,
-    "seen": 1789209516.6501591,
-    "ast_hash": "f463c8755883cd5fe8798c968fd341d1",
+    "mtime": 1789212634.5117655,
+    "seen": 1789212763.469467,
+    "ast_hash": "02e745f29b1d3a26c5521280a7974901",
     "semantic_hash": ""
   },
   "docs/PRODUCT_SPEC.md": {
@@ -372,21 +372,21 @@
     "semantic_hash": ""
   },
   "docs/ROADMAP.md": {
-    "mtime": 1789209440.749147,
-    "seen": 1789209516.6501608,
-    "ast_hash": "3cf6dfb92b2e75ef4229fe98481acf0a",
+    "mtime": 1789212629.0568895,
+    "seen": 1789212763.469471,
+    "ast_hash": "ee2e85e00d8839f5bf03cbabaaae9947",
     "semantic_hash": ""
   },
   "docs/SESSION_LOG.md": {
-    "mtime": 1789209507.705544,
-    "seen": 1789209516.650162,
-    "ast_hash": "64dcdd726947c8ae200a1cbc5b33ff88",
+    "mtime": 1789212727.2752535,
+    "seen": 1789212763.469472,
+    "ast_hash": "175f3ffa5ffd7a58fe9f292bb6b531cb",
     "semantic_hash": ""
   },
   "docs/TEST_PLAN.md": {
-    "mtime": 1789164907.0494578,
-    "seen": 1789164963.893332,
-    "ast_hash": "a36fc99fc31071833fa3d1fc12bc804c",
+    "mtime": 1789212713.5760381,
+    "seen": 1789212763.469481,
+    "ast_hash": "0f88177754c5afc7642762d6adba5e36",
     "semantic_hash": ""
   },
   "docs/UI_SPEC.md": {
@@ -426,9 +426,9 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/config.py": {
-    "mtime": 1789163163.4466896,
-    "seen": 1789164963.893164,
-    "ast_hash": "9244f1118d3e41765d6237f703e34f9b",
+    "mtime": 1789212411.316902,
+    "seen": 1789212763.469314,
+    "ast_hash": "83cc4d14062dabf71979248feba146cb",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/errors.py": {
@@ -438,9 +438,9 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/main.py": {
-    "mtime": 1789163299.4754226,
-    "seen": 1789164963.8931682,
-    "ast_hash": "e7eeab71dcb85263c3cd389441a01329",
+    "mtime": 1789212421.9922411,
+    "seen": 1789212763.469318,
+    "ast_hash": "0aa71a485a2da223231858dc94024790",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/media.py": {
@@ -588,15 +588,15 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/clip.py": {
-    "mtime": 1789163609.2879732,
-    "seen": 1789164963.893161,
-    "ast_hash": "2ad10284c3b64d251dabbda9386b001c",
+    "mtime": 1789212455.0237625,
+    "seen": 1789212763.469312,
+    "ast_hash": "6b1fc9ff63fcc1cbe4f268f20f238fb7",
     "semantic_hash": ""
   },
   "backend/tests/test_clip.py": {
-    "mtime": 1789163615.9110649,
-    "seen": 1789164963.893182,
-    "ast_hash": "44aca33f5b9125f1a8c65b840d72bde3",
+    "mtime": 1789212356.6473272,
+    "seen": 1789212763.4693298,
+    "ast_hash": "19a1058cc9505aae0b3090adf0607d71",
     "semantic_hash": ""
   },
   "docs/SPEC-image-matching.md": {
@@ -681,6 +681,18 @@
     "mtime": 1789209487.9830155,
     "seen": 1789209516.650174,
     "ast_hash": "cd8be70733075d65d70550d1b4f40a47",
+    "semantic_hash": ""
+  },
+  "docs/SPEC-multilingual-matching.md": {
+    "mtime": 1789212189.9463634,
+    "seen": 1789212763.469476,
+    "ast_hash": "6fc6da254edef45ddc18daca01a384a1",
+    "semantic_hash": ""
+  },
+  "tasks/plan-multilingual.md": {
+    "mtime": 1789212734.4861696,
+    "seen": 1789212763.4694872,
+    "ast_hash": "d7a2037fb0d3b495fbfb283e1c657b0f",
     "semantic_hash": ""
   }
 }
