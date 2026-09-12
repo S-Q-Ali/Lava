@@ -42,6 +42,19 @@ export interface Asset {
   meta: AssetMeta
 }
 
+export type MotionType =
+  | 'zoom-in'
+  | 'zoom-out'
+  | 'pan-left'
+  | 'pan-right'
+  | 'pan-up'
+  | 'pan-down'
+
+export interface MotionSpec {
+  type: MotionType
+  strength: number
+}
+
 export interface Clip {
   id: string
   trackId: string
@@ -51,6 +64,7 @@ export interface Clip {
   duration: number
   confidence?: number
   beatId?: string
+  motion?: MotionSpec
 }
 
 export interface TimelineModel {

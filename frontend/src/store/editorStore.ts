@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { temporal } from 'zundo'
-import type { Asset, Clip, TimelineModel, Transcript, Track } from '../editor/types'
+import type { Asset, Clip, MotionSpec, TimelineModel, Transcript, Track } from '../editor/types'
 import { DEFAULT_TRACKS } from '../editor/types'
 import * as ops from '../editor/ops'
 import {
@@ -48,6 +48,7 @@ interface EditorActions {
   updateTranscriptWord(assetId: string, segmentId: number, wordIndex: number, text: string): void
   setPlayhead(t: number): void
   selectClip(id: string | null): void
+  setClipMotion(id: string, motion?: MotionSpec): void
   setSelectedTransitionId(id: string | null): void
   suggestTransitions(): void
   overrideTransition(id: string, type: TransitionType, duration?: number): void
@@ -119,6 +120,12 @@ export const useEditorStore = create<EditorState>()(
         set((s) => ({ clips: ops.replaceClipAsset(s.clips, id, assetId) })),
       setPlayhead: (t) => set({ playhead: t }),
       selectClip: (id) => set({ selectedClipId: id }),
+      setClipMotion: (id, motion) =>
+        set((s) => ({
+          clips: s.clips.map((c) =>
+            c.id === id ? { ...c, motion: motion } : c,
+          ),
+        })),
       setSelectedTransitionId: (id) => set({ selectedTransitionId: id }),
       suggestTransitions: () =>
         set((s) => {
