@@ -11,29 +11,29 @@ Vertical slices:
 ## Task list
 
 ### Slice 1 — timing-core (pure TS, TDD)
-- [ ] `editor/timing.ts`: `TIMING_EPSILON`, `MIN_AUTO_DURATION`, `TAIL_HOLD`; `hasTimingOverride(actual, recorded)` (start/duration vs recorded, epsilon); `pacedEnd(beat, regionEnd, { minDuration, tailHold })` → returns extended end only when trailing airtime exists and duration < minDuration, or final beat tail-hold; interior beats never extended.
-- [ ] Tests: no-change → false; start drift → true; duration drift → true; epsilon tolerance; floor extension capped by airtime; tail settle on final beat; interior beat untouched; beat exactly at regionEnd.
-- [ ] Verify: `npx vitest run src/editor/timing.test.ts`
+- [x] `editor/timing.ts`: `TIMING_EPSILON`, `MIN_AUTO_DURATION`, `TAIL_HOLD`; `hasTimingOverride(actual, recorded)` (start/duration vs recorded, epsilon); `pacedEnd(beat, { isFinal, horizon, minDuration, tailHold })` → extends only the final beat, capped by horizon airtime.
+- [x] Tests: no-change → false; start drift → true; duration drift → true; epsilon tolerance; floor extension capped by airtime; tail settle on final beat; interior beat untouched; no-airtime and past-horizon unchanged; custom opts. **Design fix mid-slice:** `regionEnd`-inferred finality was ambiguous → explicit `isFinal` + `horizon` (caller = store/panel passes narration-audio duration).
+- [x] Verify: `npx vitest run src/editor/timing.test.ts` (11 green) — commit `0bace75`
 
 ### Slice 2 — store-override (matchingStore, TDD)
-- [ ] Store track of previous response beat timings (transient `results` already holds `{beatId,start,end}`); in `match()`, before building inputs, compute overrides: for each `lastMatchClipIds` clip whose actual timing differs (epsilon) from recorded beat timing → capture `{start, duration}` by beatId.
-- [ ] `inputsFrom` applies captured override (override wins) else pacing (`applyPacing` via region end = max(new response beats' end)).
-- [ ] Success status gains `kept: number`; flow stays one zundo step.
-- [ ] Tests: trim→rerun preserves start+duration (image may change); move→rerun preserves; untouched→refitted to new timing; kept count; undo restores pre-match timeline exactly.
-- [ ] Verify: `npx vitest run src/store/matchingStore.test.ts src/store/editorStore.test.ts`
+- [x] `match()` computes overrides from `results` (recorded beat timings) + `lastMatchClipIds`: any last-match clip whose timing differs (epsilon) → captured `{start,duration}` by beatId; `inputsFrom` applies override first (else pacing via `isFinal` + horizon).
+- [x] Success status gains `kept: number` (overrides actually applied); flow stays one zundo step.
+- [x] Tests (added + existing updated for `kept`): trim→rerun preserves start+duration; move→rerun preserves; untouched→refitted; kept count; undo restores exact pre-rerun timeline — commit `ca7f02b`
+- [x] Verify: matchingStore 9 green; full frontend 85; build + oxlint clean
 
 ### Slice 3 — panel-note
-- [ ] `MatchPanel.tsx`: success line includes kept count (mirror `transcript-hint` style); status type covers `kept`.
-- [ ] Verify: build + vitest full + oxlint; dev-server transform smoke (`localhost:5173`).
+- [x] `MatchPanel.tsx`: success line includes kept count ("N timing override(s) kept"); passes `{ horizon: narration audio duration }` from selected asset meta — commit `3e52173`
+- [x] Verify: full suite 85 + build + lint + dev-server transform smoke 200 (3 modules)
 
 ### Slice 4 — docs, review, commit
-- [ ] ROADMAP M3: tick manual timing override; FEATURES §3 note; DECISIONS D-014 (override preservation, transient derivation); tasks/todo.md M3B block; SESSION_LOG Session 7 append; graphify update; full regression (backend 56, frontend 70+); commit + push on user go-ahead.
+- [x] ROADMAP M3 ticks; FEATURES §3 timing/override; DECISIONS D-014; ARCHITECTURE gaps; tasks/todo.md; SPEC-timing-pacing notes; SESSION_LOG Session 7; graphify update; full regression (backend 56 unchanged, frontend 85)
+- [ ] push commit-set — **on user go-ahead**
 
 ## Checkpoints
 
-- [ ] After Slice 1: pure timing suite green
-- [ ] After Slice 2: rerun-preserves + undo-restores tests green
-- [ ] After Slice 3: full frontend suite + build + lint + dev smoke
+- [x] After Slice 1: pure timing suite green
+- [x] After Slice 2: rerun-preserves + undo-restores tests green
+- [x] After Slice 3: full frontend suite + build + lint + dev smoke
 - [ ] After Slice 4: docs + regression + push pending user go-ahead
 
 ## Risks / mitigations

@@ -258,3 +258,54 @@ Per-slice TDD, each slice committed then re-verified (`56 passed` backend, `70 p
 
 ### Next step
 - Push M3 first slice (7 commits ahead of origin/main) once the user gives the go-ahead; then M3 remainder — timing/pacing rules, multilingual matching pass, manual-trim integration, and M4 transitions. Also on the radar: whisper model-size tuning (base) for Urdu.
+
+## Session 2026-09-12 — Session 7: M3 remainder — timing fit + manual timing override
+
+### Purpose (WHY)
+Fix a product-rule violation and land pipeline step 10. After the M3 first slice, a re-run silently reset any
+trim/move on matched clips ("Do not silently overwrite user edits" was broken), and image durations were exact
+beat timing only — no pacing refinements existed. Spec + plan committed first (`0843a45`), user approved scope.
+
+### WHAT
+- **Slice 1 (timing-core, `0bace75`)** — `frontend/src/editor/timing.ts`: `TIMING_EPSILON` 0.01,
+  `MIN_AUTO_DURATION` 0.5, `TAIL_HOLD` 0.3; `hasTimingOverride(clip, recorded)` (start/duration drift);
+  `pacedEnd(beat, { isFinal, horizon, minDuration, tailHold })` — only the final beat extends, capped by
+  horizon airtime. 11 tests. **Design correction mid-slice:** the planned regionEnd-inferred finality failed
+  RED (interior vs final ambiguity) → explicit `isFinal` + `horizon`.
+- **Slice 2 (store-override, `ca7f02b`)** — `matchingStore.match(assetIds, beats, { horizon })` captures
+  overrides from `results`/`lastMatchClipIds` before `applyMatch`; `inputsFrom` applies override first else
+  pacing; success status gains `kept: number`. Tests: trim→rerun preserves, move→rerun preserves,
+  untouched→refits, kept count, undo restores exact pre-rerun timeline. Frontend 85 tests.
+- **Slice 3 (panel-note, `3e52173`)** — MatchPanel success line reports kept overrides ("N timing
+  override(s) kept — undo anytime"); passes `{ horizon: narration audio duration }` from asset
+  `meta.duration`. Dev-server transform smoke 200 on all three new/touched modules.
+- **Slice 4 (docs, this commit)** — D-014, ROADMAP M3 ticks, FEATURES §3, ARCHITECTURE gaps, plan/todo ticks,
+  SPEC implementation notes, graph refresh.
+
+### HOW
+Red-Green per slice on the pure layer first (RED exposed the finality design flaw), then the store (tests
+updated for the new `kept` field), then wiring — the same vertical pattern as M2/M3. All undos still one
+zundo step because `applyMatch` keeps its `pause()/resume()` wrapper.
+
+### Decisions
+- D-014 — timing overrides survive re-matches via *transient derivation* (previous response + epsilon);
+  no project/schema change; pacing floor/hold edges-only within narration airtime. Locked.
+
+### Verify
+- Frontend: `npx vitest run` 85 passed (70 → 85: +11 timing, +4 store), `npm run build` ok, oxlint 0 warnings.
+- Backend: `uv run pytest` 56 passed — untouched this slice-set.
+- Dev-server transforms: `MatchPanel.tsx`, `matchingStore.ts`, `timing.ts` all 200.
+- Commits: `0843a45` (spec+plan) · `0bace75` (timing-core) · `ca7f02b` (store-override) · `3e52173` (panel-note) — docs/graph commit closes.
+
+### Limitations
+- Beat ids are positional — a transcript edit can carry a preserved override onto a different beat position
+  (stable beat ids = open, later pass).
+- Edge pacing only: a short beat *in the middle* of narration never gets a floor (correct for sync/clean
+  adjacency, but the visual-hold trade-off is deliberately conservative).
+- Horizon falls back to beat end when the audio asset has no `meta.duration` (no extension then).
+- English-only in-browser feel check of the kept-note still pending; multilingual match quality untouched.
+
+### Next step
+- Push this slice-set (4 new commits) on user go-ahead; then M3 remainder — multilingual matching quality
+  pass (needs a multilingual model decision), then M4 transitions. Stable beat ids + whisper base tuning stay
+  on the radar.

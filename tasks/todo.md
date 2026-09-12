@@ -29,11 +29,11 @@ Checkpoints:
 - [ ] Slice 4: `semantic-matching` — match client + store autoMatch (one undo step) + clip.beatId persistence (frontend)
 - [ ] Slice 5: `matching-ui` — MatchPanel Auto-match + confidence + alternatives replace + states + CSS
 
-## M3 remainder: timing fit + manual timing override (slice-set B, closed …) — SPEC-timing-pacing.md, tasks/plan-timing.md
-- [ ] Slice 1: `timing-core` — pure timing math (`editor/timing.ts`) + tests
-- [ ] Slice 2: `store-override` — rerun preserves manual timing, `kept` count, one undo step
-- [ ] Slice 3: `panel-note` — kept-overrides line in MatchPanel
-- [ ] Slice 4: docs (D-014, ROADMAP, SESSION_LOG 7) + graphify + regression + push
+## M3 remainder: timing fit + manual timing override (slice-set B, closed 2026-09-12) — SPEC-timing-pacing.md, tasks/plan-timing.md
+- [x] Slice 1: `timing-core` — pure timing math (`editor/timing.ts`) + 11 tests — `0bace75`
+- [x] Slice 2: `store-override` — re-match preserves manual timing, `kept` count, one undo step — `ca7f02b`
+- [x] Slice 3: `panel-note` — kept-overrides line + narration-duration horizon in MatchPanel — `3e52173`
+- [ ] Slice 4: docs (D-014, ROADMAP, SESSION_LOG 7) + graphify + regression + **push (user go-ahead)**
 - [ ] Slice 6: docs (D-012/D-013, ROADMAP M3, SESSION_LOG 6) + graphify + review + push
 
 Checkpoints:

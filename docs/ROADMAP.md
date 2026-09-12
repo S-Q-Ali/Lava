@@ -40,8 +40,8 @@ Definition of done for ANY milestone installments within it: implementation exis
 - [x] Beat segmentation from transcript (sentence ends + pauses ≥ 0.4s)
 - [x] Auto-place image track in one undoable step (`clip.beatId`/`confidence` persist, version stays 1)
 - [x] MatchPanel UI (auto-match, per-clip confidence, alternatives replace) — M3 first slice complete
-- [ ] Manual trim/reorder of matched clips with timing override (independent edits; baseline clip editing already supports trim/reorder)
-- [ ] Timing fit/automatic duration from narration pacing (pacing rules)
+- [x] Manual trim/reorder of matched clips — re-matches preserve user timing edits (override-first, `kept` count); baseline trim/move/split already editable
+- [x] Timing fit/automatic duration from narration pacing — edge-only floor (`MIN_AUTO_DURATION` 0.5s) + tail hold (0.3s) bounded by narration-audio horizon; interior beats never extended (sync-first)
 - [ ] Mixed-language (Urdu/Roman-Urdu) matching quality pass (multilingual model)
 
 ## Milestone 4 — Transition/animation engine

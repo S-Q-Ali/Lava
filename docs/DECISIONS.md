@@ -125,6 +125,15 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
 - **Alternatives considered**: separate overlay track (drift/duplication), non-undoable bulk insert (rejected — violates editability rule).
 - **Status**: Locked for M3 (first slice).
 
+### D-014 — Timing overrides survive re-matches (transient derivation, no new persistence)
+
+- **Date**: 2026-09-12
+- **WHAT**: Re-running image auto-match preserves the user's timing edits on previously matched clips. An "override" is any last-match clip whose `start`/`duration` differs from its recorded beat timing beyond `TIMING_EPSILON` (0.01s); such clips keep `start`/`duration` on the next run (the image may still change). Overrides are derived transiently from the previous match response (stored in `matchingStore.results`), never written to the project file, and the whole re-match including preserved timings stays one undo step. Pacing refinements (`MIN_AUTO_DURATION` 0.5s floor, `TAIL_HOLD` 0.3s settle) apply only to the final beat and only within narration-audio-duration airtime.
+- **WHY**: "Do not silently overwrite user edits" (product rule) was violated by the original M3 slice — a re-run reset any trim/move. Overrides as *derivation* keeps the project schema and version untouched and makes the rule testable as pure math.
+- **HOW**: `frontend/src/editor/timing.ts` (`hasTimingOverride`, `pacedEnd` — explicit `isFinal` + `horizon`); `matchingStore.match(assetIds, beats, { horizon })` captures overrides from `results` + `lastMatchClipIds` before `applyMatch`; success status gained `kept`; `MatchPanel` shows the kept count and passes the narration-audio duration as horizon.
+- **Alternatives considered**: a persisted `timingLocked` flag on clips (extra schema/UI — rejected for this slice); auto-locking all matched clips after any edit (fragile vs single-trim). Beat ids remain positional — a transcript edit can map an override onto a different beat position (open issue reserved for stable-id work).
+- **Status**: Locked for M3 remainder.
+
 ---
 
 ## Index of decisions
@@ -144,3 +153,4 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
 | D-011 | Transcripts persist in project file (version stays 1) | Locked |
 | D-012 | CLIP ViT-B/32 ONNX fp32 for image matching (quantized broken) | Locked |
 | D-013 | Match meta persists via `clip.beatId`; one undoable auto-match | Locked |
+| D-014 | Timing overrides survive re-matches (transient derivation, kept count) | Locked |

@@ -84,3 +84,13 @@ semi:false, printWidth 100, prettier on new files. CSS via existing tokens.
 
 - None blocking. Beat ids are positional (`b0…bn`); after a transcript edit, a preserved override may carry
   onto a different beat position — documented limitation, fixed properly by stable beat ids in a later pass.
+
+## Implementation notes (post-slice audit)
+
+- `pacedEnd` final signature: `pacedEnd(beat, { isFinal, horizon, minDuration, tailHold })` — finality is
+  **explicit** (caller knows the last beat) and `horizon` bounds the extension (narration-audio duration
+  from the selected asset's `meta.duration`). The original regionEnd-inference design was ambiguous and was
+  corrected during Slice 1.
+- Success status is `{ phase: 'success'; count: number; kept: number }`; `kept` counts overrides actually
+  applied (their `beatId` exists in the new response).
+- No persistence, no schema/version change: overrides are derived transiently (D-014).

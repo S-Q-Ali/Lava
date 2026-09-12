@@ -46,7 +46,9 @@ This document is the definitive feature inventory. Nothing is complete until it 
 - Confidence display per match and per alternative in the Inspector.
 - Automatic image placement — `MatchPanel` auto-match applies the image track in a single undoable step, tagging clips with `beatId` (persisted; project version unchanged) and reusing existing `confidence`.
 - Manual replacement — alternatives dropdown replaces the matched image per beat; manual edits are never overwritten by re-runs (only clips from the *last* auto-match are replaced).
-- *(Not in this slice)* automatic image duration from narration timing/pacing rules, visual-quality & composition scoring, continuity beyond repetition, custom matcher branches.
+- **Timing fit / pacing rules** — auto-placed clips use narration beat timing, refined at the edges only: `MIN_AUTO_DURATION` 0.5s floor + `TAIL_HOLD` 0.3s settle for the final image, bounded by the narration-audio duration; interior beats are never extended (sync-first, clean adjacency).
+- **Timing overrides survive re-matches** — trimmed/moved matched clips keep their timing across re-runs (override-first, transient derivation); success status reports how many were kept.
+- *(Not in this slice)* visual-quality & composition scoring, continuity beyond repetition, automatic image duration from pacing rules anywhere outside narration airtime.
 
 ## 4. Transitions / Animation
 
