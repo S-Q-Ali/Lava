@@ -1,4 +1,5 @@
 import type { Transition } from './transitions'
+import type { CaptionItem } from './captions'
 
 export const TRACK_TYPES = [
   'video',
@@ -75,6 +76,7 @@ export interface TimelineModel {
   selectedClipId: string | null
   transcripts?: Record<string, Transcript>
   transitions?: Transition[]
+  captions?: CaptionItem[]
 }
 
 export interface TranscriptWord {

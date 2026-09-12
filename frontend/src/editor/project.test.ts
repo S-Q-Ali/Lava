@@ -147,6 +147,38 @@ describe('parseProjectJson', () => {
     expect(() => parseProjectJson(JSON.stringify(file))).toThrow(/transcript/i)
   })
 })
+describe('caption persistence', () => {
+  const cleanModel: TimelineModel = { tracks, assets, clips, playhead: 0, selectedClipId: null }
+
+  it('round-trips captions attached to the model', () => {
+    const caption = {
+      id: 'cap-1',
+      trackId: 'track-captions',
+      start: 0,
+      duration: 2,
+      text: 'Warm sunsets feel rare.',
+      styleId: 'normal',
+      words: [{ word: 'Warm', start: 0, end: 0.5 }],
+      source: 'auto' as const,
+    }
+    const withCaptions: TimelineModel = { ...cleanModel, captions: [caption] }
+    const restored = parseProjectJson(toProjectJson(withCaptions))
+    expect(restored.captions).toEqual([caption])
+    expect(restored.captions?.[0]?.words?.[0]?.word).toBe('Warm')
+  })
+
+  it('leaves captions undefined when absent', () => {
+    const restored = parseProjectJson(toProjectJson(cleanModel))
+    expect(restored.captions).toBeUndefined()
+  })
+
+  it('rejects a project with a malformed caption', () => {
+    const file = serializeProject({ ...cleanModel })
+    file.model.captions = [{ id: 'cap-x' }] as unknown as TimelineModel['captions']
+    expect(() => parseProjectJson(JSON.stringify(file))).toThrow(/caption/i)
+  })
+})
+
 describe('transition persistence', () => {
   const transition = {
     kind: 'between',
