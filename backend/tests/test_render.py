@@ -280,3 +280,139 @@ def test_render_motion_on_video_clip_is_422(client, tmp_path):
     )
     assert resp.status_code == 422
     assert resp.json()["error"]["code"] == "MOTION_INVALID"
+
+
+CAPTION_STYLE = {
+    "fontFamily": "Arial",
+    "fontSize": 42,
+    "primaryColor": "#FFFFFF",
+    "highlightColor": "#FFD54A",
+    "outlineColor": "#000000",
+    "outlineWidth": 2,
+    "bold": False,
+    "uppercase": False,
+    "alignment": "bottom",
+}
+
+
+def render_multipart_captions(client, tmp_path, clips, settings, captions, file_pairs):
+    data = {
+        "clips": json.dumps(clips),
+        "settings": json.dumps(settings),
+    }
+    if captions is not None:
+        data["captions"] = json.dumps(captions)
+    return client.post(
+        "/api/render",
+        data=data,
+        files=[("files", (name, data_f, mime)) for name, data_f, mime in file_pairs],
+    )
+
+
+def test_render_with_captions_via_http(client, tmp_path):
+    a = make_image(tmp_path, "a.png")
+    captions = [
+        {
+            "start": 0.0,
+            "duration": 2.0,
+            "text": "Warm sunsets",
+            "style": CAPTION_STYLE,
+        }
+    ]
+    resp = render_multipart_captions(
+        client, tmp_path,
+        clips=[{"fileName": "a.png", "duration": 2.0}],
+        settings={"width": 128, "height": 96, "fps": 10},
+        captions=captions,
+        file_pairs=[("a.png", a.read_bytes(), "image/png")],
+    )
+    assert resp.status_code == 201
+    body = resp.json()
+    assert body["duration"] == pytest.approx(2.0, abs=0.2)
+    assert Path(body["outputPath"]).exists()
+
+
+def test_render_empty_captions_stay_parity(client, tmp_path):
+    a = make_image(tmp_path, "a.png")
+    resp = render_multipart_captions(
+        client, tmp_path,
+        clips=[{"fileName": "a.png", "duration": 1.0}],
+        settings={"width": 32, "height": 24, "fps": 10},
+        captions=[],
+        file_pairs=[("a.png", a.read_bytes(), "image/png")],
+    )
+    assert resp.status_code == 201
+
+
+def test_render_captions_invalid_style_is_422(client, tmp_path):
+    a = make_image(tmp_path, "a.png")
+    bad_style = dict(CAPTION_STYLE, fontSize=0)
+    resp = render_multipart_captions(
+        client, tmp_path,
+        clips=[{"fileName": "a.png", "duration": 1.0}],
+        settings={"width": 32, "height": 24, "fps": 10},
+        captions=[{"start": 0, "duration": 1, "text": "x", "style": bad_style}],
+        file_pairs=[("a.png", a.read_bytes(), "image/png")],
+    )
+    assert resp.status_code == 422
+    assert resp.json()["error"]["code"] == "CAPTION_INVALID"
+
+
+def test_render_captions_missing_text_is_422(client, tmp_path):
+    a = make_image(tmp_path, "a.png")
+    resp = render_multipart_captions(
+        client, tmp_path,
+        clips=[{"fileName": "a.png", "duration": 1.0}],
+        settings={"width": 32, "height": 24, "fps": 10},
+        captions=[{"start": 0, "duration": 1}],
+        file_pairs=[("a.png", a.read_bytes(), "image/png")],
+    )
+    assert resp.status_code == 422
+    assert resp.json()["error"]["code"] == "CAPTION_INVALID"
+
+
+def test_render_captions_malformed_json_is_422(client, tmp_path):
+    a = make_image(tmp_path, "a.png")
+    resp = client.post(
+        "/api/render",
+        data={
+            "clips": json.dumps([{"fileName": "a.png", "duration": 1.0}]),
+            "settings": json.dumps({"width": 32, "height": 24, "fps": 10}),
+            "captions": "{not json",
+        },
+        files=[("files", ("a.png", a.read_bytes(), "image/png"))],
+    )
+    assert resp.status_code == 422
+    assert resp.json()["error"]["code"] == "INVALID_BODY"
+
+
+def test_render_captions_burn_pixels_change(client, tmp_path):
+    """Real-ffmpeg smoke: the burned caption visibly changes a bottom-strip frame."""
+    cfg = config_module.Config.load()
+    a = make_image(tmp_path, "a.png")
+    clips = [{"fileName": "a.png", "duration": 1.0}]
+    settings = {"width": 160, "height": 120, "fps": 10}
+    pairs = [("a.png", a.read_bytes(), "image/png")]
+
+    plain = render_multipart_captions(client, tmp_path, clips, settings, None, pairs)
+    burned = render_multipart_captions(
+        client, tmp_path, clips, settings,
+        [{"start": 0.0, "duration": 1.0, "text": "TEST", "style": CAPTION_STYLE}],
+        pairs,
+    )
+    assert plain.status_code == 201 and burned.status_code == 201
+
+    def bottom_strip(mp4: Path) -> bytes:
+        frame = tmp_path / (mp4.stem + "-frame.png")
+        subprocess.run(
+            [
+                str(cfg.ffmpeg_bin), "-y", "-ss", "0.5", "-i", str(mp4),
+                "-frames:v", "1", "-vf", "crop=160:40:0:80", str(frame),
+            ],
+            check=True, capture_output=True,
+        )
+        return frame.read_bytes()
+
+    strip_plain = bottom_strip(Path(plain.json()["outputPath"]))
+    strip_burned = bottom_strip(Path(burned.json()["outputPath"]))
+    assert strip_plain != strip_burned

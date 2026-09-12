@@ -13,6 +13,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 
+from .captions import CaptionError, parse_captions
 from .clip import ClipEmbedder, MultilingualClipEmbedder
 from .config import get_config, tool_versions
 from .errors import ApiError, error_response
@@ -123,6 +124,7 @@ async def render_endpoint(
     clips: str = Form(...),
     settings: str = Form(...),
     transitions: str | None = Form(None),
+    captions: str | None = Form(None),
     files: list[UploadFile] = File(...),
 ):
     try:
@@ -164,6 +166,16 @@ async def render_endpoint(
                     raise ApiError(422, "INVALID_BODY", "transition entry must have kind between|edge")
         except (KeyError, TypeError, ValueError) as exc:
             raise ApiError(422, "INVALID_BODY", f"malformed transition entry: {exc}") from exc
+
+    caption_specs = []
+    if captions is not None and captions.strip():
+        try:
+            parsed_captions = json.loads(captions)
+            caption_specs = parse_captions(parsed_captions)
+        except json.JSONDecodeError as exc:
+            raise ApiError(422, "INVALID_BODY", "captions must be valid JSON") from exc
+        except CaptionError as exc:
+            raise ApiError(422, "CAPTION_INVALID", str(exc)) from exc
 
     if not clips_model:
         raise ApiError(422, "NO_CLIPS", "Render requires at least one clip")
@@ -215,6 +227,7 @@ async def render_endpoint(
                 fps=settings_model.fps,
             ),
             transitions=transition_specs,
+            captions=caption_specs,
         )
     except Exception:
         shutil.rmtree(upload_root, ignore_errors=True)

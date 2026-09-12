@@ -8,6 +8,7 @@ import uuid
 from dataclasses import dataclass
 from pathlib import Path
 
+from .captions import CaptionItemSpec, build_ass_document
 from .config import Config
 from .errors import ApiError
 
@@ -328,19 +329,44 @@ def build_transition_graph(
     return ";".join(parts), total
 
 
+def _write_ass_file(
+    config: Config, captions: list[CaptionItemSpec], settings: RenderSettings, job_id: str
+) -> Path:
+    """Write the burn-in subtitle file next to the job's uploads; return its path."""
+    config.uploads_dir.mkdir(parents=True, exist_ok=True)
+    ass_path = config.uploads_dir / f"{job_id}.ass"
+    ass_path.write_text(build_ass_document(captions, settings.width, settings.height), encoding="utf-8")
+    return ass_path
+
+
 def render(
     config: Config,
     files: list[Path],
     clips: list[RenderClip],
     settings: RenderSettings,
     transitions: list = (),
+    captions: list[CaptionItemSpec] | None = None,
 ) -> RenderResult:
     if not clips:
         raise ApiError(422, "NO_CLIPS", "Render requires at least one clip")
 
-    filter_complex, expected_duration = build_transition_graph(clips, list(transitions), settings)
     ffmpeg = check_binary(config, "ffmpeg")
     job_id = uuid.uuid4().hex
+    caption_items = list(captions or [])
+    ass_path: Path | None = None
+    if caption_items:
+        ass_path = _write_ass_file(config, caption_items, settings, job_id)
+
+    filter_complex, expected_duration = build_transition_graph(clips, list(transitions), settings)
+    if ass_path is not None:
+        escaped = str(ass_path).replace("\\", "/").replace(":", "\\:").replace("'", "\\'")
+        filter_complex = filter_complex.replace(
+            "[vout]", f"[vout];[vout]ass='{escaped}'[voutc]"
+        )
+        final_label = "[voutc]"
+    else:
+        final_label = "[vout]"
+
     config.renders_dir.mkdir(parents=True, exist_ok=True)
     config.uploads_dir.mkdir(parents=True, exist_ok=True)
     out_path = config.renders_dir / f"{job_id}.mp4"
@@ -356,7 +382,7 @@ def render(
 
     cmd += [
         "-filter_complex", filter_complex,
-        "-map", "[vout]",
+        "-map", final_label,
         "-r", str(settings.fps),
         "-pix_fmt", "yuv420p",
         "-c:v", "libx264",
