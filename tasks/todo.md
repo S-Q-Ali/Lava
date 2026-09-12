@@ -62,8 +62,19 @@
 ## M4 open
 - [ ] Retention-oriented heuristics (measurable only, no viral claims) — dimensions to be defined in M5+ planning
 
-## Next milestone — M5 Caption engine (not started)
-- [ ] Draft `SPEC-caption-engine.md` → plan → todo slices (multilingual ASR already shippable from M3)
+## M5 — Caption engine (in progress)
+- [x] Capability map approved + committed (`9851231`)
+### Module 1 — caption-core (in progress)
+- [ ] Slice 1: caption model + constants + clamps + `isCaption`
+- [ ] Slice 2: `segmentCaptions` generation from transcript
+- [ ] Slice 3: edit ops (text/timing/remove/validate)
+- [ ] Slice 4: `TimelineModel.captions` + project round-trip
+- [ ] Slice 5: store state + actions (override-first generate, one undo)
+- [ ] Slice 6: docs (D-020, SESSION_LOG 13) + graphify + regression
+### Modules 2–4 (not started)
+- [ ] caption-styles — preset catalog
+- [ ] caption-render — backend ASS burn-in
+- [ ] caption-ui — CaptionPanel + timeline blocks
 
 ## Milestones 6–10 (not started)
 - M6 Template/font system · M7 Manhwa extractor · M8 Integrated editor · M9 Hardware validation · M10 Release hardening
