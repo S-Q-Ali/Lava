@@ -20,10 +20,33 @@ export interface RenderResult {
   sizeBytes: number | null
 }
 
+export interface RenderCaptionStyle {
+  fontFamily: string
+  fontSize: number
+  primaryColor: string
+  highlightColor: string
+  outlineColor: string
+  outlineWidth: number
+  bold: boolean
+  uppercase: boolean
+  alignment: 'bottom' | 'middle' | 'top'
+  rtl?: boolean
+  karaoke?: boolean
+}
+
+export interface RenderCaption {
+  start: number
+  duration: number
+  text: string
+  style: RenderCaptionStyle
+  words?: Array<{ word: string; start: number; end: number }>
+}
+
 export interface RenderInput {
   files: File[]
   clips: RenderClipInput[]
   settings: RenderSettings
+  captions?: RenderCaption[]
 }
 
 export interface FFmpegProvider {
@@ -106,6 +129,9 @@ export class HttpFFmpegProvider implements FFmpegProvider {
       'settings',
       JSON.stringify({ width: input.settings.width, height: input.settings.height, fps: input.settings.fps }),
     )
+    if (input.captions && input.captions.length > 0) {
+      form.append('captions', JSON.stringify(input.captions))
+    }
 
     const res = await fetch(`${this.baseUrl}/api/render`, {
       method: 'POST',

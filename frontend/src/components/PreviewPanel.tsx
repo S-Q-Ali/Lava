@@ -3,6 +3,7 @@ import { useEditorStore } from '../store/editorStore'
 import { clipsAtTime } from '../editor/ops'
 import { getAssetFile } from '../media/importer'
 import { getFFmpegProvider, type RenderClipInput } from '../services/ffmpeg'
+import { captionsRenderPayload } from './CaptionPanel'
 
 function formatTime(t: number): string {
   const m = Math.floor(t / 60)
@@ -85,10 +86,12 @@ export default function PreviewPanel() {
 
     setRendering(true)
     try {
+      const captions = captionsRenderPayload(useEditorStore.getState().captions)
       const result = await provider.render({
         files,
         clips: renderClips,
         settings: { width: Math.min(width, 1920), height: Math.min(height, 1080), fps: 30 },
+        captions,
       })
       setRenderUrl(provider.fileUrl(result.jobId))
     } catch (err) {

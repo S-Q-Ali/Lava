@@ -8,6 +8,7 @@ export default function TimelinePanel() {
   const clips = useEditorStore((s) => s.clips)
   const assets = useEditorStore((s) => s.assets)
   const playhead = useEditorStore((s) => s.playhead)
+  const captions = useEditorStore((s) => s.captions)
   const duration = Math.max(projectDuration(clips), playhead, 10)
 
   const durationByAsset: Record<string, number | undefined> = {}
@@ -47,6 +48,7 @@ export default function TimelinePanel() {
               track={t}
               clips={tracks.length ? clips.filter((c) => c.trackId === t.id) : []}
               durationByAsset={durationByAsset}
+              captions={t.id === 'track-captions' ? captions : []}
             />
           ))}
           <div
