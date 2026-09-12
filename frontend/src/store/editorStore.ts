@@ -3,6 +3,13 @@ import { temporal } from 'zundo'
 import type { Asset, Clip, TimelineModel, Transcript, Track } from '../editor/types'
 import { DEFAULT_TRACKS } from '../editor/types'
 import * as ops from '../editor/ops'
+import {
+  evaluateTransitions,
+  overrideTransition as patchTransition,
+  removeTransition as omitTransition,
+  validateTransitions,
+} from '../editor/transitions'
+import type { Transition, TransitionType } from '../editor/transitions'
 
 export interface MatchClipInput {
   trackId: string
@@ -20,6 +27,8 @@ interface EditorBase {
   clips: Clip[]
   playhead: number
   selectedClipId: string | null
+  selectedTransitionId: string | null
+  transitions: Transition[]
   transcripts: Record<string, Transcript>
 }
 
@@ -38,6 +47,11 @@ interface EditorActions {
   updateTranscriptWord(assetId: string, segmentId: number, wordIndex: number, text: string): void
   setPlayhead(t: number): void
   selectClip(id: string | null): void
+  setSelectedTransitionId(id: string | null): void
+  suggestTransitions(): void
+  overrideTransition(id: string, type: TransitionType, duration?: number): void
+  removeTransition(id: string): void
+  resolveInvalidTransitions(): void
   undo(): void
   redo(): void
   reset(): void
@@ -53,6 +67,8 @@ function initialState(): EditorBase {
     clips: [],
     playhead: 0,
     selectedClipId: null,
+    selectedTransitionId: null,
+    transitions: [],
     transcripts: {},
   }
 }
@@ -102,6 +118,39 @@ export const useEditorStore = create<EditorState>()(
         set((s) => ({ clips: ops.replaceClipAsset(s.clips, id, assetId) })),
       setPlayhead: (t) => set({ playhead: t }),
       selectClip: (id) => set({ selectedClipId: id }),
+      setSelectedTransitionId: (id) => set({ selectedTransitionId: id }),
+      suggestTransitions: () =>
+        set((s) => {
+          const manual = s.transitions.filter((t) => t.source === 'manual')
+          const manualPairs = new Set(
+            manual
+              .filter((t) => t.kind === 'between')
+              .map((t) => (t.kind === 'between' ? `${t.clipAId}→${t.clipBId}` : '')),
+          )
+          const fresh = evaluateTransitions(s.clips).filter(
+            (t) => !manualPairs.has(`${t.clipAId}→${t.clipBId}`),
+          )
+          return { transitions: [...manual, ...fresh] }
+        }),
+      overrideTransition: (id, type, duration) =>
+        set((s) => ({
+          transitions: s.transitions.map((t) =>
+            t.id === id && t.kind === 'between'
+              ? patchTransition(t, type, duration)
+              : t,
+          ),
+        })),
+      removeTransition: (id) =>
+        set((s) => ({ transitions: omitTransition(s.transitions, id) })),
+      resolveInvalidTransitions: () =>
+        set((s) => {
+          const invalid = new Set(
+            s.transitions
+              .filter((t) => validateTransitions(s.clips, [t]).length > 0)
+              .map((t) => t.id),
+          )
+          return { transitions: s.transitions.filter((t) => !invalid.has(t.id)) }
+        }),
       setTranscript: (assetId, transcript) =>
         set((s) => ({ transcripts: { ...s.transcripts, [assetId]: transcript } })),
       updateTranscriptWord: (assetId, segmentId, wordIndex, text) =>
@@ -148,6 +197,8 @@ export const useEditorStore = create<EditorState>()(
           clips: model.clips,
           playhead: model.playhead,
           selectedClipId: model.selectedClipId,
+          selectedTransitionId: null,
+          transitions: model.transitions ?? [],
           transcripts: model.transcripts ?? {},
         }),
       }
@@ -159,12 +210,14 @@ export const useEditorStore = create<EditorState>()(
         assets: s.assets,
         clips: s.clips,
         transcripts: s.transcripts,
+        transitions: s.transitions,
       }),
       equality: (prev, next) =>
         prev.tracks === next.tracks &&
         prev.assets === next.assets &&
         prev.clips === next.clips &&
-        prev.transcripts === next.transcripts,
+        prev.transcripts === next.transcripts &&
+        prev.transitions === next.transitions,
     },
   ),
 )
