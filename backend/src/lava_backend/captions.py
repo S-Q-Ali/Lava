@@ -16,6 +16,9 @@ class CaptionError(ValueError):
     """Raised when caption items or their style are malformed."""
 
 
+ANIMATIONS = ("none", "kinetic", "manga", "cinematic", "meme", "storytelling")
+
+
 @dataclass(frozen=True)
 class CaptionStyleSpec:
     font_name: str = "Arial"
@@ -29,6 +32,7 @@ class CaptionStyleSpec:
     alignment: str = "bottom"
     rtl: bool = False
     karaoke: bool = False
+    animation: str = "none"
 
     @staticmethod
     def from_wire(raw: Any) -> "CaptionStyleSpec":
@@ -40,6 +44,11 @@ class CaptionStyleSpec:
         alignment = raw.get("alignment", "bottom")
         if alignment not in ("bottom", "middle", "top"):
             raise CaptionError("Caption style alignment must be bottom, middle or top.")
+        animation = raw.get("animation", "none")
+        if animation not in ANIMATIONS:
+            raise CaptionError(
+                "Caption style animation must be one of: " + ", ".join(ANIMATIONS) + "."
+            )
         outline_width = raw.get("outlineWidth", 2)
         if not isinstance(outline_width, (int, float)) or outline_width < 0:
             raise CaptionError("Caption style outlineWidth must be a non-negative number.")
@@ -61,6 +70,7 @@ class CaptionStyleSpec:
             alignment=alignment,
             rtl=bool(raw.get("rtl", False)),
             karaoke=bool(raw.get("karaoke", False)),
+            animation=animation,
         )
 
 
@@ -165,6 +175,49 @@ def _karaoke_text(item: CaptionItemSpec) -> str:
     return "".join(parts)
 
 
+_POP_DURATION_MS = 300
+
+# ASS inline tags are braces; double them so only {d}/{pop} are format fields.
+_KINETIC_WRAP = (
+    "{{alpha&HFF&}}{{fscx0\\fscy0\\t({d},{pop},1,\\alpha&H00&\\fscx100\\fscy100)}}"
+)
+
+
+def _kinetic_word_tokens(item: CaptionItemSpec, uppercase: bool) -> list[tuple[str, int]]:
+    """Return (word, relative_ms) pairs for the kinetic treatment."""
+    if item.words:
+        return [
+            (w.word.upper() if uppercase else w.word, int(round((w.start - item.start) * 1000)))
+            for w in item.words
+        ]
+    parts = item.text.split()
+    step = int(round(max(0.0, item.duration) * 1000)) // max(len(parts), 1)
+    return [(p.upper() if uppercase else p, i * step) for i, p in enumerate(parts)]
+
+
+_ANIMATION_WRAPPERS: dict[str, str] = {
+    "manga": "{{fscx200\\fscy200\\alpha&HFF&\\t(0,180,2,\\fscx100\\fscy100\\alpha&H00&)}}",
+    "cinematic": "{{fad(400,400)}}{{fscx96\\fscy96\\t(0,{dur_ms},1,\\fscx100\\fscy100)}}",
+    "meme": "{{fscx108\\fscy108\\t(0,60,1,\\fscx100\\fscy100)\\t(60,120,1,\\fscx106\\fscy106)\\t(120,180,1,\\fscx100\\fscy100)}}",
+    "storytelling": "{{fad(600,600)}}{{fscx98\\fscy98\\t(0,{dur_ms},1,\\fscx100\\fscy100)}}",
+}
+
+
+def _animate_line(item: CaptionItemSpec, text: str, style: "CaptionStyleSpec") -> str:
+    """Wrap the (already escaped) text in animation inline tags."""
+    animation = style.animation
+    if animation == "none":
+        return text
+    if animation == "kinetic":
+        parts: list[str] = []
+        for word, d in _kinetic_word_tokens(item, style.uppercase):
+            wrapped = _KINETIC_WRAP.format(d=d, pop=d + _POP_DURATION_MS)
+            parts.append(wrapped + _escape_text(word))
+        return " ".join(parts)
+    template = _ANIMATION_WRAPPERS[animation]
+    return template.format(dur_ms=int(round(item.duration * 1000))) + text
+
+
 def _escape_text(text: str) -> str:
     return html.escape(text, quote=False).replace("\n", "\\N")
 
@@ -175,6 +228,8 @@ def build_dialogue_line(item: CaptionItemSpec) -> str:
     if style.karaoke and item.words:
         text = _karaoke_text(item)
     text = _escape_text(text)
+    if style.animation != "none" and not (style.karaoke and item.words):
+        text = _animate_line(item, text, style)
     if style.rtl:
         text = "{\\rtl}" + text
     start = ass_time(item.start)

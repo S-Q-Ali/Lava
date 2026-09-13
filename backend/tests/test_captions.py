@@ -166,3 +166,77 @@ class TestDocument:
     def test_malformed_word_raises(self):
         with pytest.raises(CaptionError):
             parse_captions([item(words=[{"word": "x"}])])
+
+
+class TestAnimation:
+    def test_invalid_animation_rejected(self):
+        with pytest.raises(CaptionError):
+            parse_captions([item(style=style(animation="fly-in"))])
+
+    def test_unknown_animation_defaults_none(self):
+        parsed = make_item()
+        assert parsed.style.animation == "none"
+
+    def test_none_adds_no_tags(self):
+        line = build_dialogue_line(make_item())
+        assert "\\t(" not in line
+        assert "\\fad(" not in line
+        assert line.endswith("Warm sunsets")
+
+    def test_kinetic_uses_word_timing(self):
+        raw = item(
+            style=style(animation="kinetic"),
+            words=[
+                {"word": "Warm", "start": 0.0, "end": 0.6},
+                {"word": "sunsets", "start": 0.6, "end": 2.0},
+            ],
+        )
+        line = build_dialogue_line(parse_captions([raw])[0])
+        assert (
+            "{alpha&HFF&}{fscx0\\fscy0\\t(0,300,1,\\alpha&H00&\\fscx100\\fscy100)}Warm "
+            "{alpha&HFF&}{fscx0\\fscy0\\t(600,900,1,\\alpha&H00&\\fscx100\\fscy100)}sunsets"
+        ) in line
+
+    def test_kinetic_falls_back_to_even_split(self):
+        line = build_dialogue_line(make_item(style=style(animation="kinetic")))
+        assert "\\t(0,300,1,\\alpha&H00&\\fscx100\\fscy100)}Warm " in line
+        assert "\\t(1000,1300,1,\\alpha&H00&\\fscx100\\fscy100)}sunsets" in line
+
+    def test_kinetic_uppercases_words_when_flag_set(self):
+        raw = item(
+            style=style(animation="kinetic", uppercase=True),
+            words=[{"word": "Warm", "start": 0.0, "end": 1.0}, {"word": "sunsets", "start": 1.0, "end": 2.0}],
+        )
+        assert "}WARM " in build_dialogue_line(parse_captions([raw])[0])
+
+    def test_manga_impact_pop_render(self):
+        line = build_dialogue_line(make_item(style=style(animation="manga")))
+        assert "{fscx200\\fscy200\\alpha&HFF&\\t(0,180,2,\\fscx100\\fscy100\\alpha&H00&)}Warm sunsets" in line
+
+    def test_cinematic_fade_and_scale(self):
+        line = build_dialogue_line(make_item(style=style(animation="cinematic")))
+        assert "{fad(400,400)}{fscx96\\fscy96\\t(0,2000,1,\\fscx100\\fscy100)}Warm sunsets" in line
+
+    def test_meme_wobble_ramps(self):
+        line = build_dialogue_line(make_item(style=style(animation="meme")))
+        assert (
+            "{fscx108\\fscy108\\t(0,60,1,\\fscx100\\fscy100)\\t(60,120,1,\\fscx106\\fscy106)\\t(120,180,1,\\fscx100\\fscy100)}Warm sunsets"
+        ) in line
+
+    def test_storytelling_gentle_fade(self):
+        line = build_dialogue_line(make_item(style=style(animation="storytelling")))
+        assert "{fad(600,600)}{fscx98\\fscy98\\t(0,2000,1,\\fscx100\\fscy100)}Warm sunsets" in line
+
+    def test_karaoke_wins_over_animation(self):
+        raw = item(
+            style=style(animation="kinetic", karaoke=True),
+            words=[{"word": "Warm", "start": 0.0, "end": 0.5}, {"word": "sunsets", "start": 0.5, "end": 2.0}],
+        )
+        line = build_dialogue_line(parse_captions([raw])[0])
+        assert "{\\k50}Warm{\\k150}sunsets" in line
+        assert "\\fscx" not in line
+
+    def test_rtl_wraps_around_animation(self):
+        raw = item(text="سلام", style=style(animation="manga", rtl=True))
+        line = build_dialogue_line(parse_captions([raw])[0])
+        assert "{\\rtl}{fscx200" in line
