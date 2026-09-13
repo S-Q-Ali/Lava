@@ -394,3 +394,44 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
   cross-id moves).
 - **Status**: Locked for M6 module 4 `template-editor` (shipped). Remaining M6:
   `animated-captions` (module 5) and the preset/render license-metadata row.
+
+### D-025 — Animated captions: named treatments as text-level ASS tag recipes; pixel-space frame effects deferred to M8
+
+- **Date**: 2026-09-13
+- **WHAT**: Module 5 adds five named caption animation treatments — `kinetic`
+  (per-word alpha+scale reveal using the voice pipeline's `words[]` offsets,
+  even-split fallback), `manga` (impact punch: 200%→100% scale + alpha fade
+  over ~180 ms), `cinematic` (`{\fad(400,400)}` + 96%→100% scale over the line),
+  `meme` (three non-overlapping scale ramps ~180 ms for a punch/wobble) and
+  `storytelling` (`{\fad(600,600)}` + 98%→100%) — all emitted as deterministic
+  libass inline tags in the pure backend generator (`captions.py`), plus
+  `animation` on the caption-style contract, the `Preset` schema (enum
+  validation, import/export round-trip), the `PresetDraft`, and the render
+  wire. The four M5 presets named after the families (`manga`, `cinematic`,
+  `meme`, `storytelling`) carry matching treatments; all other presets default
+  to `none`. `karaoke` retains precedence over animation; rtl wraps outside.
+- **WHY**: PRODUCT_SPEC/AGENTS mandate editable, non-slop treatment support;
+  M6 success criteria list five treatments that must render "via libass tags".
+  Because the ASS generator is the single render face (byte-parity tests, M5
+  parity), treatments live there as pure recipes rather than in the editor;
+  per-word timing rides the existing `words[]` structure, so no new timing UI
+  is needed (M6 open question 3 default).
+- **HOW**: `captions.py` (`ANIMATIONS`, `_kinetic_word_tokens`,
+  `_ANIMATION_WRAPPERS`, `_animate_line`; 12 tests), `preset_registry.py`
+  (`Preset.animation`, enum validation; 3 new + 1 extended), `captionStyles.ts`
+  (`CaptionAnimation`/`ANIMATION_OPTIONS`/annotations; 2 tests), `presets.ts`
+  (parse passthrough; 1 test), `CaptionPanel` wire (1 test),
+  `templateEditor.ts` + `TemplateEditorPanel` (2 tests). Backend 211 → 227,
+  frontend 244 → 250. Commits: `3423d00` (spec+plan+todo) · `56fc907` (ASS
+  recipes) · `0e7b717` (Preset schema) · `acce8cb` (frontend model+wire) ·
+  `60d7bfd` (draft+panel).
+- **Alternatives considered**: true pixel-space manga "speed lines" and
+  cinematic letterbox bars via `{\p}` vector drawing (rejected — the text ASS
+  generator cannot measure resolved glyph placement, quality would be
+  guesswork; recorded as deferred to the M8 preview overlay, which owns
+  pixel-space preview); per-caption animation overrides vs style-level
+  (style-level — matches preset-as-style architecture, D-022/D-024);
+  animation applied in the editor preview (deferred — motion preview is M8).
+- **Status**: Locked for M6 module 5 `animated-captions` (shipped). Remaining
+  M6: the preset/render license-metadata row; M6 animation gap notes
+  (speed lines, letterbox, motion preview) ride into M8.

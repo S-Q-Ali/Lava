@@ -129,6 +129,12 @@ Pipeline: ASR → timestamps → sentence/phrase segmentation → word timestamp
 - **Overwrite API** — `PUT /api/presets/{id}` updates a preset in place: custom-only (built-in → `403 BUILTIN_PRESET`), missing → 404, payload id must equal the path id (else 422 `PRESET_INVALID`), full import validation (incl. the font `licenseRef` gate). `presetStore.savePreset` POSTs when a preset id is unknown and PUTs when it exists.
 - **TemplateEditorPanel** — Inspector section: base preset select (default `normal`), label/description, font family text + imported-font picker, size / colors / outline / alignment, the eight M5 flag toggles (bold, uppercase, RTL, emoji, karaoke, word highlight, important-word pop, punctuation), a live CSS preview, Save-as-new (label-gated) and Overwrite (custom bases only).
 - **Render-path fix** — caption→wire/`captionsRenderPayload` now resolve a caption's preset `styleId` through the preset store before burn-in (previously fell back to `normal`), and the CaptionPanel style select lists custom presets with the M5 styles first.
+- *Remaining M6*: license metadata, animated caption treatments.
+
+**Shipped (M6 module 5 `animated-captions`):**
+- **Treatments** — five named animations generated as deterministic libass inline tags in the pure backend ASS generator: `kinetic` (per-word alpha+scale reveal riding the voice pipeline's `words[]` timing, even-split fallback), `manga` (impact punch: 200%→100% scale + alpha fade over ~180 ms), `cinematic` (`{\fad(400,400)}` + slow scale), `meme` (three ~180 ms scale ramps for a punch/wobble) and `storytelling` (`{\fad(600,600)}` + gentle scale).
+- **Contract** — `animation` (enum: `none|kinetic|manga|cinematic|meme|storytelling`) flows through the caption style, the `Preset` schema (backend enum validation + import/export round-trip), the `PresetDraft` editor model, and the render wire. The four M5 presets named after the families carry their matching treatment; everything else defaults to `none`. Karaoke keeps precedence; RTL wraps outside the animation.
+- **Editor** — TemplateEditorPanel gains an Animation control (None + the five treatments). Motion preview of animations is M8 (preview overlay); true manga speed-lines and cinematic letterbox bars are recorded as M8 follow-ups since they need pixel-space drawing the text ASS generator can't measure.
 
 ## 7. Manhwa / Webtoon Extractor
 

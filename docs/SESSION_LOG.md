@@ -917,3 +917,63 @@ fields via casts. Docs D-024 + ROADMAP tick + FEATURES block.
 - Push M6 module 4 (4 commits) on user go-ahead. Next M6 module:
   `animated-captions` (animated caption treatments), then close the M6
   license-metadata row.
+
+## Session 18 — M6 module 5 `animated-captions` (ASS treatments + contract)
+
+### WHAT
+Added five named caption animation treatments generated entirely as libass
+inline tags in the pure backend ASS generator, selectable through the existing
+style/preset/editor surfaces.
+
+- Backend `captions.py` — `ANIMATIONS`, `CaptionStyleSpec.animation`
+  (validated enum, default `none`), `_kinetic_word_tokens` (per-word relative
+  ms from `words[]`, even-split fallback), per-treatment inline wrappers
+  (kinetic per-word alpha+scale reveal; manga impact punch; cinematic
+  `{\fad}` + slow scale; meme wobble ramps; storytelling gentle fade+scale),
+  `_animate_line` applied after escaping (so `&H00&`/`&HFF&` survive), karaoke
+  precedence, rtl wraps outside. 12 byte-exact tests.
+- Backend `preset_registry.py` — `Preset.animation: str = "none"` + enum
+  validation; import/export round-trips it (backends 211 → 227).
+- Frontend — `CaptionAnimation` + `ANIMATION_OPTIONS` + `isCaptionAnimation`;
+  M5 `manga`/`cinematic`/`meme`/`storytelling` annotated; `parsePreset`
+  passthrough (invalid → `none`), `captionStyleFromPreset` inherits via spread,
+  `captionToWire` emits `animation`; `PresetDraft.animation` round-trip;
+  TemplateEditorPanel Animation select. Frontend 244 → 250.
+
+### HOW
+RED first per slice (12 backend tests for recipes, 3+1 preset schema, 4
+frontend, 2 panel). The ASS-brace trap: inline tags contain `{`/`}` which
+`.format()` reads as fields — wrapped in `{{`/`}}` so only numeric
+`{d}/{pop}/{dur_ms}` placeholders survive; and kinetic words need explicit
+space joining since tokens already end in the closed tag. `&H..&` must be
+inserted *after* HTML escaping. Docs D-025 + ROADMAP tick (6th row) + FEATURES.
+
+### Decisions
+- D-025 — text-level ASS recipes are the render face for animations; true
+  manga speed-lines and cinematic letterbox bars (pixel-space `{\p}` drawing)
+  and the motion preview are deferred to M8 preview overlay; animation is a
+  style/preset property (per-word timing rides existing `words[]`); karaoke
+  keeps precedence.
+- M2 legacy: keep `animation` out of hook default (no invented behavior) —
+  only the four name-matching M5 presets carry treatments; users add kinetic
+  via the template editor.
+
+### Verify
+- Backend: `uv run pytest` 227 passed (223 → 227 after preset schema slice).
+- Frontend: `npx vitest run` 250 passed (244 → 250: +2 styles, +1 presets,
+  +1 wire, +1 draft, +1 panel). `npm run build` ok, `npm run lint` 0 errors.
+- Commits: `3423d00` · `56fc907` · `0e7b717` · `acce8cb` · `60d7bfd` + this
+  docs/graph commit.
+
+### Limitations
+- "Manga" is impact-punch, "cinematic" is fade+scale — no speed lines or
+  letterbox bars (needs pixel-space drawing; M8 follow-up).
+- No motion preview in the panel/timeline (M8 preview overlay owns it).
+- Kinetic words ride `words[]`; a manual per-word timing editor is timeline
+  work (out of M6 scope).
+- `hook` stayed `none`; kinetic-by-default hooks are a future preset idea, not
+  an inferred behavior.
+
+### Next step
+- Push M6 module 5 (5 commits) on user go-ahead. Then close the last M6 row:
+  preset/render license metadata tracking; M6 is complete.
