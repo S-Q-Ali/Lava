@@ -142,4 +142,10 @@ Build order: panel-model → panel-detection → panel-order → panel-export �
 ### Module 4: panel-export (SPEC-panel-export.md, tasks/plan-panel-export.md)
 - [x] Task 1 (slice 1): crop_panel + encode_panel (PNG lossless / JPG quality) — pure RED→GREEN
 - [x] Task 2 (slice 2): manifest_rows + materialize_export (guard integration, ordered 1..n)
-- [ ] Task 3 (slice 3): docs D-030/ROADMAP/FEATURES/SESSION_LOG 23 + graphify + regression + push go-ahead
+- [x] Task 3 (slice 3): docs D-030/ROADMAP/FEATURES/SESSION_LOG 23 + graphify + regression + push go-ahead
+
+### Module 5: panel-correction (SPEC-panel-correction.md, tasks/plan-panel-correction.md)
+- [ ] Task 1 (slice 1): validate_layout + normalize_layout (order-preserving) + guard refactor
+- [ ] Task 2 (slice 2): split_panel / merge_panels / delete_panel
+- [ ] Task 3 (slice 3): adjust_panel / add_panel / reorder_panels / redetect
+- [ ] Task 4 (slice 4): export honors panel.order + docs D-031/ROADMAP/FEATURES/SESSION_LOG 24 + graphify + regression + push go-ahead
