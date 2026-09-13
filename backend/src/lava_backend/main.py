@@ -28,6 +28,7 @@ from .fonts import (
     save_registry,
     validate_font_bytes,
 )
+from .preset_registry import load_registry as load_preset_registry
 from .matching import Matcher, router as matching_router
 from .media import (
     IMAGE_SUFFIXES,
@@ -364,3 +365,10 @@ def delete_font(font_id: str):
     else:
         _font_registry_path(config).unlink(missing_ok=True)
     return Response(status_code=204)
+
+
+@app.get(f"{API_V1}/presets")
+def list_presets():
+    config = get_config()
+    path = Path(config.presets_dir) / "registry.json"
+    return [p.__dict__ for p in load_preset_registry(path)]
