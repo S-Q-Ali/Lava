@@ -138,3 +138,8 @@ Build order: panel-model → panel-detection → panel-order → panel-export �
 - [x] Task 1 (slice 1): order_panels + attribute_confidence + guard_layout (+ _boxes_overlap) — pure RED→GREEN
 - [x] Task 2 (slice 2): detect.build_panels delegates (single source of truth) + identity tests
 - [x] Task 3 (slice 3): docs D-029/ROADMAP/FEATURES/SESSION_LOG 22 + graphify + regression + push go-ahead
+
+### Module 4: panel-export (SPEC-panel-export.md, tasks/plan-panel-export.md)
+- [ ] Task 1 (slice 1): crop_panel + encode_panel (PNG lossless / JPG quality) — pure RED→GREEN
+- [ ] Task 2 (slice 2): manifest_rows + materialize_export (guard integration, ordered 1..n)
+- [ ] Task 3 (slice 3): docs D-030/ROADMAP/FEATURES/SESSION_LOG 23 + graphify + regression + push go-ahead
