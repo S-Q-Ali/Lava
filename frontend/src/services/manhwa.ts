@@ -230,7 +230,7 @@ export async function deleteStrip(baseUrl: string, sourceId: string): Promise<bo
   }
   if (!response.ok) {
     const body = await response.json().catch(() => null)
-    const error = asRecord(body as Record<string, unknown>)?.error
+    const error = asRecord(asRecord(body as Record<string, unknown>)?.error)
     throw new ManhwaError(
       error && typeof error.code === 'string' ? error.code : `HTTP ${response.status}`,
       error && typeof error.message === 'string' ? error.message : `Deleting the strip failed (HTTP ${response.status}).`,
