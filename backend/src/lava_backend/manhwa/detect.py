@@ -19,12 +19,25 @@ multiple signals — never one threshold.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from pathlib import Path
+from typing import Any
 
 import cv2
 import numpy as np
 from PIL import Image
 
-from lava_backend.manhwa.panels import analysis_scale
+from lava_backend.manhwa.errors import ManhwaError
+from lava_backend.manhwa.panels import (
+    Panel,
+    StripRegistry,
+    analysis_scale,
+    asset_name,
+    boxes_from_cuts,
+    make_panel,
+    map_cut_to_source,
+    panel_to_dict,
+    validate_panels,
+)
 
 DEFAULT_MAX_WIDTH = 512
 CONTENT_EPS = 0.03          # row "empty" if foreground coverage < 3%
@@ -185,3 +198,134 @@ def detect_cuts(features: RowFeatures, h: int) -> list[Cut]:
         cuts.append(Cut(y=(band.start + band.end) // 2, confidence=band.confidence, kind=band.kind))
     cuts.extend(rescue)
     return merge_slivers(cuts, h)
+
+
+def build_panels(
+    cuts: list[Cut],
+    *,
+    source_id: str,
+    src_w: int,
+    src_h: int,
+    ana_w: int,
+    ana_h: int,
+) -> list[Panel]:
+    """Convert analysis-space cuts into seam-free source-space incident panels.
+
+    Cut lines are mapped once through `map_cut_to_source`; `boxes_from_cuts`
+    derives each panel box from consecutive mapped lines, so boxes tile
+    without gaps or overlap (regardless of rounding). A panel's confidence is
+    the worst of its two bounding cuts; source edges count as certainty.
+    """
+    lines = [(0, 1.0)]
+    lines += sorted((map_cut_to_source(c.y, src_h=src_h, ana_h=ana_h), c.confidence) for c in cuts)
+    lines += [(src_h, 1.0)]
+    panels: list[Panel] = []
+    for (top, top_conf), (bottom, bottom_conf) in zip(lines, lines[1:]):
+        if bottom <= top:  # rounding collapsed adjacent cuts
+            continue
+        x, y, w, h = boxes_from_cuts(top, bottom, left=0, right=src_w)
+        panels.append(
+            make_panel(
+                id=f"p{len(panels) + 1}",
+                source_id=source_id,
+                x=x,
+                y=y,
+                w=w,
+                h=h,
+                order=len(panels) + 1,
+                source_w=src_w,
+                source_h=src_h,
+                confidence=min(top_conf, bottom_conf),
+            )
+        )
+    validate_panels(panels)
+    return panels
+
+
+def detect_strip(
+    source: str | Path | Image.Image,
+    *,
+    source_id: str,
+    save: bool = True,
+    cache_dir: str | Path | None = None,
+) -> dict[str, Any]:
+    """Detect panels in a vertical strip; optionally persist crops + registry.
+
+    The strip must be single-column (taller than wide). Analysis runs at
+    ≤ 512 px; the returned boxes and saved crops are at original resolution.
+    `save=True` writes `cache/manhwa/<source_id>/panel_*.png` and a flat JSON
+    registry; reruns overwrite cleanly (git-clean, no silent edits).
+    """
+    image, mime, source_file = _open_source(source)
+    src_w, src_h = image.size
+    if src_w > src_h:
+        raise ManhwaError(
+            f"panel detection requires a vertical strip; got {src_w}x{src_h}. "
+            "Multi-column/multi-panel pages are a later milestone (see ROADMAP)."
+        )
+    gray, ana_w, ana_h, factor = load_analysis_image(image)
+    cuts = detect_cuts(row_features(gray), ana_h)
+    panels = build_panels(
+        cuts,
+        source_id=source_id,
+        src_w=src_w,
+        src_h=src_h,
+        ana_w=ana_w,
+        ana_h=ana_h,
+    )
+    result: dict[str, Any] = {
+        "sourceId": source_id,
+        "sourceFile": source_file,
+        "width": src_w,
+        "height": src_h,
+        "mime": mime,
+        "analysis": {
+            "anaW": ana_w,
+            "anaH": ana_h,
+            "factor": factor,
+            "cuts": [
+                {"y": c.y, "confidence": c.confidence, "kind": c.kind}
+                for c in cuts
+            ],
+        },
+        "panels": [panel_to_dict(p) for p in panels],
+        "saved": bool(save),
+        "cachePath": None,
+    }
+    if save:
+        if cache_dir is None:
+            raise ValueError("cache_dir is required when save=True")
+        base = Path(cache_dir) / "manhwa" / source_id
+        base.mkdir(parents=True, exist_ok=True)
+        for panel in panels:
+            crop = image.crop((panel.x, panel.y, panel.x + panel.w, panel.y + panel.h))
+            crop.save(base / asset_name(panel.order, len(panels)), format="PNG")
+        StripRegistry(
+            path=base / "registry.json",
+            source_id=source_id,
+            source_file=source_file,
+            width=src_w,
+            height=src_h,
+            mime=mime,
+            panels=panels,
+        ).save()
+        result["cachePath"] = str(base)
+    return result
+
+
+def _open_source(source: str | Path | Image.Image) -> tuple[Image.Image, str, str]:
+    """Return (RGB image, mime, source file name); unreadable → ManhwaError."""
+    if isinstance(source, Image.Image):
+        image = source.convert("RGB") if source.mode != "RGB" else source
+        return image, (source.format or "png").lower(), str(source.filename or "image")
+    path = Path(source)
+    try:
+        with Image.open(path) as probe:
+            probe.verify()
+        image = Image.open(path)
+        image.load()
+    except (OSError, ValueError) as exc:
+        raise ManhwaError(f"can't read image {path}: {exc}") from exc
+    mime = (image.format or path.suffix.lstrip(".").lower()).lower()
+    image = image.convert("RGB") if image.mode != "RGB" else image
+    return image, mime, path.name

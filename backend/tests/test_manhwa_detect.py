@@ -1,22 +1,34 @@
-"""M7 module 2 slice 1: analysis image, row features, clean-gutter cuts."""
+"""M7 module 2 slice 3: cut → source mapping, panel building, strip detection."""
 
 from __future__ import annotations
 
+from io import BytesIO
+
 import pytest
+from PIL import Image
 
 from manhwa_strips import AVAILABLE, StripFixture
 
 from lava_backend.manhwa.detect import (
     CLEAN_CUT_CONF,
     RESCUE_CUT_CONF,
-    RowFeatures,
     Cut,
+    RowFeatures,
+    build_panels,
     detect_cuts,
+    detect_strip,
     load_analysis_image,
     merge_slivers,
     row_features,
 )
-from lava_backend.manhwa.panels import analysis_scale
+from lava_backend.manhwa.errors import ManhwaError
+from lava_backend.manhwa.panels import (
+    StripRegistry,
+    analysis_scale,
+    asset_name,
+    map_cut_to_source,
+    panel_to_dict,
+)
 
 TOL = 2  # analysis px
 
@@ -150,3 +162,134 @@ class TestSliverMerge:
         assert len(cuts) == 1
         assert cuts[0].kind == "clean"
         assert cuts[0].y in (187, 209)
+
+
+class TestBuildPanels:
+    def test_no_cuts_single_full_panel(self) -> None:
+        panels = build_panels(
+            [],
+            source_id="s1",
+            src_w=360,
+            src_h=720,
+            ana_w=360,
+            ana_h=720,
+        )
+        assert len(panels) == 1
+        assert panels[0].id == "p1"
+        assert panels[0].x == 0 and panels[0].y == 0
+        assert (panels[0].w, panels[0].h) == (360, 720)
+        assert panels[0].confidence == 1.0
+        assert panels[0].order == 1
+        assert not panels[0].user_corrected
+
+    def test_identity_cuts_seam_free_ordered(self) -> None:
+        cuts = [Cut(y=180, confidence=0.95, kind="clean"), Cut(y=360, confidence=0.95, kind="clean")]
+        panels = build_panels(cuts, source_id="s1", src_w=360, src_h=720, ana_w=360, ana_h=720)
+        assert [(p.x, p.y, p.w, p.h) for p in panels] == [
+            (0, 0, 360, 180),
+            (0, 180, 360, 180),
+            (0, 360, 360, 360),
+        ]
+        assert [p.id for p in panels] == ["p1", "p2", "p3"]
+        assert [p.order for p in panels] == [1, 2, 3]
+        assert all(not p.user_corrected for p in panels)
+        for a, b in zip(panels, panels[1:]):
+            assert a.y + a.h == b.y  # seam-free tiling
+
+    def test_scaled_cuts_map_via_bilinear_anchor(self) -> None:
+        src_w, src_h = 806, 774
+        ana_w, ana_h, _ = analysis_scale(src_w, src_h, max_width=512)
+        cuts = [Cut(y=122, confidence=0.95, kind="clean"), Cut(y=246, confidence=0.95, kind="clean")]
+        panels = build_panels(cuts, source_id="s1", src_w=src_w, src_h=src_h, ana_w=ana_w, ana_h=ana_h)
+        expected = [0] + [map_cut_to_source(c.y, src_h=src_h, ana_h=ana_h) for c in cuts]
+        assert [p.y for p in panels] == expected
+        assert panels[-1].y + panels[-1].h == src_h
+        assert sum(p.h for p in panels) == src_h
+        assert all(p.w == src_w for p in panels)
+
+    def test_confidence_takes_min_of_bounding_cuts(self) -> None:
+        cuts = [
+            Cut(y=180, confidence=0.95, kind="clean"),
+            Cut(y=360, confidence=0.35, kind="rescue"),
+        ]
+        panels = build_panels(cuts, source_id="s1", src_w=360, src_h=720, ana_w=360, ana_h=720)
+        assert [p.confidence for p in panels] == [pytest.approx(0.95), pytest.approx(0.35), pytest.approx(0.35)]
+
+    def test_out_of_order_cuts_are_sorted(self) -> None:
+        cuts = [Cut(y=360, confidence=0.95, kind="clean"), Cut(y=180, confidence=0.95, kind="clean")]
+        panels = build_panels(cuts, source_id="s1", src_w=360, src_h=720, ana_w=360, ana_h=720)
+        assert [p.y for p in panels] == [0, 180, 360]
+        assert [p.order for p in panels] == [1, 2, 3]
+
+    def test_duplicate_mapped_lines_are_skipped(self) -> None:
+        cuts = [Cut(y=0, confidence=0.95, kind="clean"), Cut(y=1, confidence=0.35, kind="rescue")]
+        panels = build_panels(cuts, source_id="s1", src_w=360, src_h=720, ana_w=360, ana_h=720)
+        assert [p.order for p in panels] == sorted(p.order for p in panels)
+        assert all(p.h > 0 for p in panels)
+
+
+class TestDetectStrip:
+    def _save_fixture(self, name: str, tmp_path) -> tuple[Image.Image, StripFixture, str]:
+        fixture = AVAILABLE[name]()
+        path = tmp_path / f"{name}.png"
+        fixture.image.save(path)
+        return fixture.image, fixture, str(path)
+
+    def test_detects_and_saves_full_strip(self, tmp_path) -> None:
+        image, fixture, path = self._save_fixture("clean_white", tmp_path)
+        result = detect_strip(path, source_id="src_white", save=True, cache_dir=tmp_path)
+        assert result["saved"] is True
+        assert result["sourceId"] == "src_white"
+        assert result["width"] == fixture.src_w
+        assert result["height"] == fixture.src_h
+        assert result["mime"] == "png"
+        panels = result["panels"]
+        assert len(panels) == len(fixture.src_cuts) + 1
+        assert panels[0]["y"] == 0
+        sum_h = sum(p["h"] for p in panels)
+        assert sum_h == fixture.src_h
+        assert all(p["x"] == 0 and p["w"] == fixture.src_w for p in panels)
+        assert [p["order"] for p in panels] == list(range(1, len(panels) + 1))
+        assert all(p["confidence"] == pytest.approx(CLEAN_CUT_CONF) for p in panels)
+        base = tmp_path / "manhwa" / "src_white"
+        registry_path = base / "registry.json"
+        registry = StripRegistry.load(registry_path)
+        assert registry.source_id == "src_white"
+        assert [(p.x, p.y, p.w, p.h) for p in registry.panels] == [
+            (p["x"], p["y"], p["w"], p["h"]) for p in panels
+        ]
+        for p in panels:
+            crop_name = asset_name(p["order"], len(panels))
+            crop = Image.open(base / crop_name)
+            assert crop.size == (p["w"], p["h"]), crop.size
+        assert result["cachePath"] == str(base)
+
+    def test_rerun_is_idempotent(self, tmp_path) -> None:
+        _, fixture, path = self._save_fixture("clean_white", tmp_path)
+        first = detect_strip(path, source_id="src_white", save=True, cache_dir=tmp_path)
+        second = detect_strip(path, source_id="src_white", save=True, cache_dir=tmp_path)
+        assert first["panels"] == second["panels"]
+
+    def test_save_false_writes_nothing(self, tmp_path) -> None:
+        _, fixture, path = self._save_fixture("clean_white", tmp_path)
+        result = detect_strip(path, source_id="src_white", save=False, cache_dir=tmp_path)
+        assert result["saved"] is False
+        assert not (tmp_path / "manhwa").exists()
+        assert len(result["panels"]) == 4
+
+    def test_non_vertical_strip_rejected(self, tmp_path) -> None:
+        source = Image.new("RGB", (400, 200), (60, 60, 60))
+        path = tmp_path / "landscape.png"
+        source.save(path)
+        with pytest.raises(ManhwaError, match="vertical"):
+            detect_strip(path, source_id="s1", save=False, cache_dir=tmp_path)
+
+    def test_unreadable_file_raises_manhwa_error(self, tmp_path) -> None:
+        path = tmp_path / "trash.png"
+        path.write_bytes(b"not an image at all" * 4)
+        with pytest.raises(ManhwaError, match="read image"):
+            detect_strip(path, source_id="s1", save=False, cache_dir=tmp_path)
+
+    def test_missing_file_raises_manhwa_error(self, tmp_path) -> None:
+        with pytest.raises(ManhwaError, match="read image"):
+            detect_strip(tmp_path / "nope.png", source_id="s1", save=False, cache_dir=tmp_path)
