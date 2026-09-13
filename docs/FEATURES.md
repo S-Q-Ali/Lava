@@ -168,6 +168,11 @@ Pipeline: ASR → timestamps → sentence/phrase segmentation → word timestamp
 - **Confidence attribution** — `attribute_confidence` sets each panel to the worst of its two bounding boundary confidences (source edges certain); detection, correction and the API all share this one rule.
 - **Layout guard** — `guard_layout` rejects empty lists, duplicate ids, positive-area overlaps and interleaved regions (`ManhwaError`), normalizing to a valid ordered list; touching/adjacent tiling is fine, gaps after Delete are legal.
 
+**Shipped (M7 module 4 `panel-export`):**
+- **Original-resolution export** — full ROI crops straight from the source strip (never resampled); PNG lossless by default, JPEG at configurable quality 1..100.
+- **Manifest** — every export carries rows of `{file, id, order, x/y/w/h, width/height, confidence}` in 1..n reading order; `panel_###` naming is asset-stable (module 1), suffix swaps with format.
+- **Guard-normalized bundles** — the panel list is passed through `guard_layout` before export, so corrected/salvaged registries export cleanly; empty/overlapping layouts fail loudly rather than emitting garbage files.
+
 ## 8. Editor / Timeline
 
 Tracks: Video, Image, Voice, Music, SFX, Captions, Text/Overlay.

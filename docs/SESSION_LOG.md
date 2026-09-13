@@ -1270,3 +1270,66 @@ on arbitrary test-tuning and hard-coded "it works on this image" assertions.
   commits ahead: `70f419f`, `5c116c4`, `afc5338` + slice-3 docs). Then module
   4 `panel-export`: full-resolution PNG (lossless default) / JPG crops +
   manifest + export materialization per the M7 capability map.
+
+## Session 23 — M7 module 4 `panel-export` (full-res crops + manifest)
+
+### WHAT
+- Delivered module 4 `panel-export` in one coherent slice (the pure image-op
+  and bundle layers split naturally but pair too tightly to warrant two
+  commits): original-resolution crop → PNG/JPG encode → guard-normalized
+  bundle + manifest. Backend 330 → 344 (14 export tests). Pushed module 3 on
+  go-ahead (`5848a85` spec/plan/todo, `3bd11d5` implementation).
+- Commits: `5848a85` spec/plan/todo · `3bd11d5` slices 1+2 (export.py +
+  14 tests) · (slice 3 docs committed with this entry).
+
+### HOW
+- `crop_panel(source, panel)` — `Image.crop` over the model-clamped box;
+  original resolution preserved, no resampling.
+- `encode_panel(image, fmt, quality)` — PNG via Pillow (lossless, bit-identical
+  on round-trip); JPEG at integer quality 1..100 (`ValueError` outside);
+  non-RGB images flattened to RGB for JPEG only; PNG ignores quality.
+- `_export_name` — reuses module 1 `asset_name` (`panel_###.png`, zero-padded
+  by total) and swaps the suffix per format, keeping `id_for_asset` inversions
+  valid for `.png`.
+- `manifest_rows` — one row per panel: file, id, order, x/y/w/h,
+  width/height, confidence.
+- `materialize_export` — `guard_layout` first (module 3, D-029 payoff: any
+  corrected/salvaged ordering normalizes before shipping), then crop+encode
+  each panel; returns `ExportBundle{fmt, manifest, files}`.
+- Tests proved, on a real fixture: exports tile the strip at original
+  resolution and the final panel reaches the source's bottom edge.
+
+### WHY
+- Export is a contract: module 6 (`manhwa-api`) must stream exactly what the
+  user sees in the editor. Eager detection crops are a cache (stale after
+  correction edits, PNG-only, evictable); export regenerates from the source
+  so format, quality and corrected boxes are always honest. Keeping it pure
+  and deterministic defers all I/O/HTTP to the API boundary.
+
+### Files
+- `backend/src/lava_backend/manhwa/export.py` (new, ~110 lines):
+  `_export_name`, `crop_panel`, `encode_panel`, `manifest_rows`,
+  `materialize_export`, `ExportFile`, `ExportBundle`; `JPG_QUALITY_DEFAULT`.
+- `backend/tests/test_manhwa_export.py` (new): 14 tests across crop/encode/
+  manifest/materialize/real-strip.
+- Docs: D-030, ROADMAP (module 4 ✅, status para), FEATURES §7 block,
+  SESSION_LOG 23, CONSTRAINTS measured row → 344, todo ticks.
+
+### Verification
+- `uv run pytest tests/test_manhwa_export.py` → 14 passed.
+- `uv run pytest` (full backend) → 344 passed; 9 warnings (2 pre-existing
+  Starlette/anyio deprecations; 7 Pillow `Image.getdata` deprecations, removed
+  in Pillow 14 — tests use the module-1 call style; not suppressed).
+
+### Limitations
+- No zip/archive, no HTTP yet (module 6 `manhwa-api` owns the boundary —
+  zip + streaming + asset serving land there).
+- JPEG is lossy by definition; quality 92 default is the only knob.
+- No EXIF stripping/attachment; not needed for panels but noted.
+- Manifest is regenerated per export; no persisted sidecar yet.
+
+### Next step
+- Push M7 modules 3–4 on user go-ahead (2 commits + this docs entry ahead:
+  `5848a85`, `3bd11d5`, docs). Then module 5 `panel-correction`: Split, Merge,
+  Crop, Delete, Add and Reorder operations against the registry, each
+  re-guarded + re-exportable per the M7 capability map.

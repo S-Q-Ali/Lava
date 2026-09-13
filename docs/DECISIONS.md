@@ -577,3 +577,34 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
   ManhwaError layout violations).
 - **Status**: Locked for M7 module 3 `panel-order` (shipped, backend 330).
   Next: module 4 `panel-export`.
+
+## D-030 — Export is a pure materialization layer; naming asset-stable
+
+- **WHAT**: M7 module 4 `panel-export` owns full-resolution crop + encode +
+  manifest, and nothing else. `crop_panel` slices the original strip's box
+  (never resampled), `encode_panel` produces PNG (lossless default) or JPEG
+  (quality 1..100; non-RGB images flattened to RGB for JPEG only), and
+  `materialize_export` normalizes the panel list through `guard_layout`
+  (module 3) before cropping so files + manifest are always a clean 1..n
+  reading order — regardless of how the list arrived (correction edits,
+  re-detection, salvage after a crash).
+- **WHY**: Detection eager-crops per-panel PNGs to a cache, but exports must
+  survive cache eviction, format switches (JPG), corrected boxes, and be the
+  single honest record of "what the user asked for". Keeping export a pure,
+  deterministic function of (source image, panel list, format) means module 6
+  (`manhwa-api`) just streams the bundle and can never silently ship stale
+  crops.
+- **HOW**: File naming is asset-stable: the module-1 `asset_name(id, total)`
+  zero-padded `panel_###.png` scheme is kept and the suffix swapped per format
+  (`_export_name`), so `id_for_asset` inversions still hold for `.png`.
+  `ExportBundle{fmt, manifest, files}` pairs each file with its manifest row
+  (`file`, `id`, `order`, `x/y/w/h`, `width/height`, `confidence`).
+  Backend 330 → 344 (14 export tests; real-fixture test proves crops tile the
+  last panel to source bottom edge at original resolution).
+- **Alternatives considered**: reusing the eager detection cache for exports
+  (rejected — stale after correction, PNG-only, cache can be cleared); zipping
+  inside this module (deferred to module 6 which owns the HTTP boundary);
+  resizing panels to a fixed grid (rejected — export must preserve original
+  resolution per product rules).
+- **Status**: Locked for M7 module 4 `panel-export` (shipped, backend 344).
+  Next: module 5 `panel-correction`.
