@@ -31,6 +31,8 @@ class Config:
     models_dir: Path
     clip_dir: Path
     clip_multilingual_dir: Path
+    fonts_dir: Path
+    presets_dir: Path
     max_renders: int = 12
 
     @classmethod
@@ -57,6 +59,8 @@ class Config:
             models_dir=root / "models" / "whisper",
             clip_dir=root / "models" / "clip",
             clip_multilingual_dir=root / "models" / "clip-multilingual",
+            fonts_dir=root / "fonts",
+            presets_dir=root / "presets",
         )
 
 
