@@ -1,13 +1,16 @@
 import { useEditorStore } from './store/editorStore'
 import { useShallow } from 'zustand/react/shallow'
 import MediaPanel from './components/MediaPanel'
+import ManhwaPanel from './components/ManhwaPanel'
 import PreviewPanel from './components/PreviewPanel'
 import InspectorPanel from './components/InspectorPanel'
 import TimelinePanel from './components/timeline/TimelinePanel'
 import { getFFmpegProvider } from './services/ffmpeg'
 import { saveProjectToFile, readProjectFromFile } from './services/projectIO'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import './App.css'
+
+type LeftTab = 'media' | 'manhwa'
 
 function App() {
   const clips = useEditorStore((s) => s.clips)
@@ -15,6 +18,7 @@ function App() {
   const redo = useEditorStore((s) => s.redo)
   const loadProject = useEditorStore((s) => s.loadProject)
   const openProjectInputRef = useRef<HTMLInputElement>(null)
+  const [leftTab, setLeftTab] = useState<LeftTab>('media')
 
   const handleExport = async () => {
     const provider = await getFFmpegProvider()
@@ -80,7 +84,23 @@ function App() {
       </header>
       <div className="workspace">
         <aside className="left-panel">
-          <MediaPanel />
+          <div className="left-tabs">
+            <button
+              type="button"
+              className={`left-tab${leftTab === 'media' ? ' active' : ''}`}
+              onClick={() => setLeftTab('media')}
+            >
+              Media
+            </button>
+            <button
+              type="button"
+              className={`left-tab${leftTab === 'manhwa' ? ' active' : ''}`}
+              onClick={() => setLeftTab('manhwa')}
+            >
+              Manhwa
+            </button>
+          </div>
+          {leftTab === 'media' ? <MediaPanel /> : <ManhwaPanel />}
         </aside>
         <main className="center-panel">
           <PreviewPanel />

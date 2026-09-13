@@ -1337,3 +1337,343 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+/* Left rail tabs (Media | Manhwa) */
+.left-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.left-tab {
+  flex: 1;
+  background: var(--panel-2);
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.left-tab.active {
+  background: var(--accent-soft);
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+/* Manhwa panel */
+.manhwa-panel {
+  border: none;
+  font-size: 13px;
+}
+
+.manhwa-error {
+  margin: 0 0 8px;
+  color: var(--danger, #c0392b);
+}
+
+.manhwa-empty {
+  margin: 0;
+  color: var(--text-dim);
+}
+
+.manhwa-dropzone {
+  border: 1px dashed var(--border);
+  border-radius: 4px;
+  padding: 12px;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.manhwa-dropzone.drag-over {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.manhwa-dropzone button {
+  background: var(--accent-soft);
+  color: var(--text);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  margin-bottom: 4px;
+}
+
+.manhwa-drop-hint {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 11px;
+}
+
+.manhwa-strip-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.manhwa-strip-list h4 {
+  font-size: 11px;
+  margin: 0;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.manhwa-strip-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.manhwa-strip-row.selected {
+  border-color: var(--accent);
+}
+
+.manhwa-strip-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.manhwa-strip-name {
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.manhwa-strip-meta {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.manhwa-strip-delete {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.manhwa-strip-delete:hover {
+  color: var(--danger, #c0392b);
+}
+
+.manhwa-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.manhwa-detail-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.manhwa-detail-head h4 {
+  font-size: 11px;
+  margin: 0;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.manhwa-detail-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.manhwa-detail-actions button {
+  background: var(--accent-soft);
+  color: var(--text);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.manhwa-source-preview {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  max-height: 200px;
+}
+
+.manhwa-source-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.manhwa-panel-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.manhwa-panel-row {
+  display: flex;
+  gap: 8px;
+  padding: 6px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.manhwa-panel-row.user-corrected {
+  border-color: var(--accent);
+}
+
+.manhwa-panel-thumb {
+  width: 48px;
+  height: 48px;
+  flex: none;
+  background: var(--bg);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.manhwa-panel-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.manhwa-panel-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.manhwa-panel-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.manhwa-panel-number {
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.manhwa-panel-confidence {
+  font-variant-numeric: tabular-nums;
+  font-size: 11px;
+  color: var(--track-image);
+}
+
+.manhwa-panel-confidence.low {
+  color: var(--danger, #c0392b);
+}
+
+.manhwa-panel-badge {
+  font-size: 9px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+  padding: 0 4px;
+}
+
+.manhwa-panel-actions {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.manhwa-panel-actions button {
+  background: transparent;
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.manhwa-panel-actions button:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.manhwa-adjust-inputs {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.manhwa-adjust-inputs label {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.manhwa-adjust-inputs input {
+  width: 48px;
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 4px;
+  font-size: 11px;
+}
+
+.manhwa-export {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  border-top: 1px solid var(--border);
+  padding-top: 8px;
+}
+
+.manhwa-export label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+.manhwa-export select {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 12px;
+}
+
+.manhwa-export button {
+  background: var(--accent-soft);
+  color: var(--text);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  padding: 3px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.manhwa-export-success {
+  margin: 4px 0 0;
+  color: var(--track-image);
+  font-size: 11px;
+}

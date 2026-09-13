@@ -24,9 +24,9 @@
     "semantic_hash": ""
   },
   "frontend/src/App.tsx": {
-    "mtime": 1789216151.90879,
-    "seen": 1789217496.846805,
-    "ast_hash": "e0bf76adcf982ac9ddf69a6301abb402",
+    "mtime": 1789337681.582469,
+    "seen": 1789338028.978724,
+    "ast_hash": "a0d4986c088c2b9d78a9691092a2450d",
     "semantic_hash": ""
   },
   "frontend/src/components/InspectorPanel.tsx": {
@@ -366,9 +366,9 @@
     "semantic_hash": ""
   },
   "docs/ROADMAP.md": {
-    "mtime": 1789334293.43284,
-    "seen": 1789334359.971491,
-    "ast_hash": "6d566bf48c46418c4ed3e0a6fcaf24bc",
+    "mtime": 1789337878.3799124,
+    "seen": 1789338028.979351,
+    "ast_hash": "5bbffa2b84e0cb7686d3b97386db8a00",
     "semantic_hash": ""
   },
   "docs/SESSION_LOG.md": {
@@ -510,9 +510,9 @@
     "semantic_hash": ""
   },
   "tasks/todo.md": {
-    "mtime": 1789334318.718807,
-    "seen": 1789334359.971576,
-    "ast_hash": "ff23d6d36f737c24632099adc981652d",
+    "mtime": 1789334792.28793,
+    "seen": 1789338028.979527,
+    "ast_hash": "6ffd3e27974aafbd87d18bc6b08d8a74",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/transcribe.py": {
@@ -1317,6 +1317,54 @@
     "mtime": 1789333625.3158677,
     "seen": 1789334359.971552,
     "ast_hash": "ad982123e735fd10a77747cd05afbd31",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/ManhwaPanel.test.tsx": {
+    "mtime": 1789337601.213283,
+    "seen": 1789338028.978772,
+    "ast_hash": "9d7cd6ce99d4d476c1830a1eea1f204a",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/ManhwaPanel.tsx": {
+    "mtime": 1789337507.0585527,
+    "seen": 1789338028.9787788,
+    "ast_hash": "e954986d46c2922a3bc2cda182fbe27d",
+    "semantic_hash": ""
+  },
+  "frontend/src/services/manhwa.test.ts": {
+    "mtime": 1789337117.2313495,
+    "seen": 1789338028.979093,
+    "ast_hash": "99a9e861f0da9c2aa8c1daa5f41288d3",
+    "semantic_hash": ""
+  },
+  "frontend/src/services/manhwa.ts": {
+    "mtime": 1789337100.946034,
+    "seen": 1789338028.9791,
+    "ast_hash": "53c15ac20ab96b1697fc4ee44e4d3055",
+    "semantic_hash": ""
+  },
+  "frontend/src/store/manhwaStore.test.ts": {
+    "mtime": 1789337198.6193466,
+    "seen": 1789338028.9791691,
+    "ast_hash": "04275f6b039abeae446eb19c12472945",
+    "semantic_hash": ""
+  },
+  "frontend/src/store/manhwaStore.ts": {
+    "mtime": 1789337151.421095,
+    "seen": 1789338028.979178,
+    "ast_hash": "8776eb764e3286b94b84a7cf564cd126",
+    "semantic_hash": ""
+  },
+  "docs/SPEC-m7-panel-ui.md": {
+    "mtime": 1789334769.3889282,
+    "seen": 1789338028.979382,
+    "ast_hash": "84a9b366745aaa2fe1c5c7ba12d51fd4",
+    "semantic_hash": ""
+  },
+  "tasks/plan-manhwa-ui.md": {
+    "mtime": 1789334784.3776114,
+    "seen": 1789338028.9794922,
+    "ast_hash": "ddb5440ee3e8566cf2346b3a3f12d58d",
     "semantic_hash": ""
   }
 }

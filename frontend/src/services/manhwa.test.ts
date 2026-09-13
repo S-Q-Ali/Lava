@@ -1,188 +1,172 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
-  ManhwaError,
-  applyCorrection,
+  listStrips,
+  uploadStrip,
+  getStrip,
+  correctStrip,
+  redetectStrip,
   deleteStrip,
   exportUrl,
-  getStrip,
-  listStrips,
-  manhwaBase,
-  parseDetectResult,
-  parseStripDetailList,
-  parseStripSummaryList,
-  panelUrl,
-  redetectStrip,
-  sourceUrl,
-  uploadStrip,
+  panelImageUrl,
+  sourceImageUrl,
+  ManhwaError,
+  type ManhwaStripSummary,
+  type ManhwaStripDetail,
 } from './manhwa'
+
+const stripSummary: ManhwaStripSummary = {
+  sourceId: 'sabc123',
+  sourceFile: 'strip.png',
+  width: 800,
+  height: 2400,
+  mime: 'image/png',
+  panelCount: 3,
+  correctedCount: 1,
+}
+
+const stripDetail: ManhwaStripDetail = {
+  sourceId: 'sabc123',
+  sourceFile: 'strip.png',
+  width: 800,
+  height: 2400,
+  mime: 'image/png',
+  panels: [
+    {
+      id: 'p1',
+      sourceId: 'sabc123',
+      x: 0,
+      y: 0,
+      w: 800,
+      h: 800,
+      confidence: 0.95,
+      order: 1,
+      userCorrected: false,
+    },
+    {
+      id: 'p2',
+      sourceId: 'sabc123',
+      x: 0,
+      y: 800,
+      w: 800,
+      h: 800,
+      confidence: 0.35,
+      order: 2,
+      userCorrected: true,
+    },
+  ],
+}
 
 function jsonResponse(body: unknown, ok = true, status = 200): Response {
   return { ok, status, json: async () => body } as Response
 }
 
-function errorResponse(code: string, message: string, status = 422): Response {
-  return jsonResponse({ error: { code, message } }, false, status)
-}
-
-afterEach(() => {
-  vi.unstubAllGlobals()
-})
-
-const summary = {
-  sourceId: 's1',
-  sourceFile: 'strip1.png',
-  width: 400,
-  height: 1200,
-  mime: 'png',
-  panelCount: 3,
-  correctedCount: 1,
-}
-
-const panel = {
-  id: 'p1',
-  sourceId: 's1',
-  x: 0,
-  y: 0,
-  w: 400,
-  h: 400,
-  confidence: 0.92,
-  order: 1,
-  userCorrected: false,
-}
-
-const detail = { ...summary, panels: [panel] }
-
-describe('manhwaBase', () => {
-  it('points at the /api/manhwa namespace of the sidecar', () => {
-    expect(manhwaBase('http://local:7860')).toBe('http://local:7860/api/manhwa')
-  })
-})
-
-describe('parsers', () => {
-  it('normalizes a strips summary list', () => {
-    const strips = parseStripSummaryList({ strips: [summary] })
-    expect(strips[0]).toMatchObject({
-      sourceId: 's1',
-      panelCount: 3,
-      correctedCount: 1,
-    })
-    expect(parseStripSummaryList({ strips: [] })).toEqual([])
+describe('manhwa service', () => {
+  beforeEach(() => {
+    vi.stubGlobal('fetch', vi.fn())
   })
 
-  it('rejects a list without a strips array', () => {
-    expect(() => parseStripSummaryList({ nope: 1 })).toThrow(ManhwaError)
+  afterEach(() => {
+    vi.unstubAllGlobals()
   })
 
-  it('normalizes a strip detail with panels', () => {
-    const parsed = parseStripDetailList(detail)
-    expect(parsed.sourceId).toBe('s1')
-    expect(parsed.panels[0]).toMatchObject({ id: 'p1', y: 0, confidence: 0.92, userCorrected: false })
+  it('listStrips parses a valid strips list', async () => {
+    vi.mocked(fetch).mockResolvedValue(jsonResponse({ strips: [stripSummary] }))
+    const result = await listStrips()
+    expect(result).toHaveLength(1)
+    expect(result[0].sourceId).toBe('sabc123')
+    expect(result[0].panelCount).toBe(3)
+    expect(result[0].correctedCount).toBe(1)
   })
 
-  it('passes through an empty panel list (reset)', () => {
-    expect(parseStripDetailList({ ...detail, panels: [] }).panels).toEqual([])
+  it('listStrips throws on unexpected shape', async () => {
+    vi.mocked(fetch).mockResolvedValue(jsonResponse({}))
+    await expect(listStrips()).rejects.toThrow(ManhwaError)
   })
 
-  it('parses an upload/detect result into a detail with panels', () => {
-    const result = {
-      sourceId: 's1',
-      sourceFile: 'strip1.png',
-      width: 400,
-      height: 1200,
-      mime: 'png',
-      panels: [panel],
-      saved: true,
-      cachePath: '/tmp/x',
-    }
-    const parsed = parseDetectResult(result)
-    expect(parsed.sourceId).toBe('s1')
-    expect(parsed.panels).toHaveLength(1)
-  })
-})
-
-describe('listStrips', () => {
-  it('GETs the strips collection', async () => {
-    const send = vi.fn((_url: string, _init?: RequestInit) => jsonResponse({ strips: [summary] }))
-    vi.stubGlobal('fetch', send)
-    const strips = await listStrips('http://local:7860')
-    expect(strips).toHaveLength(1)
-    expect(send.mock.calls[0][0]).toBe('http://local:7860/api/manhwa/strips')
-  })
-})
-
-describe('uploadStrip', () => {
-  it('POSTs the file as multipart and returns the detect result', async () => {
-    const send = vi.fn((_url: string, _init?: RequestInit) => jsonResponse({ ...detail, saved: true }, true, 201))
-    vi.stubGlobal('fetch', send)
+  it('uploadStrip sends multipart and parses detail', async () => {
+    vi.mocked(fetch).mockResolvedValue(jsonResponse(stripDetail))
     const file = new File(['x'], 'strip.png', { type: 'image/png' })
-    const result = await uploadStrip('http://local:7860', file)
-    expect(result.sourceId).toBe('s1')
-    const [url, init] = send.mock.calls[0] as [string, RequestInit]
-    expect(url).toBe('http://local:7860/api/manhwa/strips')
-    expect(init.method).toBe('POST')
-    expect(init.body).toBeInstanceOf(FormData)
+    const result = await uploadStrip(file)
+    expect(result.sourceId).toBe('sabc123')
+    expect(result.panels).toHaveLength(2)
+    const call = vi.mocked(fetch).mock.calls[0]
+    expect(call[1]?.method).toBe('POST')
+    expect(call[1]?.body).toBeInstanceOf(FormData)
   })
 
-  it('throws a typed error with the API code on failure', async () => {
-    vi.stubGlobal('fetch', vi.fn(() => errorResponse('MANHWA_DETECT_FAILED', 'panel detection failed: nope')))
-    const file = new File(['x'], 'bad.png', { type: 'image/png' })
-    const err = await uploadStrip('http://local:7860', file).catch((e) => e)
-    expect(err).toBeInstanceOf(ManhwaError)
-    expect((err as ManhwaError).code).toBe('MANHWA_DETECT_FAILED')
-    expect((err as ManhwaError).message).toContain('nope')
-  })
-})
-
-describe('getStrip and applyCorrection', () => {
-  it('GETs detail for a strip id', async () => {
-    const send = vi.fn((_url: string) => jsonResponse(detail))
-    vi.stubGlobal('fetch', send)
-    const parsed = await getStrip('http://local:7860', 's1')
-    expect(parsed.sourceId).toBe('s1')
-    expect(send.mock.calls[0][0]).toBe('http://local:7860/api/manhwa/strips/s1')
+  it('getStrip fetches and parses detail', async () => {
+    vi.mocked(fetch).mockResolvedValue(jsonResponse(stripDetail))
+    const result = await getStrip('sabc123')
+    expect(result.sourceId).toBe('sabc123')
+    expect(result.panels[0].confidence).toBe(0.95)
+    expect(result.panels[1].userCorrected).toBe(true)
   })
 
-  it('PATCHes an op and returns the updated detail', async () => {
-    const send = vi.fn((_url: string, _init?: RequestInit) => jsonResponse({ ...detail, panels: [panel, { ...panel, id: 'p2', y: 400, order: 2 }] }))
-    vi.stubGlobal('fetch', send)
-    const parsed = await applyCorrection('http://local:7860', 's1', { op: 'split', panelId: 'p1', y: 400 })
-    expect(parsed.panels).toHaveLength(2)
-    const [url, init] = send.mock.calls[0] as [string, RequestInit]
-    expect(url).toBe('http://local:7860/api/manhwa/strips/s1/panels')
-    expect(init.method).toBe('PATCH')
-    expect((init.body as string).length).toBeGreaterThan(0)
-  })
-})
-
-describe('redetectStrip', () => {
-  it('POSTs redetect and brings back fresh panels', async () => {
-    const send = vi.fn((_url: string, _init?: RequestInit) => jsonResponse({ ...detail, saved: true }))
-    vi.stubGlobal('fetch', send)
-    const result = await redetectStrip('http://local:7860', 's1')
-    expect(result.panels).toHaveLength(1)
-    expect(send.mock.calls[0][0]).toBe('http://local:7860/api/manhwa/strips/s1/redetect')
-  })
-})
-
-describe('deleteStrip', () => {
-  it('accepts a 204 and returns true', async () => {
-    const send = vi.fn((_url: string, _init?: RequestInit) => jsonResponse(null, true, 204))
-    vi.stubGlobal('fetch', send)
-    await expect(deleteStrip('http://local:7860', 's1')).resolves.toBe(true)
+  it('correctStrip sends PATCH with JSON op', async () => {
+    vi.mocked(fetch).mockResolvedValue(jsonResponse(stripDetail))
+    const result = await correctStrip('sabc123', { op: 'delete', panelId: 'p1' })
+    expect(result.sourceId).toBe('sabc123')
+    const call = vi.mocked(fetch).mock.calls[0]
+    expect(call[1]?.method).toBe('PATCH')
+    expect(JSON.parse(String(call[1]?.body))).toEqual({ op: 'delete', panelId: 'p1' })
   })
 
-  it('throws on missing strip', async () => {
-    vi.stubGlobal('fetch', vi.fn(() => errorResponse('NOT_FOUND', 'no manhwa strip', 404)))
-    await expect(deleteStrip('http://local:7860', 'nope')).rejects.toMatchObject({ code: 'NOT_FOUND' })
+  it('redetectStrip sends POST', async () => {
+    vi.mocked(fetch).mockResolvedValue(jsonResponse(stripDetail))
+    const result = await redetectStrip('sabc123')
+    expect(result.sourceId).toBe('sabc123')
+    expect(vi.mocked(fetch).mock.calls[0][1]?.method).toBe('POST')
   })
-})
 
-describe('asset urls', () => {
-  it('builds source, panel and export links', () => {
-    const base = manhwaBase('http://local:7860')
-    expect(sourceUrl(base, 's1')).toBe('http://local:7860/api/manhwa/strips/s1/source')
-    expect(panelUrl(base, 's1', 'p2')).toBe('http://local:7860/api/manhwa/strips/s1/panels/p2')
-    expect(exportUrl(base, 's1', 'png')).toBe('http://local:7860/api/manhwa/strips/s1/export?format=png')
-    expect(exportUrl(base, 's1', 'jpg')).toBe('http://local:7860/api/manhwa/strips/s1/export?format=jpg')
+  it('deleteStrip sends DELETE', async () => {
+    vi.mocked(fetch).mockResolvedValue({ ok: true, status: 204, json: async () => null } as Response)
+    await deleteStrip('sabc123')
+    expect(vi.mocked(fetch).mock.calls[0][1]?.method).toBe('DELETE')
+  })
+
+  it('exportUrl returns the correct URL', () => {
+    expect(exportUrl('sabc123')).toContain('/api/manhwa/strips/sabc123/export?format=png')
+    expect(exportUrl('sabc123', 'jpg')).toContain('format=jpg')
+  })
+
+  it('panelImageUrl returns the correct URL', () => {
+    expect(panelImageUrl('sabc123', 'p1')).toContain('/api/manhwa/strips/sabc123/panels/p1')
+  })
+
+  it('sourceImageUrl returns the correct URL', () => {
+    expect(sourceImageUrl('sabc123')).toContain('/api/manhwa/strips/sabc123/source')
+  })
+
+  it('throws ManhwaError with code on API error', async () => {
+    vi.mocked(fetch).mockResolvedValue(
+      jsonResponse({ error: { code: 'MANHWA_DETECT_FAILED', message: 'Detection failed.' } }, false, 422),
+    )
+    await expect(getStrip('sabc123')).rejects.toThrow(ManhwaError)
+    await expect(getStrip('sabc123')).rejects.toMatchObject({ code: 'MANHWA_DETECT_FAILED' })
+  })
+
+  it('parses panel with defaults for missing fields', async () => {
+    vi.mocked(fetch).mockResolvedValue(
+      jsonResponse({
+        sourceId: 'sabc123',
+        sourceFile: 'strip.png',
+        width: 800,
+        height: 2400,
+        mime: 'image/png',
+        panels: [{ id: 'p1' }],
+      }),
+    )
+    const result = await getStrip('sabc123')
+    expect(result.panels[0]).toEqual({
+      id: 'p1',
+      sourceId: '',
+      x: 0,
+      y: 0,
+      w: 0,
+      h: 0,
+      confidence: 0,
+      order: 0,
+      userCorrected: false,
+    })
   })
 })
