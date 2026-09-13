@@ -642,3 +642,31 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
   ad hoc in each op (rejected — single `validate_layout` source of truth).
 - **Status**: Locked for M7 module 5 `panel-correction` (shipped, backend 379).
   Next: module 6 `manhwa-api`.
+
+## D-032 — manhwa-api: storage/HTTP glue; registry is the single source of truth
+
+- **WHAT**: M7 module 6 `manhwa-api` — one APIRouter mounted at `/api/manhwa`
+  giving the last backend slice of the pipeline: multipart upload + auto-detect
+  (POST /strips → save original to `cache/backend/manhwa/<id>/source.<ext>`,
+  `detect_strip(save=True)` writes eager crops + registry), list/detail
+  metadata, correction ops (PATCH /strips/{id}/panels dispatching module 5),
+  single-panel PNG serving (regenerated from the original — never a stale
+  cache crop), original serving, re-detect, strip delete (204), and
+  PNG/JPG zip export (materialize_export + in-memory zip with `manifest.json`).
+- **WHY**: The editor (module 7) must not reason about CV or storage; it drives
+  one thin REST surface and the sidecar translates every failure into its
+  established `{error:{code,message}}` ApiError contract. Keeping all pure
+  logic in modules 1–5 and this module thin means corrected/re-detect/export
+  behavior cannot drift from what the unit tests proved.
+- **HOW**: source_id is `s` + uuid4 hex (`^[A-Za-z0-9_-]+$`, path-segment safe);
+  `manifest`/list metadata read the on-disk registry (module 1) which is the
+  only truth; correction ops mutate the registry in memory then `save()`
+  (atomic temp+rename, module 1); `ManhwaError`→422 (CORRECTION_FAILED/
+  MANHWA_DETECT_FAILED), `ValueError`→422 (CORRECTION_INVALID/INVALID_SOURCE_ID);
+  exports refuse empty layouts (module 4 guard). Backend → 404.
+- **Alternatives considered**: endpoints in `main.py` (rejected — modules stay
+  self-contained); using eager crops for serving (rejected — stale after
+  adjust/merge; regenerate from original); zipping via a temp file
+  (unnecessary — in-memory, sidecar stays local-first).
+- **Status**: Locked for M7 module 6 `manhwa-api` (shipped, backend 404).
+  M7 backend complete. Next: module 7 `panel-ui` (frontend).

@@ -1409,3 +1409,61 @@ on arbitrary test-tuning and hard-coded "it works on this image" assertions.
   `a8fb87a`, `64f8312`, `1445fe1`, `5f9940d` + docs). Then module 6
   `manhwa-api`: upload+detect, list/metadata, apply correction op, export
   (png/jpg), storage + asset serving.
+
+## Session 25 — M7 module 6 `manhwa-api` (backend complete)
+
+### WHAT
+- Shipped module 6: the full manhwa REST surface mounted at `/api/manhwa` —
+  upload+detect, list/detail, correction ops, panel/source serving, re-detect,
+  strip delete, PNG/JPG zip export. Backend 379 → 404. M7 backend done.
+- Commits: `8f433f5` spec/plan/todo · `bc5f7c8` router + tests (slices 1–3 in
+  one coherent implementation) · (docs entry committed with this record).
+
+### HOW
+- Router `backend/src/lava_backend/manhwa/api.py`: thin storage/HTTP glue over
+  modules 1–5. `strip_dir` guarded by `SOURCE_ID_RE` (path traversal +1);
+  upload saves `source.<ext>` under `cache/backend/manhwa/<id>/` then
+  `detect_strip(save=True)` (one pipeline, atomic registry + eager crops);
+  list/detail read the module-1 `StripRegistry` (single source of truth);
+  correction PATCH dispatches module-5 ops (`_apply_panels` + registry.save());
+  panel PNGs regenerated from the original via `crop_panel`+`encode_panel`
+  (never a stale crop); export = `materialize_export` → in-memory zip with
+  `manifest.json`; delete → whole-dir remove; re-detect → `detect_strip(save=True)`.
+  Every failure → ApiError (`ManhwaError`→422 CORRECTION_FAILED /
+  MANHWA_DETECT_FAILED, `ValueError`→422 CORRECTION_INVALID).
+- Mounted via `app.include_router(manhwa_router, prefix="/api/manhwa")`.
+
+### WHY
+- Module 7 (UI) deserves one stable REST contract; all rules stay in the pure
+  modules so the API cannot drift from unit-tested behavior. Registry is the
+  only truth; serving regenerates from the original so corrected/re-detected
+  panels always match what the user sees.
+
+### Files
+- `backend/src/lava_backend/manhwa/api.py` (new, ~250 lines).
+- `backend/src/lava_backend/main.py` (router import + mount).
+- `backend/tests/test_manhwa_api.py` (new, 25 tests) — fixture replaces
+  `Config.load` (Config hardcodes `cache_dir` and ignores JSON overrides, so a
+  `_payload` monkeypatch would not isolate storage).
+- Docs: D-032, ROADMAP (module 6 ✅, M7 backend complete, status para),
+  FEATURES §7 block, SESSION_LOG 25, CONSTRAINTS row → 404, todo ticks.
+
+### Verification
+- `uv run pytest tests/test_manhwa_api.py` → 25 passed (temp cache, real
+  cache untouched).
+- `uv run pytest` (full backend) → 404 passed, 10 warnings (pre-existing
+  Starlette/anyio + Pillow getdata deprecations).
+
+### Limitations
+- No thumbnails/previews at reduced scale (UI concern, module 7 may add an
+  optional `?max_h=` param later).
+- No auth/external storage (local sidecar by design).
+- Upload detection is eager/synchronous; very tall strips are the norm, so
+  this is acceptable locally (≤512 analysis keeps it fast).
+- `manhwa_path` layout fixed under cache; no per-project override knob.
+
+### Next step
+- Push M7 backend on user go-ahead (2 commits ahead: `8f433f5`, `bc5f7c8` +
+  docs). Then module 7 `panel-ui` (frontend): long-strip drop, detection
+  review (preview + number + confidence), correction actions + drag reorder,
+  export download — the last M7 module.

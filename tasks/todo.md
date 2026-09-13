@@ -151,7 +151,7 @@ Build order: panel-model → panel-detection → panel-order → panel-export �
 - [x] Task 4 (slice 4): export honors panel.order + docs D-031/ROADMAP/FEATURES/SESSION_LOG 24 + graphify + regression + push go-ahead
 
 ### Module 6: manhwa-api (SPEC-manhwa-api.md, tasks/plan-manhwa-api.md)
-- [ ] Task 1 (slice 1): storage helpers + GET strips / detail / source
-- [ ] Task 2 (slice 2): POST upload+detect / panel serve / DELETE / redetect / reset
-- [ ] Task 3 (slice 3): PATCH correction ops + GET export (zip)
-- [ ] Task 4 (slice 4): docs D-032/ROADMAP M7 backend done/FEATURES/SESSION_LOG 25 + graphify + regression + push go-ahead
+- [x] Task 1 (slice 1): storage helpers + GET strips / detail / source
+- [x] Task 2 (slice 2): POST upload+detect / panel serve / DELETE / redetect / reset
+- [x] Task 3 (slice 3): PATCH correction ops + GET export (zip)
+- [x] Task 4 (slice 4): docs D-032/ROADMAP M7 backend done/FEATURES/SESSION_LOG 25 + graphify + regression + push go-ahead

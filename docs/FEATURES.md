@@ -177,6 +177,10 @@ Pipeline: ASR → timestamps → sentence/phrase segmentation → word timestamp
 - **Pure correction ops** — Split (top half keeps id, fresh `pN` bottom id, both inherit confidence and are marked user-corrected), Merge with next/previous (union box keeps first id, confidence = min), Adjust bounds (must stay in source and stay disjoint), Delete (renumbers; may produce an empty registry), Add (fresh id, confidence 1.0, insert after a chosen panel), Reorder (exact id permutation reshapes the sequence), Re-detect and Reset.
 - **User intent is the final word** — every op leaves the original image untouched, keeps ids stable, sets `user_corrected=True` on what changed, and normalizes through `normalize_layout` (same validity rules as the detection guard, but sequence-preserving). Export now sorts on the `order` field, so a reorder/insert actually changes output.
 
+**Shipped (M7 module 6 `manhwa-api`):**
+- **REST surface** at `/api/manhwa` — multipart upload+auto-detect (stores the original + eager crops + registry project-locally), strip list/detail (confidence, order, userCorrected), correction ops via PATCH (split/merge/adjust/delete/add/reorder/reset, each persisted to the registry), re-detect, strip delete, and PNG/JPG zip export with a `manifest.json`.
+- **Always the original** — panel PNGs are regenerated from the original at full resolution (never a stale cache crop); exports refuse empty layouts; every failure maps to the sidecar's `{error:{code,message}}` contract.
+
 ## 8. Editor / Timeline
 
 Tracks: Video, Image, Voice, Music, SFX, Captions, Text/Overlay.
