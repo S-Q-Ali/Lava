@@ -115,3 +115,9 @@
 - [x] Task 3 (slice 3): frontend CaptionAnimation + M5 preset annotations + parsePreset/captionStyleFromPreset/captionToWire passthrough
 - [x] Task 4 (slice 4): PresetDraft.animation + TemplateEditorPanel Animation select + tests
 - [x] Task 5 (slice 5): docs D-025/ROADMAP/FEATURES/SESSION_LOG 18 + graphify + regression + push go-ahead
+
+## M6 — Module 6: license-tracking (SPEC-license-tracking.md, tasks/plan-license-tracking.md)
+- [ ] Task 1 (slice 1): backend licensing.py resolver (used-font descriptors + violations) — RED unit tests
+- [ ] Task 2 (slice 2): render endpoint guard (422 FONT_LICENSE) + RenderResult.fonts — RED API tests
+- [ ] Task 3 (slice 3): frontend RenderResult.fonts + RenderCaptionStyle.animation + PresetPanel badge title
+- [ ] Task 4 (slice 4): docs D-026/ROADMAP M6 complete/FEATURES/SESSION_LOG 19 + graphify + regression + push go-ahead
