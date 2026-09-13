@@ -155,3 +155,11 @@ Build order: panel-model → panel-detection → panel-order → panel-export �
 - [x] Task 2 (slice 2): POST upload+detect / panel serve / DELETE / redetect / reset
 - [x] Task 3 (slice 3): PATCH correction ops + GET export (zip)
 - [x] Task 4 (slice 4): docs D-032/ROADMAP M7 backend done/FEATURES/SESSION_LOG 25 + graphify + regression + push go-ahead
+
+### Module 7: panel-ui (SPEC-m7-panel-ui.md, tasks/plan-manhwa-ui.md)
+- [ ] Task 1 (slice 1): services/manhwa.ts + tests
+- [ ] Task 2 (slice 2): store/manhwaStore.ts + tests
+- [ ] Task 3 (slice 3): ManhwaPanel review (drop/list/detail/previews/confidence)
+- [ ] Task 4 (slice 4): ManhwaPanel actions (split/merge/crop/delete/add/reorder/redetect/reset/export)
+- [ ] Task 5 (slice 5): App left-rail tabs + CSS
+- [ ] Task 6 (slice 6): docs D-033/ROADMAP M7 complete/SESSION_LOG 26 + graphify + regression + push go-ahead
