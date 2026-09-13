@@ -126,4 +126,4 @@
 Build order: panel-model → panel-detection → panel-order → panel-export → panel-correction → manhwa-api → panel-ui
 
 ### Module 1: panel-model (SPEC-panel-model.md, tasks/plan-panel-model.md)
-- [ ] Task 1 (slice 1): Panel model + bounds math + analysis↔source scaling + zero-padded asset naming + StripRegistry (atomic save/load/reset, corrupt → ManhwaError) — RED unit tests
+- [x] Task 1 (slice 1): Panel model + bounds math + analysis↔source scaling + zero-padded asset naming + StripRegistry (atomic save/load/reset, corrupt → ManhwaError) — RED unit tests → 38 green, backend 283
