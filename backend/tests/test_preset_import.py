@@ -94,6 +94,19 @@ def test_import_preserves_style_flags():
     assert preset.presetVersion == "0.1.0"
 
 
+def test_import_round_trips_animation():
+    sent = {**MINIMAL, "animation": "kinetic"}
+    preset = import_preset_payload(sent, KNOWN_FONTS)
+    assert preset.animation == "kinetic"
+    again = import_preset_payload(preset_to_export_dict(preset), KNOWN_FONTS)
+    assert again.animation == "kinetic"
+
+
+def test_import_rejects_invalid_animation():
+    with pytest.raises(PresetImportError):
+        import_preset_payload({**MINIMAL, "animation": "swoosh"}, KNOWN_FONTS)
+
+
 def test_export_has_envelope():
     preset = validate_preset(MINIMAL)
     data = preset_to_export_dict(preset)

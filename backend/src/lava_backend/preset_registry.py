@@ -30,6 +30,7 @@ BUILTIN_CATEGORIES: list[str] = [
 
 _CATEGORY_SET = set(BUILTIN_CATEGORIES)
 _ALLOWED_ALIGNMENTS = ("bottom", "middle", "top")
+_ANIMATION_SET = ("none", "kinetic", "manga", "cinematic", "meme", "storytelling")
 _REQUIRED_STYLE_FIELDS = (
     "label",
     "description",
@@ -70,6 +71,7 @@ class Preset:
     wordHighlight: bool = False
     importantWordPop: bool = False
     punctuation: bool = False
+    animation: str = "none"
     presetVersion: str | None = None
     tags: list[str] = field(default_factory=list)
     licenseRef: str | None = None
@@ -110,6 +112,11 @@ def validate_preset(raw: object) -> Preset:
     alignment = _require_string(raw, "alignment")
     if alignment not in _ALLOWED_ALIGNMENTS:
         raise PresetError("Preset alignment must be bottom, middle or top")
+    animation = raw.get("animation", "none")
+    if animation not in _ANIMATION_SET:
+        raise PresetError(
+            "Preset animation must be one of: " + ", ".join(_ANIMATION_SET) + "."
+        )
 
     tags = raw.get("tags", [])
     if not isinstance(tags, list) or not all(isinstance(t, str) for t in tags):
@@ -141,6 +148,7 @@ def validate_preset(raw: object) -> Preset:
         wordHighlight=bool(raw.get("wordHighlight", False)),
         importantWordPop=bool(raw.get("importantWordPop", False)),
         punctuation=bool(raw.get("punctuation", False)),
+        animation=animation,
         presetVersion=version,
         tags=list(tags),
         licenseRef=license_ref,

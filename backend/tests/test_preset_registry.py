@@ -108,6 +108,49 @@ def test_validate_defaults_optional_fields():
     assert preset.tags == []
     assert preset.licenseRef is None
     assert preset.presetVersion is None
+    assert preset.animation == "none"
+
+
+def test_validate_accepts_valid_animation():
+    valid = {
+        "id": "test-1",
+        "label": "Test",
+        "description": "A test",
+        "category": "Meme",
+        "fontFamily": "Arial",
+        "fontSize": 40,
+        "primaryColor": "#FFFFFF",
+        "highlightColor": "#000000",
+        "outlineColor": "#111111",
+        "outlineWidth": 1,
+        "bold": False,
+        "uppercase": False,
+        "alignment": "bottom",
+        "animation": "cinematic",
+    }
+    preset = validate_preset(valid)
+    assert preset.animation == "cinematic"
+
+
+def test_validate_rejects_invalid_animation():
+    bad = {
+        "id": "x",
+        "label": "X",
+        "description": "x",
+        "category": "Custom",
+        "fontFamily": "Arial",
+        "fontSize": 40,
+        "primaryColor": "#FFFFFF",
+        "highlightColor": "#000000",
+        "outlineColor": "#111111",
+        "outlineWidth": 1,
+        "bold": False,
+        "uppercase": False,
+        "alignment": "bottom",
+        "animation": "fly-in",
+    }
+    with pytest.raises(PresetError):
+        validate_preset(bad)
 
 
 def test_registry_round_trip(tmp_path):
