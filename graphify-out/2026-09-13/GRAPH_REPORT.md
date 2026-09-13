@@ -1,16 +1,16 @@
 # Graph Report - Lava  (2026-09-13)
 
 ## Corpus Check
-- 171 files · ~126,478 words
+- 176 files · ~130,836 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2038 nodes · 3286 edges · 120 communities (109 shown, 9 thin omitted)
-- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 86 edges (avg confidence: 0.95)
+- 2127 nodes · 3458 edges · 123 communities (112 shown, 9 thin omitted)
+- Extraction: 97% EXTRACTED · 3% INFERRED · 0% AMBIGUOUS · INFERRED: 95 edges (avg confidence: 0.95)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `f25fa470`
+- Built from commit: `88efd5a3`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -80,7 +80,7 @@
 - Task List
 - matchingStore.ts
 - Spec: Voice Analysis (M2 first slice)
-- test_preset_registry.py
+- test_preset_import.py
 - TrackRow.tsx
 - test_clip.py
 - .prettierrc.json
@@ -98,7 +98,7 @@
 - Spec: Multilingual image matching (Urdu/Roman-Urdu quality pass)
 - Session 2026-09-12 — Session 8: M3 final pass — multilingual image matching (Urdu/Roman-Urdu)
 - Implementation Plan: M3 final — multilingual image matching
-- MotionPanel.test.tsx
+- ApiError
 - Spec: `transitions-core` — transition model, heuristics, persistence
 - Implementation Plan: `transitions-core` (M4 module 1)
 - Session 2026-09-12 — Session 9: M4 module 1 — transitions-core
@@ -110,7 +110,7 @@
 - captions.ts
 - Spec: transitions-ui (M4 module 3)
 - Spec: image-motion (M4 module 4)
-- types.ts
+- vitest
 - Session 2026-09-12 — Session 11: M4 module 3 — transitions-ui
 - WHAT
 - main.py
@@ -120,25 +120,28 @@
 - RenderSettings
 - editorStore.ts
 - Spec: M6 — Template/Font System
-- vitest
+- ffmpeg.ts
 - Plan: M5 Module 1 — caption-core
 - test_fonts.py
-- App.tsx
+- CaptionPanel.tsx
 - PresetPanel.test.tsx
 - Implementation Plan: preset-registry (M6 module 2)
-- fonts.py
+- Implementation Plan: preset-import (M6 module 3)
 - Task list
 - Session 15 — M6 module 2: preset-registry shipped (13 categories, one-click apply)
 - config.py
 - Spec: font-system (M6 module 1)
 - Session 14 — M6 module 1: font-system shipped (spec → plan → TDD slices → docs)
 - Spec: preset-registry (M6 module 2)
+- AI Video Studio — Architecture
+- Spec: preset-import (M6 module 3)
+- Session 16 — M6 module 3 `preset-import` (import/export/delete + Custom writes)
 
 ## God Nodes (most connected - your core abstractions)
 1. `useEditorStore` - 56 edges
 2. `EditorActions` - 31 edges
-3. `ApiError` - 27 edges
-4. `vitest` - 26 edges
+3. `ApiError` - 30 edges
+4. `vitest` - 27 edges
 5. `RenderSettings` - 24 edges
 6. `build_transition_graph()` - 23 edges
 7. `AI Video Studio — Master Project Documentation` - 23 edges
@@ -161,15 +164,15 @@
 ## Import Cycles
 - None detected.
 
-## Communities (120 total, 9 thin omitted)
+## Communities (123 total, 9 thin omitted)
 
 ### Community 0 - "package.json"
 Cohesion: 0.06
 Nodes (35): dependencies, react, react-dom, zundo, zustand, devDependencies, jsdom, oxlint (+27 more)
 
 ### Community 1 - "transitions.ts"
-Cohesion: 0.09
-Nodes (30): betweenLabel(), clipName(), imageA, imageB, unmount(), TransitionsPanel(), BetweenTransition, clampTransitionDuration() (+22 more)
+Cohesion: 0.12
+Nodes (24): betweenLabel(), clipName(), TransitionsPanel(), BetweenTransition, clampTransitionDuration(), ClipLike, DEFAULT_DURATIONS, defaultDuration() (+16 more)
 
 ### Community 2 - "localDirs"
 Cohesion: 0.10
@@ -196,8 +199,8 @@ Cohesion: 0.07
 Nodes (29): Browser Testing with DevTools, Common Rationalizations, DAMP Over DRY in Tests, Decision Guide, Discover the Stack First, Name Tests Descriptively, One Assertion Per Concept, Overview (+21 more)
 
 ### Community 8 - "ops.ts"
-Cohesion: 0.06
-Nodes (37): captionsRenderPayload(), captionToWire(), formatTime(), PreviewPanel(), CAPTION_STYLES, DEFAULT_CAPTION_STYLE_ID, getCaptionStyle(), isCaptionStyleId() (+29 more)
+Cohesion: 0.12
+Nodes (24): addClip(), addClips(), ClipInput, createClip(), duplicateClip(), moveClip(), newId(), removeClip() (+16 more)
 
 ### Community 9 - "fetch-ffmpeg.mjs"
 Cohesion: 0.24
@@ -300,8 +303,8 @@ Cohesion: 0.25
 Nodes (8): Decisions, HOW, Limitations, Next step, Purpose (WHY), Session 2026-09-12 — Milestone 0 bootstrap + Milestone 1 media foundation, Verify, WHAT
 
 ### Community 37 - "AI Video Studio — Decision Log"
-Cohesion: 0.06
-Nodes (34): 1. Repository Layout, 2. Design Principles, 3. Core Technology, 4. Voice-over → Images Processing Graph, 5. Manhwa / Webtoon Extraction Processing Graph, 6. Caption Processing Graph, 7. System Boundaries, 8. Design Decisions (WHY) (+26 more)
+Cohesion: 0.08
+Nodes (25): AI Video Studio — Decision Log, D-001 — Web-first editor shell (Vite + React + TypeScript), D-002 — Zustand + Zundo for state and undo/redo, D-003 — Project-local FFmpeg binary, D-004 — FFmpeg provider abstraction, D-005 — Curated vendor skills; reference clones kept local, D-006 — Commit `graphify-out/`; code-only pass for now, D-007 — Written session log + decisions log for continuity (+17 more)
 
 ### Community 38 - "Implementation Plan: M3 — Semantic image matching (first slice)"
 Cohesion: 0.14
@@ -340,8 +343,8 @@ Cohesion: 0.50
 Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphify reference: incremental update and cluster-only
 
 ### Community 52 - "media.py"
-Cohesion: 0.18
-Nodes (21): Config, ApiError, Exception, Consistent error semantics for the sidecar API., _ass_filter_string(), _invalid(), check_binary(), _float() (+13 more)
+Cohesion: 0.24
+Nodes (17): Config, _ass_filter_string(), check_binary(), _float(), _int(), probe(), ProbeResult, ProbeStream (+9 more)
 
 ### Community 53 - "test_render.py"
 Cohesion: 0.11
@@ -352,48 +355,48 @@ Cohesion: 0.33
 Nodes (5): API, Lava Studio — Backend (media sidecar), Layout, Run, Tests
 
 ### Community 58 - "Task list"
-Cohesion: 0.11
-Nodes (18): M1 — Media foundation (closed, pushed), M2 — Voice analysis (closed, pushed @ `e864f18`), M3 — Semantic image matching (closed, pushed @ `79b2fb2`; timing set closed @ `ca1dd23`), M4 open, M4 — Transition/animation engine (closed, pushed @ `0234747`), M5 — Caption engine (closed, pushed), M6 — Module 1: font-system (SPEC-font-system.md, tasks/plan-font.md), M6 — Module 2: preset-registry (SPEC-preset-registry.md, tasks/plan-presets.md) (+10 more)
+Cohesion: 0.10
+Nodes (19): M1 — Media foundation (closed, pushed), M2 — Voice analysis (closed, pushed @ `e864f18`), M3 — Semantic image matching (closed, pushed @ `79b2fb2`; timing set closed @ `ca1dd23`), M4 open, M4 — Transition/animation engine (closed, pushed @ `0234747`), M5 — Caption engine (closed, pushed), M6 — Module 1: font-system (SPEC-font-system.md, tasks/plan-font.md), M6 — Module 2: preset-registry (SPEC-preset-registry.md, tasks/plan-presets.md) (+11 more)
 
 ### Community 59 - "detect_pauses"
 Cohesion: 0.09
-Nodes (20): confidence_from_logprob(), detect_pauses(), Pause, Word, Request, UploadFile, serialize(), serialize_segment() (+12 more)
+Nodes (17): confidence_from_logprob(), detect_pauses(), Pause, Word, serialize(), serialize_segment(), FakeTranscriber, Path (+9 more)
 
 ### Community 60 - "Task List"
 Cohesion: 0.14
 Nodes (13): Architecture Decisions, Checkpoint: 1–2, Checkpoint: 2, Checkpoint: full, Implementation Plan: transitions-ui (M4 module 3), Open Questions, Overview, Phase 1: Store (slice 1) (+5 more)
 
 ### Community 61 - "useEditorStore"
-Cohesion: 0.12
-Nodes (6): CaptionPanel(), ClipBlock(), EditorActions, initialState(), transcriptWordText(), useEditorStore
+Cohesion: 0.08
+Nodes (19): App(), captionsRenderPayload(), InspectorPanel(), kindOf(), MediaPanel(), MotionPanel(), formatTime(), PreviewPanel() (+11 more)
 
 ### Community 62 - "parse_captions"
 Cohesion: 0.09
 Nodes (27): Any, ass_color(), ass_time(), build_ass_document(), build_dialogue_line(), build_style_line(), CaptionError, CaptionItemSpec (+19 more)
 
 ### Community 63 - "Matcher"
-Cohesion: 0.13
-Nodes (17): Beat, EmbedFailure, match(), Matcher, _parse_beats(), Exception, Request, UploadFile (+9 more)
+Cohesion: 0.18
+Nodes (10): Beat, Matcher, Repetition-aware greedy assignment of CLIP embeddings to narration beats.…, FakeEmbedder, make_image(), make_route_client(), png_bytes(), post() (+2 more)
 
 ### Community 64 - "Task List"
 Cohesion: 0.14
 Nodes (13): Architecture Decisions, Checkpoint: 1–2, Checkpoint: full, Implementation Plan: image-motion (M4 module 4), Open Questions, Overview, Phase 1: Backend motion filters (slice 1), Phase 2: API contract (slice 2) (+5 more)
 
 ### Community 65 - "matchingStore.ts"
-Cohesion: 0.05
-Nodes (47): attachPauses(), buildNodes(), confidenceLabel(), lowConfidence(), Node, TranscriptPanel(), Beat, hasTimingOverride() (+39 more)
+Cohesion: 0.06
+Nodes (45): MatchPanel(), attachPauses(), buildNodes(), confidenceLabel(), lowConfidence(), Node, TranscriptPanel(), Beat (+37 more)
 
 ### Community 66 - "Spec: Voice Analysis (M2 first slice)"
 Cohesion: 0.18
 Nodes (11): Boundaries, Capability Map, Code Style, Commands, Objective, Open Questions, Project Structure, Spec: Voice Analysis (M2 first slice) (+3 more)
 
-### Community 67 - "test_preset_registry.py"
-Cohesion: 0.12
-Nodes (24): build_registry_entries(), load_registry(), merge_preset_layers(), Preset, PresetError, Path, ValueError, Caption-preset registry (M6 module 2). A preset is a shipped-or-user caption… (+16 more)
+### Community 67 - "test_preset_import.py"
+Cohesion: 0.05
+Nodes (51): import_preset_payload(), _payload_to_preset_dict(), preset_to_export_dict(), PresetImportError, ValueError, Preset import/export (M6 module 3). Import accepts the `lava-preset` envelope…, Raised when an imported preset fails validation., Validate + normalise an imported preset payload. Forces category to Custom and… (+43 more)
 
 ### Community 68 - "TrackRow.tsx"
-Cohesion: 0.22
-Nodes (10): DragMode, PX_PER_SECOND, TRACK_HEIGHT, TrackRow(), chipWidthPx(), imageA, imageB, unmount() (+2 more)
+Cohesion: 0.20
+Nodes (9): DragMode, PX_PER_SECOND, TRACK_HEIGHT, TrackRow(), chipWidthPx(), imageA, imageB, unmount() (+1 more)
 
 ### Community 69 - "test_clip.py"
 Cohesion: 0.05
@@ -428,8 +431,8 @@ Cohesion: 0.25
 Nodes (8): Decisions, HOW, Limitations, Next step, Purpose (WHY), Session 2026-09-12 — Session 6: M3 semantic image matching (first slice), Verify, WHAT
 
 ### Community 77 - "build_transition_graph"
-Cohesion: 0.22
-Nodes (20): BetweenSpec, build_transition_graph(), EdgeSpec, Return (filter_complex, total_duration) for a clip fold with transitions. Pure…, clip(), _make_image(), parametrize, Path (+12 more)
+Cohesion: 0.21
+Nodes (23): BetweenSpec, build_transition_graph(), EdgeSpec, _filter_complex(), Return (filter_complex, total_duration) for a clip fold with transitions. Pure…, RenderClip, test_build_transition_graph_with_motion_keeps_parity_when_absent(), clip() (+15 more)
 
 ### Community 78 - "AI Video Studio — Session Log"
 Cohesion: 0.22
@@ -459,9 +462,9 @@ Nodes (8): Decisions, HOW, Limitations, Next step, Session 2026-09-12 — Sessio
 Cohesion: 0.25
 Nodes (7): Checkpoints, Implementation Plan: M3 final — multilingual image matching, Risks / mitigation, Slice 1 — multilingual core (backend, TDD), Slice 2 — wiring (auto-select), Slice 3 — real-model smoke (manual, non-committed), Slice 4 — docs, review, commit, push
 
-### Community 85 - "MotionPanel.test.tsx"
-Cohesion: 0.38
-Nodes (5): applyClips(), clipWith(), imageAsset, unmount(), videoAsset
+### Community 85 - "ApiError"
+Cohesion: 0.12
+Nodes (19): ApiError, error_response(), Exception, Consistent error semantics for the sidecar API., api_error_handler(), Request, EmbedFailure, match() (+11 more)
 
 ### Community 86 - "Spec: `transitions-core` — transition model, heuristics, persistence"
 Cohesion: 0.14
@@ -480,8 +483,8 @@ Cohesion: 0.29
 Nodes (6): Boundaries, Build order, Capability Map: M4 — Transition / Animation Engine, Dependency direction notes, Open questions, Per-module gating
 
 ### Community 90 - "project.ts"
-Cohesion: 0.19
-Nodes (21): isAsset(), isClip(), isRecord(), isTrack(), isTranscript(), parseCaptions(), parseProjectJson(), parseProjectModel() (+13 more)
+Cohesion: 0.20
+Nodes (20): isAsset(), isClip(), isRecord(), isTrack(), isTranscript(), parseCaptions(), parseProjectJson(), parseProjectModel() (+12 more)
 
 ### Community 91 - "Spec: `transitions-render` — transitions in the FFmpeg render pipeline"
 Cohesion: 0.18
@@ -507,9 +510,9 @@ Nodes (11): Boundaries, Code style, Commands, Objective, Open questions, Out of 
 Cohesion: 0.18
 Nodes (10): Boundaries, Code style, Commands, Objective, Open questions, Project structure (touched), Scope, Spec: image-motion (M4 module 4) (+2 more)
 
-### Community 97 - "types.ts"
-Cohesion: 0.12
-Nodes (17): MatchPanel(), MOTION_TYPES, MotionPanel(), labelFor(), PAUSE_BEAT_THRESHOLD, segmentBeats(), splitSegment(), wordsInPart() (+9 more)
+### Community 97 - "vitest"
+Cohesion: 0.13
+Nodes (8): imageA, imageB, unmount(), EdgeTransition, presets, imageA, imageB, vitest
 
 ### Community 98 - "Session 2026-09-12 — Session 11: M4 module 3 — transitions-ui"
 Cohesion: 0.25
@@ -520,8 +523,8 @@ Cohesion: 0.18
 Nodes (10): Boundaries / non-goals, Edit ops (pure), Generation — `segmentCaptions(transcript, options?)`, Model (`frontend/src/editor/captions.ts`), Project round-trip (`project.ts`), Spec: M5 Module 1 — caption-core, Store (`editorStore`), Verify (+2 more)
 
 ### Community 100 - "main.py"
-Cohesion: 0.14
-Nodes (30): get_config(), error_response(), is_allowed_font_name(), api_error_handler(), ClipMetadata, delete_font(), _font_file(), _font_registry_path() (+22 more)
+Cohesion: 0.15
+Nodes (33): get_config(), is_allowed_font_name(), make_font_metadata(), _all_presets(), _builtin_by_id(), ClipMetadata, create_preset(), delete_font() (+25 more)
 
 ### Community 101 - "Spec: M5 Module 3 — caption-render"
 Cohesion: 0.22
@@ -536,44 +539,44 @@ Cohesion: 0.25
 Nodes (7): Boundaries / decisions, Build order, Capability Map: M5 Caption Engine, Gate, Modules, Objective, What is NOT in M5 (explicit deferrals)
 
 ### Community 104 - "RenderSettings"
-Cohesion: 0.26
-Nodes (21): _filter_complex(), _motion_filters(), MotionSpec, _prep_chain(), Zoom/pan FX via zoompan (per-frame z/x/y), scaled for source headroom., RenderClip, RenderSettings, _validate_motion() (+13 more)
+Cohesion: 0.29
+Nodes (18): _motion_filters(), MotionSpec, _prep_chain(), Zoom/pan FX via zoompan (per-frame z/x/y), scaled for source headroom., RenderSettings, _validate_motion(), clip(), parametrize (+10 more)
 
 ### Community 105 - "editorStore.ts"
-Cohesion: 0.16
-Nodes (14): transcript, unmount(), voice, CaptionItem, ProjectFile, Transition, TransitionType, Asset (+6 more)
+Cohesion: 0.13
+Nodes (25): MOTION_TYPES, applyClips(), clipWith(), imageAsset, unmount(), videoAsset, CaptionItem, assets (+17 more)
 
 ### Community 106 - "Spec: M6 — Template/Font System"
 Cohesion: 0.09
 Nodes (22): Animated Captions, Boundaries, Build Order, Code Style, Commands, Font System, Module 1: font-system, Module 2: preset-registry (+14 more)
 
-### Community 107 - "vitest"
-Cohesion: 0.12
-Nodes (24): FONT_EXTENSIONS, FontPanel(), LICENSE_TYPES, arial, unmount(), ensureFontFace(), FontLicense, FontMetadata (+16 more)
+### Community 107 - "ffmpeg.ts"
+Cohesion: 0.06
+Nodes (36): FONT_EXTENSIONS, FontPanel(), LICENSE_TYPES, arial, unmount(), ensureFontFace(), FontLicense, FontMetadata (+28 more)
 
 ### Community 108 - "Plan: M5 Module 1 — caption-core"
 Cohesion: 0.50
 Nodes (3): Plan: M5 Module 1 — caption-core, Risks, Slices
 
 ### Community 109 - "test_fonts.py"
-Cohesion: 0.12
-Nodes (30): font_license_from_payload(), FontError, ValueError, Normalise the wire license fields; raises FontError when malformed., Raised when a font file or its metadata is invalid., validate_font_bytes(), _bytes_of(), fonts_client() (+22 more)
+Cohesion: 0.08
+Nodes (49): _candidate_names(), clean_family_name(), _decode_name(), extract_family_name(), font_license_from_payload(), FontError, has_font_signature(), load_registry() (+41 more)
 
-### Community 110 - "App.tsx"
-Cohesion: 0.24
-Nodes (8): App(), InspectorPanel(), kindOf(), MediaPanel(), TimelinePanel(), projectDuration(), saveProjectToFile(), react
+### Community 110 - "CaptionPanel.tsx"
+Cohesion: 0.20
+Nodes (10): CaptionPanel(), captionToWire(), transcript, unmount(), voice, CAPTION_STYLES, DEFAULT_CAPTION_STYLE_ID, getCaptionStyle() (+2 more)
 
 ### Community 111 - "PresetPanel.test.tsx"
-Cohesion: 0.14
-Nodes (16): PresetPanel(), presets, unmount(), CaptionStyle, BUILTIN_CATEGORIES, captionStyleFromPreset(), isCategory(), parsePreset() (+8 more)
+Cohesion: 0.11
+Nodes (22): PresetPanel(), presets, unmount(), CaptionStyle, BUILTIN_CATEGORIES, captionStyleFromPreset(), isCategory(), parsePreset() (+14 more)
 
 ### Community 112 - "Implementation Plan: preset-registry (M6 module 2)"
 Cohesion: 0.17
 Nodes (11): Architecture decisions, Implementation Plan: preset-registry (M6 module 2), Open questions, Overview, Risks and mitigations, Task 1 — pure layer (slice 1), Task 2 — API (slice 2), Task 3 — frontend model + store (slice 3) (+3 more)
 
-### Community 113 - "fonts.py"
-Cohesion: 0.16
-Nodes (20): _candidate_names(), clean_family_name(), _decode_name(), extract_family_name(), has_font_signature(), load_registry(), make_font_metadata(), Path (+12 more)
+### Community 113 - "Implementation Plan: preset-import (M6 module 3)"
+Cohesion: 0.15
+Nodes (12): Architecture decisions, Checkpoints, Implementation Plan: preset-import (M6 module 3), Open questions, Overview, Risks and mitigations, Task 1 — pure import layer (slice 1), Task 2 — API (slice 2) (+4 more)
 
 ### Community 114 - "Task list"
 Cohesion: 0.15
@@ -599,25 +602,37 @@ Nodes (8): Decisions, HOW, Limitations, Next step, Purpose (WHY), Session 14 —
 Cohesion: 0.25
 Nodes (7): Acceptance criteria, Architecture decisions, Files, Open questions, Scope, Slices, Spec: preset-registry (M6 module 2)
 
+### Community 120 - "AI Video Studio — Architecture"
+Cohesion: 0.20
+Nodes (10): 1. Repository Layout, 2. Design Principles, 3. Core Technology, 4. Voice-over → Images Processing Graph, 5. Manhwa / Webtoon Extraction Processing Graph, 6. Caption Processing Graph, 7. System Boundaries, 8. Design Decisions (WHY) (+2 more)
+
+### Community 121 - "Spec: preset-import (M6 module 3)"
+Cohesion: 0.25
+Nodes (7): Acceptance criteria, ASSUMPTIONS I'M MAKING, Files, Objective, Open questions, Slices, Spec: preset-import (M6 module 3)
+
+### Community 122 - "Session 16 — M6 module 3 `preset-import` (import/export/delete + Custom writes)"
+Cohesion: 0.29
+Nodes (7): Decisions, HOW, Limitations, Next step, Session 16 — M6 module 3 `preset-import` (import/export/delete + Custom writes), Verify, WHAT
+
 ## Knowledge Gaps
-- **1007 isolated node(s):** `$schema`, `plugin`, `lava-backend`, `$schema`, `plugins` (+1002 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 1208 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **1032 isolated node(s):** `$schema`, `plugin`, `lava-backend`, `$schema`, `plugins` (+1027 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 1254 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
 - **9 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `AI Video Studio — Session Log` connect `AI Video Studio — Session Log` to `Session 2026-09-12 — Session 11: M4 module 3 — transitions-ui`, `README.md`, `Session 2026-09-12 — Milestone 0 bootstrap + Milestone 1 media foundation`, `Session 13 — M5 caption engine complete (all four modules)`, `Session 2026-09-12 — Session 2: continuity system + commit discipline`, `Session 2026-09-12 — Session 3: media sidecar (real rendering)`, `Session 2026-09-12 — Session 4: M1 completion (save/load + clip editing)`, `Session 2026-09-12 — Session 5: M2 voice analysis (first slice)`, `Session 2026-09-12 — Session 6: M3 semantic image matching (first slice)`, `Session 2026-09-12 — Session 7: M3 remainder — timing fit + manual timing override`, `Session 15 — M6 module 2: preset-registry shipped (13 categories, one-click apply)`, `Session 2026-09-12 — Session 8: M3 final pass — multilingual image matching (Urdu/Roman-Urdu)`, `Session 14 — M6 module 1: font-system shipped (spec → plan → TDD slices → docs)`, `Session 2026-09-12 — Session 9: M4 module 1 — transitions-core`, `Session 2026-09-12 — Session 10: M4 module 2 — transitions-render`?**
+- **Why does `vitest` connect `vitest` to `package.json`, `matchingStore.ts`, `transitions.ts`, `TrackRow.tsx`, `ops.ts`, `editorStore.ts`, `ffmpeg.ts`, `CaptionPanel.tsx`, `PresetPanel.test.tsx`, `useEditorStore`, `captions.ts`?**
   _High betweenness centrality (0.010) - this node is a cross-community bridge._
-- **Why does `vitest` connect `vitest` to `package.json`, `transitions.ts`, `types.ts`, `matchingStore.ts`, `TrackRow.tsx`, `ops.ts`, `editorStore.ts`, `App.tsx`, `PresetPanel.test.tsx`, `MotionPanel.test.tsx`, `project.ts`, `captions.ts`?**
-  _High betweenness centrality (0.007) - this node is a cross-community bridge._
-- **Why does `ClipEmbedder` connect `test_clip.py` to `main.py`?**
-  _High betweenness centrality (0.005) - this node is a cross-community bridge._
+- **Why does `useEditorStore` connect `useEditorStore` to `matchingStore.ts`, `transitions.ts`, `vitest`, `TrackRow.tsx`, `ops.ts`, `editorStore.ts`, `CaptionPanel.tsx`, `PresetPanel.test.tsx`, `captions.ts`?**
+  _High betweenness centrality (0.010) - this node is a cross-community bridge._
+- **Why does `AI Video Studio — Session Log` connect `AI Video Studio — Session Log` to `Session 2026-09-12 — Session 11: M4 module 3 — transitions-ui`, `README.md`, `Session 2026-09-12 — Milestone 0 bootstrap + Milestone 1 media foundation`, `Session 13 — M5 caption engine complete (all four modules)`, `Session 2026-09-12 — Session 2: continuity system + commit discipline`, `Session 2026-09-12 — Session 3: media sidecar (real rendering)`, `Session 2026-09-12 — Session 4: M1 completion (save/load + clip editing)`, `Session 2026-09-12 — Session 5: M2 voice analysis (first slice)`, `Session 2026-09-12 — Session 6: M3 semantic image matching (first slice)`, `Session 2026-09-12 — Session 7: M3 remainder — timing fit + manual timing override`, `Session 15 — M6 module 2: preset-registry shipped (13 categories, one-click apply)`, `Session 2026-09-12 — Session 8: M3 final pass — multilingual image matching (Urdu/Roman-Urdu)`, `Session 14 — M6 module 1: font-system shipped (spec → plan → TDD slices → docs)`, `Session 2026-09-12 — Session 9: M4 module 1 — transitions-core`, `Session 16 — M6 module 3 `preset-import` (import/export/delete + Custom writes)`, `Session 2026-09-12 — Session 10: M4 module 2 — transitions-render`?**
+  _High betweenness centrality (0.010) - this node is a cross-community bridge._
 - **Are the 7 inferred relationships involving `ApiError` (e.g. with `api_error_handler()` and `match()`) actually correct?**
   _`ApiError` has 7 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 16 inferred relationships involving `RenderSettings` (e.g. with `render_endpoint()` and `test_render_captions_with_fontsdir()`) actually correct?**
   _`RenderSettings` has 16 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `$schema`, `plugin`, `lava-backend` to the rest of the system?**
-  _1007 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1032 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `package.json` be split into smaller, more focused modules?**
   _Cohesion score 0.05555555555555555 - nodes in this community are weakly interconnected._

@@ -858,3 +858,62 @@ produced `Invalid preset JSON: <syntax message>` — asserted on the
 - Push M6 module 3 (5 commits) on user go-ahead. Next M6 module:
   `template-editor` (styles for future generated captions + preset/template
   curation), then `animated-captions` (animated caption treatments).
+
+## Session 17 — M6 module 4 `template-editor` (draft model, PUT overwrite, panel, render-path fix)
+
+### WHAT
+Shipped the M6 template editor end-to-end and closed the render gap where
+preset-applied captions burned in as the `normal` style.
+
+- Draft model — `frontend/src/editor/templateEditor.ts`: `PresetDraft`,
+  `draftFromPreset` (preset or M5 style), immutable `updateDraft` (fontSize
+  clamp 8–240, outlineWidth ≥ 0), `customIdForLabel` (mirrors backend slug),
+  `finalizeDraft`, `resolveCaptionStyle(styleId, presets)`.
+- Backend — `PUT /api/presets/{id}`: in-place custom overwrite (built-in →
+  403 `BUILTIN_PRESET`, missing → 404, payload-id ≠ path-id → 422, full
+  `import_preset_payload` validation incl. licenseRef gate). Backend 211.
+- Frontend — `updatePreset` service; `presetStore.savePreset` (POST unknown /
+  PUT present, local upsert, single error surface). `CaptionPanel`:
+  `captionToWire` + `captionsRenderPayload` resolve preset styleIds; style
+  select lists presets (M5 first, dedup). `TemplateEditorPanel`: base select,
+  label/description, font + imported-font picker, size/colors/outline/
+  alignment, 8 M5 toggles, live CSS preview, Save-as-new + Overwrite (custom
+  bases only), mounted in `InspectorPanel`. Frontend 244.
+
+### HOW
+Per-slice TDD. The pure model + PUT landed first (committed together), then
+services/store/render-wire, then the panel. Rediscovered: checkbox reactivity
+in this React-19/jsdom stack needs `.click()` (a synthetic `change` on a
+property-set `checked` was not observed). Also made the pure model honest —
+`suggested custom id` + id-bound PUT mean finalize keeps the explicit
+overwrite id, and `draftFromPreset` no longer reaches into `CaptionStyle`
+fields via casts. Docs D-024 + ROADMAP tick + FEATURES block.
+
+### Decisions
+- D-024 — template editor: immutable drafts + slug-id saves; built-in
+  immutability preserved for PUT; preview is an inline CSS preview (canvas
+  preview stays M8); caption preset resolution runs at wire time.
+- Deferred (unchanged from spec): project-level default template for future
+  generated captions → M8; kinetic/manga auto-animation → module 5
+  `animated-captions`.
+
+### Verify
+- Backend: `uv run pytest` 211 passed (203 → 211: +8 PUT tests).
+- Frontend: `npx vitest run` 244 passed (225 → 244: +14 model, +2 service,
+  +2 store, +1 caption resolution, +5 panel). `npm run build` ok, `npm run
+  lint` 0 errors.
+- Commits: `f8cfe13` · `804b0a4` · `4312290` · `b304300` + this docs/graph
+  commit.
+
+### Limitations
+- Overwrite renames a preset in place (UI edits the label on a custom base);
+  acceptable, but a dedicated rename affordance is nicer.
+- No M5-to-preset visual diff tool; future generated captions still default to
+  `normal` until the M8 default-template work lands.
+- Toggles map 1:1 to wire flags only; no preview of animated treatments here
+  (module 5).
+
+### Next step
+- Push M6 module 4 (4 commits) on user go-ahead. Next M6 module:
+  `animated-captions` (animated caption treatments), then close the M6
+  license-metadata row.

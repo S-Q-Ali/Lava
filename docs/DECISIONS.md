@@ -351,3 +351,46 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
   files both work).
 - **Status**: Locked for M6 module 3 `preset-import` (shipped). Next: template
   editor (`template-editor`), then `animated-captions`.
+
+### D-024 — Template editor: immutable drafts + slug-id saves; preset-applied captions resolve their real style at render
+
+- **Date**: 2026-09-13
+- **WHAT**: Module 4 = a visual preset editor plus a render-path fix. Pure
+  editor layer `frontend/src/editor/templateEditor.ts`: `PresetDraft`,
+  `draftFromPreset`, immutable `updateDraft` (font size clamped 8–240, outline
+  ≥ 0), `customIdForLabel` (backend-compatible `custom-<slug>` mirroring
+  backend `suggested_custom_id`), `finalizeDraft` (→ full Custom `Preset`
+  payload) and `resolveCaptionStyle(styleId, presets)` (preset first, M5
+  registry fallback). API gains `PUT /api/presets/{id}` — custom overwrite only
+  (built-in 403 `BUILTIN_PRESET`, missing 404, payload id must match path id
+  else 422, full `import_preset_payload` validation incl. licenseRef gate).
+  Frontend: `updatePreset` service, `presetStore.savePreset` (POST when
+  unknown / PUT when present, local upsert, one error surface), and
+  `TemplateEditorPanel` in the Inspector: base preset select (default
+  `normal`), label/description, font family + imported-font picker, size/colors/
+  outline/alignment, the eight M5 flag toggles, a live CSS preview, and
+  Save-as-new (label-gated) + Overwrite (custom bases only). The render gap:
+  `captionToWire`/`captionsRenderPayload` now resolve preset-applied caption
+  `styleId`s through the preset store so a preset's actual style reachs libass
+  (previously fell back to `normal`), and the CaptionPanel style select lists
+  custom presets.
+- **WHY**: The M6 draft's "template editor" is the authoring surface for
+  presets — without a render-path resolution step, an edited preset that is
+  applied to captions would still burn in as the default style, silently
+  defeating the editor. Per-overwrite discipline (D-018/D-022/D-023) built-ins
+  stay immutable; overwrites are path-id-bound so a payload can't rename or
+  move a preset.
+- **HOW**: `frontend/src/editor/templateEditor.ts(.test)` (14 units),
+  `main.py` `PUT` (7 API tests; backend 203 → 211), `services/presets.ts`
+  `updatePreset` (2), `store/presetStore.ts` `savePreset` (2), CaptionPanel
+  resolution (1), `TemplateEditorPanel` (5 component). Frontend 225 → 244.
+  Commits: `f8cfe13` (spec+plan+todo) · `804b0a4` (pure model + PUT) ·
+  `4312290` (services/store + render wire) · `b304300` (panel).
+- **Alternatives considered**: full visual-on-canvas editor (rejected — the M8
+  preview overlay owns canvas preview; this panel uses a faithful inline CSS
+  preview now); resolve preset styles by merging into `CAPTION_STYLES` at load
+  (rejected — mutating the M5 lookup table in place breaks its purity and the
+  M5 parity tests); `PUT` without id-bound enforcement (rejected — would allow
+  cross-id moves).
+- **Status**: Locked for M6 module 4 `template-editor` (shipped). Remaining M6:
+  `animated-captions` (module 5) and the preset/render license-metadata row.

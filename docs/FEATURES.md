@@ -122,6 +122,13 @@ Pipeline: ASR → timestamps → sentence/phrase segmentation → word timestamp
 - **Import** — accepts a `lava-preset` envelope (`{kind, version: 1, preset}`) or a bare preset dict via an Import JSON button (file picker → JSON → `POST /api/presets`). Imported presets are validated against the full Preset schema: ids forced to `custom-` (duplicate → 422 `PRESET_INVALID`), category forced to `Custom`, and a `licenseRef` (when present) must reference an imported font — actionable errors, no silent overwrite.
 - **Export / Delete** — custom preset cards get an Export button (downloads `<id>.lava-preset.json` via the same envelope) and a Remove button; built-ins are undeletable (`403 BUILTIN_PRESET`). Backend also serves `GET /api/presets/{id}/file` for parity/tests.
 - **Custom registry** — imports persist into `presets/registry.json` (single file, built-ins stay code baseline), load/save falls back to built-ins on corrupt writes; `removePreset`/`importPreset` mirror the server state in the store.
+- *Remaining M6*: template editor, animated caption treatments.
+
+**Shipped (M6 module 4 `template-editor`):**
+- **Draft model** — `frontend/src/editor/templateEditor.ts`: `PresetDraft`, `draftFromPreset` (from a preset or an M5 style), immutable `updateDraft` (font size clamped 8–240, outline ≥ 0), `customIdForLabel` — slug ids that mirror the backend `custom-` contract, and `finalizeDraft` producing a full Custom `Preset` payload.
+- **Overwrite API** — `PUT /api/presets/{id}` updates a preset in place: custom-only (built-in → `403 BUILTIN_PRESET`), missing → 404, payload id must equal the path id (else 422 `PRESET_INVALID`), full import validation (incl. the font `licenseRef` gate). `presetStore.savePreset` POSTs when a preset id is unknown and PUTs when it exists.
+- **TemplateEditorPanel** — Inspector section: base preset select (default `normal`), label/description, font family text + imported-font picker, size / colors / outline / alignment, the eight M5 flag toggles (bold, uppercase, RTL, emoji, karaoke, word highlight, important-word pop, punctuation), a live CSS preview, Save-as-new (label-gated) and Overwrite (custom bases only).
+- **Render-path fix** — caption→wire/`captionsRenderPayload` now resolve a caption's preset `styleId` through the preset store before burn-in (previously fell back to `normal`), and the CaptionPanel style select lists custom presets with the M5 styles first.
 
 ## 7. Manhwa / Webtoon Extractor
 
