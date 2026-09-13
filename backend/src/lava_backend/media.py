@@ -359,6 +359,7 @@ def render(
     transitions: list = (),
     captions: list[CaptionItemSpec] | None = None,
     fonts: list | None = None,
+    audio_files: list[Path] | None = None,
 ) -> RenderResult:
     if not clips:
         raise ApiError(422, "NO_CLIPS", "Render requires at least one clip")
@@ -392,17 +393,46 @@ def render(
         else:
             cmd += ["-ss", str(clip.start), "-i", str(inp), "-t", str(clip.duration)]
 
-    cmd += [
-        "-filter_complex", filter_complex,
-        "-map", final_label,
-        "-r", str(settings.fps),
-        "-pix_fmt", "yuv420p",
-        "-c:v", "libx264",
-        "-preset", "veryfast",
-        "-crf", "23",
-        "-movflags", "+faststart",
-        str(out_path),
-    ]
+    # Audio mixing: add audio inputs and build amix filter
+    has_audio = audio_files is not None and len(audio_files) > 0
+    if has_audio:
+        for audio_path in audio_files:
+            cmd += ["-i", str(audio_path)]
+        # Build audio mix filter: trim each to expected_duration then amix
+        audio_inputs = "".join(
+            f"[{i + len(clips)}:a]atrim=duration={expected_duration},asetpts=PTS-STARTPTS[a{i}]"
+            for i in range(len(audio_files))
+        )
+        mix_inputs = "".join(f"[a{i}]" for i in range(len(audio_files)))
+        audio_mix = f"{audio_inputs}{mix_inputs}amix=inputs={len(audio_files)}:duration=longest[aout]"
+        # Combine video and audio filter complexes
+        filter_complex = f"{filter_complex};{audio_mix}"
+        cmd += [
+            "-filter_complex", filter_complex,
+            "-map", final_label,
+            "-map", "[aout]",
+            "-r", str(settings.fps),
+            "-pix_fmt", "yuv420p",
+            "-c:v", "libx264",
+            "-preset", "veryfast",
+            "-crf", "23",
+            "-c:a", "aac",
+            "-b:a", "128k",
+            "-movflags", "+faststart",
+            str(out_path),
+        ]
+    else:
+        cmd += [
+            "-filter_complex", filter_complex,
+            "-map", final_label,
+            "-r", str(settings.fps),
+            "-pix_fmt", "yuv420p",
+            "-c:v", "libx264",
+            "-preset", "veryfast",
+            "-crf", "23",
+            "-movflags", "+faststart",
+            str(out_path),
+        ]
 
     returncode, _, stderr = _run(cmd)
     if returncode != 0:

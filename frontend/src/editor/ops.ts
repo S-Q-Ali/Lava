@@ -50,6 +50,37 @@ export function moveClip(clips: Clip[], id: string, start: number): Clip[] {
   )
 }
 
+export function moveClipRipple(clips: Clip[], id: string, start: number): Clip[] {
+  const clip = clips.find((c) => c.id === id)
+  if (!clip) return clips
+
+  const trackClips = clips.filter((c) => c.trackId === clip.trackId).sort((a, b) => a.start - b.start)
+  const clipIndex = trackClips.findIndex((c) => c.id === id)
+  if (clipIndex === -1) return clips
+
+  const newStart = Math.max(0, start)
+
+  // If moving right, shift all following clips to maintain gap
+  // If moving left, pull following clips to fill gap (ripple)
+  const result = new Map<string, Clip>()
+
+  // Update the moved clip
+  result.set(id, { ...clip, start: newStart })
+
+  // Update following clips on the same track
+  for (let i = clipIndex + 1; i < trackClips.length; i++) {
+    const following = trackClips[i]
+    const prev = trackClips[i - 1]
+    const prevEnd = i - 1 === clipIndex ? newStart + clip.duration : (result.get(prev.id)?.start ?? prev.start) + prev.duration
+    const minStart = prevEnd
+    if (following.start < minStart) {
+      result.set(following.id, { ...following, start: minStart })
+    }
+  }
+
+  return clips.map((c) => result.get(c.id) ?? c)
+}
+
 export function trimClip(
   clips: Clip[],
   id: string,

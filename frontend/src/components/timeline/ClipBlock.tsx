@@ -20,7 +20,7 @@ export default function ClipBlock({
   const removeClip = useEditorStore((s) => s.removeClip)
   const splitClip = useEditorStore((s) => s.splitClip)
   const setPlayhead = useEditorStore((s) => s.setPlayhead)
-  const moveClip = useEditorStore((s) => s.moveClip)
+  const moveClipRipple = useEditorStore((s) => s.moveClipRipple)
   const trimClip = useEditorStore((s) => s.trimClip)
 
   const gesture = useRef<{
@@ -54,7 +54,7 @@ export default function ClipBlock({
     if (!g) return
     const deltaSeconds = (clientX - g.startX) / PX_PER_SECOND
     if (g.mode === 'move') {
-      moveClip(clip.id, Math.max(0, g.baseStart + deltaSeconds))
+      moveClipRipple(clip.id, Math.max(0, g.baseStart + deltaSeconds))
       return
     }
     if (g.mode === 'trim-end') {
