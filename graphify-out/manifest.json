@@ -348,15 +348,15 @@
     "semantic_hash": ""
   },
   "docs/DECISIONS.md": {
-    "mtime": 1789329764.0830557,
-    "seen": 1789329848.391283,
-    "ast_hash": "ddf8b9b204ac8decf5c82d9fe5e297ff",
+    "mtime": 1789330848.7092948,
+    "seen": 1789330955.258143,
+    "ast_hash": "ebc120d10922faa18aad2ce842277f48",
     "semantic_hash": ""
   },
   "docs/FEATURES.md": {
-    "mtime": 1789329729.679391,
-    "seen": 1789329848.391285,
-    "ast_hash": "300a4a2ace6c66792c272e732e94ab7c",
+    "mtime": 1789330887.26417,
+    "seen": 1789330955.258144,
+    "ast_hash": "541701147de3cf6b9593a53f4e33cc6b",
     "semantic_hash": ""
   },
   "docs/PRODUCT_SPEC.md": {
@@ -366,15 +366,15 @@
     "semantic_hash": ""
   },
   "docs/ROADMAP.md": {
-    "mtime": 1789329705.786367,
-    "seen": 1789329848.391287,
-    "ast_hash": "c7b0ac00d16a9c7e79d4d804ff3330b8",
+    "mtime": 1789330877.1785696,
+    "seen": 1789330955.258147,
+    "ast_hash": "f8e72b4733b0f8c0cf08dec2ff827d38",
     "semantic_hash": ""
   },
   "docs/SESSION_LOG.md": {
-    "mtime": 1789329822.3293273,
-    "seen": 1789329848.391288,
-    "ast_hash": "992e080c922a17d6fe6c579d152046e3",
+    "mtime": 1789330925.8277605,
+    "seen": 1789330955.2581482,
+    "ast_hash": "3df99a51c31125d3071d2dca0f5af130",
     "semantic_hash": ""
   },
   "docs/TEST_PLAN.md": {
@@ -510,9 +510,9 @@
     "semantic_hash": ""
   },
   "tasks/todo.md": {
-    "mtime": 1789329589.400232,
-    "seen": 1789329848.391344,
-    "ast_hash": "cb1dc002a38abf33074e5feb2b92ba7b",
+    "mtime": 1789330933.170812,
+    "seen": 1789330955.258219,
+    "ast_hash": "c60b463d204009296a5e3de2faacffde",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/transcribe.py": {
@@ -1170,9 +1170,9 @@
     "semantic_hash": ""
   },
   "CONSTRAINTS.md": {
-    "mtime": 1789329749.0578167,
-    "seen": 1789329848.391277,
-    "ast_hash": "428ccb00a5dbe79ce7d72d1c69f81bde",
+    "mtime": 1789330892.585578,
+    "seen": 1789330955.258136,
+    "ast_hash": "29efafe2310394c58226e0627eba3c85",
     "semantic_hash": ""
   },
   "docs/SPEC-m7-capability-map.md": {
@@ -1194,9 +1194,9 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/manhwa/detect.py": {
-    "mtime": 1789329468.7576897,
-    "seen": 1789329848.391086,
-    "ast_hash": "346e98a1ea4591fafac848692d454db3",
+    "mtime": 1789330775.3023767,
+    "seen": 1789330955.2579021,
+    "ast_hash": "2783f84e7dbf722c39dee4a3c989dbd1",
     "semantic_hash": ""
   },
   "backend/tests/manhwa_strips.py": {
@@ -1206,9 +1206,9 @@
     "semantic_hash": ""
   },
   "backend/tests/test_manhwa_detect.py": {
-    "mtime": 1789329542.2371762,
-    "seen": 1789329848.391114,
-    "ast_hash": "0720ec70c8892fd02ed87620b8665ce2",
+    "mtime": 1789330794.2007062,
+    "seen": 1789330955.2579358,
+    "ast_hash": "c962aa06f61212140a793ec43a83c440",
     "semantic_hash": ""
   },
   "docs/SPEC-panel-detection.md": {
@@ -1221,6 +1221,30 @@
     "mtime": 1789329606.131055,
     "seen": 1789329848.3913321,
     "ast_hash": "5cc854a45b228e6fbbb24965f0584963",
+    "semantic_hash": ""
+  },
+  "backend/src/lava_backend/manhwa/order.py": {
+    "mtime": 1789330732.8625157,
+    "seen": 1789330955.257907,
+    "ast_hash": "5fc78cb255c3e9be2b6529c77a487498",
+    "semantic_hash": ""
+  },
+  "backend/tests/test_manhwa_order.py": {
+    "mtime": 1789330713.0520716,
+    "seen": 1789330955.257938,
+    "ast_hash": "9fb47da54acd081887e9eeaad7ce9c8c",
+    "semantic_hash": ""
+  },
+  "docs/SPEC-panel-order.md": {
+    "mtime": 1789330666.0607984,
+    "seen": 1789330955.2581718,
+    "ast_hash": "4b92e74205ee65c93b32d80ba814a1e0",
+    "semantic_hash": ""
+  },
+  "tasks/plan-panel-order.md": {
+    "mtime": 1789330679.0345783,
+    "seen": 1789330955.258206,
+    "ast_hash": "1d8ce9e090ca1cecd58a9640023bcfe0",
     "semantic_hash": ""
   }
 }
