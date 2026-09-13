@@ -6,6 +6,7 @@ import TransitionsPanel from './TransitionsPanel'
 import MotionPanel from './MotionPanel'
 import { CaptionPanel } from './CaptionPanel'
 import { FontPanel } from './FontPanel'
+import { PresetPanel } from './PresetPanel'
 
 export default function InspectorPanel() {
   const clips = useEditorStore((s) => s.clips)
@@ -57,6 +58,7 @@ export default function InspectorPanel() {
       <MatchPanel />
       <TransitionsPanel />
       <CaptionPanel />
+      <PresetPanel />
       <FontPanel />
     </section>
   )

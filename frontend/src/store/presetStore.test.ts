@@ -88,7 +88,7 @@ describe('usePresetStore', () => {
     })
     vi.stubGlobal(
       'fetch',
-      vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      vi.fn(async (input: RequestInfo | URL, _init?: RequestInit) => {
         if (String(input).includes('/captions')) return jsonResponse([])
         return jsonResponse(presets)
       }),
