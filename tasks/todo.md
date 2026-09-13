@@ -101,3 +101,10 @@
 - [x] Task 3 (slice 3): frontend services importPreset/deletePreset/exportPreset + presetStore import/remove + tests
 - [x] Task 4 (slice 4): PresetPanel Import JSON + export/download + Remove (Custom) + error surfaces
 - [x] Task 5 (slice 5): docs D-023/ROADMAP/FEATURES/SESSION_LOG 16 + graphify + regression + push go-ahead
+
+## M6 — Module 4: template-editor (SPEC-template-editor.md, tasks/plan-template-editor.md)
+- [ ] Task 1 (slice 1): frontend templateEditor.ts (draft/updateDraft/customIdForLabel/finalizeDraft/resolveCaptionStyle) — RED units
+- [ ] Task 2 (slice 2): backend PUT /api/presets/{id} (200/403/404/422) + tests
+- [ ] Task 3 (slice 3): updatePreset service + presetStore.savePreset + CaptionPanel preset-style resolution
+- [ ] Task 4 (slice 4): TemplateEditorPanel (base select, controls, live preview, Save-as-new/Overwrite) + mount + CSS
+- [ ] Task 5 (slice 5): docs D-024/ROADMAP/FEATURES/SESSION_LOG 17 + graphify + regression + push go-ahead
