@@ -1,4 +1,4 @@
-import type { CaptionStyle } from './captionStyles'
+import type { CaptionAnimation, CaptionStyle } from './captionStyles'
 import { getCaptionStyle } from './captionStyles'
 import type { Preset } from './presets'
 import { captionStyleFromPreset } from './presets'
@@ -21,6 +21,7 @@ export interface PresetDraft {
   wordHighlight: boolean
   importantWordPop: boolean
   punctuation: boolean
+  animation: CaptionAnimation
 }
 
 export function draftFromPreset(preset: Preset | CaptionStyle): PresetDraft {
@@ -42,6 +43,7 @@ export function draftFromPreset(preset: Preset | CaptionStyle): PresetDraft {
     wordHighlight: Boolean(preset.wordHighlight),
     importantWordPop: Boolean(preset.importantWordPop),
     punctuation: Boolean(preset.punctuation),
+    animation: preset.animation ?? 'none',
   }
 }
 
@@ -98,6 +100,7 @@ export function finalizeDraft(draft: PresetDraft, options: FinalizeOptions = {})
     wordHighlight: draft.wordHighlight,
     importantWordPop: draft.importantWordPop,
     punctuation: draft.punctuation,
+    animation: draft.animation,
   }
 }
 

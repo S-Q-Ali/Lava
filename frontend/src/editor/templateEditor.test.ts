@@ -30,6 +30,7 @@ const BASE: Preset = {
   wordHighlight: false,
   importantWordPop: false,
   punctuation: false,
+  animation: 'none',
 }
 
 describe('draftFromPreset', () => {
@@ -103,6 +104,15 @@ describe('finalizeDraft', () => {
   it('keeps an explicit id for overwrite flows', () => {
     const preset = finalizeDraft(draftFromPreset(BASE), { id: 'custom-base' })
     expect(preset.id).toBe('custom-base')
+  })
+
+  it('round-trips the animation treatment through the draft', () => {
+    const draft = draftFromPreset({ ...BASE, animation: 'kinetic' })
+    expect(draft.animation).toBe('kinetic')
+    const updated = updateDraft(draft, { animation: 'cinematic' })
+    expect(updated.animation).toBe('cinematic')
+    expect(finalizeDraft(updated).animation).toBe('cinematic')
+    expect(finalizeDraft(draftFromPreset(BASE)).animation).toBe('none')
   })
 })
 

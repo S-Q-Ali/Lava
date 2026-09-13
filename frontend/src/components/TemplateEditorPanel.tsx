@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { getCaptionStyle } from '../editor/captionStyles'
+import { ANIMATION_OPTIONS, getCaptionStyle } from '../editor/captionStyles'
 import {
   draftFromPreset,
   finalizeDraft,
@@ -208,6 +208,21 @@ export function TemplateEditorPanel() {
           <option value="bottom">Bottom</option>
           <option value="middle">Middle</option>
           <option value="top">Top</option>
+        </select>
+      </label>
+
+      <label>
+        Animation
+        <select
+          aria-label="Animation"
+          value={draft.animation}
+          onChange={(e) => patch({ animation: e.target.value as PresetDraft['animation'] })}
+        >
+          {ANIMATION_OPTIONS.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
         </select>
       </label>
 

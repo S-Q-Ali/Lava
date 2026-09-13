@@ -116,5 +116,25 @@ describe('TemplateEditorPanel', () => {
     expect(body.kind).toBe('lava-preset')
     expect(body.preset.id).toMatch(/^custom-/)
     expect(body.preset.label).toBe('My preset')
+    expect(body.preset.animation).toBe('none')
+  })
+
+  it('carries a chosen animation treatment into the saved preset', async () => {
+    let postedBody = ''
+    stubFetch(async (_input, init) => {
+      if (init?.method === 'POST') { postedBody = String(init.body); return jsonResponse({ ...custom, id: 'custom-saved' }, true, 201) }
+      return jsonResponse(builtin)
+    })
+    mount()
+    await act(async () => {})
+    const animation = host.querySelector<HTMLSelectElement>('select[aria-label="Animation"]')!
+    act(() => { animation.value = 'cinematic'; animation.dispatchEvent(new Event('change', { bubbles: true })) })
+    const labelInput = host.querySelector<HTMLInputElement>('input[aria-label="Label"]')!
+    act(() => { Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!.call(labelInput, 'Cinema'); labelInput.dispatchEvent(new Event('input', { bubbles: true })) })
+    await act(async () => {})
+    act(() => findButton(host, 'Save as new')!.click())
+    await act(async () => {})
+    const body = JSON.parse(postedBody)
+    expect(body.preset.animation).toBe('cinematic')
   })
 })
