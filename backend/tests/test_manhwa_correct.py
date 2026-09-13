@@ -5,7 +5,15 @@ from __future__ import annotations
 import pytest
 
 from lava_backend.manhwa.errors import ManhwaError
-from lava_backend.manhwa.correct import delete_panel, merge_panels, split_panel
+from lava_backend.manhwa.correct import (
+    add_panel,
+    adjust_panel,
+    delete_panel,
+    merge_panels,
+    redetect,
+    reorder_panels,
+    split_panel,
+)
 from lava_backend.manhwa.order import guard_layout, normalize_layout, validate_layout
 from lava_backend.manhwa.panels import make_panel
 
@@ -176,3 +184,77 @@ class TestDeletePanel:
     def test_delete_missing_id_rejected(self) -> None:
         with pytest.raises(ManhwaError):
             delete_panel([_panel(0, 240, pid="p1")], "p9")
+
+
+class TestAdjustPanel:
+    def test_bounds_replaced_and_marked(self) -> None:
+        panels = [_panel(0, 400, pid="p1", user_corrected=False)]
+        (out,) = adjust_panel(panels, "p1", x=0, y=50, w=360, h=300, source_w=360, source_h=720)
+        assert (out.y, out.h) == (50, 300)
+        assert out.user_corrected
+
+    def test_within_source_but_over_neighbor_rejected(self) -> None:
+        panels = [_panel(0, 240, pid="p1"), _panel(240, 240, pid="p2")]
+        with pytest.raises(ManhwaError):
+            adjust_panel(panels, "p2", x=0, y=200, w=360, h=240, source_w=360, source_h=720)
+
+    def test_out_of_bounds_rejected(self) -> None:
+        panels = [_panel(0, 240, pid="p1")]
+        with pytest.raises(ValueError):
+            adjust_panel(panels, "p1", x=0, y=700, w=360, h=100, source_w=360, source_h=720)
+        with pytest.raises(ValueError):
+            adjust_panel(panels, "p1", x=0, y=0, w=0, h=100, source_w=360, source_h=720)
+
+    def test_missing_id_rejected(self) -> None:
+        with pytest.raises(ManhwaError):
+            adjust_panel([_panel(0, 240, pid="p1")], "p9", x=0, y=0, w=10, h=10, source_w=360, source_h=720)
+
+
+class TestAddPanel:
+    def test_add_with_fresh_id_and_confidence(self) -> None:
+        panels = [_panel(0, 360, pid="p1"), _panel(360, 360, pid="p2")]
+        out = add_panel(panels, x=0, y=720, w=360, h=100, source_w=360, source_h=820)
+        added = [p for p in out if p.id == "p3"]
+        assert len(added) == 1 and added[0].confidence == pytest.approx(1.0)
+        assert added[0].user_corrected and added[0].order == 3
+
+    def test_add_after_position(self) -> None:
+        panels = [_panel(0, 360, pid="p1"), _panel(360, 360, pid="p2")]
+        out = add_panel(panels, x=0, y=720, w=360, h=1, source_w=360, source_h=720 + 1, after_id="p1")
+        assert [p.id for p in out] == ["p1", "p3", "p2"]
+        assert [p.order for p in out] == [1, 2, 3]
+
+    def test_add_overlapping_rejected(self) -> None:
+        panels = [_panel(0, 360, pid="p1"), _panel(360, 360, pid="p2")]
+        with pytest.raises(ManhwaError):
+            add_panel(panels, x=0, y=100, w=360, h=100, source_w=360, source_h=720)
+
+
+class TestReorderPanels:
+    def test_reorder_sequence(self) -> None:
+        panels = [_panel(0, 240, pid="p1"), _panel(240, 240, pid="p2"), _panel(480, 240, pid="p3")]
+        out = reorder_panels(panels, ["p3", "p1", "p2"])
+        assert [p.id for p in out] == ["p3", "p1", "p2"]
+        assert [p.order for p in out] == [1, 2, 3]
+        assert all(p.user_corrected for p in out)
+
+    def test_non_permutation_rejected(self) -> None:
+        panels = [_panel(0, 240, pid="p1"), _panel(240, 240, pid="p2")]
+        with pytest.raises(ValueError):
+            reorder_panels(panels, ["p1"])
+        with pytest.raises(ValueError):
+            reorder_panels(panels, ["p1", "p1"])
+        with pytest.raises(ValueError):
+            reorder_panels(panels, ["p1", "p2", "p9"])
+
+
+class TestRedetect:
+    def test_redetect_returns_guarded_reading_order(self) -> None:
+        from manhwa_strips import AVAILABLE
+
+        fixture = AVAILABLE["clean_white"]()
+        panels = redetect(fixture.image, source_id="s-red")
+        assert panels
+        assert [p.order for p in panels] == list(range(1, len(panels) + 1))
+        guarded = guard_layout(panels)
+        assert [p.id for p in guarded] == [p.id for p in panels]

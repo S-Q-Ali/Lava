@@ -326,7 +326,7 @@ def _open_source(source: str | Path | Image.Image) -> tuple[Image.Image, str, st
     """Return (RGB image, mime, source file name); unreadable → ManhwaError."""
     if isinstance(source, Image.Image):
         image = source.convert("RGB") if source.mode != "RGB" else source
-        return image, (source.format or "png").lower(), str(source.filename or "image")
+        return image, (source.format or "png").lower(), str(getattr(source, "filename", "") or "image")
     path = Path(source)
     try:
         with Image.open(path) as probe:
