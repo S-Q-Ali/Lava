@@ -546,3 +546,34 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
   (rejected — single resampled row breaks real gutters).
 - **Status**: Locked for M7 module 2 `panel-detection` (shipped, backend
   312). Next: module 3 `panel-order`.
+
+### D-029 — M7 manhwa: ordering/confidence/layout-guard live in one pure normalization module
+
+- **Date**: 2026-09-14
+- **WHAT**: Module 3 of the M7 extractor. `manhwa/order.py` owns three pure
+  operations on `Panel` lists: `order_panels` (reading order by (y, x),
+  renumbers `order` 1..n, leaves boxes/ids/confidence/userCorrected alone),
+  `attribute_confidence` (per-panel confidence = min of the two bounding
+  boundary confidences, source edges = certainty), and `guard_layout`
+  (`ManhwaError` on empty lists, duplicate ids, positive-area box overlaps or
+  interleaved regions; returns the normalized list). `detect.build_panels`
+  delegates its ordering + confidence step to this module so correction
+  (module 5) and the API (module 6) normalize identically after every edit.
+- **WHY**: Ordering and confidence are contracts shared by every later M7
+  consumer. Duplicating the "min of bounding cuts" logic in build_panels and
+  again in correction would let the two drift (e.g. a split that forgets to
+  recompute a panel's confidence). Fixing the semantics once — and making
+  detection just another consumer — keeps the panel list auditable end to end
+  (D-027: frozen data, loud failures).
+- **HOW**: Pure functions, dataclasses.replace for the frozen `Panel`, unit
+  tests only (no images). `guard_layout` deliberately does NOT enforce full
+  coverage (gaps are legal after Delete in correction) and treats touching
+  edges as adjacency, not overlap. Backend 312 → 330 (17 order tests + 1
+  wiring test).
+- **Alternatives considered**: leaving ordering in `build_panels` (rejected —
+  correction would re-implement and drift); enforcing gap coverage in the
+  guard (rejected — legal Delete gaps); list mismatch surfaced as ValueError
+  (used for the confidence-array contract, kept deliberately distinct from the
+  ManhwaError layout violations).
+- **Status**: Locked for M7 module 3 `panel-order` (shipped, backend 330).
+  Next: module 4 `panel-export`.

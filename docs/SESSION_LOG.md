@@ -1203,3 +1203,70 @@ on arbitrary test-tuning and hard-coded "it works on this image" assertions.
   `b2bc69d`, `52fd509`, `89744a9`, `e1cff38`, `f2b9378`). Then module 3
   `panel-order`: natural top→bottom reading order, per-panel confidence
   aggregation, duplicate/overlap guard per the M7 capability map.
+
+## Session 22 — M7 module 3 `panel-order` (pure normalization layer) + modules 1–2 pushed
+
+### WHAT
+- Pushed M7 modules 1–2 (`5fe1ec7..45e50e2` main → main) on go-ahead.
+- Delivered module 3 `panel-order`: a single-source normalization layer that
+  reading order, per-boundary confidence attribution and layout guards share.
+- 3 slices: (1) pure helpers + 17 tests; (2) `build_panels` delegation +
+  identity/wiring tests; (3) docs. Backend 312 → 330.
+- Commits: `70f419f` spec/plan/todo · `5c116c4` slice 1 · `afc5338` slice 2 ·
+  (slice 3 docs committed with this entry).
+
+### HOW
+- `order_panels`: sort by (y, x) asc, renumber `order` 1..n via
+  `dataclasses.replace`; boxes/ids/confidence/`userCorrected` untouched.
+  Ties broken by x so a future left→right band (multi-column) reads naturally.
+- `attribute_confidence`: needs exactly `len(panels)+1` boundary confidences
+  (0 = source top edge, n = bottom edge, interior = the separating cut);
+  `None` = certain boundary → 1.0. Panel confidence = min of its two sides.
+- `guard_layout`: `ManhwaError` on empty, duplicate ids, positive-area box
+  intersection or nested/interleaved boxes; touching edges are adjacency not
+  overlap; deliberately does NOT require full coverage (Delete gaps are legal).
+  Returns the normalized ordered list (idempotent).
+- `build_panels` now builds raw incident boxes then
+  `attribute_confidence(order_panels(raw), boundaries)` — detection is just
+  another consumer of the same rules correction/API will use. Output identical
+  for all fixtures (existing detect + detect_strip suites green untouched).
+- Confidence-array contract mismatch is `ValueError` (programmer contract),
+  layout violations `ManhwaError` (data contract) — kept deliberately distinct.
+
+### WHY
+- Ordering + confidence are cross-consumer contracts; duplicating them in
+  build_panels and again in module 5's Split/Merge would let them drift (e.g.
+  a split that forgets to recompute confidence). One pure module, detection
+  first consumer, keeps the panel list auditable end to end (D-027: frozen
+  data, loud failures).
+
+### Files
+- `backend/src/lava_backend/manhwa/order.py` (new, ~90 lines): `order_panels`,
+  `attribute_confidence`, `guard_layout`, `_boxes_overlap`,
+  `_certain_confidence`.
+- `backend/tests/test_manhwa_order.py` (new, 17 tests).
+- `backend/src/lava_backend/manhwa/detect.py` (build_panels delegation).
+- `backend/tests/test_manhwa_detect.py` (+1 wiring test → 30).
+- Docs: D-029, ROADMAP (module 3 ✅ + status para), FEATURES §7 shipped
+  block, SESSION_LOG 22, CONSTRAINTS measured row → 330, todo ticks.
+- Commits `70f419f`, `5c116c4`, `afc5338`, plus this docs entry.
+
+### Verification
+- `uv run pytest tests/test_manhwa_order.py` → 17 passed.
+- `uv run pytest tests/test_manhwa_detect.py tests/test_manhwa_order.py` →
+  47 passed.
+- `uv run pytest` (full backend) → 330 passed, 2 pre-existing deprecation
+  warnings.
+
+### Limitations
+- Ordering is strictly (y, x); real multi-column layouts need band-aware
+  ordering — deferred (M8 note in the capability map).
+- `guard_layout` validates boxes, not content (a full-width box over a
+  multi-region page is legal until multi-column ships).
+- Confidence stays bound-based; per-signal provenance isn't persisted.
+
+### Next step
+- Push M7 module 3 + module-2 leftover graph commit on user go-ahead (3
+  commits ahead: `70f419f`, `5c116c4`, `afc5338` + slice-3 docs). Then module
+  4 `panel-export`: full-resolution PNG (lossless default) / JPG crops +
+  manifest + export materialization per the M7 capability map.

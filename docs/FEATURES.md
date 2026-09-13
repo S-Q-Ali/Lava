@@ -163,6 +163,11 @@ Pipeline: ASR → timestamps → sentence/phrase segmentation → word timestamp
 - **Hybrid detection** — per-row signals (foreground content vs a margin-ring background estimate, uniformity, Canny edge energy) vote, never one contour threshold: clean gutters (empty + flat + wide + bordered by content, conf 0.95), bordered rescue seams for borderless/linked panels (conf 0.35), and a sliver-merge pass. Bubbles, dense text, decorative full-bleed art and flat dead zones are filtered out (adjacent-side content test) so they never earn a spurious cut.
 - **detect_strip** — single-column vertical strips only (landscape/unreadable → `ManhwaError`); runs at ≤512 px analysis; persists original-resolution crops plus the registry; reruns are idempotent.
 
+**Shipped (M7 module 3 `panel-order`):**
+- **Reading order** — `order_panels` sorts panels naturally (y then x) and renumbers `order` 1..n without touching boxes, ids, confidence or `userCorrected`.
+- **Confidence attribution** — `attribute_confidence` sets each panel to the worst of its two bounding boundary confidences (source edges certain); detection, correction and the API all share this one rule.
+- **Layout guard** — `guard_layout` rejects empty lists, duplicate ids, positive-area overlaps and interleaved regions (`ManhwaError`), normalizing to a valid ordered list; touching/adjacent tiling is fine, gaps after Delete are legal.
+
 ## 8. Editor / Timeline
 
 Tracks: Video, Image, Voice, Music, SFX, Captions, Text/Overlay.

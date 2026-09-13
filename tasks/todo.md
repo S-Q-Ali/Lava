@@ -135,6 +135,6 @@ Build order: panel-model → panel-detection → panel-order → panel-export �
 - [x] Task 4 (slice 4): docs D-028/ROADMAP/FEATURES/SESSION_LOG 21 + graphify + regression + push go-ahead
 
 ### Module 3: panel-order (SPEC-panel-order.md, tasks/plan-panel-order.md)
-- [ ] Task 1 (slice 1): order_panels + attribute_confidence + guard_layout (+ _boxes_overlap) — pure RED→GREEN
-- [ ] Task 2 (slice 2): detect.build_panels delegates (single source of truth) + identity tests
-- [ ] Task 3 (slice 3): docs D-029/ROADMAP/FEATURES/SESSION_LOG 22 + graphify + regression + push go-ahead
+- [x] Task 1 (slice 1): order_panels + attribute_confidence + guard_layout (+ _boxes_overlap) — pure RED→GREEN
+- [x] Task 2 (slice 2): detect.build_panels delegates (single source of truth) + identity tests
+- [x] Task 3 (slice 3): docs D-029/ROADMAP/FEATURES/SESSION_LOG 22 + graphify + regression + push go-ahead
