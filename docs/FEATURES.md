@@ -157,6 +157,12 @@ Pipeline: ASR → timestamps → sentence/phrase segmentation → word timestamp
 - Panel assets `panel_001.png ...` with metadata (id, source id, x/y/w/h, confidence, order, user-corrected flag).
 - PNG (lossless default) and JPG export at original resolution.
 
+**Shipped (M7 modules 1–2 `panel-model` + `panel-detection`):**
+- **Panel model** — frozen `Panel` (`{id, sourceId, x, y, w, h, confidence, order, userCorrected}`) built through a single validated constructor; git-clean `StripRegistry` (`cache/manhwa/<source_id>/registry.json`, atomic temp+rename writes, corrupt/missing/unknown-version → `ManhwaError`); zero-padded asset naming; stable panel ids.
+- **Coordinate mapping** — boundary-anchored: analysis cut lines are mapped once to source resolution and panel boxes are derived from consecutive mapped lines, so panel tiling is seam-free by construction and never double-covers source pixels.
+- **Hybrid detection** — per-row signals (foreground content vs a margin-ring background estimate, uniformity, Canny edge energy) vote, never one contour threshold: clean gutters (empty + flat + wide + bordered by content, conf 0.95), bordered rescue seams for borderless/linked panels (conf 0.35), and a sliver-merge pass. Bubbles, dense text, decorative full-bleed art and flat dead zones are filtered out (adjacent-side content test) so they never earn a spurious cut.
+- **detect_strip** — single-column vertical strips only (landscape/unreadable → `ManhwaError`); runs at ≤512 px analysis; persists original-resolution crops plus the registry; reruns are idempotent.
+
 ## 8. Editor / Timeline
 
 Tracks: Video, Image, Voice, Music, SFX, Captions, Text/Overlay.

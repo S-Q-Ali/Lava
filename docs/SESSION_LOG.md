@@ -1116,3 +1116,90 @@ on arbitrary test-tuning and hard-coded "it works on this image" assertions.
   OpenCV hybrid signal stack (row uniformity, color discontinuity, edge
   energy, gutter darkness, CC/morphology with hysteresis — never one contour
   threshold) → analysis-space cuts → registry write.
+
+## Session 21 — M7 module 2 `panel-detection`: hybrid signals, rescue seams, source mapping, registry persistence
+
+### WHAT
+- Delivered the CV heart of the extractor: analysis-scale cuts (clean 0.95 /
+  rescue 0.35), seam-free source-space panels, and idempotent detection save.
+- 4 slices: (1) analysis image + row features + clean-gutter cuts + 6
+  fixtures; (2) rescue pass + sliver merge + realistic fixture rewrite; (3)
+  `build_panels` + `detect_strip` + error paths; (4) spec reconcile + docs.
+- Commits: `52fd509` slice 1 · `89744a9` todo tick · `e1cff38` slice 2 ·
+  `f2b9378` slice 3 (slice 4 docs committed with this entry). Backend 283 →
+  312.
+
+### HOW
+- Clean path: rows with content < 3% merge into bands; a band becomes a cut
+  only if interior (not clipped at image edges), bordered by ≥ 15% content on
+  both immediate 3-row sides, wide ≥ 8, and flat by median uniformity > 0.97
+  → conf 0.95. Rescue: 1..24 px flat-empty runs with the same bordered test →
+  conf 0.35, scanned between clean bands (or the whole strip). Sliver merge
+  drops the lower-confidence cut when two cuts enclose < 24 analysis px.
+- Debug journey (worth recording): clean gutters came back as *rescue* because
+  the first row of a resampled band is a half-blended transition row
+  (`uniform 0.94`) — a strict all-rows-flat mask vetoed real gutters → median
+  fixed it. Borderless/bubbles/dense-text gutters read as content because the
+  global gray-mode bg estimate picked the largest flat *panel* fill → anchored
+  bg on the 1px outer ring (margins) with a mode fallback. Realism rewrite of
+  fixtures (3 px margins + deterministic hatch texture) kept the mode honest
+  and made seams exact at identity scale. A 2-row `close_gutters` sliver was
+  still above `MIN_PANEL_H` cut-to-cut (26 ≥ 24) → shrank the middle panel to
+  6 px (gap 22) and the merge fires; cut expectations moved to (187, 209).
+  Bubbles fixture had two latent bugs (dy > radius → complex number; a y value
+  used as the bubble's x-center) — both fixed in the fixture builder.
+- `build_panels` maps each analysis cut once via `map_cut_to_source`, sorts
+  the lines, and derives every box with `boxes_from_cuts` — seam-free by
+  construction, no double cover, last panel reaches the bottom edge. Panel
+  confidence = min of the two bounding cuts (edges = 1.0).
+- `detect_strip(source, *, source_id, save=True, cache_dir)` → dict result;
+  unreadable/missing → `ManhwaError`, width > height → `ManhwaError`
+  (horizontal/multi-column deferred). save writes original-resolution crops
+  `panel_1.png…` plus `registry.json`; reruns overwrite cleanly.
+- Spec reconciled with reality (`THIN_CUT_CONF`/`RESCUE_TROUGH_RATIO` removed,
+  actual knob table + function surfaces); plan/plan-todo updated.
+
+### WHY
+- One contour threshold can't separate gutters from bubbles/text/decoration;
+  two fixed confidence tiers keep the contract honest (clean = data,
+  rescue = hypothesis the UI re-verifies). Boundary-anchored mapping (D-027)
+  must hold end-to-end or export leaks seams. The plan proposed
+  discontinuity/edge-trough scoring for rescue; slicing showed a simpler
+  bordered flat-seam rule was more robust on the synthetic battery and matches
+  how real webtoon gutters actually look — implementation diverged from the
+  plan and the spec was reconciled to the shipped rule.
+
+### Files
+- `backend/src/lava_backend/manhwa/detect.py` (new, 350 lines): `Cut`,
+  `GutterBand`, `RowFeatures`, `load_analysis_image`, `row_features`,
+  `_bg_estimate` (ring-anchored), `_bordered_by_content`, `find_gutter_bands`,
+  `_rescue_cuts`, `merge_slivers`, `detect_cuts`, `build_panels`,
+  `detect_strip`, `_open_source`.
+- `backend/tests/manhwa_strips.py` (new): 12 deterministic fixtures.
+- `backend/tests/test_manhwa_detect.py` (new): 29 tests.
+- Docs: D-028, ROADMAP (module 2 ✅, status para), FEATURES §7 shipped block,
+  SPEC-panel-detection reconciled, SPEC-m7 map untouched, SESSION_LOG 21,
+  CONSTRAINTS measured row → 312, plan + todo ticks.
+- Commits `b2bc69d` spec/plan/todo, `52fd509`, `89744a9`, `e1cff38`,
+  `f2b9378`, plus this docs entry.
+
+### Verification
+- `uv run pytest tests/test_manhwa_detect.py` → 29 passed.
+- `uv run pytest` (full backend) → 312 passed, 2 deprecation warnings
+  (Starlette/anyio, pre-existing).
+
+### Limitations
+- bg estimate assumes margins exist; full-bleed art falls back to the global
+  mode (recorded in the ring docstring).
+- Analysis ≤ 512 enforces speed; source-scale thin seams (sub-1 analysis px)
+  cannot be seen — noted for the UI (manual correction handles these).
+- `Min`-confidence panels underestimate when one clean side is good — accepted
+  conservativism; re-verification is the UI's job.
+- No color-space preprocessing beyond RGB→gray; hue-separable gutters are
+  handled by luminance (D-028 lands as documented behavior).
+
+### Next step
+- Push M7 modules 1–2 on user go-ahead (5 commits ahead of origin:
+  `b2bc69d`, `52fd509`, `89744a9`, `e1cff38`, `f2b9378`). Then module 3
+  `panel-order`: natural top→bottom reading order, per-panel confidence
+  aggregation, duplicate/overlap guard per the M7 capability map.

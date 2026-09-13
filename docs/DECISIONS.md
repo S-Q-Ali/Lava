@@ -506,3 +506,43 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
   silently rebuilt registry is a data-losing overwrite).
 - **Status**: Locked for M7 module 1 `panel-model` (shipped). Next:
   module 2 `panel-detection` (OpenCV hybrid signals → analysis-space cuts).
+
+### D-028 — M7 manhwa: hybrid signal fusion with fixed per-kind confidence + margin-ring background estimate
+
+- **Date**: 2026-09-14
+- **WHAT**: Module 2 of the M7 extractor. A two-tier CV pipeline over a
+  ≤512 px analysis image. Per-row signals: foreground content coverage
+  (`|gray − bg| > 12`), uniformity (`1 − std/40`), Canny edge projection.
+  Clean path → flat (median > 0.97), empty (< 3% content), interior run
+  ≥ 8 px bordered by ≥ 15% content on BOTH immediate 3-row sides → cut at
+  **confidence 0.95**. Rescue path → 1..24 px flat-empty runs with the same
+  bordered test → cut at **confidence 0.35**. Sliver merge drops the
+  lower-confidence cut whenever two adjacent cuts enclose < 24 analysis px.
+  Panel confidence = min of the two bounding cuts (edges = 1.0), so panels
+  never outrank their worst boundary. Panels map to source via the module-1
+  boundary-anchored mapping (`build_panels`); `detect_strip` persists
+  original-resolution crops + the git-clean registry idempotently.
+- **WHY**: Manhwa criticizes single-threshold detection (one contour
+  threshold can't separate clean gutters from borders, bubbles, dense text or
+  flat decoration). Two tiers with *fixed* confidence per kind keep cut
+  semantics traceable: clean data is trustworthy, rescue data is a hypothesis
+  the UI must let the user re-verify. Filters (bubbles, dense text,
+  decorative full-bleed art and flat dead zones) must never earn a cut —
+  they fail the bordered-by-content side test because their neighbors within
+  NEIGHBOR_BAND rows are empty or sparse, unlike a real gutter which sits
+  between two painted panels.
+- **HOW**: `manhwa/detect.py` + `tests/manhwa_strips.py` (12 deterministic
+  fixtures: margins + hatch texture so the background stays the image's real
+  background). Background estimate anchored on the **1px outer ring** (comic
+  margins) with a global-mode fallback for full-bleed art — a global gray
+  mode picks the biggest flat panel fill, not the background. Flatness uses a
+  **median** over the band so one half-blended transition row (analysis
+  resampling) can't veto a real gutter. 29 detect tests; backend 283 → 312.
+- **Alternatives considered**: per-signal weighted confidence (rejected —
+  opaque; two fixed tiers are auditable); discontinuity/edge trough scoring
+  for rescue (rejected mid-slice — measured instability on synthetic
+  batteries; replaced by bordered flat-seam runs); global gray-mode bg
+  (rejected — panneel fills outvote gutters); strict all-rows-flat mask
+  (rejected — single resampled row breaks real gutters).
+- **Status**: Locked for M7 module 2 `panel-detection` (shipped, backend
+  312). Next: module 3 `panel-order`.

@@ -13,18 +13,22 @@ Four TDD slices; each slice ends backend-green and committed.
 - Tests: clean fixtures cut == ground truth; confidence high; interior-only.
 
 ## Slice 2 — rescue pass + edge cases
-- `detect_cuts` rescue pass (color discontinuity + edge trough + low local
-  content → low-confidence cuts), `MIN_PANEL_H` merge.
+- `detect_cuts` rescue pass: flat empty seam runs (1..SEAM_MAX_H) that pass the
+  same bordered-by-content test → low-confidence (0.35) cuts; `merge_slivers`
+  drops lower-confidence cuts creating sub-MIN_PANEL_H panels. Delivered: bg
+  estimate anchored on the 1px outer ring (margins) with a global-mode fallback.
 - Fixtures: `borderless`, `connected_looking`, `decorative`, `bubbles`,
-  `dense_text`.
+  `dense_text`, `close_gutters`, `false_boundary`.
 - Tests: rescue cuts within tolerance, confidence < clean; min-height merge
-  drops slivers; bubbles/decorative don't create wrong cuts.
+  drops slivers; bubbles/decorative/dense text never earn spurious cuts.
 
 ## Slice 3 — build_panels + registry integration
 - `build_panels` (boundary-anchored mapping → source Panel list, order,
-  confidence, seam-free tiling) + `detect_strip` (metadata + save).
-- Tests: detect_strip → StripRegistry.load round-trip, last panel reaches
-  source height, unreadable image / non-vertical source → ManhwaError.
+  confidence = min of bounding cuts, seam-free tiling) + `detect_strip`
+  (metadata + optional original-resolution crops + registry save).
+- Tests: detect_strip → StripRegistry.load round-trip, original-res crops,
+  idempotent rerun, last panel reaches source height, unreadable image /
+  non-vertical source → ManhwaError.
 
 ## Slice 4 — docs + graphify + regression + push gate
 - D-028 in DECISIONS.md, ROADMAP module-2 done, FEATURES module-7 block,

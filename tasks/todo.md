@@ -130,6 +130,6 @@ Build order: panel-model → panel-detection → panel-order → panel-export �
 
 ### Module 2: panel-detection (SPEC-panel-detection.md, tasks/plan-panel-detection.md)
 - [x] Task 1 (slice 1): fixtures + load_analysis_image + row_features + gutter-band cuts (clean fixtures pass exactly)
-- [ ] Task 2 (slice 2): rescue pass (discontinuity/edge trough → low-conf cuts) + MIN_PANEL_H merge + borderless/connected/decorative/bubbles/dense-text fixtures
-- [ ] Task 3 (slice 3): build_panels + detect_strip registry integration + error paths
+- [x] Task 2 (slice 2): rescue pass + MIN_PANEL_H merge + borderless/connected/decorative/bubbles/dense-text fixtures (backend 312)
+- [x] Task 3 (slice 3): build_panels + detect_strip registry integration + error paths
 - [ ] Task 4 (slice 4): docs D-028/ROADMAP/FEATURES/SESSION_LOG 21 + graphify + regression + push go-ahead
