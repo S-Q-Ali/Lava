@@ -52,7 +52,20 @@ def guard_layout(panels: list[Panel]) -> list[Panel]:
     """Validate a layout: non-empty, unique ids, no positive-area box overlap.
 
     Touching edges (adjacent tiling) are fine; identical or nested boxes are
-    overlaps. Returns the normalized (ordered, renumbered) list — idempotent.
+    overlaps. Returns the reading-ordered, renumbered list — idempotent. This
+    is the DETECTION contract: the result is always sorted top→bottom (y, x).
+    Manual correction uses `normalize_layout`, which keeps the caller's
+    sequence instead of re-sorting (Reorder/Add-after-x need that).
+    """
+    return order_panels(validate_layout(panels))
+
+
+def validate_layout(panels: list[Panel]) -> list[Panel]:
+    """Check a layout for the invariants every consumer cares about.
+
+    Raises `ManhwaError` on an empty list, duplicate ids, or positive-area box
+    overlap. Returns the input unchanged (never reordered/renumbered) so
+    callers keep full control of the sequence.
     """
     if not panels:
         raise ManhwaError("panel list must not be empty")
@@ -63,7 +76,22 @@ def guard_layout(panels: list[Panel]) -> list[Panel]:
         for b in panels[i + 1 :]:
             if _boxes_overlap(a, b):
                 raise ManhwaError(f"panels {a.id!r} and {b.id!r} overlap")
-    return order_panels(panels)
+    return panels
+
+
+def normalize_layout(panels: list[Panel]) -> list[Panel]:
+    """Validate + renumber 1..n, preserving the given sequence (no re-sort).
+
+    Correction ops (module 5) use this so a user's Reorder / Add-after
+    ordering is honored verbatim; the list order IS the intended reading
+    order. An empty list is allowed here — deleting the last panel or a reset
+    legitimately yields zero panels; consumers that require a non-empty layout
+    still go through `guard_layout` (e.g. export).
+    """
+    if not panels:
+        return []
+    validate_layout(panels)
+    return [replace(panel, order=i + 1) for i, panel in enumerate(panels)]
 
 
 def _boxes_overlap(a: Panel, b: Panel) -> bool:
