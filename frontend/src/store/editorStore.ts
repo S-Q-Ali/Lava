@@ -66,6 +66,7 @@ interface EditorActions {
   updateCaptionText(id: string, text: string): void
   updateCaptionTiming(id: string, patch: { start?: number; duration?: number }): void
   setCaptionStyle(id: string, styleId: string): void
+  applyPresetStyle(styleId: string, captionIds?: string[]): void
   removeCaption(id: string): void
   undo(): void
   redo(): void
@@ -199,6 +200,15 @@ export const useEditorStore = create<EditorState>()(
             c.id === id ? { ...c, styleId, source: 'manual' as const } : c,
           ),
         })),
+      applyPresetStyle: (styleId, captionIds) =>
+        set((s) => {
+          const ids = captionIds && captionIds.length > 0 ? new Set(captionIds) : null
+          return {
+            captions: s.captions.map((c) =>
+              ids ? (ids.has(c.id) ? { ...c, styleId, source: 'manual' as const } : c) : { ...c, styleId, source: 'manual' as const },
+            ),
+          }
+        }),
       removeCaption: (id) =>
         set((s) => ({ captions: omitCaption(s.captions, id) })),
       setTranscript: (assetId, transcript) =>
