@@ -70,11 +70,13 @@ Definition of done for ANY milestone installments within it: implementation exis
 - [x] Animated captions — five named treatments as text-level libass recipes in the pure ASS generator (`kinetic` word-by-word alpha+scale reveal on `words[]` timing, `manga` impact punch, `cinematic` fade+scale, `meme` punch/wobble, `storytelling` gentle fade+scale); `animation` enum on style/preset/draft/render-wire, M5 `manga`/`cinematic`/`meme`/`storytelling` presets annotated, TemplateEditorPanel Animation control; karaoke keeps precedence (`animated-captions` module complete). Pixel-space frame effects (speed lines, letterbox bars, motion preview) deferred to M8 preview overlay.
 
 ## Milestone 7 — Manhwa extractor
-- Detection pipeline
-- Ordering
-- Confidence
-- Split/merge/manual correction
-- Exports (PNG default, JPG)
+- ✅ Module 1 — `panel-model` (Panel model, boundary-anchored scaling, asset naming, git-clean StripRegistry)
+- 🔄 Module 2 — `panel-detection` (OpenCV hybrid signals → analysis-space cuts)
+- ⬜ Module 3 — `panel-order` (reading order, confidence)
+- ⬜ Module 4 — `panel-export` (PNG default, JPG, original-res crops)
+- ⬜ Module 5 — `panel-correction` (Split/Merge/Adjust/Delete/Add/Reorder/Redetect/Reset)
+- ⬜ Module 6 — `manhwa-api` (backend endpoint, detect + fixes + registry)
+- ⬜ Module 7 — `panel-ui` (panel strip browser, previews, edit controls)
 
 ## Milestone 8 — Integrated editor
 - Combine all systems
@@ -102,4 +104,4 @@ Definition of done for ANY milestone installments within it: implementation exis
 - 🔄 In progress
 - ✅ Done
 
-Current status: Milestones 0–4 done. Milestone 5 (caption engine) done — transcript-generated editable captions with 15 original style presets and libass burn-in; animated treatments deferred to M6, live preview overlay to M8. **Milestone 6 (template/font system) complete** — module 1 `font-system`, module 2 `preset-registry` (13 categories, browsable, one-click apply), module 3 `preset-import` (import/export/delete, Custom writes, font licenseRef gate), module 4 `template-editor` (draft model, PUT overwrite, TemplateEditorPanel, preset-applied caption styles render resolved), module 5 `animated-captions` (five ASS treatments + `animation` on style/preset/draft/wire) and module 6 `license-tracking` (render-time guard — embedding-restricted or missing registry fonts abort with actionable 422, `fonts` manifest on success — closes the final M6 row). M6 pixel-space animation gaps (manga speed lines, cinematic letterbox, motion preview) recorded for M8 preview overlay. Next: **Milestone 7 (Manhwa extractor)**. Open follow-ups: M1 ripple editing / cross-track drag / audio mixing in render; M4 retention heuristics (dimensions defined in M5+ planning).
+Current status: Milestones 0–4 done. Milestone 5 (caption engine) done — transcript-generated editable captions with 15 original style presets and libass burn-in; animated treatments deferred to M6, live preview overlay to M8. **Milestone 6 (template/font system) complete** — module 1 `font-system`, module 2 `preset-registry` (13 categories, browsable, one-click apply), module 3 `preset-import` (import/export/delete, Custom writes, font licenseRef gate), module 4 `template-editor` (draft model, PUT overwrite, TemplateEditorPanel, preset-applied caption styles render resolved), module 5 `animated-captions` (five ASS treatments + `animation` on style/preset/draft/wire) and module 6 `license-tracking` (render-time guard — embedding-restricted or missing registry fonts abort with actionable 422, `fonts` manifest on success — closes the final M6 row). M6 pixel-space animation gaps (manga speed lines, cinematic letterbox, motion preview) recorded for M8 preview overlay. Next: **Milestone 7 (Manhwa extractor)** — module 1 `panel-model` (frozen Panel model + boundary-anchored coordinate mapping + git-clean StripRegistry, backend 245 → 283) shipped; module 2 `panel-detection` (OpenCV hybrid signals, synthetic fixtures) in progress. Open follow-ups: M1 ripple editing / cross-track drag / audio mixing in render; M4 retention heuristics (dimensions defined in M5+ planning).

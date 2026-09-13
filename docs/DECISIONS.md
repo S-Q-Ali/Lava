@@ -474,3 +474,35 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
   after a preset bound it is indistinguishable from a system stack and passes
   (predictable from the data model); guard-abort paths take precedence, and
   blurring/deletion of registry entries is a project-operation concern.
+
+### D-027 — M7 manhwa: frozen panel model, boundary-anchored coordinate mapping, git-clean registry
+
+- **Date**: 2026-09-14
+- **WHAT**: Module 1 of the M7 extractor. A frozen `Panel` dataclass
+  (`{id, sourceId, x, y, w, h, confidence, order, userCorrected}` — PRODUCT_SPEC
+  §9 shape) with a single validated constructor (`make_panel`), deterministic
+  analysis↔source mapping, zero-padded asset naming (`panel_001.png`), and a
+  git-clean `StripRegistry` at `cache/manhwa/<source_id>/registry.json`
+  (atomic temp+rename writes; corrupt/missing/unknown-version/dup-id files →
+  `ManhwaError`, never a silent rewrite).
+- **WHY**: Every later module (detection/order/export/correction/API/UI) shares
+  one panel record and one coordinate frame. Rounding rules had to be pinned
+  once: analysis coordinates are smaller (≤512 wide) so a naive per-panel
+  rounding could widen adjacent panels by ±factor px and leave seams or double
+  covered pixels on export.
+- **HOW**: `manhwa/panels.py` (pure data — no image bytes), `manhwa/errors.py`,
+  38 unit tests. Mapping is **boundary-anchored**: `map_cut_to_source` maps each
+  cut line once, and `boxes_from_cuts` derives every panel box from two mapped
+  cuts, so adjacent panels tile the strip exactly (verified: last panel reaches
+  the bottom edge). `analysis_scale` keeps aspect, floors `ana_h`, identity when
+  source ≤ 512 wide. Asset ids (`p1…`) are stable; file names may be renumbered
+  at export — `id_for_asset`/`asset_for_id` invert the default, order-based
+  mapping only. Backend 245 → 283.
+- **Alternatives considered**: per-panel rounded boxes (rejected — seam
+  risk); naive `ana_h = round(...)` (rejected — non-deterministic edge cases);
+  registry stored under `.gitignore`d user-data path (kept — registry mirrors
+  the `fonts/licenses.json` + `presets/registry.json` precedent); silent
+  corrupt-registry recovery (rejected — load surfaces `ManhwaError` because a
+  silently rebuilt registry is a data-losing overwrite).
+- **Status**: Locked for M7 module 1 `panel-model` (shipped). Next:
+  module 2 `panel-detection` (OpenCV hybrid signals → analysis-space cuts).

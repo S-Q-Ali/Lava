@@ -1040,3 +1040,79 @@ serializes cleanly.
 - Push M6 module 6 (5 commits) on user go-ahead. Milestone 6 is complete.
   Next milestone: **M7 Manhwa extractor** (panel detection/order/export) —
   start with `docs/SPEC-m7-manhwa.md` + capability map + plan.
+
+## Session 20 — M7 module 1 `panel-model` (frozen model, anchored mapping, git-clean registry) + CONSTRAINTS.md
+
+### WHAT
+Started milestone 7 (Manhwa extractor) by nailing down its shared data
+contract before any image processing exists. Shipped `panel-model`: a frozen
+`Panel` dataclass exactly matching PRODUCT_SPEC §9 (`{id, sourceId, x, y, w,
+h, confidence, order, userCorrected}`), deterministic analysis↔source
+coordinate mapping, zero-padded panel asset naming, and a git-clean
+`StripRegistry` (`cache/manhwa/<source_id>/registry.json`) the whole pipeline
+shares. Also, per the `constraint-driven-development` gate, wrote
+`CONSTRAINTS.md` (first quality bar document for this repo).
+
+### HOW
+- CONSTRAINTS.md: Floor (no suppressions/stubs/skips/secrets, never weaken the
+  bar) + enforced-with-numbers rows that run today (frontend `tsc -b`, oxlint,
+  backend `uv run pytest`, frontend `npx vitest run`) + declared-but-pending
+  dimensions (JS/Python coverage via changed-lines ≥ 80%, semgrep, osv-scanner,
+  Lighthouse LCP/CLS, axe, dependency-cruiser — BLOCK mode once installed) +
+  measured ratchets (backend 245 → 283 must not fall, frontend 253 must not
+  fall) + rule that ≥1 external constraint must be live before a feature ships.
+  `AGENTS.md` now points at the file.
+- `manhwa/panels.py`: `make_panel`/`validate_panels` (rejects negative/zero
+  spans, out-of-bounds, NaN confidence, empty/dup ids; clamps confidence),
+  `analysis_scale` (aspect-preserving, floor ana_h, identity ≤ 512 wide),
+  **boundary-anchored** mapping (`map_cut_to_source` + `boxes_from_cuts` — cut
+  lines mapped once, boxes derived from mapped cuts, so panels tile the strip
+  seamlessly; `map_bounds_to_source` stays for forward-compat), `asset_name`
+  zero-padded by `len(str(total))`, `id_for_asset`/`asset_for_id`,
+  `StripRegistry.save/load/reset_panels` (atomic temp+rename, corrupt/missing/
+  unknown-version/dup-id → `ManhwaError`, never a silent rewrite).
+- 38 unit tests (valid/invalid panel matrix, scale/map round-trips + clamp +
+  seam-free tiling, registry round-trip/atomicity/errors/reset, asset padding
+  1/9/10/100) — RED first, then GREEN. Full backend suite 283 passed.
+- Docs: DECISIONS D-027, ROADMAP M7 row split into 7 module rows (module 1 ✅,
+  module 2 in progress), SESSION_LOG 20.
+
+### WHY
+Adjacent panels only stay contiguous if the mapping anchors cut positions —
+rounding every panel box independently drifts ±factor px per box and leaves
+seams (or double-covered pixels) on export. The registry must be git-clean
+(data, generated per source) but surfacing corruption loudly (not silently
+rebuilding, which would be a data-losing overwrite). Constraints are worth
+writing down now, not at merge time, because a CV heuristic pipeline can pause
+on arbitrary test-tuning and hard-coded "it works on this image" assertions.
+
+### Verify
+- Backend: `uv run pytest` → 283 passed (245 + 38 new), 2 deprecation
+  warnings (untouched, pre-existing).
+- Frontend: not touched — no frontend change in this slice.
+- Commits: `10aa8b5` (spec+plan+todo) · process (`CONSTRAINTS`,
+  AGENTS pointer, boundary-anchored spec contract) · module-1 code+tests ·
+  docs+graphify (D-027/ROADMAP/SESSION_LOG 20).
+- `graphify update .` run from repo root (manhwa package + tests added).
+
+### Limitations
+- `map_bounds_to_source` is retained only for forward compatibility; the
+  detector will use the anchored cut API.
+- Asset naming is order-based by default; renumbering at export is a
+  panel-correction/export-module concern (`id_for_asset` documents the
+  expectation).
+- No image bytes yet, nothing mounted — analysis/export come with
+  `panel-detection`.
+- CONSTRAINTS coverage/security/a11y rows are exact numbers, but their tools
+  aren't installed; enforcement kicks in when each tool is installed (flagged
+  in the module report where the first run happens).
+
+### Next step
+- Push M7 module 1 on user go-ahead. Then module 2 `panel-detection`:
+  `graphify query` existing vision/CLIP image-load helpers, generate
+  deterministic synthetic strip fixtures (TEST_PLAN §2 list — clean/black/
+  colored gutters, borderless, very tall, small, connected-looking,
+  decorative, bubbles, dense text, false boundaries), then implement the
+  OpenCV hybrid signal stack (row uniformity, color discontinuity, edge
+  energy, gutter darkness, CC/morphology with hysteresis — never one contour
+  threshold) → analysis-space cuts → registry write.
