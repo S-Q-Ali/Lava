@@ -271,3 +271,50 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
   reference families by string with libass system fallback when not imported;
   preset-registry, preset-import, template-editor and animated-captions are the
   remaining M6 modules.
+
+### D-022 — Presets extend `CaptionStyle` with a category; registry is a JSON file served read-only by the sidecar until import lands
+
+- **Date**: 2026-09-13
+- **WHAT**: `Preset` = the M5 `CaptionStyle` model plus `category`
+  (13 constants: Trending, New, Shorts, Reels, YouTube, Anime, Manhwa,
+  Storytelling, Cinematic, Motivation, Meme, Documentary, Custom),
+  `presetVersion?`, `tags[]?`, `licenseRef?` (a font-system id). The 15
+  hardcoded M5 presets become `BUILTIN_PRESETS` with an explicit category
+  mapping (spec table: normal/urdu/roman-urdu/english/mixed/punctuation →
+  Custom, word-highlight/hook → YouTube, karaoke/emoji → Shorts,
+  important-word-pop → Reels, manga → Anime, cinematic/mystery → Cinematic,
+  meme → Meme, storytelling → Storytelling). Backend `preset_registry.py`
+  (pure, no deps): `validate_preset`, `load_registry`/`save_registry` on
+  `presets/registry.json` (seeded from built-ins, corrupt/missing → built-ins),
+  `merge_preset_layers` for later custom overlays. API is read-only for module 2:
+  `GET /api/presets` returns the registry. Frontend: `editor/presets.ts`
+  (`Preset`, `parsePreset`, `BUILTIN_CATEGORIES`, `captionStyleFromPreset`),
+  `services/presets.ts` (`listPresets`), `store/presetStore.ts` (load,
+  `byCategory`, `getPreset`, `applyPreset(id, captionIds?)`), and a bulk
+  `editorStore.applyPresetStyle(styleId, captionIds?)` that writes one undo
+  step and marks captions `manual` (D-018 override-first). UI `PresetPanel` in
+  the Inspector: 13 category pills + "All", preset cards with category badge,
+  font-binding/stack indicator, RTL flag, Apply button (current project
+  captions). Trending is **updateable by registry JSON edit** — no live fetch,
+  never hard-coded claims.
+- **WHY**: PRODUCT_SPEC §Templates/Fonts demands a 13-category browsable
+  library that users can apply in one click; keeping the model a strict
+  extension of `CaptionStyle` means captions.ts / CaptionPanel / the libass
+  renderer see zero schema change. File-backed registry (vs only hardcoded
+  code) is what makes "updateable Trending" and (module 3) user import real
+  without rebuilds.
+- **HOW**: `backend/src/lava_backend/preset_registry.py` + `tests/
+  test_preset_registry.py` (13 units + 1 API test); `main.py` route; frontend
+  `editor/presets.ts`/`services/presets.ts` (+8 tests), `store/presetStore.ts`
+  (+5 tests), `editorStore.applyPresetStyle`; `components/PresetPanel.tsx`
+  (+4 component tests, createRoot+act pattern). Backend 165 → 178, frontend
+  193 → 213. Commits: `42e528a` (spec+plan+todo) · `434872e` (slices 1-2,
+  pure+API) · `6fa35ad` (slice 3, model+store) · `f25fa47` (slice 4, panel).
+- **Alternatives considered**: presets as a separate non-CaptionStyle schema
+  (rejected — dual models for no gain); hardcoding categories only on the
+  frontend (rejected — backend/sidecar parity lost, imports would ship
+  mismatched data); MySQL/DB (overkill; JSON registry is git-clean and
+  project-local per the local-first rule).
+- **Status**: Locked for M6 module 2 `preset-registry` (shipped). User preset
+  import/export (validation + Custom category writes) and the template editor
+  remain modules 3–4.

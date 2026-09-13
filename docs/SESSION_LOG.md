@@ -725,3 +725,75 @@ stray interface and used `FontLicense` everywhere.
   `preset-registry` (extend `CaptionStyle` with M6 preset fields, updateable
   categories, license-aware references to imported fonts). After that:
   `preset-import` → `template-editor` → `animated-captions`.
+
+---
+
+## Session 15 — M6 module 2: preset-registry shipped (13 categories, one-click apply)
+
+### Purpose (WHY)
+Session 14 pushed module 1 (`font-system`) and named `preset-registry` next.
+The user approved the module spec + plan verbatim; this session shipped the
+registry end-to-end with per-slice TDD (pure → API → model/store → panel →
+docs), closing M6 module 2.
+
+### WHAT
+- **Spec + plan + todo** — `docs/SPEC-preset-registry.md`, `tasks/plan-presets.md`,
+  `tasks/todo.md` M6 module 2. Commit `42e528a`.
+- **Slice 1–2 (pure + API)** — `backend/src/lava_backend/preset_registry.py`:
+  `BUILTIN_CATEGORIES` (13), frozen `Preset` dataclass (CaptionStyle+
+  category/presetVersion/tags/licenseRef), strict `validate_preset`,
+  `load_registry`/`save_registry` on `presets/registry.json` with built-in
+  fallback, `merge_preset_layers` for future customs, and `BUILTIN_PRESETS`
+  (the 15 M5 originals, category-mapped per the spec table). `config.presets_dir`
+  already existed from module 1. `GET /api/presets` route returns the registry.
+  Commit `434872e` (backend 165 → 178, 13 units + 1 API).
+- **Slice 3 (frontend model + store)** — `editor/presets.ts` (`Preset`,
+  tolerant `parsePreset`, `BUILTIN_CATEGORIES`, `captionStyleFromPreset`),
+  `services/presets.ts` (`listPresets`), `store/presetStore.ts` (load,
+  `byCategory`, `getPreset`, `applyPreset(id, captionIds?)`), plus new
+  `editorStore.applyPresetStyle(styleId, captionIds?)` — bulk restyle in **one
+  undo step**, marks captions `manual`. Commit `6fa35ad` (frontend 193 → 209,
+  8 editor + 5 store + re-use).
+- **Slice 4 (PresetPanel)** — `components/PresetPanel.tsx`: "All" + 13
+  category pills, preset cards (name, category badge, imported-font/system-stack
+  indicator, RTL flag, description), Apply per card (project captions), load
+  error surface; mounted in the Inspector between Captions and Fonts; `.preset-*`
+  CSS on existing tokens. Commit `f25fa47` (frontend 209 → 213, 4 component
+  tests; build + lint clean).
+- **Docs closure** — D-022, ROADMAP M6 preset-registry tick (+status line),
+  FEATURES §6 "Shipped" block, this log, `graphify update .`.
+
+### HOW
+Per-slice TDD as established. Two test-signals worth noting: (1)
+`parsePreset` normalises all flag booleans, so the fixture had to carry the
+full flag set for deep-equality (documented behaviour, not a bug); (2) the
+`useShallow` import in the component is required because PresetPanel selects
+an object-literal slice from zustand (React 19 rule already in the log).
+
+### Decisions
+- D-022 — presets extend `CaptionStyle` with a category; registry is a JSON
+  file served read-only until module 3 import; Trending updateable by JSON
+  edit, no live fetch. Locked.
+
+### Verify
+- Backend: `uv run pytest` 178 passed (165 → 178: +13 registry units, +1 API).
+- Frontend: `npx vitest run` 213 passed (193 → 213: +8 editor, +5 store, +4
+  component). `npm run build` ok, `npm run lint` 0 errors.
+- Commits: `42e528a` · `434872e` · `6fa35ad` · `f25fa47` + this docs/graph
+  commit.
+
+### Limitations
+- API is read-only by design — importing/saving real presets (validation,
+  Custom category writes, export) is module 3.
+- `licenseRef` is advisory right now: applying a preset bound to a font that
+  is not imported degrades to libass system fallback (no load-time check).
+- Presets apply to existing captions only — they do not restyle future
+  generated captions' default yet (template-editor module may own that).
+- In-browser human feel-check of PresetPanel still pending (component-test
+  covered).
+
+### Next step
+- Push M6 module 2 (5 commits) on user go-ahead. Next M6 module:
+  `preset-import` (JSON schema validation, Custom category management,
+  import/export flows building on `preset_registry.py`). After that:
+  `template-editor` → `animated-captions`.

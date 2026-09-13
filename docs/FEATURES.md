@@ -112,6 +112,11 @@ Pipeline: ASR → timestamps → sentence/phrase segmentation → word timestamp
 - **Render burn-in** — captions reference families by string; when fonts are imported the `ass=` filter appends `:fontsdir='…/fonts'`, so libass resolves uploaded families. No-captions graph stays byte-identical (parity). Font fallback to system scan path remains intact.
 - *Remaining M6*: preset registry, preset import, template editor, animated caption treatments.
 
+**Shipped (M6 module 2 `preset-registry`):**
+- **Preset model** — `Preset` extends `CaptionStyle` with `category` (13 constants: Trending, New, Shorts, Reels, YouTube, Anime, Manhwa, Storytelling, Cinematic, Motivation, Meme, Documentary, Custom), optional `presetVersion`, `tags[]`, and `licenseRef` (bind to an imported font). Captions/panel/renderer still consume the unchanged `CaptionStyle` sub-type.
+- **Registry** — `presets/registry.json` seeded from the 15 built-in presets with an explicit category mapping; load/save with built-in fallback on corrupt/missing; `GET /api/presets` serves it (read-only until import lands). Trending is updateable by editing the registry JSON — no live fetch, no hard-coded claims.
+- **PresetPanel** — inspector panel with "All" + 13 category pills, preset cards (name, category badge, font binding "imported font"/"system stack", RTL flag, description), and an Apply button that restyles the project captions in **one undo step** and marks them manual (override-first).
+
 ## 7. Manhwa / Webtoon Extractor
 
 - Full-resolution load + analysis-scale representation.

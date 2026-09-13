@@ -63,7 +63,7 @@ Definition of done for ANY milestone installments within it: implementation exis
 
 ## Milestone 6 — Template/font system
 - [x] Font import — backend `/api/fonts` upload/list/file/delete, hand-rolled SFNT validation + family extraction, license metadata (`{type, source, embeddingAllowed}`), registry `fonts/licenses.json`; `ass=:fontsdir=` burn-in with byte-parity when no captions (`font-system` module complete)
-- [ ] Preset registry
+- [x] Preset registry — `Preset` extends `CaptionStyle` with `category` (13 constants) + `presetVersion/tags/licenseRef`; 15 built-ins category-mapped; `presets/registry.json`; read-only `GET /api/presets`; PresetPanel with category pills + cards + one-undo-step Apply; Trending updateable by JSON edit (`preset-registry` module complete)
 - [ ] Custom import
 - [ ] License metadata (font side shipped; preset/render license tracking follows with the registry)
 - [ ] Template editor
@@ -101,4 +101,4 @@ Definition of done for ANY milestone installments within it: implementation exis
 - 🔄 In progress
 - ✅ Done
 
-Current status: Milestones 0–4 done. Milestone 5 (caption engine) done — transcript-generated editable captions with 15 original style presets and libass burn-in; animated treatments deferred to M6, live preview overlay to M8. Milestone 6 in progress — module 1 `font-system` (user font import with license metadata + `fontsdir` render) shipped: 5/10 M6 rows open. Remaining M6 modules: preset-registry → preset-import → template-editor → animated-captions. Open follow-ups: M1 ripple editing / cross-track drag / audio mixing in render; M4 retention heuristics (dimensions defined in M5+ planning).
+Current status: Milestones 0–4 done. Milestone 5 (caption engine) done — transcript-generated editable captions with 15 original style presets and libass burn-in; animated treatments deferred to M6, live preview overlay to M8. Milestone 6 in progress — module 1 `font-system` (user font import with license metadata + `fontsdir` render) and module 2 `preset-registry` (13 categories, browsable, one-click apply) shipped: 3/5 M6 rows open. Remaining M6 modules: preset-import → template-editor → animated-captions. Open follow-ups: M1 ripple editing / cross-track drag / audio mixing in render; M4 retention heuristics (dimensions defined in M5+ planning).
