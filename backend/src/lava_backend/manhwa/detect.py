@@ -1,9 +1,19 @@
 """M7 module 2: hybrid panel detection (OpenCV + numpy).
 
 Operates on a downscaled analysis image (width ≤ 512). Every cut is scored by
-multiple signals — never one threshold. Clean gutters must be both empty and
-flat; everything else is deferred to the rescue pass (slice 2) or the user's
-manual correction tools.
+multiple signals — never one threshold.
+
+- Clean path: flat, empty (content < eps), wide (≥ GUTTER_MIN_H) runs that are
+  bordered by strong content on BOTH immediate sides → confidence 0.95. Thick
+  empty dead zones (flat 0-bands with empty neighbors, e.g. bubble interior)
+  are rejected: a gutter must sit between painted rows, not inside one.
+- Rescue pass: narrower flat empty seams (1..SEAM_MAX_H) with the same
+  bordered-by-content test → confidence 0.35. Bubbles and dense text fail the
+  bordered test (their neighboring rows are empty or sparse), so they never
+  earn a cut — those strips merge into a single low-confidence panel the user
+  can Split, per PRODUCT_SPEC §9.
+- Sliver pass: cuts closer than MIN_PANEL_H drop the lower-confidence one
+  (also consolidates bubble-split gutters where the clean path fired twice).
 """
 
 from __future__ import annotations
@@ -23,14 +33,18 @@ UNIFORM_FLAT = 0.97         # row must be this flat to count as a clean gutter
 BG_TOL = 12                 # |gray − bg| above this marks a pixel as content
 STD_DENOM = 40.0            # normalizer for row std → uniform score
 CLEAN_CUT_CONF = 0.95
-THIN_CUT_CONF = 0.6
+RESCUE_CUT_CONF = 0.35
+SEAM_NEIGHBOR = 0.15        # content rows immediately beside a seam must reach
+SEAM_MAX_H = 24             # a seam is narrow; anything bigger is a clean band or dead zone
+NEIGHBOR_BAND = 3           # rows sampled immediately above/below a run
+MIN_PANEL_H = 24            # analysis px; thinner panels are slivers → merged
 
 
 @dataclass(frozen=True)
 class Cut:
     y: int            # analysis-space cut position
     confidence: float  # ∈ [0, 1]
-    kind: str         # "clean" | "thin" | (later) "rescue"
+    kind: str         # "clean" | "rescue"
 
 
 @dataclass(frozen=True)
@@ -62,10 +76,21 @@ def load_analysis_image(image: Image.Image, max_width: int = DEFAULT_MAX_WIDTH):
 
 
 def _bg_estimate(gray: np.ndarray) -> int:
-    """Most common gray level (light or dark background both work)."""
-    rounded = np.clip(np.round(gray), 0, 255).astype(np.int64)
-    counts = np.bincount(rounded.ravel(), minlength=256)
-    return int(np.argmax(counts))
+    """Background color = mode of the 1px outer ring (comic margins).
+
+    Panels carry flat fills, so the global gray mode is a panel color, not the
+    background. Comic strips expose the background in outer margins, so the
+    border ring is the reliable estimator; a clear majority there is required,
+    otherwise fall back to the global mode (full-bleed art flush to the edge).
+    """
+    ring = np.concatenate([gray[0, :], gray[-1, :], gray[:, 0], gray[:, -1]])
+    rounded = np.clip(np.round(ring), 0, 255).astype(np.int64)
+    counts = np.bincount(rounded, minlength=256)
+    bg = int(np.argmax(counts))
+    if counts[bg] >= 0.5 * ring.size:
+        return bg
+    global_counts = np.bincount(np.clip(np.round(gray), 0, 255).astype(np.int64).ravel(), minlength=256)
+    return int(np.argmax(global_counts))
 
 
 def row_features(gray: np.ndarray) -> RowFeatures:
@@ -77,6 +102,15 @@ def row_features(gray: np.ndarray) -> RowFeatures:
     edges = cv2.Canny(gray.astype(np.uint8), 50, 150)
     edge = edges.any(axis=1).astype(np.float32)
     return RowFeatures(content=content, uniform=uniform, edge=edge)
+
+
+def _bordered_by_content(features: RowFeatures, start: int, end: int, h: int) -> bool:
+    """Both immediate sides of the [start, end) run must be strong content."""
+    above = features.content[max(0, start - NEIGHBOR_BAND):start]
+    below = features.content[end:min(h, end + NEIGHBOR_BAND)]
+    if above.size == 0 or below.size == 0:
+        return False  # touching an image edge is not a panel boundary
+    return above.mean() >= SEAM_NEIGHBOR and below.mean() >= SEAM_NEIGHBOR
 
 
 def find_gutter_bands(features: RowFeatures, h: int) -> list[GutterBand]:
@@ -93,19 +127,61 @@ def find_gutter_bands(features: RowFeatures, h: int) -> list[GutterBand]:
         start, end = i, j
         if start > 0 and end < h:  # interior only; clipped boundary bands are not cuts
             height = end - start
-            flat = features.uniform[start:end].mean() > UNIFORM_FLAT
-            if height >= GUTTER_MIN_H:
+            # robust flatness: median survives 1-2 half-blended transition rows
+            flat = float(np.median(features.uniform[start:end])) > UNIFORM_FLAT
+            if height >= GUTTER_MIN_H and flat and _bordered_by_content(features, start, end, h):
                 bands.append(GutterBand(start, end, height, "clean", CLEAN_CUT_CONF))
-            elif height >= 2 and flat:
-                bands.append(GutterBand(start, end, height, "thin", THIN_CUT_CONF))
         i = j
     return bands
 
 
-def detect_cuts(features: RowFeatures, h: int) -> list[Cut]:
-    """Clean-gutter cuts only (slice 1). Rescue pass arrives in slice 2."""
-    cuts: list[Cut] = []
-    for band in find_gutter_bands(features, h):
-        mid = (band.start + band.end) // 2
-        cuts.append(Cut(y=mid, confidence=band.confidence, kind=band.kind))
+def _rescue_cuts(features: RowFeatures, spans: list[tuple[int, int]], h: int) -> list[Cut]:
+    """1..SEAM_MAX_H flat empty runs between clean bands, bordered by content."""
+    empty = features.content < CONTENT_EPS
+    flat_band = features.uniform > UNIFORM_FLAT
+    out: list[Cut] = []
+    for lo, hi in spans:
+        i = lo
+        while i < hi:
+            if not (empty[i] and flat_band[i]):
+                i += 1
+                continue
+            j = i
+            while j < hi and empty[j] and flat_band[j]:
+                j += 1
+            height = j - i
+            if 1 <= height <= SEAM_MAX_H and _bordered_by_content(features, i, j, h):
+                out.append(Cut(y=(i + j) // 2, confidence=RESCUE_CUT_CONF, kind="rescue"))
+            i = j
+    return out
+
+
+def merge_slivers(cuts: list[Cut], h: int) -> list[Cut]:
+    """Drop lower-confidence cuts that create sub-MIN_PANEL_H interior panels."""
+    _ = h
+    cuts = sorted(cuts, key=lambda c: c.y)
+    while len(cuts) > 1:
+        improved = False
+        for a, b in zip(cuts, cuts[1:]):
+            if b.y - a.y < MIN_PANEL_H:
+                lower = a if a.confidence <= b.confidence else b
+                cuts.remove(lower)
+                improved = True
+                break
+        if not improved:
+            break
     return cuts
+
+
+def detect_cuts(features: RowFeatures, h: int) -> list[Cut]:
+    bands = find_gutter_bands(features, h)
+    cuts: list[Cut] = []
+    spans = [(0, bands[0].start)] if bands else [(0, h)]
+    for idx in range(len(bands)):
+        end_bound = bands[idx + 1].start if idx + 1 < len(bands) else h
+        spans.append((bands[idx].end, end_bound))
+    rescue = _rescue_cuts(features, spans, h)
+    for band in bands:
+        cuts.append(Cut(y=(band.start + band.end) // 2, confidence=band.confidence, kind=band.kind))
+    cuts.extend(rescue)
+    return merge_slivers(cuts, h)

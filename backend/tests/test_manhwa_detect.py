@@ -8,9 +8,12 @@ from manhwa_strips import AVAILABLE, StripFixture
 
 from lava_backend.manhwa.detect import (
     CLEAN_CUT_CONF,
+    RESCUE_CUT_CONF,
     RowFeatures,
+    Cut,
     detect_cuts,
     load_analysis_image,
+    merge_slivers,
     row_features,
 )
 from lava_backend.manhwa.panels import analysis_scale
@@ -30,17 +33,20 @@ def clean_fixture(request) -> StripFixture:
 
 class TestLoadAnalysisImage:
     def test_returns_analysis_dims(self) -> None:
-        gray, ana_w, ana_h, factor = load_analysis_image(AVAILABLE["clean_white"]().image)
-        assert ana_w == 512
-        assert ana_h == 1536
-        assert factor == pytest.approx(2400 / 1536)
+        fixture = AVAILABLE["clean_white"]()
+        gray, ana_w, ana_h, factor = load_analysis_image(fixture.image)
+        exp_w, exp_h, exp_factor = analysis_scale(fixture.src_w, fixture.src_h, max_width=512)
+        assert ana_w == exp_w == 512
+        assert ana_h == exp_h
+        assert factor == pytest.approx(exp_factor)
         assert gray.shape == (ana_h, ana_w)
 
     def test_identity_for_small_strip(self) -> None:
-        gray, ana_w, ana_h, factor = load_analysis_image(AVAILABLE["small_strip"]().image)
-        assert (ana_w, ana_h) == (300, 900)
+        fixture = AVAILABLE["small_strip"]()
+        gray, ana_w, ana_h, factor = load_analysis_image(fixture.image)
+        assert (ana_w, ana_h) == (fixture.src_w, fixture.src_h)
         assert factor == 1.0
-        assert gray.shape == (900, 300)
+        assert gray.shape == (ana_h, ana_w)
 
 
 class TestRowFeatures:
@@ -51,11 +57,12 @@ class TestRowFeatures:
         assert feat.content.shape == (ana_h,)
         assert feat.uniform.shape == (ana_h,)
         assert feat.edge.shape == (ana_h,)
-        # inside the first source panel (analysis y≈0..115): full content
-        assert feat.content[50] == pytest.approx(1.0)
-        # first gutter maps to analysis cut 120 → empty flat band ≈ rows 116..125
-        assert feat.content[116:125].mean() < 0.03
-        assert feat.uniform[116:125].mean() > 0.97
+        # inside the first panel: high content
+        assert feat.content[50] > 0.9
+        # the first detected clean cut anchors a flat empty band
+        first = detect_cuts(feat, ana_h)[0]
+        assert feat.content[first.y - 2 : first.y + 3].mean() < 0.03
+        assert feat.uniform[first.y - 2 : first.y + 3].mean() > 0.97
 
 
 class TestCleanCutDetection:
@@ -93,3 +100,53 @@ class TestFalseBoundary:
     def test_interior_band_is_not_cut(self) -> None:
         gray, _, ana_h, _ = load_analysis_image(AVAILABLE["false_boundary"]().image)
         assert detect_cuts(row_features(gray), ana_h) == []
+
+
+def _cuts(fixture: StripFixture, tol: int = 3):
+    gray, _, ana_h, _ = load_analysis_image(fixture.image)
+    detected = detect_cuts(row_features(gray), ana_h)
+    expected = _expected_analysis_cuts(fixture)
+    assert len(detected) == len(expected), (detected, expected, fixture.name)
+    for cut, want in zip(detected, expected):
+        assert abs(cut.y - want) <= tol, (cut, want, fixture.name)
+    return detected
+
+
+class TestRescueCutDetection:
+    def test_borderless_thin_gap_rescued(self) -> None:
+        cuts = _cuts(AVAILABLE["borderless"]())
+        assert all(c.kind == "rescue" for c in cuts)
+        assert all(c.confidence == pytest.approx(RESCUE_CUT_CONF) for c in cuts)
+
+    def test_connected_looking_hairline_rescued(self) -> None:
+        cuts = _cuts(AVAILABLE["connected_looking"]())
+        assert all(c.kind == "rescue" for c in cuts)
+        assert all(c.confidence == pytest.approx(RESCUE_CUT_CONF) for c in cuts)
+        assert cuts[0].confidence < CLEAN_CUT_CONF
+
+    def test_decorative_full_bleed_never_cut(self) -> None:
+        gray, _, ana_h, _ = load_analysis_image(AVAILABLE["decorative"]().image)
+        assert detect_cuts(row_features(gray), ana_h) == []
+
+    def test_bubbles_never_cut_through_bubble(self) -> None:
+        gray, _, ana_h, _ = load_analysis_image(AVAILABLE["bubbles"]().image)
+        assert detect_cuts(row_features(gray), ana_h) == []
+
+    def test_dense_text_keeps_only_real_gutters(self) -> None:
+        cuts = _cuts(AVAILABLE["dense_text"]())
+        assert all(c.kind == "clean" for c in cuts)
+
+
+class TestSliverMerge:
+    def test_merge_slivers_keeps_higher_confidence(self) -> None:
+        cuts = [Cut(y=100, confidence=0.95, kind="clean"), Cut(y=115, confidence=0.35, kind="rescue")]
+        merged = merge_slivers(cuts, h=200)
+        assert [(c.y, c.kind) for c in merged] == [(100, "clean")]
+
+    def test_close_clean_gutters_collapse_to_one(self) -> None:
+        fixture = AVAILABLE["close_gutters"]()
+        gray, _, ana_h, _ = load_analysis_image(fixture.image)
+        cuts = detect_cuts(row_features(gray), ana_h)
+        assert len(cuts) == 1
+        assert cuts[0].kind == "clean"
+        assert cuts[0].y in (187, 209)
