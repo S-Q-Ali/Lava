@@ -49,6 +49,10 @@ function parseLicense(raw: unknown): FontLicense {
 
 const registered = new Set<string>()
 
+export function resetFontFaceRegistrations() {
+  registered.clear()
+}
+
 export function ensureFontFace(meta: FontMetadata, baseUrl: string) {
   const key = `${meta.id}:${baseUrl}`
   if (registered.has(key)) return

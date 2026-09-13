@@ -67,7 +67,7 @@ describe('uploadFont', () => {
     const fetchMock = vi.fn().mockResolvedValue(jsonResponse(meta))
     vi.stubGlobal('fetch', fetchMock)
     const file = new File(['x'], 'Arial.ttf', { type: 'font/ttf' })
-    const result = await uploadFont(file, { type: 'open', embeddingAllowed: true })
+    const result = await uploadFont(file, { type: 'open', source: null, embeddingAllowed: true })
     expect(result).toEqual(meta)
     const [, init] = fetchMock.mock.calls[0]
     expect(init?.method).toBe('POST')

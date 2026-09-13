@@ -1,8 +1,9 @@
 // @vitest-environment jsdom
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { useFontStore } from './fontStore'
+import type { FontMetadata } from '../editor/fonts'
 
-const arial = {
+const arial: FontMetadata = {
   id: 'font-aaa',
   family: 'Arial',
   fileName: 'Arial.ttf',
@@ -42,6 +43,7 @@ describe('useFontStore', () => {
     vi.stubGlobal('fetch', fetchMock)
     await useFontStore.getState().importFont(new File(['x'], 'Arial.ttf'), {
       type: 'unknown',
+      source: null,
       embeddingAllowed: true,
     })
     expect(useFontStore.getState().fonts).toEqual([arial])

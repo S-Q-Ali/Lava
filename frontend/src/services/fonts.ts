@@ -28,15 +28,9 @@ export async function listFonts(baseUrl = backendBaseUrl()): Promise<FontMetadat
   return body.map((entry) => parseFontMetadata(entry))
 }
 
-export interface FontUploadLicense {
-  type: 'open' | 'commercial' | 'personal' | 'unknown' | undefined
-  source?: string
-  embeddingAllowed: boolean
-}
-
 export async function uploadFont(
   file: File,
-  license: FontUploadLicense,
+  license: FontLicense,
   baseUrl = backendBaseUrl(),
 ): Promise<FontMetadata> {
   const form = new FormData()
