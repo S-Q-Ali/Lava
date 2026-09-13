@@ -1333,3 +1333,79 @@ on arbitrary test-tuning and hard-coded "it works on this image" assertions.
   `5848a85`, `3bd11d5`, docs). Then module 5 `panel-correction`: Split, Merge,
   Crop, Delete, Add and Reorder operations against the registry, each
   re-guarded + re-exportable per the M7 capability map.
+
+## Session 24 — M7 module 5 `panel-correction` (pure list ops) + export order fix
+
+### WHAT
+- Shipped module 5: every correction op as a pure `list[Panel] → list[Panel]`
+  function, plus the order-preserving normalization that makes edits and
+  reorders survive export. Backend 344 → 379. Pushed modules 3–4 on go-ahead
+  (`5848a85`, `3bd11d5`, `c83cadd`).
+- Commits: `462865e` spec/plan/todo · `a8fb87a` slice 1 (validate_layout /
+  normalize_layout + guard refactor) · `64f8312` slice 2 (split/merge/delete)
+  · `1445fe1` slice 3 (adjust/add/reorder/redetect + detect `_open_source`
+  PIL-Image-branch fix) · `5f9940d` slice 4a (export honors `panel.order`) ·
+  (docs entry committed with this record).
+
+### HOW
+- order.py: `validate_layout` = invariants only (non-empty → ManhwaError,
+  unique ids, no positive-area overlap); `guard_layout = order_panels(...)`
+  (module-3 detection contract untouched); `normalize_layout` = validate +
+  renumber 1..n preserving the given sequence, and returns [] legally (a
+  delete/reset can empty a registry; export still refuses empty).
+- correct.py: `split_panel` (top keeps id, bottom fresh `pN`, both inherit
+  confidence + `user_corrected`), `merge_panels` (union box, keeps a_id,
+  min confidence, `user_corrected`), `delete_panel` (renumbers; may → []),
+  `adjust_panel` (source-bounds `ValueError`, overlap `ManhwaError`),
+  `add_panel` (fresh id, confidence 1.0, after_id insertion), `reorder_panels`
+  (exact-id-permutation → `ValueError`; all `user_corrected`), `redetect`
+  (thin `detect_strip(save=False)` passthrough). Panel has no source-dims
+  fields; ops derive edits via `dataclasses.replace` and ops that introduce
+  boxes take `source_w`/`source_h` explicitly.
+- export.py: `materialize_export` now sorts by `(panel.order, y, x)` then
+  `normalize_layout`, so the `order` field is the sequencing authority (D-031).
+
+### WHY
+- Module 3's guard sorts (y,x) for detection; a human Reorder/Add-after would
+  be silently undone by it at export. Correction therefore gets its own
+  normalize that validates identically but preserves intent, and export reads
+  the order field — "user edits are the last word" without weakening the
+  detection/layout invariants.
+- Latent module-2 bug surfaced by `redetect`: `_open_source` read
+  `source.filename` on the PIL-Image branch, which crashes for images built in
+  memory (module-2 tests always passed paths). Fixed with `getattr`.
+  redetect(image) now regression-tested.
+
+### Files
+- `backend/src/lava_backend/manhwa/correct.py` (new, ~170 lines).
+- `backend/src/lava_backend/manhwa/order.py` (+`validate_layout`,
+  +`normalize_layout`; `guard_layout` refactored onto validate).
+- `backend/src/lava_backend/manhwa/detect.py` (`_open_source` getattr fix).
+- `backend/src/lava_backend/manhwa/export.py` (order-field sequencing).
+- `backend/tests/test_manhwa_correct.py` (new, 35 tests).
+- `backend/tests/test_manhwa_export.py` (+1 order-authority round-trip → 15).
+- Docs: D-031, ROADMAP (module 5 ✅ + status), FEATURES §7 block,
+  SESSION_LOG 24, CONSTRAINTS row → 379, todo ticks.
+
+### Verification
+- `uv run pytest tests/test_manhwa_correct.py` → 35 passed.
+- `uv run pytest tests/test_manhwa_export.py tests/test_manhwa_correct.py` →
+  49 passed.
+- `uv run pytest` (full backend) → 379 passed, 9 warnings (pre-existing
+  Starlette/anyio + Pillow getdata deprecations).
+
+### Limitations
+- Ops are pure and synchronous; no undo/transaction history yet (UI-level
+  concern for module 7).
+- `redetect` returns the panel list without persisting; module 6 wires the
+  registry replace.
+- Adjust/add take source dims explicitly (Panel model has no source dims —
+  module 1 contract, kept).
+- Reset lives in the registry (module 1) and is invoked by the API (module 6),
+  not here.
+
+### Next step
+- Push M7 modules 3–5 on user go-ahead (5 commits ahead: `462865e`,
+  `a8fb87a`, `64f8312`, `1445fe1`, `5f9940d` + docs). Then module 6
+  `manhwa-api`: upload+detect, list/metadata, apply correction op, export
+  (png/jpg), storage + asset serving.

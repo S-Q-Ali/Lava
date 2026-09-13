@@ -608,3 +608,37 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
   resolution per product rules).
 - **Status**: Locked for M7 module 4 `panel-export` (shipped, backend 344).
   Next: module 5 `panel-correction`.
+
+## D-031 — Sequence authority is `panel.order`; manual edits never re-sort
+
+- **WHAT**: M7 module 5 `panel-correction` delivers pure list ops — `split_panel`,
+  `merge_panels`, `adjust_panel`, `delete_panel`, `add_panel`, `reorder_panels`,
+  `redetect`, plus `validate_layout`/`normalize_layout` in the order module.
+  `guard_layout` (module 3) kept its detection contract (always sorts y,x);
+  correction uses `normalize_layout`, which validates identically but renumbers
+  1..n **preserving the caller's sequence**. Export (module 4) now sorts on the
+  `order` field, making a user's reorder/insert real, not cosmetic.
+- **WHY**: Module 3's `guard_layout` re-sorts by (y,x), so any correction that
+  re-sequences panels (Reorder, Add-after-x) would be silently undone at
+  export. Detection needs the guaranteed top→bottom sort; manual editing needs
+  the opposite guarantee — that user intent is the final word. Fixing both
+  means D-029's "guard" stays for machines and correction gets a sibling for
+  humans, and export honors whichever came last (D-030's determinism kept).
+- **HOW**: `validate_layout` extracts the invariants (non-empty, unique ids, no
+  positive-area overlap → `ManhwaError`); `guard_layout = order_panels(...)`;
+  `normalize_layout` validates then replaces `order = i+1` in list order ([] is
+  a legal correction state — delete/reset can empty a registry; export still
+  refuses empty). Op details: split keeps the top's id + fresh `pN` bottom id,
+  both inherit confidence + get `user_corrected=True`; merge keeps a_id,
+  confidence=min, union box, `user_corrected=True`; adjust bounds must stay in
+  the source (`ValueError`) and disjoint from neighbors (`ManhwaError`); add
+  gets confidence 1.0, inserts after `after_id`; reorder demands an exact id
+  permutation (`ValueError`); ids stay stable across edits. Backend → 379.
+  Also fixed a latent module-2 bug: `_open_source`'s PIL-Image branch now
+  tolerates images without a `.filename` (previously only path-input ran).
+- **Alternatives considered**: making `guard_layout` stop sorting (rejected —
+  changes the shipped detection contract); expressing reorder as a box move
+  (rejected — a reorder is about sequence, not geometry); validating overlaps
+  ad hoc in each op (rejected — single `validate_layout` source of truth).
+- **Status**: Locked for M7 module 5 `panel-correction` (shipped, backend 379).
+  Next: module 6 `manhwa-api`.

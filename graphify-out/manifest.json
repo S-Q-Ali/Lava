@@ -348,15 +348,15 @@
     "semantic_hash": ""
   },
   "docs/DECISIONS.md": {
-    "mtime": 1789331352.3503668,
-    "seen": 1789331423.889614,
-    "ast_hash": "f4e19d1d422005b9aa43b59b5f6213fc",
+    "mtime": 1789332713.0642123,
+    "seen": 1789332800.193782,
+    "ast_hash": "4e54b6e0956b616ad61c9a7ab79eb032",
     "semantic_hash": ""
   },
   "docs/FEATURES.md": {
-    "mtime": 1789331390.808639,
-    "seen": 1789331423.8896158,
-    "ast_hash": "6c58d413603f598e4fc8860555a92230",
+    "mtime": 1789332750.2689388,
+    "seen": 1789332800.193783,
+    "ast_hash": "1cb751c393ba2717834f66cda5d6aa0b",
     "semantic_hash": ""
   },
   "docs/PRODUCT_SPEC.md": {
@@ -366,15 +366,15 @@
     "semantic_hash": ""
   },
   "docs/ROADMAP.md": {
-    "mtime": 1789331378.290959,
-    "seen": 1789331423.8896189,
-    "ast_hash": "7e66794e03df3b11a87ca468a91aa070",
+    "mtime": 1789332740.2594934,
+    "seen": 1789332800.1937861,
+    "ast_hash": "2f45326359852feedc1189a92cb9dd4d",
     "semantic_hash": ""
   },
   "docs/SESSION_LOG.md": {
-    "mtime": 1789331410.6758072,
-    "seen": 1789331423.88962,
-    "ast_hash": "d33046dfa906d08eac22e95e9d806437",
+    "mtime": 1789332785.3508966,
+    "seen": 1789332800.1937869,
+    "ast_hash": "7bce411d70824ef8f3f0a45b219b8233",
     "semantic_hash": ""
   },
   "docs/TEST_PLAN.md": {
@@ -510,9 +510,9 @@
     "semantic_hash": ""
   },
   "tasks/todo.md": {
-    "mtime": 1789331339.8634672,
-    "seen": 1789331423.889708,
-    "ast_hash": "94c7c853d3db67ccb60692eb3d5524b9",
+    "mtime": 1789332766.7246442,
+    "seen": 1789332800.193868,
+    "ast_hash": "a4f2bae9c4054ab5fd2bacfa9166e731",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/transcribe.py": {
@@ -1170,9 +1170,9 @@
     "semantic_hash": ""
   },
   "CONSTRAINTS.md": {
-    "mtime": 1789331383.2449574,
-    "seen": 1789331423.889607,
-    "ast_hash": "ab4de951f672d018ebb0e6ef9d194e4c",
+    "mtime": 1789332757.30822,
+    "seen": 1789332800.1937752,
+    "ast_hash": "dd0bcccc943422c3e1b2666348cd2ea9",
     "semantic_hash": ""
   },
   "docs/SPEC-m7-capability-map.md": {
@@ -1194,9 +1194,9 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/manhwa/detect.py": {
-    "mtime": 1789330775.3023767,
-    "seen": 1789330955.2579021,
-    "ast_hash": "2783f84e7dbf722c39dee4a3c989dbd1",
+    "mtime": 1789332603.454371,
+    "seen": 1789332800.19353,
+    "ast_hash": "772ed75fcea5368569e55d9d2d319b53",
     "semantic_hash": ""
   },
   "backend/tests/manhwa_strips.py": {
@@ -1224,9 +1224,9 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/manhwa/order.py": {
-    "mtime": 1789330732.8625157,
-    "seen": 1789330955.257907,
-    "ast_hash": "5fc78cb255c3e9be2b6529c77a487498",
+    "mtime": 1789332264.087404,
+    "seen": 1789332800.193536,
+    "ast_hash": "798f4f78e8da4d5966fdbe13709b60dc",
     "semantic_hash": ""
   },
   "backend/tests/test_manhwa_order.py": {
@@ -1248,15 +1248,15 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/manhwa/export.py": {
-    "mtime": 1789331272.0646472,
-    "seen": 1789331423.889327,
-    "ast_hash": "1eb40be0db4eb0f051f399688e226bdc",
+    "mtime": 1789332654.9718883,
+    "seen": 1789332800.193534,
+    "ast_hash": "1b58213355791edcfd9d3eb2b30d621d",
     "semantic_hash": ""
   },
   "backend/tests/test_manhwa_export.py": {
-    "mtime": 1789331294.9815786,
-    "seen": 1789331423.889374,
-    "ast_hash": "6746cbae45b3fe3815e404c246cebe40",
+    "mtime": 1789332670.9415622,
+    "seen": 1789332800.193569,
+    "ast_hash": "71a16cb9b97e069a5b297f4d24f8cd3f",
     "semantic_hash": ""
   },
   "docs/SPEC-panel-export.md": {
@@ -1269,6 +1269,30 @@
     "mtime": 1789331085.9196799,
     "seen": 1789331423.8896892,
     "ast_hash": "60c7a2ac03177631a24d54ccadcdb549",
+    "semantic_hash": ""
+  },
+  "backend/src/lava_backend/manhwa/correct.py": {
+    "mtime": 1789332561.9550478,
+    "seen": 1789332800.193526,
+    "ast_hash": "b0a5e82bec5d3a5f3dbfd0b97cfe495e",
+    "semantic_hash": ""
+  },
+  "backend/tests/test_manhwa_correct.py": {
+    "mtime": 1789332486.248672,
+    "seen": 1789332800.193565,
+    "ast_hash": "6cf2701111466d84874b634cb7c5c8a6",
+    "semantic_hash": ""
+  },
+  "docs/SPEC-panel-correction.md": {
+    "mtime": 1789332166.0224388,
+    "seen": 1789332800.1938088,
+    "ast_hash": "1d7202206527dfbf910f7a35a390dbfc",
+    "semantic_hash": ""
+  },
+  "tasks/plan-panel-correction.md": {
+    "mtime": 1789332173.1919482,
+    "seen": 1789332800.193847,
+    "ast_hash": "19ddf0edd6006673fa5166dc4cf297bd",
     "semantic_hash": ""
   }
 }

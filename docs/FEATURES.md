@@ -173,6 +173,10 @@ Pipeline: ASR → timestamps → sentence/phrase segmentation → word timestamp
 - **Manifest** — every export carries rows of `{file, id, order, x/y/w/h, width/height, confidence}` in 1..n reading order; `panel_###` naming is asset-stable (module 1), suffix swaps with format.
 - **Guard-normalized bundles** — the panel list is passed through `guard_layout` before export, so corrected/salvaged registries export cleanly; empty/overlapping layouts fail loudly rather than emitting garbage files.
 
+**Shipped (M7 module 5 `panel-correction`):**
+- **Pure correction ops** — Split (top half keeps id, fresh `pN` bottom id, both inherit confidence and are marked user-corrected), Merge with next/previous (union box keeps first id, confidence = min), Adjust bounds (must stay in source and stay disjoint), Delete (renumbers; may produce an empty registry), Add (fresh id, confidence 1.0, insert after a chosen panel), Reorder (exact id permutation reshapes the sequence), Re-detect and Reset.
+- **User intent is the final word** — every op leaves the original image untouched, keeps ids stable, sets `user_corrected=True` on what changed, and normalizes through `normalize_layout` (same validity rules as the detection guard, but sequence-preserving). Export now sorts on the `order` field, so a reorder/insert actually changes output.
+
 ## 8. Editor / Timeline
 
 Tracks: Video, Image, Voice, Music, SFX, Captions, Text/Overlay.
