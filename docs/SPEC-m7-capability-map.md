@@ -11,11 +11,13 @@ The original long image stays in the project, untouched.
 
 ## Assumptions
 
-1. Detection runs **on CPU in the local sidecar** (consistent with `backend/`), using only the
-   already-pinned `numpy<2` + `pillow>=12.3.0`. **No OpenCV, no new heavy deps** — matches the
-   lean-dep precedent (hand-rolled SFNT validator, no fontTools). Hybrid signals are built from
-   row statistics + gradients + region stats; "multiple signals, not one threshold" is satisfied
-   by combining several independent row features and requiring agreement.
+1. Detection runs **on CPU in the local sidecar** (consistent with `backend/`), using `numpy<2`
+   + `pillow` (already pinned) plus **`opencv-python-headless`** (approx. 50 MB wheel, no Qt/GTK
+   GUI libs — headless keeps the local-first profile; **approved by the user in the map gate**).
+   The pipeline is still hybrid: several independent signals (row uniformity, color
+   discontinuity, edge energy, gutter darkness, connected-component/morphology structure) are
+   fused with hysteresis — it never decides a single contour threshold. "Never one contour
+   threshold" is satisfied by signal fusion + multiple thresholds.
 2. Target input class = **long vertical single-column webtoon/manhwa strip**. Panels are
    axis-aligned rectangles stacked vertically; we detect **horizontal cuts between panels** and a
    **content x-extent (margins)**. True multi-column print-manhwa layouts are explicitly deferred.
