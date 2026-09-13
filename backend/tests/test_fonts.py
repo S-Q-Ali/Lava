@@ -114,3 +114,136 @@ def test_registry_survives_malformed_content(tmp_path):
     # A later save must still work (defensive recovery).
     save_registry(reg_file, [{"id": "font-" + "c" * 16, "family": "X", "fileName": "x.ttf", "ext": "ttf"}])
     assert len(load_registry(reg_file)) == 1
+
+# --- API + renderer wire (slice 2) ---
+
+import subprocess
+from dataclasses import replace
+
+from lava_backend import config as config_module
+from lava_backend.main import app as _app
+from lava_backend.media import RenderClip, RenderSettings, render
+from fastapi.testclient import TestClient
+
+
+@pytest.fixture
+def fonts_client(tmp_path, monkeypatch):
+    cfg = config_module.Config.load()
+    cfg = replace(cfg, fonts_dir=tmp_path / "fonts", cache_dir=tmp_path / "cache")
+    monkeypatch.setattr("lava_backend.main.get_config", lambda: cfg)
+    return TestClient(_app), cfg, tmp_path
+
+
+def _upload(client, data, filename, license=None):
+    files = [("file", (filename, data, "application/octet-stream"))]
+    form = {}
+    if license is not None:
+        form["license"] = json.dumps(license)
+    return client.post("/api/fonts", data=form, files=files)
+
+
+def test_upload_ttf_returns_metadata(fonts_client):
+    client, cfg, _ = fonts_client
+    resp = _upload(client, _bytes_of(TTF_FIXTURE), "Arial.ttf")
+    assert resp.status_code == 201
+    body = resp.json()
+    assert body["family"] == "Arial"
+    assert body["ext"] == "ttf"
+    assert body["license"]["type"] == "unknown"
+    stored = cfg.fonts_dir / f"{body['id']}.ttf"
+    assert stored.exists()
+    assert stored.read_bytes() == _bytes_of(TTF_FIXTURE)
+
+
+def test_upload_with_license_metadata(fonts_client):
+    client, cfg, _ = fonts_client
+    resp = _upload(
+        client,
+        _bytes_of(TTF_FIXTURE),
+        "Arial.ttf",
+        license={"type": "open", "source": "https://example.com", "embeddingAllowed": False},
+    )
+    assert resp.status_code == 201
+    assert resp.json()["license"] == {
+        "type": "open",
+        "source": "https://example.com",
+        "embeddingAllowed": False,
+    }
+
+
+def test_upload_bad_extension_is_422(fonts_client):
+    client, cfg, _ = fonts_client
+    resp = _upload(client, _bytes_of(TTF_FIXTURE), "font.woff2")
+    assert resp.status_code == 422
+    assert resp.json()["error"]["code"] == "FONT_INVALID"
+
+
+def test_upload_garbage_bytes_is_422(fonts_client):
+    client, cfg, _ = fonts_client
+    resp = _upload(client, b"definitely not a font", "fake.ttf")
+    assert resp.status_code == 422
+    assert resp.json()["error"]["code"] == "FONT_INVALID"
+
+
+def test_upload_bad_license_json_is_422(fonts_client):
+    client, cfg, _ = fonts_client
+    resp = client.post(
+        "/api/fonts",
+        data={"license": "{oops"},
+        files=[("file", ("Arial.ttf", _bytes_of(TTF_FIXTURE), "application/octet-stream"))],
+    )
+    assert resp.status_code == 422
+    assert resp.json()["error"]["code"] == "INVALID_BODY"
+
+
+def test_bad_license_semantics_is_422(fonts_client):
+    client, cfg, _ = fonts_client
+    resp = _upload(client, _bytes_of(TTF_FIXTURE), "Arial.ttf", license={"type": "viral"})
+    assert resp.status_code == 422
+    assert resp.json()["error"]["code"] == "FONT_INVALID"
+
+
+def test_list_file_and_delete(fonts_client):
+    client, cfg, _ = fonts_client
+    upload = _upload(client, _bytes_of(TTF_FIXTURE), "Arial.ttf")
+    font_id = upload.json()["id"]
+
+    listed = client.get("/api/fonts")
+    assert listed.status_code == 200
+    assert [f["id"] for f in listed.json()] == [font_id]
+
+    file_resp = client.get(f"/api/fonts/{font_id}/file")
+    assert file_resp.status_code == 200
+    assert file_resp.content == _bytes_of(TTF_FIXTURE)
+
+    deleted = client.delete(f"/api/fonts/{font_id}")
+    assert deleted.status_code == 204
+    assert not (cfg.fonts_dir / f"{font_id}.ttf").exists()
+    assert client.get(f"/api/fonts/{font_id}/file").status_code == 404
+    assert client.get("/api/fonts").json() == []
+
+
+def test_render_captions_with_fontsdir(fonts_client):
+    client, cfg, tmp_path = fonts_client
+    upload = _upload(client, _bytes_of(TTF_FIXTURE), "Arial.ttf")
+    assert upload.status_code == 201
+    cfg = replace(cfg, renders_dir=tmp_path / "cache" / "renders")
+    img = tmp_path / "a.png"
+    subprocess.run(
+        [str(cfg.ffmpeg_bin), "-y", "-f", "lavfi", "-i", "color=c=red:s=64x48:rate=1", "-frames:v", "1", str(img)],
+        check=True,
+        capture_output=True,
+    )
+    from lava_backend.captions import CaptionItemSpec, CaptionWordSpec, CaptionStyleSpec
+    style = CaptionStyleSpec(font_name="Arial", font_size=20)
+    caption_items = [
+        CaptionItemSpec(start=0, duration=1.5, text="Hello fonts", style=style, words=())
+    ]
+    result = render(
+        cfg,
+        [img],
+        [RenderClip(file_index=0, start=0, duration=1.5)],
+        RenderSettings(width=64, height=48, fps=10),
+        captions=caption_items,
+    )
+    assert result.duration == pytest.approx(1.5, abs=0.2)

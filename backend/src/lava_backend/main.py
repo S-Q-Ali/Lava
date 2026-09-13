@@ -10,13 +10,24 @@ from pathlib import Path
 
 from fastapi import FastAPI, File, Form, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, Response
 from pydantic import BaseModel
 
 from .captions import CaptionError, parse_captions
 from .clip import ClipEmbedder, MultilingualClipEmbedder
 from .config import get_config, tool_versions
 from .errors import ApiError, error_response
+from .fonts import (
+    FONT_ID_RE,
+    FontError,
+    extract_family_name,
+    font_license_from_payload,
+    is_allowed_font_name,
+    load_registry,
+    make_font_metadata,
+    save_registry,
+    validate_font_bytes,
+)
 from .matching import Matcher, router as matching_router
 from .media import (
     IMAGE_SUFFIXES,
@@ -251,3 +262,105 @@ def serve_render(job_id: str):
     if not out_path.exists():
         raise ApiError(404, "NOT_FOUND", "no such render")
     return FileResponse(out_path, media_type="video/mp4", filename=f"{job_id}.mp4")
+
+
+def _font_registry_path(config) -> Path:
+    return Path(config.fonts_dir) / "licenses.json"
+
+
+def _list_font_entries(config) -> list[dict]:
+    return load_registry(_font_registry_path(config))
+
+
+def _font_file(config, entry: dict) -> Path:
+    return Path(config.fonts_dir) / f"{entry['id']}.{entry['ext']}"
+
+
+@app.post(f"{API_V1}/fonts", status_code=201)
+async def upload_font(
+    file: UploadFile = File(...),
+    license: str | None = Form(None),
+):
+    config = get_config()
+    filename = (file.filename or "font.ttf").strip()
+    if not is_allowed_font_name(filename) or filename.startswith("."):
+        raise ApiError(422, "FONT_INVALID", "Only .ttf and .otf files can be imported as fonts")
+    data = await file.read()
+    if len(data) == 0:
+        raise ApiError(422, "FONT_INVALID", "Font file is empty")
+    try:
+        validate_font_bytes(data)
+    except FontError as exc:
+        raise ApiError(422, "FONT_INVALID", str(exc)) from exc
+
+    license_payload = {"type": "unknown", "source": None, "embeddingAllowed": True}
+    if license is not None and license.strip():
+        try:
+            raw_license = json.loads(license)
+        except json.JSONDecodeError as exc:
+            raise ApiError(422, "INVALID_BODY", "license must be valid JSON") from exc
+        try:
+            license_payload = font_license_from_payload(raw_license)
+        except FontError as exc:
+            raise ApiError(422, "FONT_INVALID", str(exc)) from exc
+
+    family = extract_family_name(data)
+    if not family:
+        family = Path(filename).stem
+    font_id = f"font-{uuid.uuid4().hex}"
+    try:
+        entry = make_font_metadata(font_id, family, filename, license_payload, _now_iso())
+    except FontError as exc:
+        raise ApiError(422, "FONT_INVALID", str(exc)) from exc
+
+    stored = config.fonts_dir / f"{font_id}.{entry['ext']}"
+    config.fonts_dir.mkdir(parents=True, exist_ok=True)
+    stored.write_bytes(data)
+    entries = _list_font_entries(config)
+    entries.append(entry)
+    save_registry(_font_registry_path(config), entries)
+    return entry
+
+
+def _now_iso() -> str:
+    from datetime import datetime, timezone
+
+    return datetime.now(timezone.utc).isoformat()
+
+
+@app.get(f"{API_V1}/fonts")
+def list_fonts():
+    return _list_font_entries(get_config())
+
+
+@app.get(f"{API_V1}/fonts/{{font_id}}/file")
+def serve_font_file(font_id: str):
+    config = get_config()
+    if not FONT_ID_RE.fullmatch(font_id):
+        raise ApiError(404, "NOT_FOUND", "no such font")
+    entry = next((e for e in _list_font_entries(config) if e["id"] == font_id), None)
+    if entry is None:
+        raise ApiError(404, "NOT_FOUND", "no such font")
+    stored = _font_file(config, entry)
+    if not stored.exists():
+        raise ApiError(404, "NOT_FOUND", "no such font")
+    return FileResponse(stored, media_type="font/ttf", filename=entry["fileName"])
+
+
+@app.delete(f"{API_V1}/fonts/{{font_id}}", status_code=204)
+def delete_font(font_id: str):
+    config = get_config()
+    if not FONT_ID_RE.fullmatch(font_id):
+        raise ApiError(404, "NOT_FOUND", "no such font")
+    entries = _list_font_entries(config)
+    entry = next((e for e in entries if e["id"] == font_id), None)
+    if entry is None:
+        raise ApiError(404, "NOT_FOUND", "no such font")
+    stored = _font_file(config, entry)
+    stored.unlink(missing_ok=True)
+    remaining = [e for e in entries if e["id"] != font_id]
+    if remaining:
+        save_registry(_font_registry_path(config), remaining)
+    else:
+        _font_registry_path(config).unlink(missing_ok=True)
+    return Response(status_code=204)

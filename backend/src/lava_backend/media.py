@@ -339,6 +339,17 @@ def _write_ass_file(
     return ass_path
 
 
+def _ass_filter_string(ass_path: Path, fonts_dir: Path | None = None) -> str:
+    """Build the ASS overlay + optional fontsdir string appended after [vout]."""
+    escaped = str(ass_path).replace("\\", "/").replace(":", "\\:").replace("'", "\\'")
+    result = f"[vout];[vout]ass='{escaped}'"
+    if fonts_dir is not None and fonts_dir.is_dir():
+        escaped_dir = str(fonts_dir).replace("\\", "/").replace(":", "\\:").replace("'", "\\'")
+        result += f":fontsdir='{escaped_dir}'"
+    result += "[voutc]"
+    return result
+
+
 def render(
     config: Config,
     files: list[Path],
@@ -359,11 +370,10 @@ def render(
 
     filter_complex, expected_duration = build_transition_graph(clips, list(transitions), settings)
     if ass_path is not None:
-        escaped = str(ass_path).replace("\\", "/").replace(":", "\\:").replace("'", "\\'")
-        filter_complex = filter_complex.replace(
-            "[vout]", f"[vout];[vout]ass='{escaped}'[voutc]"
-        )
         final_label = "[voutc]"
+        filter_complex = filter_complex.replace(
+            "[vout]", _ass_filter_string(ass_path, getattr(config, "fonts_dir", None))
+        )
     else:
         final_label = "[vout]"
 

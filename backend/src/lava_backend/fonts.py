@@ -176,7 +176,7 @@ def make_font_metadata(
         "id": font_id,
         "family": clean_family_name(family),
         "fileName": filename,
-        "ext": ext,
+        "ext": ext.lstrip("."),
         "license": font_license_from_payload(license_payload),
         "addedAt": added_at,
     }
