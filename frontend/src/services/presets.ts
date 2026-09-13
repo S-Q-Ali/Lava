@@ -59,6 +59,20 @@ export async function deletePreset(id: string, baseUrl = backendBaseUrl()): Prom
   if (!res.ok && res.status !== 204) await failHttp(res)
 }
 
+export async function updatePreset(
+  id: string,
+  payload: unknown,
+  baseUrl = backendBaseUrl(),
+): Promise<Preset> {
+  const res = await fetch(`${baseUrl.replace(/\/$/, '')}/api/presets/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  })
+  if (!res.ok) await failHttp(res)
+  return parsePreset(await res.json())
+}
+
 export function downloadPresetFile(preset: Preset): void {
   const json = JSON.stringify(exportPresetPayload(preset), null, 2)
   const blob = new Blob([json], { type: 'application/json' })

@@ -1,13 +1,16 @@
 import { useEditorStore } from '../store/editorStore'
+import { usePresetStore } from '../store/presetStore'
 import {
   CAPTION_STYLES,
   DEFAULT_CAPTION_STYLE_ID,
   getCaptionStyle,
 } from '../editor/captionStyles'
 import type { CaptionItem } from '../editor/captions'
+import type { Preset } from '../editor/presets'
+import { resolveCaptionStyle } from '../editor/templateEditor'
 
-function captionToWire(caption: CaptionItem) {
-  const style = getCaptionStyle(caption.styleId)
+function captionToWire(caption: CaptionItem, presets: Preset[]) {
+  const style = resolveCaptionStyle(caption.styleId, presets)
   const firstFamily = style.fontFamily.split(',')[0]?.replace(/'/g, '').trim() || 'Arial'
   return {
     start: caption.start,
@@ -30,8 +33,8 @@ function captionToWire(caption: CaptionItem) {
   }
 }
 
-export function captionsRenderPayload(captions: CaptionItem[]) {
-  return captions.map(captionToWire)
+export function captionsRenderPayload(captions: CaptionItem[], presets: Preset[] = usePresetStore.getState().presets) {
+  return captions.map((caption) => captionToWire(caption, presets))
 }
 
 export function CaptionPanel() {
@@ -43,6 +46,12 @@ export function CaptionPanel() {
   const updateCaptionTiming = useEditorStore((s) => s.updateCaptionTiming)
   const setCaptionStyle = useEditorStore((s) => s.setCaptionStyle)
   const removeCaption = useEditorStore((s) => s.removeCaption)
+  const presets = usePresetStore((s) => s.presets)
+
+  const styleOptions = [
+    ...CAPTION_STYLES,
+    ...presets.filter((p) => !CAPTION_STYLES.some((s) => s.id === p.id)),
+  ]
 
   const voiceAssets = assets.filter((a) => a.kind === 'audio')
   const analyzed = voiceAssets.filter((a) => transcripts[a.id])
@@ -97,7 +106,7 @@ export function CaptionPanel() {
                       value={caption.styleId}
                       onChange={(e) => setCaptionStyle(caption.id, e.target.value)}
                     >
-                      {CAPTION_STYLES.map((s) => (
+                      {styleOptions.map((s) => (
                         <option key={s.id} value={s.id}>
                           {s.label}
                         </option>

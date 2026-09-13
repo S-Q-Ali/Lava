@@ -1,6 +1,11 @@
 import { create } from 'zustand'
 import type { Preset } from '../editor/presets'
-import { deletePreset as deletePresetRequest, importPreset as importPresetRequest, listPresets } from '../services/presets'
+import {
+  deletePreset as deletePresetRequest,
+  importPreset as importPresetRequest,
+  listPresets,
+  updatePreset as updatePresetRequest,
+} from '../services/presets'
 import { useEditorStore } from './editorStore'
 
 interface PresetState {
@@ -15,6 +20,7 @@ interface PresetState {
   applyPreset: (id: string, captionIds?: string[]) => void
   importPreset: (payload: unknown) => Promise<Preset>
   removePreset: (id: string) => Promise<void>
+  savePreset: (preset: Preset) => Promise<Preset>
   clear: () => void
 }
 
@@ -70,6 +76,26 @@ export const usePresetStore = create<PresetState>((set, get) => ({
       set((state) => ({ presets: state.presets.filter((p) => p.id !== id), status: 'idle' }))
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Could not delete the preset.'
+      set({ status: 'error', error: message })
+      throw err
+    }
+  },
+  savePreset: async (preset) => {
+    set({ status: 'loading', error: undefined })
+    try {
+      const exists = get().presets.some((p) => p.id === preset.id)
+      const saved = exists
+        ? await updatePresetRequest(preset.id, { kind: 'lava-preset', version: 1, preset })
+        : await importPresetRequest({ kind: 'lava-preset', version: 1, preset })
+      set((state) => ({
+        presets: state.presets.some((p) => p.id === saved.id)
+          ? state.presets.map((p) => (p.id === saved.id ? saved : p))
+          : [...state.presets, saved],
+        status: 'idle',
+      }))
+      return saved
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Could not save the preset.'
       set({ status: 'error', error: message })
       throw err
     }

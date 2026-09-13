@@ -3,6 +3,7 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { createRoot } from 'react-dom/client'
 import { act } from 'react'
 import { useEditorStore } from '../store/editorStore'
+import { usePresetStore } from '../store/presetStore'
 import { CaptionPanel, captionsRenderPayload } from './CaptionPanel'
 import type { Asset, Transcript } from '../editor/types'
 
@@ -139,5 +140,44 @@ describe('captionsRenderPayload', () => {
       },
     })
     expect(payload[0].words).toHaveLength(4)
+  })
+
+  it('resolves a preset-applied caption to the preset style on the render wire', () => {
+    useEditorStore.setState({
+      captions: [
+        { id: 'cap-1', trackId: 'track-captions', start: 0, duration: 2, text: 'Hi', styleId: 'custom-neon', source: 'manual' },
+      ],
+    })
+    usePresetStore.setState({
+      presets: [
+        {
+          id: 'custom-neon',
+          label: 'Neon',
+          description: '',
+          category: 'Custom',
+          fontFamily: 'Impact',
+          fontSize: 88,
+          primaryColor: '#FFFFFF',
+          highlightColor: '#00FF00',
+          outlineColor: '#000000',
+          outlineWidth: 3,
+          bold: true,
+          uppercase: false,
+          alignment: 'bottom',
+          rtl: false,
+          emoji: false,
+          karaoke: false,
+          wordHighlight: false,
+          importantWordPop: false,
+          punctuation: false,
+        },
+      ],
+    })
+    const payload = captionsRenderPayload(useEditorStore.getState().captions)
+    expect(payload[0].style).toMatchObject({
+      fontFamily: 'Impact',
+      fontSize: 88,
+      primaryColor: '#FFFFFF',
+    })
   })
 })

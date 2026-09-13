@@ -164,4 +164,48 @@ describe('usePresetStore', () => {
     await usePresetStore.getState().removePreset('custom-gone')
     expect(usePresetStore.getState().getPreset('custom-gone')).toBeUndefined()
   })
+
+  it('savePreset POSTs a new preset and appends it', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse(presets)))
+    await usePresetStore.getState().load()
+    const fresh: Preset = { ...presets[1], id: 'custom-fresh', label: 'Fresh', category: 'Custom' }
+    let method = ''
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
+        if (init?.method === 'POST') {
+          method = 'POST'
+          return jsonResponse(fresh, true, 201)
+        }
+        return jsonResponse(presets)
+      }),
+    )
+    await usePresetStore.getState().savePreset(fresh)
+    expect(method).toBe('POST')
+    expect(usePresetStore.getState().getPreset('custom-fresh')?.label).toBe('Fresh')
+    expect(usePresetStore.getState().getPreset('custom-fresh')).toBeDefined()
+  })
+
+  it('savePreset PUTs an existing custom preset and updates it locally', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse(presets)))
+    await usePresetStore.getState().load()
+    usePresetStore.setState({
+      presets: [...presets, { ...presets[1], id: 'custom-edit', category: 'Custom' }],
+    })
+    const updated: Preset = { ...presets[1], id: 'custom-edit', fontSize: 99, category: 'Custom' }
+    let method = ''
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
+        if (init?.method === 'PUT') {
+          method = 'PUT'
+          return jsonResponse(updated, true, 200)
+        }
+        return jsonResponse(presets)
+      }),
+    )
+    await usePresetStore.getState().savePreset(updated)
+    expect(method).toBe('PUT')
+    expect(usePresetStore.getState().getPreset('custom-edit')?.fontSize).toBe(99)
+  })
 })
