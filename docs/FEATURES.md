@@ -110,19 +110,19 @@ Pipeline: ASR → timestamps → sentence/phrase segmentation → word timestamp
 - **Font API** — `POST /api/fonts` (201 metadata), `GET /api/fonts`, `GET /api/fonts/{id}/file`, `DELETE /api/fonts/{id}` (204). `FONT_INVALID` (422) for bad extensions/magic/license semantics; `INVALID_BODY` (422) for malformed license JSON; 404 for unknown ids.
 - **Preview** — each listed font gets a preview link to its served file and an auto-registered `@font-face` (keyed per id+base URL) so imported families appear in browser UI.
 - **Render burn-in** — captions reference families by string; when fonts are imported the `ass=` filter appends `:fontsdir='…/fonts'`, so libass resolves uploaded families. No-captions graph stays byte-identical (parity). Font fallback to system scan path remains intact.
-- *Remaining M6*: preset registry, preset import, template editor, animated caption treatments.
+- *Remaining M6*: preset registry, preset import, template editor, animated caption treatments — all shipped in modules 2–6 below.
 
 **Shipped (M6 module 2 `preset-registry`):**
 - **Preset model** — `Preset` extends `CaptionStyle` with `category` (13 constants: Trending, New, Shorts, Reels, YouTube, Anime, Manhwa, Storytelling, Cinematic, Motivation, Meme, Documentary, Custom), optional `presetVersion`, `tags[]`, and `licenseRef` (bind to an imported font). Captions/panel/renderer still consume the unchanged `CaptionStyle` sub-type.
 - **Registry** — `presets/registry.json` seeded from the 15 built-in presets with an explicit category mapping; load/save with built-in fallback on corrupt/missing; `GET /api/presets` serves it (read-only until import lands). Trending is updateable by editing the registry JSON — no live fetch, no hard-coded claims.
 - **PresetPanel** — inspector panel with "All" + 13 category pills, preset cards (name, category badge, font binding "imported font"/"system stack", RTL flag, description), and an Apply button that restyles the project captions in **one undo step** and marks them manual (override-first).
-- *Remaining M6*: preset import, template editor, animated caption treatments.
+- *Remaining M6*: preset import, template editor, animated caption treatments — all shipped in modules 3–6 below.
 
 **Shipped (M6 module 3 `preset-import`):**
 - **Import** — accepts a `lava-preset` envelope (`{kind, version: 1, preset}`) or a bare preset dict via an Import JSON button (file picker → JSON → `POST /api/presets`). Imported presets are validated against the full Preset schema: ids forced to `custom-` (duplicate → 422 `PRESET_INVALID`), category forced to `Custom`, and a `licenseRef` (when present) must reference an imported font — actionable errors, no silent overwrite.
 - **Export / Delete** — custom preset cards get an Export button (downloads `<id>.lava-preset.json` via the same envelope) and a Remove button; built-ins are undeletable (`403 BUILTIN_PRESET`). Backend also serves `GET /api/presets/{id}/file` for parity/tests.
 - **Custom registry** — imports persist into `presets/registry.json` (single file, built-ins stay code baseline), load/save falls back to built-ins on corrupt writes; `removePreset`/`importPreset` mirror the server state in the store.
-- *Remaining M6*: template editor, animated caption treatments.
+- *Remaining M6*: template editor, animated caption treatments — all shipped in modules 4–6 below.
 
 **Shipped (M6 module 4 `template-editor`):**
 - **Draft model** — `frontend/src/editor/templateEditor.ts`: `PresetDraft`, `draftFromPreset` (from a preset or an M5 style), immutable `updateDraft` (font size clamped 8–240, outline ≥ 0), `customIdForLabel` — slug ids that mirror the backend `custom-` contract, and `finalizeDraft` producing a full Custom `Preset` payload.
@@ -130,11 +130,17 @@ Pipeline: ASR → timestamps → sentence/phrase segmentation → word timestamp
 - **TemplateEditorPanel** — Inspector section: base preset select (default `normal`), label/description, font family text + imported-font picker, size / colors / outline / alignment, the eight M5 flag toggles (bold, uppercase, RTL, emoji, karaoke, word highlight, important-word pop, punctuation), a live CSS preview, Save-as-new (label-gated) and Overwrite (custom bases only).
 - **Render-path fix** — caption→wire/`captionsRenderPayload` now resolve a caption's preset `styleId` through the preset store before burn-in (previously fell back to `normal`), and the CaptionPanel style select lists custom presets with the M5 styles first.
 - *Remaining M6*: license metadata, animated caption treatments.
-
-**Shipped (M6 module 5 `animated-captions`):**
+- **Shipped (M6 module 5 `animated-captions`):**
 - **Treatments** — five named animations generated as deterministic libass inline tags in the pure backend ASS generator: `kinetic` (per-word alpha+scale reveal riding the voice pipeline's `words[]` timing, even-split fallback), `manga` (impact punch: 200%→100% scale + alpha fade over ~180 ms), `cinematic` (`{\fad(400,400)}` + slow scale), `meme` (three ~180 ms scale ramps for a punch/wobble) and `storytelling` (`{\fad(600,600)}` + gentle scale).
 - **Contract** — `animation` (enum: `none|kinetic|manga|cinematic|meme|storytelling`) flows through the caption style, the `Preset` schema (backend enum validation + import/export round-trip), the `PresetDraft` editor model, and the render wire. The four M5 presets named after the families carry their matching treatment; everything else defaults to `none`. Karaoke keeps precedence; RTL wraps outside the animation.
 - **Editor** — TemplateEditorPanel gains an Animation control (None + the five treatments). Motion preview of animations is M8 (preview overlay); true manga speed-lines and cinematic letterbox bars are recorded as M8 follow-ups since they need pixel-space drawing the text ASS generator can't measure.
+- *Remaining M6*: license metadata (module 6 `license-tracking` — shipped below).
+
+**Shipped (M6 module 6 `license-tracking` — closes M6):**
+- **Render guard** — the pure `licensing.py` resolver matches every caption style's `fontFamily` against the fonts registry by family and returns a used-font manifest or blocking violations: `FONT_LICENSE_NOT_EMBEDDABLE` (declared license forbids embedding) and `FONT_MISSING` (registered, but the font file is gone from `fonts_dir`). `POST /api/render` aborts any violation with an actionable 422 `FONT_LICENSE` — no silent fallback from the render path. System stacks (unregistered families) are outside the registry and always allowed.
+- **Font manifest** — successful renders return `fonts: [{family, fontId, license}]` describing exactly which registry-backed fonts the export burned in; `RenderResult` and the frontend `FFmpegProvider.render` mirror it.
+- **Badge** — PresetPanel's "imported font" badge title now shows the bound font's family and embedding status resolved from `fontStore`.
+- *Remaining M6*: none — all six M6 rows closed.
 
 ## 7. Manhwa / Webtoon Extractor
 

@@ -977,3 +977,66 @@ inserted *after* HTML escaping. Docs D-025 + ROADMAP tick (6th row) + FEATURES.
 ### Next step
 - Push M6 module 5 (5 commits) on user go-ahead. Then close the last M6 row:
   preset/render license metadata tracking; M6 is complete.
+
+## Session 19 — M6 module 6 `license-tracking` (render guard + manifest; M6 done)
+
+### WHAT
+Closed the final M6 row (preset/render license metadata) with a render-time
+font license guard and a render font manifest. Fonts already track
+`{type, source, embeddingAllowed}` (module 1) and presets bind them via
+`licenseRef` (module 3); the render path now enforces them.
+
+- New pure module `backend/src/lava_backend/licensing.py`: matches each
+  caption style's `fontFamily` against the fonts registry by family and
+  returns `(used_fonts, violations)` where violations are
+  `FONT_LICENSE_NOT_EMBEDDABLE` (declared license forbids embedding) or
+  `FONT_MISSING` (registered, but `{id}.{ext}` absent from `fonts_dir`).
+  System stacks (unregistered families) pass silently and are not listed.
+- `POST /api/render`: any violation aborts with an actionable
+  `422 FONT_LICENSE` (message from `violation_message`); clean renders return
+  `fonts: [{family, fontId, license}]` on the body. `RenderResult.fonts`
+  carries the manifest through `media.py`.
+- Frontend: `RenderResult.fonts` + `RenderCaptionStyle.animation` parity
+  (fixes the module-5 divergence on the caption-wire type); PresetPanel's
+  "imported font" badge title now shows the bound family + embedding status
+  resolved from `fontStore`.
+
+### HOW
+RED first per slice: 12 licensing unit tests then 6 render-API tests
+(no-captions `fonts: []`, system stack 201, restricted 422, missing-file 422,
+allowed descriptor, mixed dedup), then 3 frontend tests (manifest passthrough,
+badge allowed/limited). Endpoint guard placed after caption parse, before
+render — violations abort before any ffmpeg work. Descriptor built from
+resolver output dicts, not the frozen dataclass, so `RenderResult.fonts`
+serializes cleanly.
+
+### Decisions
+- D-026 — registry-back fonts are refused on the render path, never silently
+  served; guard failures are hard 422s (consistent with no-silent-fallback);
+  matching is by family (the only ident on the caption wire) with first-match
+  wins; the manifest lists only fonts actually used by caption styles.
+- Limitation accepted: a font fully removed from the registry after binding
+  becomes indistinguishable from a system stack and passes — predictable from
+  the data model; registry-backed cases are all caught.
+
+### Verify
+- Backend: `uv run pytest` 245 passed (227 → 239 → 245 across slices).
+- Frontend: `npx vitest run` 253 passed (250 → 253: +1 ffmpeg manifest,
+  +2 PresetPanel badge). `npm run build` ok, `npm run lint` 0 errors.
+- Commits: `61a9d68` (spec+plan+todo) · `6964a87` (resolver) · `34a5794`
+  (render guard + manifest) · `b347753` (frontend) + this docs/graph commit.
+- `graphify update .` clean; ROADMAP marks Milestone 6 complete.
+
+### Limitations
+- Fully-unregistered fonts (deleted after binding) read as system stacks and
+  pass the guard; can only be distinguished by the project data model, not by
+  the family string.
+- The guard is registry-aware at render time; it does not re-validate font
+  files' actual license bits (OS/2 fsType) — `embeddingAllowed` is the
+  user-declared import contract (module 1) and adherence is by that contract.
+- No per-caption override: animation/license checks stay style-level.
+
+### Next step
+- Push M6 module 6 (5 commits) on user go-ahead. Milestone 6 is complete.
+  Next milestone: **M7 Manhwa extractor** (panel detection/order/export) —
+  start with `docs/SPEC-m7-manhwa.md` + capability map + plan.

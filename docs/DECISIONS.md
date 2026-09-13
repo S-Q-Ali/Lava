@@ -435,3 +435,42 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
 - **Status**: Locked for M6 module 5 `animated-captions` (shipped). Remaining
   M6: the preset/render license-metadata row; M6 animation gap notes
   (speed lines, letterbox, motion preview) ride into M8.
+
+### D-026 — Render-time license guard: registry-back fonts are refused, not silently served
+
+- **Date**: 2026-09-13
+- **WHAT**: Module 6 closes the M6 license-metadata row. A pure resolver
+  (`backend/src/lava_backend/licensing.py`) walks the caption specs the render
+  endpoint is about to burn in, matches each caption's `fontFamily` against the
+  fonts registry by family, and returns either a used-font manifest or blocking
+  violations: `FONT_LICENSE_NOT_EMBEDDABLE` (the declared license sets
+  `embeddingAllowed` false) and `FONT_MISSING` (registered, but `{id}.{ext}` is
+  absent from `fonts_dir`). Violations abort `POST /api/render` with a single
+  actionable 422 `FONT_LICENSE`; clean renders return `fonts` =
+  `[{family, fontId, license}]` in the response. `RenderResult` carries the
+  manifest; the frontend mirrors it (`RenderResult.fonts`,
+  `RenderCaptionStyle.animation` parity) and the PresetPanel "imported font"
+  badge title now shows the bound family + embedding status resolved from
+  `fontStore`.
+- **WHY**: Fonts already track `{type, source, embeddingAllowed}` (module 1)
+  and presets bind them via `licenseRef` (module 3), but the render path never
+  checked them — an embed-forbidden or punctured font would fall back silently
+  (the exact anti-pattern PRODUCT_SPEC/AGENTS prohibit). A guard-plus-manifest
+  makes exports honest: restricted fonts cannot be burned in, and the API says
+  which registry fonts each render used.
+- **HOW**: `licensing.py` (12 unit tests), render endpoint guard + manifest
+  serialization, `RenderResult.fonts` (`media.py`), frontend type parity +
+  PresetPanel badge (3 tests). Backend 227 → 245, frontend 250 → 253.
+  Commits: `61a9d68` (spec+plan+todo) · `6964a87` (resolver) · `34a5794`
+  (render guard + manifest) · `b347753` (frontend).
+- **Alternatives considered**: warning-only on render (rejected — "no silent
+  fallback" is a hard rule, and a 201 output with an uncertain font is the same
+  danger); matching registry by `licenseRef` font id instead of family (family
+  is the only ident that travels on the caption wire today; `licenseRef` is
+  bound at import); including every bundled font in the manifest (only the
+  fonts actually used by caption styles are rendered).
+- **Status**: Locked for M6 module 6 `license-tracking` (shipped — closes the
+  final M6 row). Limitation recorded: a font fully removed from the registry
+  after a preset bound it is indistinguishable from a system stack and passes
+  (predictable from the data model); guard-abort paths take precedence, and
+  blurring/deletion of registry entries is a project-operation concern.
