@@ -24,7 +24,6 @@ export interface PresetDraft {
 }
 
 export function draftFromPreset(preset: Preset | CaptionStyle): PresetDraft {
-  const anyPreset = preset as Preset
   return {
     label: preset.label,
     description: preset.description ?? '',
@@ -38,7 +37,7 @@ export function draftFromPreset(preset: Preset | CaptionStyle): PresetDraft {
     uppercase: Boolean(preset.uppercase),
     alignment: preset.alignment,
     rtl: Boolean(preset.rtl),
-    emoji: Boolean((preset as CaptionStyle).emoji ?? anyPreset.emoji),
+    emoji: Boolean(preset.emoji),
     karaoke: Boolean(preset.karaoke),
     wordHighlight: Boolean(preset.wordHighlight),
     importantWordPop: Boolean(preset.importantWordPop),

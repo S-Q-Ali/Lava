@@ -1232,3 +1232,108 @@
   border-color: var(--danger, #c0392b);
   color: var(--danger, #c0392b);
 }
+
+.template-panel {
+  border-top: 1px solid var(--border);
+  padding: 8px 0;
+  font-size: 13px;
+}
+
+.template-panel h3 {
+  font-size: 12px;
+  margin: 0 0 6px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.template-error {
+  margin: 0 0 8px;
+  color: var(--danger, #c0392b);
+}
+
+.template-panel label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 6px;
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.template-panel input,
+.template-panel select {
+  width: 100%;
+  background: var(--panel-1);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 3px 6px;
+  font-size: 12px;
+}
+
+.template-fields {
+  display: flex;
+  gap: 6px;
+}
+
+.template-fields label {
+  flex: 1;
+}
+
+.template-preview {
+  height: 64px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: #111;
+  padding: 6px;
+  margin-bottom: 8px;
+}
+
+.template-preview-text {
+  text-align: center;
+  width: 100%;
+  line-height: 1.2;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.template-flags {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 8px;
+  margin-bottom: 8px;
+}
+
+.template-panel .template-flags label {
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 0;
+}
+
+.template-flags input {
+  width: auto;
+}
+
+.template-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.template-actions button {
+  background: var(--accent-soft);
+  color: var(--text);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  padding: 3px 10px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.template-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
