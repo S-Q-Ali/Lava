@@ -30,9 +30,9 @@
     "semantic_hash": ""
   },
   "frontend/src/components/InspectorPanel.tsx": {
-    "mtime": 1789293763.4700165,
-    "seen": 1789294025.508062,
-    "ast_hash": "056c128b2977518d534bf3460f5bc86f",
+    "mtime": 1789295283.8043444,
+    "seen": 1789295451.958019,
+    "ast_hash": "2d6878d8a7fd08d75753c217bcda56ab",
     "semantic_hash": ""
   },
   "frontend/src/components/MediaPanel.tsx": {
@@ -108,9 +108,9 @@
     "semantic_hash": ""
   },
   "frontend/src/store/editorStore.ts": {
-    "mtime": 1789240176.686628,
-    "seen": 1789240649.221892,
-    "ast_hash": "c82cb43bbf65ec24a67399b5b990d865",
+    "mtime": 1789295165.2750793,
+    "seen": 1789295451.958108,
+    "ast_hash": "fa1a7b926310adcce44bbf25029f753c",
     "semantic_hash": ""
   },
   "frontend/tsconfig.app.json": {
@@ -348,15 +348,15 @@
     "semantic_hash": ""
   },
   "docs/DECISIONS.md": {
-    "mtime": 1789293958.4252558,
-    "seen": 1789294025.508224,
-    "ast_hash": "80b8085dbfa22c6fabb35d452e53a9f3",
+    "mtime": 1789295402.099231,
+    "seen": 1789295451.958205,
+    "ast_hash": "0ce7d98e46b944907a93ed357facb8a9",
     "semantic_hash": ""
   },
   "docs/FEATURES.md": {
-    "mtime": 1789293991.7004898,
-    "seen": 1789294025.5082262,
-    "ast_hash": "7562bfe715def2f96985393d8df7c5ca",
+    "mtime": 1789295423.5759356,
+    "seen": 1789295451.958207,
+    "ast_hash": "74902b8f93ef7489d2312cc3d897439d",
     "semantic_hash": ""
   },
   "docs/PRODUCT_SPEC.md": {
@@ -366,15 +366,15 @@
     "semantic_hash": ""
   },
   "docs/ROADMAP.md": {
-    "mtime": 1789293974.9567397,
-    "seen": 1789294025.508228,
-    "ast_hash": "549d5fdcdecaae768fc4c03cb248136c",
+    "mtime": 1789295416.4845433,
+    "seen": 1789295451.95821,
+    "ast_hash": "a8dcbc7b21d8fd58d37a92af54d6ee11",
     "semantic_hash": ""
   },
   "docs/SESSION_LOG.md": {
-    "mtime": 1789294016.0892737,
-    "seen": 1789294025.50823,
-    "ast_hash": "ed1077f62bcf87367bce6de8fed51500",
+    "mtime": 1789295440.65218,
+    "seen": 1789295451.9582121,
+    "ast_hash": "403d9fe2b9ff49fe641063e281198725",
     "semantic_hash": ""
   },
   "docs/TEST_PLAN.md": {
@@ -432,9 +432,9 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/main.py": {
-    "mtime": 1789293155.0024,
-    "seen": 1789294025.508012,
-    "ast_hash": "ca45a447e793a070174d0bcf5f0cb80f",
+    "mtime": 1789295066.1999207,
+    "seen": 1789295451.957957,
+    "ast_hash": "d063a925e64778f5c4ee605e91cc238b",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/media.py": {
@@ -510,9 +510,9 @@
     "semantic_hash": ""
   },
   "tasks/todo.md": {
-    "mtime": 1789292535.6531222,
-    "seen": 1789294025.508279,
-    "ast_hash": "dbee528892820cc53e8f2e2947b61326",
+    "mtime": 1789294507.0208466,
+    "seen": 1789295451.958273,
+    "ast_hash": "ce3dd83dbbf6d0fb85234fbfe9a1c6f7",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/transcribe.py": {
@@ -969,6 +969,72 @@
     "mtime": 1789292530.6760893,
     "seen": 1789294025.508265,
     "ast_hash": "cf2ea5133b4c12d7d447a63e07c3771e",
+    "semantic_hash": ""
+  },
+  "backend/src/lava_backend/preset_registry.py": {
+    "mtime": 1789295035.1354668,
+    "seen": 1789295451.9579651,
+    "ast_hash": "65f467cbddf55cde1ced361a42acf3b8",
+    "semantic_hash": ""
+  },
+  "backend/tests/test_preset_registry.py": {
+    "mtime": 1789295052.6782935,
+    "seen": 1789295451.957988,
+    "ast_hash": "e35dca6bfc21d266e6dacef1e673db82",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/PresetPanel.test.tsx": {
+    "mtime": 1789295358.8293624,
+    "seen": 1789295451.958029,
+    "ast_hash": "07d518a313c81a1053dfe2a07c8a978e",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/PresetPanel.tsx": {
+    "mtime": 1789295264.3635516,
+    "seen": 1789295451.95803,
+    "ast_hash": "744d6bd1e76bda93f9e247bbb8aac3d8",
+    "semantic_hash": ""
+  },
+  "frontend/src/editor/presets.test.ts": {
+    "mtime": 1789295208.0854073,
+    "seen": 1789295451.958067,
+    "ast_hash": "2ac95e445543c7316f6c6b8e5856edab",
+    "semantic_hash": ""
+  },
+  "frontend/src/editor/presets.ts": {
+    "mtime": 1789295113.4375765,
+    "seen": 1789295451.958069,
+    "ast_hash": "3f0df100601701f66eccdad4c9d02bb7",
+    "semantic_hash": ""
+  },
+  "frontend/src/services/presets.ts": {
+    "mtime": 1789295120.6391935,
+    "seen": 1789295451.958099,
+    "ast_hash": "cb1843c2d44a770f33e2ac8e1b494f2b",
+    "semantic_hash": ""
+  },
+  "frontend/src/store/presetStore.test.ts": {
+    "mtime": 1789295314.3094218,
+    "seen": 1789295451.9581199,
+    "ast_hash": "afe6fa16809af61340e66459ab70436f",
+    "semantic_hash": ""
+  },
+  "frontend/src/store/presetStore.ts": {
+    "mtime": 1789295139.7550821,
+    "seen": 1789295451.958121,
+    "ast_hash": "f25c6c0e32d94bbb44fc7d9c998121ed",
+    "semantic_hash": ""
+  },
+  "docs/SPEC-preset-registry.md": {
+    "mtime": 1789294491.118423,
+    "seen": 1789295451.9582322,
+    "ast_hash": "7d90d880ed9d440312189e5786cb7d69",
+    "semantic_hash": ""
+  },
+  "tasks/plan-presets.md": {
+    "mtime": 1789294501.7672634,
+    "seen": 1789295451.958261,
+    "ast_hash": "c24240258615d23e5cc45fe22e6cd887",
     "semantic_hash": ""
   }
 }

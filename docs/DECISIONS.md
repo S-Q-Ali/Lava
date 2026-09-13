@@ -318,3 +318,36 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
 - **Status**: Locked for M6 module 2 `preset-registry` (shipped). User preset
   import/export (validation + Custom category writes) and the template editor
   remain modules 3–4.
+
+### D-023 — Preset import/export: strict Custom-category gate with a font `licenseRef` cross-check
+
+- **Date**: 2026-09-13
+- **WHAT**: Module 3 turns the module-2 registry writable through import/export
+  while keeping built-ins immutable. Import accepts a `lava-preset` envelope
+  (`{kind, version: 1, preset}`) or a bare preset dict; ids are forced to the
+  `custom-` prefix and `category` to `Custom` (no built-in shadowing, no silent
+  overwrite on duplicate — `PRESET_INVALID` 422 instead). A `licenseRef`, when
+  present, must name an id in the fonts registry at import time. API:
+  `POST /api/presets` (201), `DELETE /api/presets/{id}` (204 custom / 403
+  `BUILTIN_PRESET` / 404), `GET /api/presets/{id}/file` (envelope JSON).
+  Frontend: `services/presets.ts` import/delete/export + `downloadPresetFile`
+  (projectIO.rs pattern), `presetStore.importPreset`/`removePreset`, and
+  PresetPanel Import JSON button, per-custom-card Export + Remove.
+- **WHY**: PRODUCT_SPEC mandates presets that users can save, share and reload
+  without rebuilds, and forbids silently overwriting user edits. D-022 deferred
+  `licenseRef` enforcement to import; making it the load-time gate gives
+  actionable `PRESET_INVALID` errors instead of silent render fallback.
+- **HOW**: `backend/src/lava_backend/preset_import.py` +
+  `tests/test_preset_import.py` (12 unit + 13 API), `main.py` routes; frontend
+  `services/presets.ts` (+3 tests), `store/presetStore.ts` (+3), PresetPanel
+  (+4 component). Backend 178 → 203, frontend 213 → 225. Commits: `2895e5d`
+  (spec+plan+todo) · `ab46545` (backend slice) · `c9eff3b` (services+store) ·
+  `88efd5a` (panel).
+- **Alternatives considered**: separate `custom.json` layer vs editing the
+  single registry file (single file — survives the built-in fallback path and
+  the module-2 GET already merges); soft licenseRef warning vs strict reject
+  (strict — user picked "Approve" over "LicenseRef soft" in the spec gate);
+  envelope-only import (plus bare preset accepted — round-trip + hand-authored
+  files both work).
+- **Status**: Locked for M6 module 3 `preset-import` (shipped). Next: template
+  editor (`template-editor`), then `animated-captions`.

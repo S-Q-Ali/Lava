@@ -86,18 +86,18 @@
 - [ ] Task 2 (slice 2): /api/fonts routes + GET file + DELETE + ass=:fontsdir= render wire — parity + real smoke
 - [ ] Task 3 (slice 3): frontend editor/fonts.ts + services/fonts.ts + store/fontStore.ts + tests
 - [ ] Task 4 (slice 4): FontPanel (list/import+license/@font-face preview/remove) + App regression
-- [ ] Task 5 (slice 5): docs D-021/ROADMAP M6/FEATURES/SESSION_LOG 14 + graphify + regression + push go-ahead
+- [x] Task 5 (slice 5): docs D-021/ROADMAP M6/FEATURES/SESSION_LOG 14 + graphify + regression + push go-ahead
 
 ## M6 — Module 2: preset-registry (SPEC-preset-registry.md, tasks/plan-presets.md)
 - [ ] Task 1 (slice 1): backend preset_registry.py (Preset/BUILTIN_PRESETS/13 categories/validate/load-save) — RED tests
 - [ ] Task 2 (slice 2): GET /api/presets + registry smoke
 - [ ] Task 3 (slice 3): frontend editor/presets.ts + store/presetStore.ts (load/byCategory/applyPresetToCaptions) + tests
-- [ ] Task 4 (slice 4): PresetPanel (category tabs + cards + apply) + InspectorPanel mount + App regression
-- [ ] Task 5 (slice 5): docs D-022/ROADMAP M6/FEATURES/SESSION_LOG 15 + graphify + regression + push go-ahead
+- [x] Task 4 (slice 4): PresetPanel (category tabs + cards + apply) + InspectorPanel mount + App regression
+- [x] Task 5 (slice 5): docs D-022/ROADMAP M6/FEATURES/SESSION_LOG 15 + graphify + regression + push go-ahead
 
 ## M6 — Module 3: preset-import (SPEC-preset-import.md, tasks/plan-preset-import.md)
-- [ ] Task 1 (slice 1): backend preset_import.py (custom- prefix/Custom force/licenseRef cross-check/export dict) — RED tests
-- [ ] Task 2 (slice 2): POST/DELETE /api/presets + GET /api/presets/{id}/file + registry write
-- [ ] Task 3 (slice 3): frontend services importPreset/deletePreset/exportPreset + presetStore import/remove + tests
-- [ ] Task 4 (slice 4): PresetPanel Import JSON + export/download + Remove (Custom) + error surfaces
-- [ ] Task 5 (slice 5): docs D-023/ROADMAP/FEATURES/SESSION_LOG 16 + graphify + regression + push go-ahead
+- [x] Task 1 (slice 1): backend preset_import.py (custom- prefix/Custom force/licenseRef cross-check/export dict) — RED tests
+- [x] Task 2 (slice 2): POST/DELETE /api/presets + GET /api/presets/{id}/file + registry write
+- [x] Task 3 (slice 3): frontend services importPreset/deletePreset/exportPreset + presetStore import/remove + tests
+- [x] Task 4 (slice 4): PresetPanel Import JSON + export/download + Remove (Custom) + error surfaces
+- [x] Task 5 (slice 5): docs D-023/ROADMAP/FEATURES/SESSION_LOG 16 + graphify + regression + push go-ahead

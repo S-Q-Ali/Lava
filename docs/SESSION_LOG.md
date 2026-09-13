@@ -797,3 +797,64 @@ an object-literal slice from zustand (React 19 rule already in the log).
   `preset-import` (JSON schema validation, Custom category management,
   import/export flows building on `preset_registry.py`). After that:
   `template-editor` → `animated-captions`.
+
+## Session 16 — M6 module 3 `preset-import` (import/export/delete + Custom writes)
+
+### WHAT
+- **Spec+plan+todo** — `docs/SPEC-preset-import.md` (assumption-led: forced
+  `Custom`, `custom-` id prefix, strict `licenseRef` gate, registry-file
+  storage, existing todo rows untouched), `tasks/plan-preset-import.md` (5
+  vertical slices), `tasks/todo.md` M6 module-3 section. Commit `2895e5d`.
+- **Slice 1+2 (backend)** — `backend/src/lava_backend/preset_import.py`:
+  `import_preset_payload` (lava-preset envelope OR bare dict), `custom-`
+  regex gate, category→Custom force, font `licenseRef` cross-check against the
+  fonts registry, `preset_to_export_dict`, `suggested_custom_id`. API:
+  `POST /api/presets` (201, duplicate → 422 `PRESET_INVALID`), `DELETE
+  /api/presets/{id}` (204 / 403 `BUILTIN_PRESET` / 404), `GET
+  /api/presets/{id}/file` (envelope download). Commit `ab46545` (backend 203:
+  178 → +12 unit, +13 API).
+- **Slice 3 (frontend services+store)** — `services/presets.ts`:
+  `importPreset`, `deletePreset`, `exportPresetPayload` (envelope),
+  `downloadPresetFile` (projectIO pattern); `presetStore` `importPreset`
+  (upsert into list) + `removePreset`. Commit `c9eff3b` (frontend 225 start:
+  +3 service, +3 store).
+- **Slice 4 (UI)** — PresetPanel Import JSON button (visually-hidden
+  `input[type=file]`, FileReader → JSON.parse → store), Export + Remove on
+  custom-only cards (danger styling), error surfaces reuse the existing
+  `.preset-error` slot; `.preset-actions`, `.preset-card-actions` CSS. Commit
+  `88efd5a` (frontend 225: +4 component).
+- **Slice 5 (this commit)** — D-023, ROADMAP M6 custom import tick, FEATURES
+  "Shipped" block, this log, `graphify update .`.
+
+### HOW
+Per-slice TDD as established (RED first per task). jsdom quirks hit twice: no
+`DataTransfer` in this env → `fakeFileList` FileList stub set on the input via
+`Object.defineProperty`; and `findByText` (exact-text leaf match) can't match a
+produced `Invalid preset JSON: <syntax message>` — asserted on the
+`.preset-error` textContent instead. Stricter TS caught an unused fetch-stub
+`input` param (build), fixed with `_input`.
+
+### Decisions
+- D-023 — strict import/export: `Custom` forced, `custom-` prefix, duplicate →
+  `PRESET_INVALID`, built-ins undeletable (403), licenseRef cross-checked
+  against the fonts registry at import. Locked.
+
+### Verify
+- Backend: `uv run pytest` 203 passed (178 → 203: +12 unit, +13 API).
+- Frontend: `npx vitest run` 225 passed (213 → 225: +3 service, +3 store, +4
+  component). `npm run build` ok, `npm run lint` 0 errors.
+- Commits: `2895e5d` · `ab46545` · `c9eff3b` · `88efd5a` + this docs/graph
+  commit.
+
+### Limitations
+- Export currently writes the preset as stored; built-ins are exportable via
+  the API/`downloadPresetFile` on custom cards only in the UI.
+- Imported preset ids are fixed at `custom-*` — a user dragging a preset whose
+  id has no prefix gets the backend's actionable message, not a rename prompt.
+- `preset-import` binds `licenseRef` at import time only; a font deleted later
+  still degrades to system fallback at render (registry-driven).
+
+### Next step
+- Push M6 module 3 (5 commits) on user go-ahead. Next M6 module:
+  `template-editor` (styles for future generated captions + preset/template
+  curation), then `animated-captions` (animated caption treatments).

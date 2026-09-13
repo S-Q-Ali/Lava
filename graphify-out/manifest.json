@@ -348,15 +348,15 @@
     "semantic_hash": ""
   },
   "docs/DECISIONS.md": {
-    "mtime": 1789295402.099231,
-    "seen": 1789295451.958205,
-    "ast_hash": "0ce7d98e46b944907a93ed357facb8a9",
+    "mtime": 1789298137.8600764,
+    "seen": 1789301174.231627,
+    "ast_hash": "621003a41998dbb90efb5e1fdbb632c0",
     "semantic_hash": ""
   },
   "docs/FEATURES.md": {
-    "mtime": 1789295423.5759356,
-    "seen": 1789295451.958207,
-    "ast_hash": "74902b8f93ef7489d2312cc3d897439d",
+    "mtime": 1789298189.3891077,
+    "seen": 1789301174.231628,
+    "ast_hash": "92a4dccd7d0cb1cd4e432899c6830de3",
     "semantic_hash": ""
   },
   "docs/PRODUCT_SPEC.md": {
@@ -366,15 +366,15 @@
     "semantic_hash": ""
   },
   "docs/ROADMAP.md": {
-    "mtime": 1789295416.4845433,
-    "seen": 1789295451.95821,
-    "ast_hash": "a8dcbc7b21d8fd58d37a92af54d6ee11",
+    "mtime": 1789298179.843142,
+    "seen": 1789301174.23163,
+    "ast_hash": "ab8e66c891c35254918f43fb8af128f6",
     "semantic_hash": ""
   },
   "docs/SESSION_LOG.md": {
-    "mtime": 1789295440.65218,
-    "seen": 1789295451.9582121,
-    "ast_hash": "403d9fe2b9ff49fe641063e281198725",
+    "mtime": 1789298163.9897134,
+    "seen": 1789301174.231631,
+    "ast_hash": "5c394631c3bb8134cd9b8d2004be661b",
     "semantic_hash": ""
   },
   "docs/TEST_PLAN.md": {
@@ -432,9 +432,9 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/main.py": {
-    "mtime": 1789295066.1999207,
-    "seen": 1789295451.957957,
-    "ast_hash": "d063a925e64778f5c4ee605e91cc238b",
+    "mtime": 1789297646.6643336,
+    "seen": 1789301174.231477,
+    "ast_hash": "99e0a18599f2429decfd6ea77bd3ceab",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/media.py": {
@@ -510,9 +510,9 @@
     "semantic_hash": ""
   },
   "tasks/todo.md": {
-    "mtime": 1789294507.0208466,
-    "seen": 1789295451.958273,
-    "ast_hash": "ce3dd83dbbf6d0fb85234fbfe9a1c6f7",
+    "mtime": 1789298193.5979826,
+    "seen": 1789301174.2316658,
+    "ast_hash": "8778c4e4058b2ac7bdbe02c2354a0fd2",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/transcribe.py": {
@@ -984,15 +984,15 @@
     "semantic_hash": ""
   },
   "frontend/src/components/PresetPanel.test.tsx": {
-    "mtime": 1789295358.8293624,
-    "seen": 1789295451.958029,
-    "ast_hash": "07d518a313c81a1053dfe2a07c8a978e",
+    "mtime": 1789298089.3973866,
+    "seen": 1789301174.23152,
+    "ast_hash": "39e871d6a25ff839906ff32bf424eb2d",
     "semantic_hash": ""
   },
   "frontend/src/components/PresetPanel.tsx": {
-    "mtime": 1789295264.3635516,
-    "seen": 1789295451.95803,
-    "ast_hash": "744d6bd1e76bda93f9e247bbb8aac3d8",
+    "mtime": 1789297895.259318,
+    "seen": 1789301174.2315211,
+    "ast_hash": "669ce06d16943b0ab183f8f831c16ba5",
     "semantic_hash": ""
   },
   "frontend/src/editor/presets.test.ts": {
@@ -1008,21 +1008,21 @@
     "semantic_hash": ""
   },
   "frontend/src/services/presets.ts": {
-    "mtime": 1789295120.6391935,
-    "seen": 1789295451.958099,
-    "ast_hash": "cb1843c2d44a770f33e2ac8e1b494f2b",
+    "mtime": 1789297774.3480022,
+    "seen": 1789301174.231564,
+    "ast_hash": "dd039233603ec892c568ae2df8bfec34",
     "semantic_hash": ""
   },
   "frontend/src/store/presetStore.test.ts": {
-    "mtime": 1789295314.3094218,
-    "seen": 1789295451.9581199,
-    "ast_hash": "afe6fa16809af61340e66459ab70436f",
+    "mtime": 1789297759.290346,
+    "seen": 1789301174.2315772,
+    "ast_hash": "4f28d9a552f2c18754aa6b0135ae33ae",
     "semantic_hash": ""
   },
   "frontend/src/store/presetStore.ts": {
-    "mtime": 1789295139.7550821,
-    "seen": 1789295451.958121,
-    "ast_hash": "f25c6c0e32d94bbb44fc7d9c998121ed",
+    "mtime": 1789297786.194758,
+    "seen": 1789301174.231578,
+    "ast_hash": "1da1947e2ec92a0492f2ad54e15c1da7",
     "semantic_hash": ""
   },
   "docs/SPEC-preset-registry.md": {
@@ -1035,6 +1035,36 @@
     "mtime": 1789294501.7672634,
     "seen": 1789295451.958261,
     "ast_hash": "c24240258615d23e5cc45fe22e6cd887",
+    "semantic_hash": ""
+  },
+  "backend/src/lava_backend/preset_import.py": {
+    "mtime": 1789297517.2941384,
+    "seen": 1789301174.231482,
+    "ast_hash": "aa4fff15d26a7316049ff6ea715e2fb4",
+    "semantic_hash": ""
+  },
+  "backend/tests/test_preset_import.py": {
+    "mtime": 1789297558.6348562,
+    "seen": 1789301174.2314959,
+    "ast_hash": "0b4b080f33ac2403a0f3946674baa332",
+    "semantic_hash": ""
+  },
+  "frontend/src/services/presets.test.ts": {
+    "mtime": 1789297820.3763626,
+    "seen": 1789301174.231563,
+    "ast_hash": "e83c93843199651a720426c2822a2713",
+    "semantic_hash": ""
+  },
+  "docs/SPEC-preset-import.md": {
+    "mtime": 1789297328.1314409,
+    "seen": 1789301174.231642,
+    "ast_hash": "d7cbf616fe3c638f1cdd456f0cbdecbf",
+    "semantic_hash": ""
+  },
+  "tasks/plan-preset-import.md": {
+    "mtime": 1789297354.1521802,
+    "seen": 1789301174.231658,
+    "ast_hash": "a4fd9f35d39bf64bb2dbdb7aff2dcefa",
     "semantic_hash": ""
   }
 }
