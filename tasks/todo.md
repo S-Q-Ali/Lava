@@ -121,3 +121,9 @@
 - [x] Task 2 (slice 2): render endpoint guard (422 FONT_LICENSE) + RenderResult.fonts — RED API tests
 - [x] Task 3 (slice 3): frontend RenderResult.fonts + RenderCaptionStyle.animation + PresetPanel badge title
 - [x] Task 4 (slice 4): docs D-026/ROADMAP M6 complete/FEATURES/SESSION_LOG 19 + graphify + regression + push go-ahead
+
+## M7 — Manhwa extractor (capability map SPEC-m7-capability-map.md)
+Build order: panel-model → panel-detection → panel-order → panel-export → panel-correction → manhwa-api → panel-ui
+
+### Module 1: panel-model (SPEC-panel-model.md, tasks/plan-panel-model.md)
+- [ ] Task 1 (slice 1): Panel model + bounds math + analysis↔source scaling + zero-padded asset naming + StripRegistry (atomic save/load/reset, corrupt → ManhwaError) — RED unit tests
