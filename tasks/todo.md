@@ -108,3 +108,10 @@
 - [x] Task 3 (slice 3): updatePreset service + presetStore.savePreset + CaptionPanel preset-style resolution
 - [x] Task 4 (slice 4): TemplateEditorPanel (base select, controls, live preview, Save-as-new/Overwrite) + mount + CSS
 - [x] Task 5 (slice 5): docs D-024/ROADMAP/FEATURES/SESSION_LOG 17 + graphify + regression + push go-ahead
+
+## M6 — Module 5: animated-captions (SPEC-animated-captions.md, tasks/plan-animated-captions.md)
+- [ ] Task 1 (slice 1): backend ASS animation (CaptionStyleSpec.animation + kinetic/manga/cinematic/meme/storytelling recipes) — RED captions tests
+- [ ] Task 2 (slice 2): backend Preset.animation + enum validation + import/export passthrough
+- [ ] Task 3 (slice 3): frontend CaptionAnimation + M5 preset annotations + parsePreset/captionStyleFromPreset/captionToWire passthrough
+- [ ] Task 4 (slice 4): PresetDraft.animation + TemplateEditorPanel Animation select + tests
+- [ ] Task 5 (slice 5): docs D-025/ROADMAP/FEATURES/SESSION_LOG 18 + graphify + regression + push go-ahead
