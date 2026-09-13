@@ -27,6 +27,7 @@ import numpy as np
 from PIL import Image
 
 from lava_backend.manhwa.errors import ManhwaError
+from lava_backend.manhwa.order import attribute_confidence, order_panels
 from lava_backend.manhwa.panels import (
     Panel,
     StripRegistry,
@@ -212,32 +213,40 @@ def build_panels(
     """Convert analysis-space cuts into seam-free source-space incident panels.
 
     Cut lines are mapped once through `map_cut_to_source`; `boxes_from_cuts`
-    derives each panel box from consecutive mapped lines, so boxes tile
-    without gaps or overlap (regardless of rounding). A panel's confidence is
-    the worst of its two bounding cuts; source edges count as certainty.
+    derives each raw panel box from consecutive mapped lines, so boxes tile
+    without gaps or overlap (regardless of rounding). Reading order and panel
+    confidence then come from the panel-order module (single source of truth):
+    `order_panels` normalizes, `attribute_confidence` sets each panel to the
+    worst of its two bounding cut confidences (source edges count as certain).
     """
     lines = [(0, 1.0)]
     lines += sorted((map_cut_to_source(c.y, src_h=src_h, ana_h=ana_h), c.confidence) for c in cuts)
     lines += [(src_h, 1.0)]
-    panels: list[Panel] = []
+    raw: list[Panel] = []
+    boundaries: list[float] = []
+    last_conf = 1.0
     for (top, top_conf), (bottom, bottom_conf) in zip(lines, lines[1:]):
         if bottom <= top:  # rounding collapsed adjacent cuts
             continue
         x, y, w, h = boxes_from_cuts(top, bottom, left=0, right=src_w)
-        panels.append(
+        raw.append(
             make_panel(
-                id=f"p{len(panels) + 1}",
+                id=f"p{len(raw) + 1}",
                 source_id=source_id,
                 x=x,
                 y=y,
                 w=w,
                 h=h,
-                order=len(panels) + 1,
+                order=1,
                 source_w=src_w,
                 source_h=src_h,
-                confidence=min(top_conf, bottom_conf),
+                confidence=1.0,
             )
         )
+        boundaries.append(top_conf)
+        last_conf = bottom_conf
+    boundaries.append(last_conf)
+    panels = attribute_confidence(order_panels(raw), boundaries)
     validate_panels(panels)
     return panels
 

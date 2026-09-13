@@ -22,6 +22,7 @@ from lava_backend.manhwa.detect import (
     row_features,
 )
 from lava_backend.manhwa.errors import ManhwaError
+from lava_backend.manhwa.order import guard_layout
 from lava_backend.manhwa.panels import (
     StripRegistry,
     analysis_scale,
@@ -165,6 +166,17 @@ class TestSliverMerge:
 
 
 class TestBuildPanels:
+    def test_build_panels_output_is_guarded_and_reading_ordered(self) -> None:
+        fixture = AVAILABLE["borderless"]()
+        gray, ana_w, ana_h, _ = load_analysis_image(fixture.image)
+        cuts = detect_cuts(row_features(gray), ana_h)
+        assert any(c.kind == "rescue" for c in cuts)
+        panels = build_panels(cuts, source_id="s1", src_w=fixture.src_w, src_h=fixture.src_h, ana_w=ana_w, ana_h=ana_h)
+        normalized = guard_layout(panels)  # must pass without raising
+        assert normalized == panels  # already ordered/guarded
+        assert [p.order for p in panels] == list(range(1, len(panels) + 1))
+        assert [p.y for p in panels] == sorted(p.y for p in panels)
+
     def test_no_cuts_single_full_panel(self) -> None:
         panels = build_panels(
             [],
