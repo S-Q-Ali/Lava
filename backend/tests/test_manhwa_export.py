@@ -135,6 +135,14 @@ class TestMaterializeExport:
         assert bundle.files[0].name == "panel_1.jpg"
         assert bundle.manifest[0]["file"] == "panel_1.jpg"
 
+    def test_order_field_is_sequencing_authority(self) -> None:
+        source = Image.new("RGB", (360, 720), (60, 60, 60))
+        lower = make_panel(id="p1", source_id="s1", x=0, y=360, w=360, h=360, order=1, source_w=360, source_h=720)
+        upper = make_panel(id="p2", source_id="s1", x=0, y=0, w=360, h=360, order=2, source_w=360, source_h=720)
+        bundle = materialize_export(source, [lower, upper], fmt="png")
+        assert [m["order"] for m in bundle.manifest] == [1, 2]
+        assert [m["id"] for m in bundle.manifest] == ["p1", "p2"]
+
     def test_empty_panels_raise(self) -> None:
         with pytest.raises(ManhwaError):
             materialize_export(Image.new("RGB", (10, 10)), [], fmt="png")

@@ -15,7 +15,8 @@ from typing import Literal
 
 from PIL import Image
 
-from lava_backend.manhwa.order import guard_layout
+from lava_backend.manhwa.errors import ManhwaError
+from lava_backend.manhwa.order import normalize_layout
 from lava_backend.manhwa.panels import Panel, asset_name
 
 Format = Literal["png", "jpg"]
@@ -96,11 +97,15 @@ def materialize_export(
 ) -> ExportBundle:
     """Crop + encode all panels into an ordered bundle with its manifest.
 
-    Panels are normalized through `guard_layout`: empty/duplicate/overlapping
-    layouts raise `ManhwaError`; the returned files and manifest are always in
-    1..n reading order.
+    Panels are normalized through `normalize_layout`: empty/duplicate/overlapping
+    layouts raise `ManhwaError`; the **`order` field is the sequencing
+    authority** (module 5 corrections reorder by it), so the returned files
+    and manifest are always in 1..n order-field sequence.
     """
-    ordered = guard_layout(panels)
+    if not panels:
+        raise ManhwaError("panel list must not be empty")
+    sequence = sorted(panels, key=lambda p: (p.order, p.y, p.x))
+    ordered = normalize_layout(sequence)
     total = len(ordered)
     files = [
         ExportFile(
