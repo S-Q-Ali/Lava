@@ -28,6 +28,7 @@ from .fonts import (
     save_registry,
     validate_font_bytes,
 )
+from .preset_import import PresetImportError, import_preset_payload, preset_to_export_dict
 from .preset_registry import load_registry as load_preset_registry
 from .matching import Matcher, router as matching_router
 from .media import (
@@ -370,5 +371,68 @@ def delete_font(font_id: str):
 @app.get(f"{API_V1}/presets")
 def list_presets():
     config = get_config()
-    path = Path(config.presets_dir) / "registry.json"
-    return [p.__dict__ for p in load_preset_registry(path)]
+    return [p.__dict__ for p in load_preset_registry(_preset_registry_path(config))]
+
+
+def _preset_registry_path(config) -> Path:
+    return Path(config.presets_dir) / "registry.json"
+
+
+def _all_presets(config) -> list:
+    return load_preset_registry(_preset_registry_path(config))
+
+
+@app.post(f"{API_V1}/presets", status_code=201)
+async def create_preset(request: Request):
+    config = get_config()
+    try:
+        raw = await request.json()
+    except (json.JSONDecodeError, ValueError) as exc:
+        raise ApiError(422, "PRESET_INVALID", "Preset body must be valid JSON") from exc
+
+    known_font_ids = {e["id"] for e in _list_font_entries(config)}
+    try:
+        preset = import_preset_payload(raw, known_font_ids)
+    except PresetImportError as exc:
+        raise ApiError(422, "PRESET_INVALID", str(exc)) from exc
+
+    current = _all_presets(config)
+    if any(p.id == preset.id for p in current):
+        raise ApiError(422, "PRESET_INVALID", f"Preset id '{preset.id}' already exists")
+    save_registry_presets(config, [*current, preset])
+    return preset.__dict__
+
+
+def save_registry_presets(config, presets) -> None:
+    path = _preset_registry_path(config)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8") as fh:
+        json.dump({"version": 1, "presets": [p.__dict__ for p in presets]}, fh, ensure_ascii=False, indent=2)
+
+
+def _builtin_by_id() -> dict:
+    from .preset_registry import BUILTIN_PRESETS
+
+    return {p.id: p for p in BUILTIN_PRESETS}
+
+
+@app.get(f"{API_V1}/presets/{{preset_id}}/file")
+def export_preset(preset_id: str):
+    config = get_config()
+    preset = next((p for p in _all_presets(config) if p.id == preset_id), None)
+    if preset is None:
+        raise ApiError(404, "NOT_FOUND", "no such preset")
+    return preset_to_export_dict(preset)
+
+
+@app.delete(f"{API_V1}/presets/{{preset_id}}", status_code=204)
+def delete_preset(preset_id: str):
+    config = get_config()
+    if preset_id in _builtin_by_id():
+        raise ApiError(403, "BUILTIN_PRESET", "built-in presets cannot be deleted")
+    current = _all_presets(config)
+    remaining = [p for p in current if p.id != preset_id]
+    if len(remaining) == len(current):
+        raise ApiError(404, "NOT_FOUND", "no such preset")
+    save_registry_presets(config, remaining)
+    return Response(status_code=204)
