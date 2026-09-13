@@ -4,6 +4,8 @@ import { clipsAtTime } from '../editor/ops'
 import { getAssetFile } from '../media/importer'
 import { getFFmpegProvider, type RenderClipInput } from '../services/ffmpeg'
 import { captionsRenderPayload } from './CaptionPanel'
+import { usePresetStore } from '../store/presetStore'
+import { resolveCaptionStyle } from '../editor/templateEditor'
 
 function formatTime(t: number): string {
   const m = Math.floor(t / 60)
@@ -30,6 +32,21 @@ export default function PreviewPanel() {
   const activeAsset = activeClip
     ? assets.find((a) => a.id === activeClip.assetId)
     : undefined
+
+  // Caption live preview
+  const allCaptions = useEditorStore((s) => s.captions)
+  const presets = usePresetStore((s) => s.presets)
+  const currentCaption = allCaptions.find(
+    (c) => playhead >= c.start && playhead < c.start + c.duration,
+  )
+  const captionStyle = currentCaption
+    ? resolveCaptionStyle(currentCaption.styleId, presets)
+    : null
+  const captionText = currentCaption
+    ? captionStyle?.uppercase
+      ? currentCaption.text.toUpperCase()
+      : currentCaption.text
+    : null
 
   const togglePlay = () => {
     playingRef.current = !playingRef.current
@@ -114,6 +131,23 @@ export default function PreviewPanel() {
           <div className="audio-placeholder">{activeAsset.name}</div>
         ) : (
           <p className="empty">No media at playhead. Import assets to start.</p>
+        )}
+        {captionText && captionStyle && (
+          <div
+            className="caption-overlay"
+            style={{
+              color: captionStyle.primaryColor,
+              fontSize: `${captionStyle.fontSize}px`,
+              fontFamily: captionStyle.fontFamily,
+              textShadow: captionStyle.outlineWidth > 0
+                ? `0 0 ${captionStyle.outlineWidth}px ${captionStyle.outlineColor}`
+                : 'none',
+              fontWeight: captionStyle.bold ? 'bold' : 'normal',
+              textAlign: captionStyle.alignment === 'top' ? 'left' : captionStyle.alignment === 'bottom' ? 'right' : 'center',
+            }}
+          >
+            {captionText}
+          </div>
         )}
       </div>
       {renderError && <p className="render-error">{renderError}</p>}
