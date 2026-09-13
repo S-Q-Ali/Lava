@@ -77,6 +77,14 @@ function jsonResponse(body: unknown, ok = true, status = 200): Response {
   return { ok, status, json: async () => body } as Response
 }
 
+function fakeFileList(file: File): FileList {
+  return {
+    0: file,
+    length: 1,
+    item: (i: number) => (i === 0 ? file : null),
+  } as unknown as FileList
+}
+
 function findByText(host: HTMLElement, text: string): HTMLElement | null {
   return (
     Array.from(host.querySelectorAll<HTMLElement>('*')).find(
@@ -170,5 +178,98 @@ describe('PresetPanel', () => {
     )
     mountPanel()
     await vi.waitFor(() => expect(findByText(host, 'No sidecar reachable.')).not.toBeNull())
+  })
+
+  it('imports a valid preset JSON file and shows it as a custom card', async () => {
+    const imported: Preset = {
+      ...presets[0],
+      id: 'custom-imported',
+      label: 'Imported preset',
+      description: 'From a file',
+    }
+    let importCalled = false
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
+        if (init?.method === 'POST') {
+          importCalled = true
+          return jsonResponse(imported, true, 201)
+        }
+        return jsonResponse(presets)
+      }),
+    )
+    mountPanel()
+    await act(async () => {})
+    const file = new File(['{}'], 'preset.json', { type: 'application/json' })
+    const input = host.querySelector<HTMLInputElement>('input[type="file"]')
+    expect(input).not.toBeNull()
+    act(() => {
+      Object.defineProperty(input!, 'files', { configurable: true, value: fakeFileList(file) })
+      input!.dispatchEvent(new Event('change', { bubbles: true }))
+    })
+    await vi.waitFor(() => expect(findByText(host, 'Imported preset')).not.toBeNull())
+    expect(importCalled).toBe(true)
+  })
+
+  it('shows an error for invalid preset JSON', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse(presets)))
+    mountPanel()
+    await act(async () => {})
+    const file = new File(['{not json'], 'bad.json', { type: 'application/json' })
+    const input = host.querySelector<HTMLInputElement>('input[type="file"]')
+    act(() => {
+      Object.defineProperty(input!, 'files', { configurable: true, value: fakeFileList(file) })
+      input!.dispatchEvent(new Event('change', { bubbles: true }))
+    })
+    await vi.waitFor(() => {
+      const error = host.querySelector<HTMLElement>('.preset-error')
+      expect(error?.textContent).toContain('Invalid preset JSON')
+    })
+  })
+
+  it('exports a custom preset as a downloadable file', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(
+        jsonResponse([
+          ...presets,
+          { ...presets[0], id: 'custom-export', label: 'Export me', description: 'x' },
+        ]),
+      ),
+    )
+    const createObjectURL = vi.fn(() => 'blob:preset')
+    vi.stubGlobal('URL', { createObjectURL, revokeObjectURL: vi.fn() })
+    const clickSpy = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {})
+    mountPanel()
+    await vi.waitFor(() => expect(findByText(host, 'Export me')).not.toBeNull())
+    const exportButton = Array.from(host.querySelectorAll<HTMLElement>('button')).find((b) =>
+      b.textContent?.includes('Export'),
+    )
+    expect(exportButton).not.toBeNull()
+    act(() => exportButton?.click())
+    await act(async () => {})
+    expect(createObjectURL).toHaveBeenCalled()
+    clickSpy.mockRestore()
+  })
+
+  it('removes a custom preset card after delete', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
+        if (init?.method === 'DELETE') return jsonResponse(null, true, 204)
+        return jsonResponse([
+          ...presets,
+          { ...presets[0], id: 'custom-gone', label: 'Delete me', description: 'x' },
+        ])
+      }),
+    )
+    mountPanel()
+    await vi.waitFor(() => expect(findByText(host, 'Delete me')).not.toBeNull())
+    const removeButton = Array.from(host.querySelectorAll<HTMLElement>('button')).find((b) =>
+      b.textContent?.includes('Remove'),
+    )
+    expect(removeButton).not.toBeNull()
+    act(() => removeButton?.click())
+    await vi.waitFor(() => expect(findByText(host, 'Delete me')).toBeNull())
   })
 })

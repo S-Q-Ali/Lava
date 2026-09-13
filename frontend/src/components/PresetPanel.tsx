@@ -1,6 +1,7 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import { BUILTIN_CATEGORIES } from '../editor/presets'
+import { downloadPresetFile } from '../services/presets'
 import { usePresetStore } from '../store/presetStore'
 
 export function PresetPanel() {
@@ -26,11 +27,47 @@ export function PresetPanel() {
   )
 
   const categories = ['All', ...BUILTIN_CATEGORIES]
+  const importFileRef = useRef<HTMLInputElement>(null)
+
+  function handleImportFile(file: File) {
+    const reader = new FileReader()
+    reader.onerror = () =>
+      usePresetStore.setState({ status: 'error', error: 'Could not read the preset file.' })
+    reader.onload = () => {
+      const raw = typeof reader.result === 'string' ? reader.result : ''
+      try {
+        const payload = JSON.parse(raw) as unknown
+        usePresetStore.getState().importPreset(payload).catch(() => {})
+      } catch (err) {
+        const message =
+          err instanceof SyntaxError ? `Invalid preset JSON: ${err.message}` : 'Invalid preset JSON.'
+        usePresetStore.setState({ status: 'error', error: message })
+      }
+      if (importFileRef.current) importFileRef.current.value = ''
+    }
+    reader.readAsText(file)
+  }
 
   return (
     <section className="preset-panel" aria-label="Presets">
       <h3>Style presets</h3>
       {status === 'error' && <p className="preset-error">{error}</p>}
+
+      <div className="preset-actions">
+        <button type="button" onClick={() => importFileRef.current?.click()}>
+          Import JSON
+        </button>
+        <input
+          ref={importFileRef}
+          type="file"
+          accept="application/json,.json"
+          className="preset-file-input"
+          onChange={(event) => {
+            const file = event.target.files?.[0]
+            if (file) handleImportFile(file)
+          }}
+        />
+      </div>
 
       <nav className="preset-categories" aria-label="Preset categories">
         {categories.map((category) => (
@@ -71,6 +108,22 @@ export function PresetPanel() {
               <button type="button" onClick={() => usePresetStore.getState().applyPreset(preset.id)}>
                 Apply
               </button>
+              {preset.id.startsWith('custom-') && (
+                <div className="preset-card-actions">
+                  <button type="button" onClick={() => downloadPresetFile(preset)}>
+                    Export
+                  </button>
+                  <button
+                    type="button"
+                    className="preset-danger"
+                    onClick={() => {
+                      usePresetStore.getState().removePreset(preset.id).catch(() => {})
+                    }}
+                  >
+                    Remove
+                  </button>
+                </div>
+              )}
             </li>
           ))}
         </ul>

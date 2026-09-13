@@ -1074,6 +1074,33 @@
   color: var(--danger, #c0392b);
 }
 
+.preset-actions {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.preset-actions button {
+  background: var(--accent-soft);
+  color: var(--text);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.preset-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
 .preset-categories {
   display: flex;
   flex-wrap: wrap;
@@ -1189,4 +1216,19 @@
   cursor: pointer;
   margin-top: 2px;
   align-self: flex-start;
+}
+
+.preset-card-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.preset-card-actions button {
+  margin-top: 0;
+}
+
+.preset-card-actions .preset-danger {
+  background: transparent;
+  border-color: var(--danger, #c0392b);
+  color: var(--danger, #c0392b);
 }
