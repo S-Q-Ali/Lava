@@ -425,6 +425,35 @@ def export_preset(preset_id: str):
     return preset_to_export_dict(preset)
 
 
+@app.put(f"{API_V1}/presets/{{preset_id}}")
+async def update_preset(preset_id: str, request: Request):
+    config = get_config()
+    if preset_id in _builtin_by_id():
+        raise ApiError(403, "BUILTIN_PRESET", "built-in presets cannot be overwritten")
+    current = _all_presets(config)
+    if not any(p.id == preset_id for p in current):
+        raise ApiError(404, "NOT_FOUND", "no such preset")
+
+    try:
+        raw = await request.json()
+    except (json.JSONDecodeError, ValueError) as exc:
+        raise ApiError(422, "PRESET_INVALID", "Preset body must be valid JSON") from exc
+
+    known_font_ids = {e["id"] for e in _list_font_entries(config)}
+    try:
+        preset = import_preset_payload(raw, known_font_ids)
+    except PresetImportError as exc:
+        raise ApiError(422, "PRESET_INVALID", str(exc)) from exc
+    if preset.id != preset_id:
+        raise ApiError(
+            422,
+            "PRESET_INVALID",
+            f"Preset id in the body ('{preset.id}') must match the path id ('{preset_id}')",
+        )
+    save_registry_presets(config, [p if p.id != preset_id else preset for p in current])
+    return preset.__dict__
+
+
 @app.delete(f"{API_V1}/presets/{{preset_id}}", status_code=204)
 def delete_preset(preset_id: str):
     config = get_config()

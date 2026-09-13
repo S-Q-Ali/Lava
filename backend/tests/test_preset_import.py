@@ -236,3 +236,95 @@ def test_registry_persists_after_write(import_client):
     assert any(p["id"] == "custom-1" for p in listed)
     # A second GET must still show it (persisted to registry file).
     assert any(p["id"] == "custom-1" for p in client.get("/api/presets").json())
+
+
+# --- API update (Slice 2: PUT overwrite) ---
+
+def test_put_updates_custom_preset_in_place(import_client):
+    client, cfg = import_client
+    client.post("/api/presets", json=MINIMAL)
+    changed = {**MINIMAL, "fontSize": 64, "label": "Renamed"}
+    resp = client.put("/api/presets/custom-1", json=_envelope(changed))
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body["id"] == "custom-1"
+    assert body["fontSize"] == 64
+    assert body["label"] == "Renamed"
+    listed = client.get("/api/presets").json()
+    stored = next(p for p in listed if p["id"] == "custom-1")
+    assert stored["fontSize"] == 64
+    assert len(listed) == 16  # 15 builtins + 1 custom
+
+
+def test_put_rewrites_custom_category(import_client):
+    client, cfg = import_client
+    client.post("/api/presets", json=MINIMAL)
+    resp = client.put("/api/presets/custom-1", json={**MINIMAL, "category": "Meme"})
+    assert resp.status_code == 200
+    assert resp.json()["category"] == "Custom"
+
+
+def test_put_preserves_license_ref_with_known_font(import_client):
+    from pathlib import Path
+
+    client, cfg = import_client
+    arial = Path("/System/Library/Fonts/Supplemental/Arial.ttf")
+    if not arial.exists():
+        return
+    client.post(
+        "/api/fonts",
+        files=[("file", ("Arial.ttf", arial.read_bytes(), "application/octet-stream"))],
+    )
+    font_id = client.post(
+        "/api/fonts",
+        files=[("file", ("Arial.ttf", arial.read_bytes(), "application/octet-stream"))],
+    ).json()["id"]
+    client.post("/api/presets", json=MINIMAL)
+    resp = client.put(
+        "/api/presets/custom-1",
+        json={**MINIMAL, "licenseRef": font_id, "fontSize": 66, "fontFamily": "Arial"},
+    )
+    assert resp.status_code == 200
+    assert resp.json()["licenseRef"] == font_id
+
+
+def test_put_builtin_is_forbidden(import_client):
+    client, cfg = import_client
+    resp = client.put("/api/presets/karaoke", json={**MINIMAL, "id": "karaoke"})
+    assert resp.status_code == 403
+    assert resp.json()["error"]["code"] == "BUILTIN_PRESET"
+
+
+def test_put_missing_404(import_client):
+    client, cfg = import_client
+    resp = client.put("/api/presets/custom-zzz", json=MINIMAL)
+    assert resp.status_code == 404
+
+
+def test_put_rejects_unknown_font_ref(import_client):
+    client, cfg = import_client
+    client.post("/api/presets", json=MINIMAL)
+    resp = client.put("/api/presets/custom-1", json={**MINIMAL, "licenseRef": "font-nope"})
+    assert resp.status_code == 422
+    assert resp.json()["error"]["code"] == "PRESET_INVALID"
+
+
+def test_put_path_id_wins_over_payload_id(import_client):
+    client, cfg = import_client
+    client.post("/api/presets", json=MINIMAL)
+    resp = client.put(
+        "/api/presets/custom-1",
+        json={**MINIMAL, "id": "custom-other", "fontSize": 55},
+    )
+    assert resp.status_code == 422  # payload id must equal path id
+
+
+def test_put_persists_across_requests(import_client):
+    client, cfg = import_client
+    client.post("/api/presets", json=MINIMAL)
+    client.put("/api/presets/custom-1", json={**MINIMAL, "fontSize": 70, "rtl": True, "label": "Urdu v2"})
+    stored = next(
+        p for p in client.get("/api/presets").json() if p["id"] == "custom-1"
+    )
+    assert stored["fontSize"] == 70
+    assert stored["rtl"] is True
