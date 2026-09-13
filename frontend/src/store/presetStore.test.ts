@@ -135,4 +135,33 @@ describe('usePresetStore', () => {
     const captions = useEditorStore.getState().captions
     expect(captions.every((c) => c.styleId === 'normal')).toBe(true)
   })
+
+  it('imports a preset and appends it to the list', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse(presets)))
+    await usePresetStore.getState().load()
+    const imported: Preset = { ...presets[0], id: 'custom-fresh', category: 'Custom' }
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse(imported, true, 201)))
+    const created = await usePresetStore.getState().importPreset(imported)
+    expect(created.id).toBe('custom-fresh')
+    expect(usePresetStore.getState().getPreset('custom-fresh')).toBeDefined()
+  })
+
+  it('surfaces an error when the preset cannot be imported', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(jsonResponse({ error: { message: 'already exists' } }, false, 422)),
+    )
+    await expect(usePresetStore.getState().importPreset(presets[0])).rejects.toThrow('already exists')
+    expect(usePresetStore.getState().status).toBe('error')
+  })
+
+  it('removes a custom preset from the local list', async () => {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse(presets)))
+    await usePresetStore.getState().load()
+    const imported: Preset = { ...presets[0], id: 'custom-gone', category: 'Custom' }
+    usePresetStore.setState({ presets: [...usePresetStore.getState().presets, imported] })
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse(null, true, 204)))
+    await usePresetStore.getState().removePreset('custom-gone')
+    expect(usePresetStore.getState().getPreset('custom-gone')).toBeUndefined()
+  })
 })
