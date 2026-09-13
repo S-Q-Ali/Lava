@@ -79,6 +79,14 @@ class StripRegistry:
   `int(round(y * src_h / ana_h))` etc., clamped to image bounds.
 - Guarantee: analysis coordinates from `panel-detection` are always mapped
   back by this module before storage.
+- Boundary-anchored contract: mapping anchors each **cut line** (a single
+  analysis y-coordinate) and maps it to the source with the deterministic
+  bilinear anchor; each panel's box is then derived from the two mapped cuts
+  above/below it (plus x-extent cuts). Individual panel boxes are never rounded
+  independently — that would let adjacent panels drift apart by ±factor px and
+  leave seams. This module exposes `map_cut_to_source` and
+  `boxes_from_cuts(top, bottom, ...)`; `map_bounds_to_source` stays for forward
+  compatibility but the detector uses the anchored form.
 
 ## Asset naming
 
@@ -101,7 +109,8 @@ Deterministic unit tests (no images needed) in `tests/test_manhwa_panels.py`:
 - `Panel` construction valid/invalid matrix (negative spans, out-of-bounds,
   NaN confidence, duplicate ids).
 - `analysis_scale` rounding at exact/aspect ratios (512-max, tall/short/wide).
-- `map_bounds_to_source` round-trips (bilinear anchor) and clamps.
+- `map_bounds_to_source` round-trips (bilinear anchor) and clamps;
+  `map_cut_to_source` + `boxes_from_cuts` produce seamless adjacent boxes.
 - `StripRegistry` save/load round-trip, atomic write (temp+rename observable),
   corrupt/unknown-version errors, `reset_panels` preserves sourceFile.
 - `asset_name` zero-padding at 1/9/10/100 panels; id↔asset inversion.

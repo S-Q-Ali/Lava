@@ -109,6 +109,8 @@ Avoid generic AI-slop patterns: excessive gradients, glassmorphism, card soup, f
 Build a real editor:
 left media/navigation, center preview, bottom timeline, right inspector/AI tools.
 
+Read `CONSTRAINTS.md` before writing code. Do not weaken it to make a change pass.
+
 ## Definition of done
 No feature is complete until implementation, UI where applicable, error states, tests, verification, documentation and regression checks are complete.
 
