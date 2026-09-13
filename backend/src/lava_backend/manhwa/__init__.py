@@ -1,0 +1,1 @@
+"""M7 Manhwa extractor package."""
