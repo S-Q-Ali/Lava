@@ -142,6 +142,7 @@ async def render_endpoint(
     transitions: str | None = Form(None),
     captions: str | None = Form(None),
     files: list[UploadFile] = File(...),
+    audio_files: list[UploadFile] = File(default=[]),
 ):
     try:
         clips_model = [
@@ -236,6 +237,16 @@ async def render_endpoint(
     if missing:
         raise ApiError(400, "CLIP_FILE_MISSING", f"no uploaded file for clip(s): {sorted(set(missing))}")
 
+    # Save audio files
+    audio_paths: list[Path] = []
+    for upload in audio_files:
+        if upload and upload.filename:
+            name = Path(upload.filename).name
+            dest = upload_root / f"audio_{name}"
+            with dest.open("wb") as out:
+                shutil.copyfileobj(upload.file, out)
+            audio_paths.append(dest)
+
     try:
         render_clips = []
         for i, c in enumerate(clips_model):
@@ -257,6 +268,7 @@ async def render_endpoint(
             transitions=transition_specs,
             captions=caption_specs,
             fonts=render_fonts,
+            audio_files=audio_paths if audio_paths else None,
         )
     except Exception:
         shutil.rmtree(upload_root, ignore_errors=True)
