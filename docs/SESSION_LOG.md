@@ -632,3 +632,96 @@ is sent; libass falls back for missing fonts (M6 bundles fonts).
   treatments) or M1 follow-ups (audio mixing in render — now needed for voice
   to reach the output; ripple editing). M4 retention heuristics stay open
   (measurable-only).
+
+---
+
+## Session 14 — M6 module 1: font-system shipped (spec → plan → TDD slices → docs)
+
+### Purpose (WHY)
+Session 13's next step named M6 template/font system. The user approved the
+M6 capability map (`font-system → preset-registry → preset-import →
+template-editor → animated-captions`) and then the `font-system` spec +
+plan verbatim. This session implemented module 1 end-to-end with per-slice
+TDD, closing the font side of M6.
+
+### WHAT
+- **Spec + plan + todo** — `docs/SPEC-font-system.md` (approved via question
+  tool), `tasks/plan-font.md`, `tasks/todo.md` M6 section. Commit `c7ceb58`.
+- **Slice 1 (pure layer)** — `backend/src/lava_backend/fonts.py`: SFNT magic
+  validation (no fontTools — hand-rolled name-table reader, nameID 16→1→4,
+  Windows/Unicode preferred, UTF-16BE), `clean_family_name`, license payload
+  normalisation (`{type: open|commercial|personal|unknown, source?,
+  embeddingAllowed}`), registry save/load (`fonts/licenses.json`,
+  malformed-tolerant), `make_font_metadata`. `config.py` gained
+  `fonts_dir` + `presets_dir`. 17 tests. Commit `60b0290` (backend 140 → 157).
+- **Slice 2 (API + renderer)** — `main.py` routes: `POST /api/fonts` (multipart
+  file + optional license JSON; `FONT_INVALID` 422 for bad ext/magic/license
+  semantics, `INVALID_BODY` 422 for bad license JSON; id-keyed storage +
+  registry append), `GET /api/fonts`, `GET /api/fonts/{id}/file`,
+  `DELETE /api/fonts/{id}` (204, removes file + registry entry). `media.py`
+  refactored ass overlay into `_ass_filter_string` which appends
+  `:fontsdir='…/fonts'` only when the dir exists — **no-captions parity
+  preserved**. Real-ffmpeg smoke renders captions against a real uploaded Arial
+  with fontsdir. 8 API/smoke tests. Commit `b794e29` (backend 157 → 165).
+- **Slice 3 (frontend model/client/store)** — `editor/fonts.ts`
+  (`FontMetadata`/`FontLicense`, tolerant `parseFontMetadata`,
+  `ensureFontFace` @font-face registration keyed id+base),
+  `services/fonts.ts` (`listFonts`/`uploadFont`/`deleteFont`/`fontPreviewUrl`,
+  `FileResponse`-style `failHttp` + friendly offline message),
+  `store/fontStore.ts` (load/import/remove, idle|loading|error),
+  14 tests. Commit `18364f8` (frontend 174 → 188).
+- **Slice 4 (FontPanel)** — `components/FontPanel.tsx`: import (file picker +
+  license type/source/embedding), list with license badge + preview link +
+  remove, load-error surface, auto `@font-face`. Mounted in the Inspector
+  below Captions; `.font-*` CSS on existing tokens. 5 component tests —
+  **no @testing-library dependency**, used the repo's `createRoot`+`act`
+  pattern (prototype-value-setter + `input` event). Slice 3→4 test failures
+  surfaced two gremlins: React's file input needs `files` set via
+  `Object.defineProperty` + `change`, and controlled inputs need the setter
+  from `HTMLInputElement.prototype` — both aligned with
+  `TransitionsPanel`/`MotionPanel` tests. Commit `243d7ff`
+  (frontend 188 → 193; build + lint clean).
+- **Docs closure** — D-021, ROADMAP M6 `font-system` tick (+status line),
+  FEATURES §6 "Shipped" block, this log, `graphify update .`.
+
+### HOW
+Per-slice TDD as established across M2–M5 (RED first, commit per slice,
+full regression before commit). Two real bugs tests caught: (1)
+`make_font_metadata` stored `ext` with a leading dot while the file-on-disk
+name concatenated its own `.` → double dot; fixed by normalising `ext`
+dot-less (`b794e29`). (2) frontend type drift — `FontUploadLicense.source`
+was `string | undefined` while `FontLicense` is `string | null`; removed the
+stray interface and used `FontLicense` everywhere.
+
+### Decisions
+- D-021 — fonts are backend-id-keyed assets (`fonts/` + `licenses.json`
+  registry), family names travel in the project (version stays 1), libass
+  resolves them via `ass=:fontsdir=`; no fontTools, no bundled fonts, no
+  project-embedded binaries. Locked.
+
+### Verify
+- Backend: `uv run pytest` 165 passed (140 → 165: +17 fonts, +8 API/smoke).
+- Frontend: `npx vitest run` 193 passed (174 → 193: +10 services, +4 store,
+  +5 FontPanel). `npm run build` ok, `npm run lint` 0 errors (2 pre-existing
+  warnings).
+- Commits: `c7ceb58` · `60b0290` · `b794e29` · `18364f8` · `243d7ff` + this
+  docs/graph commit.
+
+### Limitations
+- Family resolution depends on the family being imported **and** libass finding
+  it in `fontsdir`; un-imported families still fall back to system fonts.
+- `fontsdir` presence keys off directory existence — an imported family that
+  libass cannot parse on its platform degrades to fallback (documented, smoke
+  covers a real TTF).
+- No removal cascade yet: deleting a font does not touch captions/styles that
+  reference its family (they simply fall back); preset-registry module will
+  decide reference awareness.
+- Trending categories remain conceptual — preset-registry module next.
+- In-browser human feel-check of FontPanel still pending (component-test
+  covered).
+
+### Next step
+- Push M6 module 1 (6 commits) on user go-ahead. Next M6 module:
+  `preset-registry` (extend `CaptionStyle` with M6 preset fields, updateable
+  categories, license-aware references to imported fonts). After that:
+  `preset-import` → `template-editor` → `animated-captions`.

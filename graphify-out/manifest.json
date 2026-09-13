@@ -30,9 +30,9 @@
     "semantic_hash": ""
   },
   "frontend/src/components/InspectorPanel.tsx": {
-    "mtime": 1789240205.7151468,
-    "seen": 1789240649.221727,
-    "ast_hash": "44fbf44d5b080457bff2fff9277aabb0",
+    "mtime": 1789293763.4700165,
+    "seen": 1789294025.508062,
+    "ast_hash": "056c128b2977518d534bf3460f5bc86f",
     "semantic_hash": ""
   },
   "frontend/src/components/MediaPanel.tsx": {
@@ -348,15 +348,15 @@
     "semantic_hash": ""
   },
   "docs/DECISIONS.md": {
-    "mtime": 1789240525.179246,
-    "seen": 1789240649.222036,
-    "ast_hash": "1dc20f43c1e202728041f96614b47779",
+    "mtime": 1789293958.4252558,
+    "seen": 1789294025.508224,
+    "ast_hash": "80b8085dbfa22c6fabb35d452e53a9f3",
     "semantic_hash": ""
   },
   "docs/FEATURES.md": {
-    "mtime": 1789240569.7032988,
-    "seen": 1789240649.222038,
-    "ast_hash": "7da3ccde3ffceab50e7238e96a0ee769",
+    "mtime": 1789293991.7004898,
+    "seen": 1789294025.5082262,
+    "ast_hash": "7562bfe715def2f96985393d8df7c5ca",
     "semantic_hash": ""
   },
   "docs/PRODUCT_SPEC.md": {
@@ -366,15 +366,15 @@
     "semantic_hash": ""
   },
   "docs/ROADMAP.md": {
-    "mtime": 1789240530.1607308,
-    "seen": 1789240649.222042,
-    "ast_hash": "9a28808f0a4a36e4c81c4df1aed7e116",
+    "mtime": 1789293974.9567397,
+    "seen": 1789294025.508228,
+    "ast_hash": "549d5fdcdecaae768fc4c03cb248136c",
     "semantic_hash": ""
   },
   "docs/SESSION_LOG.md": {
-    "mtime": 1789240626.8290222,
-    "seen": 1789240649.2220428,
-    "ast_hash": "2caa20f56bf21798e20b881211ebac06",
+    "mtime": 1789294016.0892737,
+    "seen": 1789294025.50823,
+    "ast_hash": "ed1077f62bcf87367bce6de8fed51500",
     "semantic_hash": ""
   },
   "docs/TEST_PLAN.md": {
@@ -420,9 +420,9 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/config.py": {
-    "mtime": 1789212411.316902,
-    "seen": 1789212763.469314,
-    "ast_hash": "83cc4d14062dabf71979248feba146cb",
+    "mtime": 1789292844.5834763,
+    "seen": 1789294025.5080051,
+    "ast_hash": "e78f4b815616f110bb02c086c7193435",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/errors.py": {
@@ -432,15 +432,15 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/main.py": {
-    "mtime": 1789239861.6750858,
-    "seen": 1789240649.221612,
-    "ast_hash": "eb1625a31eb841adb482c0b3df34c34a",
+    "mtime": 1789293155.0024,
+    "seen": 1789294025.508012,
+    "ast_hash": "ca45a447e793a070174d0bcf5f0cb80f",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/media.py": {
-    "mtime": 1789239993.3978229,
-    "seen": 1789240649.221623,
-    "ast_hash": "f6b7b43f21ce876b9a5e04f986b9ccee",
+    "mtime": 1789293044.1325176,
+    "seen": 1789294025.508016,
+    "ast_hash": "dc23a970224edaff825754c482d624e2",
     "semantic_hash": ""
   },
   "backend/tests/conftest.py": {
@@ -510,9 +510,9 @@
     "semantic_hash": ""
   },
   "tasks/todo.md": {
-    "mtime": 1789240599.2981544,
-    "seen": 1789240649.222086,
-    "ast_hash": "746a95e04d80f55392df1fe9ed99274f",
+    "mtime": 1789292535.6531222,
+    "seen": 1789294025.508279,
+    "ast_hash": "dbee528892820cc53e8f2e2947b61326",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/transcribe.py": {
@@ -897,6 +897,78 @@
     "mtime": 1789239005.2382157,
     "seen": 1789240649.222074,
     "ast_hash": "764df01fba55589ef1cb1b6561ba16da",
+    "semantic_hash": ""
+  },
+  "backend/src/lava_backend/fonts.py": {
+    "mtime": 1789293205.175989,
+    "seen": 1789294025.50801,
+    "ast_hash": "a66f1653c52e65f7194a421a9291f86e",
+    "semantic_hash": ""
+  },
+  "backend/tests/test_fonts.py": {
+    "mtime": 1789293002.5823278,
+    "seen": 1789294025.508029,
+    "ast_hash": "6002594f1cea44f14f074d194e38600d",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/FontPanel.test.tsx": {
+    "mtime": 1789293860.4707708,
+    "seen": 1789294025.5080588,
+    "ast_hash": "95a0d0933d51f64bb69506d5bfaf0d4f",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/FontPanel.tsx": {
+    "mtime": 1789293399.0410278,
+    "seen": 1789294025.50806,
+    "ast_hash": "669272a3236ca2fd3174f7507f03e68a",
+    "semantic_hash": ""
+  },
+  "frontend/src/editor/fonts.ts": {
+    "mtime": 1789293474.3839414,
+    "seen": 1789294025.508099,
+    "ast_hash": "4c1bae0eb9ec3533dd77aa665cf9e866",
+    "semantic_hash": ""
+  },
+  "frontend/src/services/fonts.test.ts": {
+    "mtime": 1789293817.0406566,
+    "seen": 1789294025.5081248,
+    "ast_hash": "93d60b7e639a27e85cb4842ca36018da",
+    "semantic_hash": ""
+  },
+  "frontend/src/services/fonts.ts": {
+    "mtime": 1789293802.3238766,
+    "seen": 1789294025.508127,
+    "ast_hash": "1ba05672d4263f2c858f0958ad1dce4e",
+    "semantic_hash": ""
+  },
+  "frontend/src/store/fontStore.test.ts": {
+    "mtime": 1789293842.7146266,
+    "seen": 1789294025.508141,
+    "ast_hash": "04707f71dd93c53bbe13911b5f5fd5e9",
+    "semantic_hash": ""
+  },
+  "frontend/src/store/fontStore.ts": {
+    "mtime": 1789293288.3046775,
+    "seen": 1789294025.5081432,
+    "ast_hash": "6818a21d2ada82cab8c79395aed0b0ed",
+    "semantic_hash": ""
+  },
+  "docs/SPEC-font-system.md": {
+    "mtime": 1789292516.9712675,
+    "seen": 1789294025.508235,
+    "ast_hash": "0e4dc8d769bae7b2de73c60fa5066432",
+    "semantic_hash": ""
+  },
+  "docs/SPEC-m6-template-font-system.md": {
+    "mtime": 1789241442.7035327,
+    "seen": 1789294025.508244,
+    "ast_hash": "e563959b49a35a268c29d7e2f6ab8ad9",
+    "semantic_hash": ""
+  },
+  "tasks/plan-font.md": {
+    "mtime": 1789292530.6760893,
+    "seen": 1789294025.508265,
+    "ast_hash": "cf2ea5133b4c12d7d447a63e07c3771e",
     "semantic_hash": ""
   }
 }

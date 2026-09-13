@@ -62,11 +62,11 @@ Definition of done for ANY milestone installments within it: implementation exis
 - [x] Editable caption track — `CaptionItem` on `TimelineModel.captions` (version 1), transcript generation (pause-split, word timings), override-first re-generation (manual survives), CaptionPanel text/duration/style/remove, timeline caption blocks, render wire-up (`caption-core` + `caption-ui` complete)
 
 ## Milestone 6 — Template/font system
-- Preset registry
-- Custom import
-- Font import
-- License metadata
-- Template editor
+- [x] Font import — backend `/api/fonts` upload/list/file/delete, hand-rolled SFNT validation + family extraction, license metadata (`{type, source, embeddingAllowed}`), registry `fonts/licenses.json`; `ass=:fontsdir=` burn-in with byte-parity when no captions (`font-system` module complete)
+- [ ] Preset registry
+- [ ] Custom import
+- [ ] License metadata (font side shipped; preset/render license tracking follows with the registry)
+- [ ] Template editor
 
 ## Milestone 7 — Manhwa extractor
 - Detection pipeline
@@ -101,4 +101,4 @@ Definition of done for ANY milestone installments within it: implementation exis
 - 🔄 In progress
 - ✅ Done
 
-Current status: Milestones 0–4 done. Milestone 5 (caption engine) done — transcript-generated editable captions with 15 original style presets and libass burn-in; animated treatments and user fonts deferred to M6, live preview overlay to M8. Open follow-ups: M1 ripple editing / cross-track drag / audio mixing in render; M4 retention heuristics (dimensions defined in M5+ planning).
+Current status: Milestones 0–4 done. Milestone 5 (caption engine) done — transcript-generated editable captions with 15 original style presets and libass burn-in; animated treatments deferred to M6, live preview overlay to M8. Milestone 6 in progress — module 1 `font-system` (user font import with license metadata + `fontsdir` render) shipped: 5/10 M6 rows open. Remaining M6 modules: preset-registry → preset-import → template-editor → animated-captions. Open follow-ups: M1 ripple editing / cross-track drag / audio mixing in render; M4 retention heuristics (dimensions defined in M5+ planning).

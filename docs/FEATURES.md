@@ -105,6 +105,13 @@ Pipeline: ASR → timestamps → sentence/phrase segmentation → word timestamp
 - Categories: Trending (updateable), New, Shorts, Reels, YouTube, Anime, Manhwa, Storytelling, Cinematic, Motivation, Meme, Documentary, Custom.
 - Licensed/open fonts bundled; user `.ttf`/`.otf` import; license/source metadata tracked; mobile readability priority; multilingual/Urdu support where licensed.
 
+**Shipped (M6 module 1 `font-system`):**
+- **Font import + registry** — inspector `FontPanel`: pick a `.ttf`/`.otf`, choose license type (`unknown`/`open`/`commercial`/`personal`), optional source URL/note, embedding-allowed flag; imports to the sidecar `fonts/` dir with a hand-rolled SFNT validator + real family-name extractor (nameID 16→1→4, Windows/Unicode entries), no fontTools dependency. Registry `fonts/licenses.json` (git-clean) is the source of truth.
+- **Font API** — `POST /api/fonts` (201 metadata), `GET /api/fonts`, `GET /api/fonts/{id}/file`, `DELETE /api/fonts/{id}` (204). `FONT_INVALID` (422) for bad extensions/magic/license semantics; `INVALID_BODY` (422) for malformed license JSON; 404 for unknown ids.
+- **Preview** — each listed font gets a preview link to its served file and an auto-registered `@font-face` (keyed per id+base URL) so imported families appear in browser UI.
+- **Render burn-in** — captions reference families by string; when fonts are imported the `ass=` filter appends `:fontsdir='…/fonts'`, so libass resolves uploaded families. No-captions graph stays byte-identical (parity). Font fallback to system scan path remains intact.
+- *Remaining M6*: preset registry, preset import, template editor, animated caption treatments.
+
 ## 7. Manhwa / Webtoon Extractor
 
 - Full-resolution load + analysis-scale representation.

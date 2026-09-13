@@ -213,3 +213,61 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
 - **HOW**: `frontend/src/editor/captions.ts` (17 tests) + `captionStyles.ts` (7) + store slice (8) + `CaptionPanel` component (6) + `types.ts`/`project.ts` round-trip (3); backend `captions.py` (20 tests) + `media.py` ass overlay + `main.py` wire (6 tests incl. real-ffmpeg pixel-diff smoke: burned caption visibly changes the bottom strip). Backend 111 → 140, frontend 133 → 174. Fonts: first family of the safe stack is sent; missing fonts fall back via libass (documented limitation until M6 font bundling).
 - **Alternatives considered**: captions as payloads on media `Clip`s (rejected — different edit axes); SRT burn-in (no styling/karaoke); drawtext per line (no shaping, filter-graph explosion); live preview overlay (M8 polish per capability map).
 - **Status**: Locked for M5 (modules caption-core/styles/render/ui, all four shipped). Animated template treatments, user font import + license metadata, live preview overlay: M6/M8.
+
+### D-021 — Fonts are backend-stored assets keyed by id; family names travel in the project; libass burns them in via `fontsdir`
+
+- **Date**: 2026-09-13
+- **WHAT**: Imported fonts live in the sidecar filesystem (`Config.fonts_dir`
+  → `fonts/`) with a JSON registry (`fonts/licenses.json`), **not** in the
+  downloadable project JSON — rendering (and therefore libass) runs on the
+  backend, while projects are browser download/upload envelopes (D-009). Stored
+  as `font-<hex>.<ext>`; original filename + extracted family + license metadata
+  are registry entries. Wire: `POST /api/fonts` (multipart `file` + optional
+  `license` JSON; `#RRGGBB`-style validation) → 201 metadata, `GET /api/fonts`,
+  `GET /api/fonts/{id}/file` (FileResponse), `DELETE /api/fonts/{id}` → 204.
+  Errors: `FONT_INVALID` (422) for bad ext / magic / no signature / bad license
+  semantics, `INVALID_BODY` (422) for unparsable license JSON, 404 for unknown
+  ids. Binary validation + family extraction are pure (`fonts.py`) with a
+  **hand-rolled SFNT parser** — no fontTools dependency: signature set
+  (`\x00\x01\x00\x00` / `OTTO` / `true` / `ttcf`), table directory, `name` table
+  record scan preferring nameID 16 → 1 → 4 and Windows/Unicode entries, UTF-16BE
+  decode, best-effort fallback to filename stem. License shape frozen from the
+  approved spec: `{ type: open|commercial|personal|unknown, source?, embeddingAllowed }`
+  with type defaulting to `unknown`. Renderer: `media.py` gained
+  `_ass_filter_string` — when captions exist the `ass=` filter appends
+  `:fontsdir='…/fonts'` only when that dir exists; **no-captions graph stays
+  byte-identical (parity)**. Frontend: `editor/fonts.ts` (parse + `@font-face`
+  registration keyed by id+base), `services/fonts.ts` (list/upload/delete +
+  preview URL), `store/fontStore.ts` (load/import/remove), `components/FontPanel.tsx`
+  mounted in the Inspector below Captions: import (file picker, license select/
+  source/embedding), per-font license badge + preview link + remove, load-error
+  surface. Family-name reference from captions styles (`CaptionStyle.fontFamily`)
+  now resolves to an uploaded family via libass `fontsdir`.
+- **WHY**: PRODUCT_SPEC demands user font import with appropriate licensing;
+  captions burn-in needs actual font files at libass call time, and the browser
+  never holds them (D-009 download/upload means a font shipped in the project
+  envelope could never reach the backend reliably). Backend-id-keyed storage
+  keeps fonts out of git (registry + binary-clean `fonts/`), keeps project
+  version at 1, and keeps "Trending"-style claims out (no hard-coded availability
+  list; upload is explicit). A dependency-free name reader honors the project's
+  local-first/lightweight posture over pulling fontTools.
+- **HOW**: `backend/src/lava_backend/fonts.py` (pure; 17 unit tests) +
+  `config.py` `fonts_dir`/`presets_dir`; `main.py` font routes (5 API tests) +
+  upload/registry lifecycle; `media.py` `_ass_filter_string` + real-ffmpeg render
+  smoke with a real uploaded system font (`Arial.ttf`) asserting duration and no
+  error (fontsdir path covered); frontend `editor/fonts.ts` + `services/fonts.ts`
+  (10 tests) + `store/fontStore.ts` (4 tests) + `FontPanel` (5 component tests,
+  repo `createRoot`+`act` pattern — @testing-library intentionally absent).
+  Backend 140 → 165, frontend 174 → 193. Commits: `c7ceb58` (spec+plan+todo) ·
+  `60b0290` (slice 1, pure layer) · `b794e29` (slice 2, API+renderer) ·
+  `18364f8` (slice 3, frontend model/client/store) · `243d7ff` (slice 4,
+  FontPanel).
+- **Alternatives considered**: bundled vendor fonts (rejected — licensing);
+  fontTools dependency (rejected — dignity of a hand-rolled name reader here);
+  browser-side storage with `blob:` project URLs (rejected — breaks backend
+  burn-in); fonts embedded in project JSON (rejected — D-009 envelope can't
+  reach libass; also bloats exports).
+- **Status**: Locked for M6 module 1 `font-system` (shipped). Captions still
+  reference families by string with libass system fallback when not imported;
+  preset-registry, preset-import, template-editor and animated-captions are the
+  remaining M6 modules.
