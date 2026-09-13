@@ -64,6 +64,20 @@ describe('caption style catalog', () => {
     expect(getCaptionStyle('punctuation').punctuation).toBe(true)
   })
 
+  it('named caption families carry their matching animation treatment', () => {
+    expect(getCaptionStyle('manga').animation).toBe('manga')
+    expect(getCaptionStyle('cinematic').animation).toBe('cinematic')
+    expect(getCaptionStyle('meme').animation).toBe('meme')
+    expect(getCaptionStyle('storytelling').animation).toBe('storytelling')
+  })
+
+  it('animation is unset (none) by default on the remaining presets', () => {
+    for (const style of CAPTION_STYLES) {
+      if (['manga', 'cinematic', 'meme', 'storytelling'].includes(style.id)) continue
+      expect(style.animation ?? 'none').toBe('none')
+    }
+  })
+
   it('getCaptionStyle falls back to the default for unknown ids', () => {
     expect(getCaptionStyle('nope').id).toBe(DEFAULT_CAPTION_STYLE_ID)
     expect(getCaptionStyle(DEFAULT_CAPTION_STYLE_ID).id).toBe('normal')

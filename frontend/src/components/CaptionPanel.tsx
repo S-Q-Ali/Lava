@@ -28,6 +28,7 @@ function captionToWire(caption: CaptionItem, presets: Preset[]) {
       alignment: style.alignment,
       rtl: style.rtl ?? false,
       karaoke: style.karaoke ?? false,
+      animation: style.animation ?? 'none',
     },
     words: caption.words,
   }

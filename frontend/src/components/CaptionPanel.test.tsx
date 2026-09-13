@@ -137,6 +137,7 @@ describe('captionsRenderPayload', () => {
         alignment: 'bottom',
         rtl: false,
         karaoke: false,
+        animation: 'none',
       },
     })
     expect(payload[0].words).toHaveLength(4)
@@ -179,5 +180,41 @@ describe('captionsRenderPayload', () => {
       fontSize: 88,
       primaryColor: '#FFFFFF',
     })
+  })
+
+  it('passes the preset animation through to the render wire', () => {
+    useEditorStore.setState({
+      captions: [
+        { id: 'cap-1', trackId: 'track-captions', start: 0, duration: 2, text: 'Hi', styleId: 'custom-meme', source: 'manual' },
+      ],
+    })
+    usePresetStore.setState({
+      presets: [
+        {
+          id: 'custom-meme',
+          label: 'Meme',
+          description: '',
+          category: 'Custom',
+          fontFamily: 'Impact',
+          fontSize: 44,
+          primaryColor: '#FFFFFF',
+          highlightColor: '#FFFFFF',
+          outlineColor: '#000000',
+          outlineWidth: 3,
+          bold: true,
+          uppercase: true,
+          alignment: 'bottom',
+          rtl: false,
+          emoji: false,
+          karaoke: false,
+          wordHighlight: false,
+          importantWordPop: false,
+          punctuation: false,
+          animation: 'meme',
+        },
+      ],
+    })
+    const payload = captionsRenderPayload(useEditorStore.getState().captions)
+    expect(payload[0].style.animation).toBe('meme')
   })
 })

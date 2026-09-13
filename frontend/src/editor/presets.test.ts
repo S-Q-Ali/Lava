@@ -24,6 +24,7 @@ const good: Preset = {
   wordHighlight: false,
   importantWordPop: false,
   punctuation: false,
+  animation: 'none',
 }
 
 describe('preset categories', () => {
@@ -63,6 +64,12 @@ describe('parsePreset', () => {
     expect(parsed.tags).toEqual(['a'])
     expect(parsed.licenseRef).toBeUndefined()
     expect(parsed.fontSize).toBe(54)
+  })
+
+  it('round-trips a valid animation and falls back to none otherwise', () => {
+    expect(parsePreset({ ...good, animation: 'kinetic' }).animation).toBe('kinetic')
+    expect(parsePreset({ ...good, animation: 'swoosh' }).animation).toBe('none')
+    expect(parsePreset({ ...good, animation: null }).animation).toBe('none')
   })
 
   it('validates a real category from the list even when case differs', () => {

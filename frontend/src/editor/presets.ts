@@ -1,5 +1,5 @@
 import { PresetError } from '../services/presets'
-import type { CaptionStyle } from './captionStyles'
+import { isCaptionAnimation, type CaptionStyle } from './captionStyles'
 
 export const BUILTIN_CATEGORIES = [
   'Trending',
@@ -70,6 +70,7 @@ export function parsePreset(raw: unknown): Preset {
     wordHighlight: Boolean(obj.wordHighlight),
     importantWordPop: Boolean(obj.importantWordPop),
     punctuation: Boolean(obj.punctuation),
+    animation: isCaptionAnimation(obj.animation) ? obj.animation : 'none',
     presetVersion,
     tags,
     licenseRef,

@@ -7,6 +7,21 @@
  * ASS &HBBGGRR when burning in).
  */
 
+export type CaptionAnimation = 'none' | 'kinetic' | 'manga' | 'cinematic' | 'meme' | 'storytelling'
+
+export const ANIMATION_OPTIONS: Array<{ value: CaptionAnimation; label: string }> = [
+  { value: 'none', label: 'None' },
+  { value: 'kinetic', label: 'Kinetic (word-by-word)' },
+  { value: 'manga', label: 'Manga / anime (impact)' },
+  { value: 'cinematic', label: 'Cinematic (fade + scale)' },
+  { value: 'meme', label: 'Meme (punch / wobble)' },
+  { value: 'storytelling', label: 'Storytelling (gentle)' },
+]
+
+export function isCaptionAnimation(value: unknown): value is CaptionAnimation {
+  return typeof value === 'string' && ANIMATION_OPTIONS.some((o) => o.value === value)
+}
+
 export interface CaptionStyle {
   id: string
   label: string
@@ -26,6 +41,7 @@ export interface CaptionStyle {
   wordHighlight?: boolean
   importantWordPop?: boolean
   punctuation?: boolean
+  animation?: CaptionAnimation
 }
 
 const SANS = "'Helvetica Neue', Arial, sans-serif"
@@ -135,6 +151,7 @@ export const CAPTION_STYLES: CaptionStyle[] = [
     bold: true,
     uppercase: false,
     alignment: 'middle',
+    animation: 'manga',
   },
   {
     id: 'cinematic',
@@ -149,6 +166,7 @@ export const CAPTION_STYLES: CaptionStyle[] = [
     bold: false,
     uppercase: false,
     alignment: 'bottom',
+    animation: 'cinematic',
   },
   {
     id: 'meme',
@@ -163,6 +181,7 @@ export const CAPTION_STYLES: CaptionStyle[] = [
     bold: true,
     uppercase: true,
     alignment: 'bottom',
+    animation: 'meme',
   },
   {
     id: 'storytelling',
@@ -177,6 +196,7 @@ export const CAPTION_STYLES: CaptionStyle[] = [
     bold: false,
     uppercase: false,
     alignment: 'bottom',
+    animation: 'storytelling',
   },
   {
     id: 'urdu',
