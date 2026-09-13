@@ -81,3 +81,9 @@
 
 ## Milestones 6–10 (not started)
 - M6 Template/font system · M7 Manhwa extractor · M8 Integrated editor · M9 Hardware validation · M10 Release hardening
+## M6 — Module 1: font-system (SPEC-font-system.md, tasks/plan-font.md)
+- [ ] Task 1 (slice 1): backend fonts.py (validation/SFNT name/registry) + config fonts_dir/presets_dir — RED tests
+- [ ] Task 2 (slice 2): /api/fonts routes + GET file + DELETE + ass=:fontsdir= render wire — parity + real smoke
+- [ ] Task 3 (slice 3): frontend editor/fonts.ts + services/fonts.ts + store/fontStore.ts + tests
+- [ ] Task 4 (slice 4): FontPanel (list/import+license/@font-face preview/remove) + App regression
+- [ ] Task 5 (slice 5): docs D-021/ROADMAP M6/FEATURES/SESSION_LOG 14 + graphify + regression + push go-ahead
