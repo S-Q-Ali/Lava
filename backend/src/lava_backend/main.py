@@ -32,6 +32,7 @@ from .licensing import resolve_render_font_licenses, violation_message
 from .preset_import import PresetImportError, import_preset_payload, preset_to_export_dict
 from .preset_registry import load_registry as load_preset_registry
 from .matching import Matcher, router as matching_router
+from .manhwa.api import router as manhwa_router
 from .media import (
     IMAGE_SUFFIXES,
     BetweenSpec,
@@ -66,6 +67,7 @@ app.add_middleware(
 API_V1 = "/api"
 app.include_router(transcribe_router, prefix=f"{API_V1}")
 app.include_router(matching_router, prefix=f"{API_V1}")
+app.include_router(manhwa_router, prefix=f"{API_V1}/manhwa")
 
 
 @app.exception_handler(ApiError)

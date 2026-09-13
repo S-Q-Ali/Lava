@@ -1,0 +1,331 @@
+"""M7 module 6: manhwa HTTP API — storage/HTTP glue over modules 1–5.
+
+Pure layers hold every rule; this router adds project-local persistence
+(under `cache_dir/manhwa/<source_id>/`), multipart upload + detection, panel
+correction ops, export bundles, asset serving and strip delete/reset. All
+errors translate to `ApiError` so the sidecar's `{error:{code,message}}`
+contract holds.
+"""
+
+from __future__ import annotations
+
+import re
+import shutil
+import uuid
+import zipfile
+from io import BytesIO
+from pathlib import Path
+
+from fastapi import APIRouter, File, Form, Request, Response, UploadFile
+
+from lava_backend.errors import ApiError
+from lava_backend.manhwa import correct
+from lava_backend.manhwa.detect import detect_strip, _open_source
+from lava_backend.manhwa.export import encode_panel, materialize_export
+from lava_backend.manhwa.panels import StripRegistry, panel_to_dict
+from lava_backend.manhwa import export as export_mod
+
+router = APIRouter()
+
+SOURCE_ID_RE = re.compile(r"^[A-Za-z0-9_-]+$")
+IMAGE_CONTENT = {
+    "image/png": ".png",
+    "image/jpeg": ".jpg",
+    "image/webp": ".webp",
+}
+MIME_BY_FORMAT = {
+    "png": "image/png",
+    "jpeg": "image/jpeg",
+    "jpg": "image/jpeg",
+    "webp": "image/webp",
+}
+_PANEL_OP_META = {
+    "split": {"panelId"},
+    "merge": {"ids"},
+    "adjust": {"panelId"},
+    "delete": {"panelId"},
+    "add": None,
+    "reorder": {"ids"},
+    "reset": set(),
+}
+
+
+def manhwa_dir(config) -> Path:
+    return config.cache_dir / "manhwa"
+
+
+def strip_dir(config, source_id: str) -> Path:
+    if not SOURCE_ID_RE.fullmatch(source_id):
+        raise ValueError(f"invalid source id {source_id!r}")
+    return manhwa_dir(config) / source_id
+
+
+def new_source_id() -> str:
+    return "s" + uuid.uuid4().hex[:12]
+
+
+def load_registry(config, source_id: str) -> StripRegistry:
+    path = strip_dir(config, source_id) / "registry.json"
+    if not path.exists():
+        raise ApiError(404, "NOT_FOUND", f"no manhwa strip {source_id!r}")
+    try:
+        return StripRegistry.load(path)
+    except Exception as exc:
+        raise ApiError(422, "REGISTRY_INVALID", f"strip registry corrupt: {exc}") from exc
+
+
+def _source_path(registry: StripRegistry, config) -> Path:
+    """Resolve the stored original to its on-disk location.
+
+    `registry.source_file` holds only the file name (module-2 convention);
+    the original always lives at `strip_dir/config, source_id)/<name>`.
+    """
+    return strip_dir(config, registry.source_id) / Path(registry.source_file).name
+
+
+def _serialize(registry: StripRegistry) -> dict:
+    return {
+        "sourceId": registry.source_id,
+        "sourceFile": registry.source_file,
+        "width": registry.width,
+        "height": registry.height,
+        "mime": registry.mime,
+        "panels": [panel_to_dict(p) for p in registry.panels],
+    }
+
+
+def _summary(registry: StripRegistry) -> dict:
+    panels = registry.panels
+    return {
+        "sourceId": registry.source_id,
+        "sourceFile": registry.source_file,
+        "width": registry.width,
+        "height": registry.height,
+        "mime": registry.mime,
+        "panelCount": len(panels),
+        "correctedCount": sum(1 for p in panels if p.user_corrected),
+    }
+
+
+def _regenerate_panel_png(registry: StripRegistry, panel_id: str) -> bytes:
+    from lava_backend.config import get_config
+
+    panel = next((p for p in registry.panels if p.id == panel_id), None)
+    if panel is None:
+        raise ApiError(404, "NOT_FOUND", f"no panel {panel_id!r} in strip {registry.source_id!r}")
+    source_image, _, _ = _open_source(_source_path(registry, get_config()))
+    return encode_panel(export_mod.crop_panel(source_image, panel), fmt="png")
+
+
+# -- read -------------------------------------------------------------------
+
+@router.get("/strips")
+def list_strips(request: Request):
+    from lava_backend.config import get_config
+
+    base = manhwa_dir(get_config())
+    strips = []
+    if base.exists():
+        for registry in sorted(base.glob("*")):
+            path = registry / "registry.json"
+            if not path.exists():
+                continue
+            try:
+                strips.append(_summary(StripRegistry.load(path)))
+            except Exception:
+                continue
+    return {"strips": strips}
+
+
+@router.get("/strips/{source_id}")
+def get_strip(source_id: str):
+    from lava_backend.config import get_config
+
+    try:
+        registry = load_registry(get_config(), source_id)
+    except ValueError as exc:
+        raise ApiError(422, "INVALID_SOURCE_ID", str(exc)) from exc
+    return _serialize(registry)
+
+
+@router.get("/strips/{source_id}/source")
+def serve_source(source_id: str):
+    from lava_backend.config import get_config
+
+    registry = load_registry(get_config(), source_id)
+    path = _source_path(registry, get_config())
+    if not path.exists():
+        raise ApiError(404, "SOURCE_MISSING", "source image missing from disk")
+    return Response(
+        content=path.read_bytes(),
+        media_type=MIME_BY_FORMAT.get(registry.mime.lower(), "application/octet-stream"),
+        headers={"Cache-Control": "no-store"},
+    )
+
+
+@router.get("/strips/{source_id}/panels/{panel_id}")
+def serve_panel(source_id: str, panel_id: str):
+    from lava_backend.config import get_config
+
+    registry = load_registry(get_config(), source_id)
+    return Response(
+        content=_regenerate_panel_png(registry, panel_id),
+        media_type="image/png",
+        headers={"Cache-Control": "no-store"},
+    )
+
+
+# -- write ------------------------------------------------------------------
+
+@router.post("/strips", status_code=201)
+async def upload_strip(request: Request, file: UploadFile | None = File(default=None)):
+    from lava_backend.config import get_config
+
+    if file is None:
+        raise ApiError(400, "NO_FILE", "Add a strip image to analyze.")
+    content_type = (file.content_type or "").lower()
+    ext = IMAGE_CONTENT.get(content_type, ".png")
+    data = await file.read()
+    if not data:
+        raise ApiError(400, "NO_FILE", "The selected strip image is empty.")
+
+    config = get_config()
+    source_id = new_source_id()
+    base = strip_dir(config, source_id)
+    base.mkdir(parents=True, exist_ok=True)
+    source_path = base / f"source{ext}"
+    try:
+        source_path.write_bytes(data)
+    except OSError as exc:
+        raise ApiError(500, "STORAGE_FAILED", f"could not store strip: {exc}") from exc
+
+    try:
+        result = detect_strip(
+            source_path,
+            source_id=source_id,
+            save=True,
+            cache_dir=config.cache_dir,
+        )
+    except Exception as exc:
+        shutil.rmtree(base, ignore_errors=True)
+        raise ApiError(422, "MANHWA_DETECT_FAILED", f"panel detection failed: {exc}") from exc
+    return result
+
+
+@router.patch("/strips/{source_id}/panels")
+async def apply_correction(source_id: str, request: Request):
+    from lava_backend.config import get_config
+
+    config = get_config()
+    registry = load_registry(config, source_id)
+    try:
+        raw = await request.json()
+    except Exception as exc:
+        raise ApiError(422, "CORRECTION_INVALID", "correction body must be valid JSON") from exc
+    op = raw.get("op") if isinstance(raw, dict) else None
+    if op not in _PANEL_OP_META:
+        raise ApiError(422, "CORRECTION_INVALID", f"unknown correction op {op!r}")
+
+    try:
+        panels = _apply_panels(registry, raw, op)
+    except ValueError as exc:
+        raise ApiError(422, "CORRECTION_INVALID", str(exc)) from exc
+    except Exception as exc:
+        raise ApiError(422, "CORRECTION_FAILED", str(exc)) from exc
+
+    registry.panels = panels
+    registry.save()
+    return _serialize(registry)
+
+
+def _apply_panels(registry: StripRegistry, raw: dict, op: str) -> list:
+    panels = registry.panels
+    if op == "split":
+        return correct.split_panel(panels, raw["panelId"], int(raw["y"]))
+    if op == "merge":
+        ids = raw["ids"]
+        if len(ids) != 2:
+            raise ValueError("merge needs exactly two panel ids")
+        return correct.merge_panels(panels, ids[0], ids[1])
+    if op == "adjust":
+        return correct.adjust_panel(
+            panels, raw["panelId"], x=int(raw["x"]), y=int(raw["y"]),
+            w=int(raw["w"]), h=int(raw["h"]),
+            source_w=registry.width, source_h=registry.height,
+        )
+    if op == "delete":
+        return correct.delete_panel(panels, raw["panelId"])
+    if op == "add":
+        return correct.add_panel(
+            panels, x=int(raw["x"]), y=int(raw["y"]),
+            w=int(raw["w"]), h=int(raw["h"]),
+            source_w=registry.width, source_h=registry.height,
+            after_id=raw.get("afterId"),
+        )
+    if op == "reorder":
+        return correct.reorder_panels(panels, raw["ids"])
+    if op == "reset":
+        return []
+    raise ValueError(f"unknown correction op {op!r}")
+
+
+@router.post("/strips/{source_id}/redetect")
+def re_detect_strip(source_id: str):
+    from lava_backend.config import get_config
+
+    config = get_config()
+    registry = load_registry(config, source_id)
+    path = _source_path(registry, get_config())
+    if not path.exists():
+        raise ApiError(404, "SOURCE_MISSING", "source image missing from disk")
+    try:
+        result = detect_strip(path, source_id=source_id, save=True, cache_dir=config.cache_dir)
+    except Exception as exc:
+        raise ApiError(422, "MANHWA_DETECT_FAILED", f"re-detect failed: {exc}") from exc
+    return result
+
+
+@router.delete("/strips/{source_id}", status_code=204)
+def delete_strip(source_id: str):
+    from lava_backend.config import get_config
+
+    config = get_config()
+    base = strip_dir(config, source_id)
+    if not base.exists():
+        raise ApiError(404, "NOT_FOUND", f"no manhwa strip {source_id!r}")
+    shutil.rmtree(base, ignore_errors=True)
+    return Response(status_code=204)
+
+
+# -- export ------------------------------------------------------------------
+
+@router.get("/strips/{source_id}/export")
+def export_strip(source_id: str, format: str = "png", quality: int = export_mod.JPG_QUALITY_DEFAULT):
+    from lava_backend.config import get_config
+
+    registry = load_registry(get_config(), source_id)
+    source_image, _, _ = _open_source(_source_path(registry, get_config()))
+    try:
+        bundle = materialize_export(
+            source_image, registry.panels, fmt=format, quality=quality
+        )
+    except ValueError as exc:
+        raise ApiError(422, "EXPORT_INVALID", str(exc)) from exc
+    except Exception as exc:
+        raise ApiError(422, "EXPORT_FAILED", str(exc)) from exc
+
+    buffer = BytesIO()
+    with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as archive:
+        archive.writestr("manifest.json", __import__("json").dumps({
+            "format": bundle.fmt,
+            "panels": bundle.manifest,
+        }, indent=2))
+        for file in bundle.files:
+            archive.writestr(file.name, file.data)
+    return Response(
+        content=buffer.getvalue(),
+        media_type="application/zip",
+        headers={
+            "Content-Disposition": f'attachment; filename="{source_id}-panels.zip"',
+        },
+    )
