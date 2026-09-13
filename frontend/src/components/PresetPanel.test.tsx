@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client'
 import { act } from 'react'
 import { PresetPanel } from './PresetPanel'
 import { usePresetStore } from '../store/presetStore'
+import { useFontStore } from '../store/fontStore'
 import { useEditorStore } from '../store/editorStore'
 import type { Preset } from '../editor/presets'
 
@@ -77,6 +78,14 @@ function jsonResponse(body: unknown, ok = true, status = 200): Response {
   return { ok, status, json: async () => body } as Response
 }
 
+function smartFetchMock(fonts: unknown[] = [], presetsBody = presets): typeof fetch {
+  return vi.fn(async (input: RequestInfo | URL) => {
+    const url = String(input)
+    if (url.includes('/api/fonts')) return jsonResponse(fonts)
+    return jsonResponse(presetsBody)
+  }) as unknown as typeof fetch
+}
+
 function fakeFileList(file: File): FileList {
   return {
     0: file,
@@ -126,6 +135,7 @@ function withCaptions() {
 beforeEach(() => {
   usePresetStore.getState().clear()
   usePresetStore.getState().setCategory('All')
+  useFontStore.getState().clear()
 })
 
 afterEach(() => {
@@ -133,11 +143,12 @@ afterEach(() => {
   vi.unstubAllGlobals()
   usePresetStore.getState().clear()
   useEditorStore.getState().reset()
+  useFontStore.getState().clear()
 })
 
 describe('PresetPanel', () => {
   beforeEach(() => {
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(jsonResponse(presets)))
+    vi.stubGlobal('fetch', smartFetchMock())
   })
 
   it('lists presets as cards after loading', async () => {
@@ -178,6 +189,51 @@ describe('PresetPanel', () => {
     )
     mountPanel()
     await vi.waitFor(() => expect(findByText(host, 'No sidecar reachable.')).not.toBeNull())
+  })
+
+  it('shows the bound font family and embedding status on the license badge', async () => {
+    const bound = { ...presets[0], id: 'custom-bound', label: 'Licensed preset', licenseRef: 'font-1' }
+    const fonts = [
+      {
+        id: 'font-1',
+        family: 'Brand Sans',
+        fileName: 'brand.ttf',
+        ext: 'ttf',
+        license: { type: 'commercial', source: 'https://vendor.example/eula', embeddingAllowed: false },
+        addedAt: '2026-01-01T00:00:00Z',
+      },
+    ]
+    vi.stubGlobal('fetch', smartFetchMock(fonts, [...presets, bound]))
+    mountPanel()
+    await vi.waitFor(() => expect(findByText(host, 'Licensed preset')).not.toBeNull())
+    const badge = Array.from(host.querySelectorAll<HTMLElement>('.preset-license')).find(
+      (el) => el.textContent?.trim() === 'imported font',
+    )
+    expect(badge).not.toBeNull()
+    expect(badge?.title).toContain('Brand Sans')
+    expect(badge?.title).toContain('embedding limited')
+  })
+
+  it('reports embedding allowed when the bound font permits it', async () => {
+    const bound = { ...presets[0], id: 'custom-bound2', label: 'Free preset', licenseRef: 'font-2' }
+    const fonts = [
+      {
+        id: 'font-2',
+        family: 'Open Glyphs',
+        fileName: 'open.otf',
+        ext: 'otf',
+        license: { type: 'open', source: null, embeddingAllowed: true },
+        addedAt: '2026-01-01T00:00:00Z',
+      },
+    ]
+    vi.stubGlobal('fetch', smartFetchMock(fonts, [...presets, bound]))
+    mountPanel()
+    await vi.waitFor(() => expect(findByText(host, 'Free preset')).not.toBeNull())
+    const badge = Array.from(host.querySelectorAll<HTMLElement>('.preset-license')).find(
+      (el) => el.textContent?.trim() === 'imported font',
+    )
+    expect(badge?.title).toContain('Open Glyphs')
+    expect(badge?.title).toContain('embedding allowed')
   })
 
   it('imports a valid preset JSON file and shows it as a custom card', async () => {

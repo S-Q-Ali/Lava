@@ -3,6 +3,8 @@ import { useShallow } from 'zustand/react/shallow'
 import { BUILTIN_CATEGORIES } from '../editor/presets'
 import { downloadPresetFile } from '../services/presets'
 import { usePresetStore } from '../store/presetStore'
+import { useFontStore } from '../store/fontStore'
+import type { FontMetadata } from '../editor/fonts'
 
 export function PresetPanel() {
   const { presets, status, error, selectedCategory } = usePresetStore(
@@ -13,9 +15,11 @@ export function PresetPanel() {
       selectedCategory: s.selectedCategory,
     })),
   )
+  const fonts = useFontStore((s) => s.fonts)
   const load = usePresetStore((s) => s.load)
   useEffect(() => {
     void load()
+    void useFontStore.getState().load()
   }, [load])
 
   const visible = useMemo(
@@ -28,6 +32,11 @@ export function PresetPanel() {
 
   const categories = ['All', ...BUILTIN_CATEGORIES]
   const importFileRef = useRef<HTMLInputElement>(null)
+
+  function boundFont(licenseRef: string | undefined): FontMetadata | undefined {
+    if (!licenseRef) return undefined
+    return fonts.find((font) => font.id === licenseRef)
+  }
 
   function handleImportFile(file: File) {
     const reader = new FileReader()
@@ -86,46 +95,58 @@ export function PresetPanel() {
         <p className="preset-empty">No presets in this category.</p>
       ) : (
         <ul className="preset-list">
-          {visible.map((preset) => (
-            <li key={preset.id} className="preset-card">
-              <div className="preset-card-head">
-                <span className="preset-name">{preset.label}</span>
-                <span className="preset-cat-badge">{preset.category}</span>
-              </div>
-              <p className="preset-desc">{preset.description}</p>
-              <div className="preset-meta">
-                {preset.licenseRef ? (
-                  <span className="preset-license" title="Bound to an imported font">
-                    imported font
-                  </span>
-                ) : (
-                  <span className="preset-license preset-license-stack" title="Safe CSS font stack">
-                    system stack
-                  </span>
-                )}
-                {preset.rtl && <span className="preset-flag">RTL</span>}
-              </div>
-              <button type="button" onClick={() => usePresetStore.getState().applyPreset(preset.id)}>
-                Apply
-              </button>
-              {preset.id.startsWith('custom-') && (
-                <div className="preset-card-actions">
-                  <button type="button" onClick={() => downloadPresetFile(preset)}>
-                    Export
-                  </button>
-                  <button
-                    type="button"
-                    className="preset-danger"
-                    onClick={() => {
-                      usePresetStore.getState().removePreset(preset.id).catch(() => {})
-                    }}
-                  >
-                    Remove
-                  </button>
+          {visible.map((preset) => {
+            const font = boundFont(preset.licenseRef)
+            return (
+              <li key={preset.id} className="preset-card">
+                <div className="preset-card-head">
+                  <span className="preset-name">{preset.label}</span>
+                  <span className="preset-cat-badge">{preset.category}</span>
                 </div>
-              )}
-            </li>
-          ))}
+                <p className="preset-desc">{preset.description}</p>
+                <div className="preset-meta">
+                  {font ? (
+                    <span
+                      className="preset-license"
+                      title={`${font.family} — embedding ${
+                        font.license.embeddingAllowed ? 'allowed' : 'limited'
+                      }`}
+                    >
+                      imported font
+                    </span>
+                  ) : preset.licenseRef ? (
+                    <span className="preset-license" title="Bound to an imported font">
+                      imported font
+                    </span>
+                  ) : (
+                    <span className="preset-license preset-license-stack" title="Safe CSS font stack">
+                      system stack
+                    </span>
+                  )}
+                  {preset.rtl && <span className="preset-flag">RTL</span>}
+                </div>
+                <button type="button" onClick={() => usePresetStore.getState().applyPreset(preset.id)}>
+                  Apply
+                </button>
+                {preset.id.startsWith('custom-') && (
+                  <div className="preset-card-actions">
+                    <button type="button" onClick={() => downloadPresetFile(preset)}>
+                      Export
+                    </button>
+                    <button
+                      type="button"
+                      className="preset-danger"
+                      onClick={() => {
+                        usePresetStore.getState().removePreset(preset.id).catch(() => {})
+                      }}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                )}
+              </li>
+            )
+          })}
         </ul>
       )}
     </section>

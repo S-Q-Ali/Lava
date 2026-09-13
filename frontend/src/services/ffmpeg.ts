@@ -10,6 +10,16 @@ export interface RenderSettings {
   fps: number
 }
 
+export interface FontRenderInfo {
+  family: string
+  fontId: string
+  license: {
+    type: 'open' | 'commercial' | 'personal' | 'unknown'
+    source: string | null
+    embeddingAllowed: boolean
+  }
+}
+
 export interface RenderResult {
   jobId: string
   outputPath: string
@@ -18,6 +28,7 @@ export interface RenderResult {
   height: number
   fps: number
   sizeBytes: number | null
+  fonts?: FontRenderInfo[]
 }
 
 export interface RenderCaptionStyle {
@@ -32,6 +43,7 @@ export interface RenderCaptionStyle {
   alignment: 'bottom' | 'middle' | 'top'
   rtl?: boolean
   karaoke?: boolean
+  animation?: 'none' | 'kinetic' | 'manga' | 'cinematic' | 'meme' | 'storytelling'
 }
 
 export interface RenderCaption {

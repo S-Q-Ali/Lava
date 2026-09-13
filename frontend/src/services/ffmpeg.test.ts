@@ -92,6 +92,41 @@ describe('HttpFFmpegProvider.render', () => {
     await expect(provider.render(renderInput)).rejects.toThrow('ffmpeg exploded')
   })
 
+  it('passes the font manifest through on the render result', async () => {
+    const fonts = [
+      {
+        family: 'Brand Sans',
+        fontId: 'font-1',
+        license: {
+          type: 'commercial',
+          source: 'https://vendor.example/eula',
+          embeddingAllowed: true,
+        },
+      },
+    ]
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue(
+        jsonResponse(
+          {
+            jobId: 'b'.repeat(32),
+            outputPath: '/cache/backend/renders/bbbb.mp4',
+            duration: 2,
+            width: 64,
+            height: 48,
+            fps: 10,
+            sizeBytes: 1234,
+            fonts,
+          },
+          201,
+        ),
+      ),
+    )
+    const provider = new HttpFFmpegProvider('http://127.0.0.1:7860')
+    const result = await provider.render(renderInput)
+    expect(result.fonts).toEqual(fonts)
+  })
+
   it('rejects a render with no clips', async () => {
     const provider = new HttpFFmpegProvider('http://127.0.0.1:7860')
     await expect(
