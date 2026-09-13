@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import subprocess
 import uuid
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 from .captions import CaptionItemSpec, build_ass_document
@@ -58,6 +58,7 @@ class RenderResult:
     height: int
     fps: int
     sizeBytes: int | None = None
+    fonts: list = field(default_factory=list)
 
 
 IMAGE_SUFFIXES = {".png", ".jpg", ".jpeg", ".webp", ".bmp", ".gif"}
@@ -357,6 +358,7 @@ def render(
     settings: RenderSettings,
     transitions: list = (),
     captions: list[CaptionItemSpec] | None = None,
+    fonts: list | None = None,
 ) -> RenderResult:
     if not clips:
         raise ApiError(422, "NO_CLIPS", "Render requires at least one clip")
@@ -416,6 +418,7 @@ def render(
         height=settings.height,
         fps=settings.fps,
         sizeBytes=size,
+        fonts=list(fonts or []),
     )
 
 

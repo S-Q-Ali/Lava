@@ -28,6 +28,7 @@ from .fonts import (
     save_registry,
     validate_font_bytes,
 )
+from .licensing import resolve_render_font_licenses, violation_message
 from .preset_import import PresetImportError, import_preset_payload, preset_to_export_dict
 from .preset_registry import load_registry as load_preset_registry
 from .matching import Matcher, router as matching_router
@@ -207,6 +208,18 @@ async def render_endpoint(
     upload_root = config.uploads_dir / job_id
     upload_root.mkdir(parents=True, exist_ok=True)
 
+    render_fonts: list[dict] = []
+    if caption_specs:
+        used_fonts, violations = resolve_render_font_licenses(
+            caption_specs, _list_font_entries(config), config.fonts_dir
+        )
+        if violations:
+            raise ApiError(422, "FONT_LICENSE", violation_message(violations[0]))
+        render_fonts = [
+            {"family": f.family, "fontId": f.font_id, "license": f.license}
+            for f in used_fonts
+        ]
+
     file_map: dict[str, Path] = {}
     paths: list[Path] = []
     for idx, (upload, clip) in enumerate(zip(files, clips_model)):
@@ -241,6 +254,7 @@ async def render_endpoint(
             ),
             transitions=transition_specs,
             captions=caption_specs,
+            fonts=render_fonts,
         )
     except Exception:
         shutil.rmtree(upload_root, ignore_errors=True)
@@ -253,6 +267,7 @@ async def render_endpoint(
         "height": result.height,
         "fps": result.fps,
         "sizeBytes": result.sizeBytes,
+        "fonts": result.fonts,
     }
 
 
