@@ -28,6 +28,7 @@ class Config:
     cache_dir: Path
     uploads_dir: Path
     renders_dir: Path
+    proxy_dir: Path
     models_dir: Path
     clip_dir: Path
     clip_multilingual_dir: Path
@@ -56,6 +57,7 @@ class Config:
             cache_dir=cache,
             uploads_dir=cache / "uploads",
             renders_dir=cache / "renders",
+            proxy_dir=cache / "proxy",
             models_dir=root / "models" / "whisper",
             clip_dir=root / "models" / "clip",
             clip_multilingual_dir=root / "models" / "clip-multilingual",
