@@ -146,7 +146,9 @@ def _run(command: list[str], timeout: int = 120) -> tuple[int, str, str]:
             timeout=timeout,
         )
     except subprocess.TimeoutExpired as exc:
-        raise ApiError(500, "TOOL_TIMEOUT", "FFmpeg process timed out") from exc
+        raise ApiError(
+            500, "TOOL_TIMEOUT", f"FFmpeg process timed out after {timeout}s"
+        ) from exc
     except OSError as exc:
         raise ApiError(500, "TOOL_ERROR", f"Failed to run FFmpeg tool: {exc}") from exc
     return proc.returncode, proc.stdout, proc.stderr
@@ -434,7 +436,7 @@ def render(
             str(out_path),
         ]
 
-    returncode, _, stderr = _run(cmd)
+    returncode, _, stderr = _run(cmd, timeout=config.render_timeout_seconds)
     if returncode != 0:
         raise ApiError(500, "RENDER_FAILED", f"ffmpeg failed: {stderr}")
 

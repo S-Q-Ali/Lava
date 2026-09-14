@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import asyncio
+
 from fastapi import APIRouter, File, Form, Request, UploadFile
 
 from lava_backend.errors import ApiError
@@ -9,6 +11,23 @@ from lava_backend.transcribers import Segment, Transcription
 router = APIRouter()
 
 PAUSE_THRESHOLD_DEFAULT = 0.3
+
+
+def _get_transcriber(state):
+    """Return the app transcriber, building it lazily on first use.
+
+    A pre-injected ``state.transcriber`` (tests) is reused as-is; otherwise the
+    real WhisperTranscriber is constructed only when a transcribe request first
+    needs it. The model itself stays lazy until the first ``transcribe`` call.
+    """
+    transcriber = getattr(state, "transcriber", None)
+    if transcriber is not None:
+        return transcriber
+    from .config import get_config
+    from .transcribers import WhisperTranscriber
+
+    state.transcriber = WhisperTranscriber(download_root=get_config().models_dir)
+    return state.transcriber
 
 
 def serialize_segment(segment: Segment) -> dict:
@@ -68,9 +87,9 @@ async def transcribe(
     except Exception:
         raise ApiError(400, "NO_FILE", "The selected audio file could not be read.")
 
-    transcriber = request.app.state.transcriber
+    transcriber = _get_transcriber(request.app.state)
     try:
-        result = transcriber.transcribe(str(path), language=language)
+        result = await asyncio.to_thread(transcriber.transcribe, str(path), language)
     except Exception:
         raise ApiError(
             422,

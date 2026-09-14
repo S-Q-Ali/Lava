@@ -35,6 +35,7 @@ class Config:
     fonts_dir: Path
     presets_dir: Path
     max_renders: int = 12
+    render_timeout_seconds: int = 600
 
     @classmethod
     def load(cls) -> "Config":
@@ -45,6 +46,8 @@ class Config:
         backend = payload.get("backend", {})
         host = backend.get("host", "127.0.0.1")
         port = int(backend.get("port", 7860))
+        render = payload.get("render", {})
+        render_timeout_seconds = int(render.get("timeoutSeconds", 600))
 
         cache = root / "cache" / "backend"
         return cls(
@@ -63,6 +66,7 @@ class Config:
             clip_multilingual_dir=root / "models" / "clip-multilingual",
             fonts_dir=root / "fonts",
             presets_dir=root / "presets",
+            render_timeout_seconds=render_timeout_seconds,
         )
 
 

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import json
 import re
 import shutil
@@ -14,7 +15,6 @@ from fastapi.responses import FileResponse, Response
 from pydantic import BaseModel
 
 from .captions import CaptionError, parse_captions
-from .clip import ClipEmbedder, MultilingualClipEmbedder
 from .config import get_config, tool_versions
 from .errors import ApiError, error_response
 from .fonts import (
@@ -31,7 +31,7 @@ from .fonts import (
 from .licensing import resolve_render_font_licenses, violation_message
 from .preset_import import PresetImportError, import_preset_payload, preset_to_export_dict
 from .preset_registry import load_registry as load_preset_registry
-from .matching import Matcher, router as matching_router
+from .matching import router as matching_router
 from .manhwa.api import router as manhwa_router
 from .media import (
     IMAGE_SUFFIXES,
@@ -45,18 +45,16 @@ from .media import (
 )
 from .proxy import ProxyError, file_hash, generate_image_proxy, generate_video_proxy
 from .transcribe import router as transcribe_router
-from .transcribers import WhisperTranscriber
 
 app = FastAPI(title="Lava Studio Media Sidecar", version="0.1.0")
 
 app.state.tmp_dir = get_config().cache_dir / "tmp"
 app.state.tmp_dir.mkdir(parents=True, exist_ok=True)
-app.state.transcriber = WhisperTranscriber(download_root=get_config().models_dir)
-_config = get_config()
-_embedder = ClipEmbedder(model_dir=_config.clip_dir)
-if (_config.clip_multilingual_dir / "model.onnx").exists():
-    _embedder = MultilingualClipEmbedder(base=_embedder, model_dir=_config.clip_multilingual_dir)
-app.state.matcher = Matcher(_embedder)
+# Models are never constructed at import time: the matcher and transcriber are
+# built lazily on first use (see matching._get_matcher / transcribe._get_transcriber)
+# so the sidecar starts fast and touches no model bytes until a real request.
+app.state.transcriber = None
+app.state.matcher = None
 
 app.add_middleware(
     CORSMiddleware,
@@ -87,6 +85,7 @@ def health():
         "name": "lava-backend",
         "ffmpegVersion": versions.ffmpeg,
         "ffprobeVersion": versions.ffprobe,
+        "renderTimeoutMs": config.render_timeout_seconds * 1000,
     }
 
 
@@ -257,7 +256,8 @@ async def render_endpoint(
             render_clips.append(
                 RenderClip(file_index=i, start=c.start, duration=c.duration, motion=motion)
             )
-        result = render(
+        result = await asyncio.to_thread(
+            render,
             config,
             paths,
             render_clips,
@@ -368,7 +368,7 @@ async def create_proxy(file: UploadFile = File(...)):
 
     try:
         if is_image:
-            result = generate_image_proxy(tmp_src, config.proxy_dir)
+            result = await asyncio.to_thread(generate_image_proxy, tmp_src, config.proxy_dir)
             return {
                 "proxyId": proxy_id,
                 "kind": "image",
@@ -378,7 +378,9 @@ async def create_proxy(file: UploadFile = File(...)):
                 "sizeBytes": result.sizeBytes,
             }
         else:
-            result = generate_video_proxy(tmp_src, config.proxy_dir, config=config)
+            result = await asyncio.to_thread(
+                generate_video_proxy, tmp_src, config.proxy_dir, config
+            )
             return {
                 "proxyId": proxy_id,
                 "kind": "video",

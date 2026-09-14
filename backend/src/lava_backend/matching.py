@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import json
 from dataclasses import dataclass
 
@@ -25,6 +26,27 @@ class Beat:
 
 class EmbedFailure(Exception):
     """Embedding/model step failed; distinguishes embed errors from assignment errors."""
+
+
+def _get_matcher(state):
+    """Return the app matcher, building it lazily on first use.
+
+    A pre-injected ``state.matcher`` (tests) is reused as-is. Otherwise the
+    real embedder is constructed only when a match request first needs it, so
+    startup touches no model bytes.
+    """
+    matcher = getattr(state, "matcher", None)
+    if matcher is not None:
+        return matcher
+    from .clip import ClipEmbedder, MultilingualClipEmbedder
+    from .config import get_config
+
+    config = get_config()
+    embedder = ClipEmbedder(model_dir=config.clip_dir)
+    if (config.clip_multilingual_dir / "model.onnx").exists():
+        embedder = MultilingualClipEmbedder(base=embedder, model_dir=config.clip_multilingual_dir)
+    state.matcher = Matcher(embedder)
+    return state.matcher
 
 
 class Matcher:
@@ -138,9 +160,9 @@ async def match(
         except Exception:
             raise ApiError(422, "EMBED_FAILED", "One of the selected images could not be read.")
 
-    matcher = request.app.state.matcher
+    matcher = _get_matcher(request.app.state)
     try:
-        result = matcher.assign(beat_models, decoded, keys)
+        result = await asyncio.to_thread(matcher.assign, beat_models, decoded, keys)
     except ApiError:
         raise
     except EmbedFailure:
