@@ -72,6 +72,10 @@ export interface FFmpegProvider {
 
 export const DEFAULT_BASE_URL = 'http://127.0.0.1:7860'
 
+// Matches the sidecar default `render.timeoutSeconds` (studio.config.json).
+// The client must not abort a long render before the server's own timeout.
+export const RENDER_TIMEOUT_MS = 600_000
+
 export function backendBaseUrl(): string {
   const configured = (import.meta.env.VITE_BACKEND_URL as string | undefined)?.trim()
   return configured || DEFAULT_BASE_URL
@@ -148,7 +152,7 @@ export class HttpFFmpegProvider implements FFmpegProvider {
     const res = await fetch(`${this.baseUrl}/api/render`, {
       method: 'POST',
       body: form,
-      signal: AbortSignal.timeout(180_000),
+      signal: AbortSignal.timeout(RENDER_TIMEOUT_MS),
     })
     const body = (await res.json().catch(() => null)) as
       | (RenderResult & { error?: { code?: string; message?: string } })
