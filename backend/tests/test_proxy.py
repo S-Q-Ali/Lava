@@ -175,6 +175,84 @@ class TestGenerateVideoProxy:
             generate_video_proxy(tmp_path / "nope.mp4", dest)
 
 
+# --- API route tests ---
+
+
+class TestProxyAPI:
+    """Tests for POST /api/proxy and GET /api/proxy/{proxyId}."""
+
+    def test_post_image_proxy(self, client, tmp_path):
+        img = _make_image(tmp_path / "photo.png", width=800, height=600)
+        with open(img, "rb") as f:
+            resp = client.post("/api/proxy", files={"file": ("photo.png", f, "image/png")})
+        assert resp.status_code == 200
+        body = resp.json()
+        assert "proxyId" in body
+        assert body["kind"] == "image"
+        assert body["width"] <= 480
+        assert body["height"] > 0
+        assert body["mimeType"] == "image/webp"
+        assert body["sizeBytes"] > 0
+
+    def test_post_video_proxy(self, client, tmp_path):
+        vid = _make_video(tmp_path / "clip.mp4", duration=0.5, size=64)
+        with open(vid, "rb") as f:
+            resp = client.post("/api/proxy", files={"file": ("clip.mp4", f, "video/mp4")})
+        assert resp.status_code == 200
+        body = resp.json()
+        assert body["kind"] == "video"
+        assert body["mimeType"] == "video/mp4"
+
+    def test_post_idempotent_same_content(self, client, tmp_path):
+        img = _make_image(tmp_path / "idem.png", width=200, height=200)
+        with open(img, "rb") as f:
+            resp1 = client.post("/api/proxy", files={"file": ("a.png", f, "image/png")})
+        with open(img, "rb") as f:
+            resp2 = client.post("/api/proxy", files={"file": ("b.png", f, "image/png")})
+        assert resp1.status_code == 200
+        assert resp2.status_code == 200
+        assert resp1.json()["proxyId"] == resp2.json()["proxyId"]
+
+    def test_get_serves_proxy(self, client, tmp_path):
+        img = _make_image(tmp_path / "serve.png", width=200, height=200)
+        with open(img, "rb") as f:
+            resp = client.post("/api/proxy", files={"file": ("serve.png", f, "image/png")})
+        proxy_id = resp.json()["proxyId"]
+        get_resp = client.get(f"/api/proxy/{proxy_id}")
+        assert get_resp.status_code == 200
+        assert get_resp.headers["content-type"] == "image/webp"
+
+    def test_get_video_serves_proxy(self, client, tmp_path):
+        vid = _make_video(tmp_path / "vid.mp4", duration=0.5, size=64)
+        with open(vid, "rb") as f:
+            resp = client.post("/api/proxy", files={"file": ("vid.mp4", f, "video/mp4")})
+        proxy_id = resp.json()["proxyId"]
+        get_resp = client.get(f"/api/proxy/{proxy_id}")
+        assert get_resp.status_code == 200
+        assert get_resp.headers["content-type"] == "video/mp4"
+
+    def test_get_404_unknown_id(self, client):
+        resp = client.get("/api/proxy/0000000000000000")
+        assert resp.status_code == 404
+        assert resp.json()["error"]["code"] == "NOT_FOUND"
+
+    def test_post_unsupported_type(self, client, tmp_path):
+        txt = tmp_path / "notes.txt"
+        txt.write_text("not media", encoding="utf-8")
+        with open(txt, "rb") as f:
+            resp = client.post("/api/proxy", files={"file": ("notes.txt", f, "text/plain")})
+        assert resp.status_code == 422
+        assert resp.json()["error"]["code"] == "PROXY_UNSUPPORTED"
+
+    def test_post_empty_file(self, client, tmp_path):
+        empty = tmp_path / "empty.png"
+        empty.write_bytes(b"")
+        with open(empty, "rb") as f:
+            resp = client.post("/api/proxy", files={"file": ("empty.png", f, "image/png")})
+        assert resp.status_code == 422
+        assert resp.json()["error"]["code"] in ("PROXY_UNSUPPORTED", "PROXY_FAILED")
+
+
 # --- Config.proxy_dir ---
 
 

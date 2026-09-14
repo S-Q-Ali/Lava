@@ -43,6 +43,7 @@ from .media import (
     probe,
     render,
 )
+from .proxy import ProxyError, file_hash, generate_image_proxy, generate_video_proxy
 from .transcribe import router as transcribe_router
 from .transcribers import WhisperTranscriber
 
@@ -293,6 +294,119 @@ def serve_render(job_id: str):
     if not out_path.exists():
         raise ApiError(404, "NOT_FOUND", "no such render")
     return FileResponse(out_path, media_type="video/mp4", filename=f"{job_id}.mp4")
+
+
+# --- Proxy ---
+
+_PROXY_ID = re.compile(r"^[0-9a-f]{16}$")
+
+
+def _proxy_dest(config, proxy_id: str, ext: str) -> Path:
+    return config.proxy_dir / f"{proxy_id}{ext}"
+
+
+def _proxy_dest_video(config, proxy_id: str) -> Path:
+    return config.proxy_dir / f"{proxy_id}_proxy.mp4"
+
+
+@app.post(f"{API_V1}/proxy")
+async def create_proxy(file: UploadFile = File(...)):
+    config = get_config()
+    filename = (file.filename or "upload").strip()
+    ext = Path(filename).suffix.lower()
+
+    if ext not in {".png", ".jpg", ".jpeg", ".webp", ".bmp", ".gif",
+                    ".mp4", ".mov", ".webm", ".mkv", ".avi", ".m4v"}:
+        raise ApiError(422, "PROXY_UNSUPPORTED", f"cannot generate proxy for file type: {ext or '(none)'}")
+
+    data = await file.read()
+    if len(data) == 0:
+        raise ApiError(422, "PROXY_FAILED", "uploaded file is empty")
+
+    proxy_id = file_hash(data)
+    config.proxy_dir.mkdir(parents=True, exist_ok=True)
+
+    is_video = ext in {".mp4", ".mov", ".webm", ".mkv", ".avi", ".m4v"}
+    is_image = ext in {".png", ".jpg", ".jpeg", ".webp", ".bmp", ".gif"}
+
+    # If already cached, skip regeneration and return stored metadata.
+    if is_image:
+        dest = _proxy_dest(config, proxy_id, ".webp")
+        if dest.exists():
+            from PIL import Image
+
+            with Image.open(dest) as thumb:
+                width, height = thumb.size
+            return {
+                "proxyId": proxy_id,
+                "kind": "image",
+                "width": width,
+                "height": height,
+                "mimeType": "image/webp",
+                "sizeBytes": dest.stat().st_size,
+            }
+
+    if is_video:
+        dest = _proxy_dest_video(config, proxy_id)
+        if dest.exists():
+            from .proxy import _probe_dims
+            w, h = _probe_dims(config, dest)
+            return {
+                "proxyId": proxy_id,
+                "kind": "video",
+                "width": w,
+                "height": h,
+                "mimeType": "video/mp4",
+                "sizeBytes": dest.stat().st_size,
+            }
+
+    # Write uploaded bytes to a temp file so the proxy helpers can read it.
+    tmp_dir = config.cache_dir / "tmp"
+    tmp_dir.mkdir(parents=True, exist_ok=True)
+    tmp_src = tmp_dir / f"{proxy_id}{ext}"
+    tmp_src.write_bytes(data)
+
+    try:
+        if is_image:
+            result = generate_image_proxy(tmp_src, config.proxy_dir)
+            return {
+                "proxyId": proxy_id,
+                "kind": "image",
+                "width": result.width,
+                "height": result.height,
+                "mimeType": result.mimeType,
+                "sizeBytes": result.sizeBytes,
+            }
+        else:
+            result = generate_video_proxy(tmp_src, config.proxy_dir, config=config)
+            return {
+                "proxyId": proxy_id,
+                "kind": "video",
+                "width": result.width,
+                "height": result.height,
+                "mimeType": result.mimeType,
+                "sizeBytes": result.sizeBytes,
+            }
+    except ProxyError as exc:
+        raise ApiError(422, "PROXY_FAILED", str(exc)) from exc
+    finally:
+        tmp_src.unlink(missing_ok=True)
+
+
+@app.get(f"{API_V1}/proxy/{{proxy_id}}")
+def serve_proxy(proxy_id: str):
+    config = get_config()
+    proxy_dir = config.proxy_dir
+    if not _PROXY_ID.fullmatch(proxy_id):
+        raise ApiError(404, "NOT_FOUND", "no such proxy")
+    # Try image first (webp), then video (mp4)
+    img_path = proxy_dir / f"{proxy_id}.webp"
+    if img_path.exists():
+        return FileResponse(img_path, media_type="image/webp", filename=f"{proxy_id}.webp")
+    vid_path = proxy_dir / f"{proxy_id}_proxy.mp4"
+    if vid_path.exists():
+        return FileResponse(vid_path, media_type="video/mp4", filename=f"{proxy_id}_proxy.mp4")
+    raise ApiError(404, "NOT_FOUND", "no such proxy")
 
 
 def _font_registry_path(config) -> Path:
