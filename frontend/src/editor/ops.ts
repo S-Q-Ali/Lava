@@ -81,6 +81,10 @@ export function moveClipRipple(clips: Clip[], id: string, start: number): Clip[]
   return clips.map((c) => result.get(c.id) ?? c)
 }
 
+export function moveClipToTrack(clips: Clip[], id: string, trackId: string): Clip[] {
+  return clips.map((c) => (c.id === id ? { ...c, trackId } : c))
+}
+
 export function trimClip(
   clips: Clip[],
   id: string,

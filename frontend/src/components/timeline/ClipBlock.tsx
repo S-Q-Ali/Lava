@@ -1,9 +1,10 @@
-import { useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import type { Clip } from '../../editor/types'
 import { useEditorStore } from '../../store/editorStore'
 import { PX_PER_SECOND } from './scale'
 
 const MIN_DURATION = 0.1
+const LANE_HEIGHT = 56
 
 type DragMode = 'move' | 'trim-start' | 'trim-end' | null
 
@@ -21,24 +22,38 @@ export default function ClipBlock({
   const splitClip = useEditorStore((s) => s.splitClip)
   const setPlayhead = useEditorStore((s) => s.setPlayhead)
   const moveClipRipple = useEditorStore((s) => s.moveClipRipple)
+  const moveClipToTrack = useEditorStore((s) => s.moveClipToTrack)
   const trimClip = useEditorStore((s) => s.trimClip)
+  const tracks = useEditorStore((s) => s.tracks)
+  const trackIds = useMemo(() => tracks.map((t) => t.id), [tracks])
 
   const gesture = useRef<{
     mode: DragMode
     pointerId: number
     startX: number
+    startY: number
     baseStart: number
     baseDuration: number
+    baseTrackId: string
   } | null>(null)
   const [dragging, setDragging] = useState(false)
 
   const beginGesture = (
     mode: Exclude<DragMode, null>,
-    startX: number,
+    e: React.PointerEvent,
     baseStart: number,
     baseDuration: number,
   ) => {
-    gesture.current = { mode, pointerId: 0, startX, baseStart, baseDuration }
+    const baseTrackId = clip.trackId
+    gesture.current = {
+      mode,
+      pointerId: 0,
+      startX: e.clientX,
+      startY: e.clientY,
+      baseStart,
+      baseDuration,
+      baseTrackId,
+    }
     setDragging(true)
     useEditorStore.temporal.getState().pause()
   }
@@ -49,12 +64,22 @@ export default function ClipBlock({
     useEditorStore.temporal.getState().resume()
   }
 
-  const moveTo = (clientX: number) => {
+  const moveTo = (clientX: number, clientY: number) => {
     const g = gesture.current
     if (!g) return
     const deltaSeconds = (clientX - g.startX) / PX_PER_SECOND
     if (g.mode === 'move') {
       moveClipRipple(clip.id, Math.max(0, g.baseStart + deltaSeconds))
+      // Cross-track drag: vertical delta past one lane height moves the clip
+      const laneDelta = Math.round((clientY - g.startY) / LANE_HEIGHT)
+      if (laneDelta !== 0) {
+        const fromIndex = trackIds.indexOf(g.baseTrackId)
+        const toIndex = Math.min(Math.max(0, fromIndex + laneDelta), trackIds.length - 1)
+        const targetTrackId = trackIds[toIndex]
+        if (targetTrackId && targetTrackId !== clip.trackId) {
+          moveClipToTrack(clip.id, targetTrackId)
+        }
+      }
       return
     }
     if (g.mode === 'trim-end') {
@@ -90,14 +115,14 @@ export default function ClipBlock({
         if (e.button !== 0) return
         e.stopPropagation()
         selectClip(clip.id)
-        beginGesture('move', e.clientX, clip.start, clip.duration)
+        beginGesture('move', e, clip.start, clip.duration)
         e.currentTarget.setPointerCapture(e.pointerId)
         gesture.current!.pointerId = e.pointerId
       }}
-      onPointerMove={(e) => moveTo(e.clientX)}
+      onPointerMove={(e) => moveTo(e.clientX, e.clientY)}
       onPointerUp={(e) => {
         if (e.pointerId !== gesture.current?.pointerId) return
-        moveTo(e.clientX)
+        moveTo(e.clientX, e.clientY)
         endGesture()
       }}
       onPointerCancel={() => endGesture()}
@@ -117,14 +142,14 @@ export default function ClipBlock({
             onPointerDown={(e) => {
               if (e.button !== 0) return
               e.stopPropagation()
-              beginGesture('trim-start', e.clientX, clip.start, clip.duration)
+              beginGesture('trim-start', e, clip.start, clip.duration)
               e.currentTarget.setPointerCapture(e.pointerId)
               gesture.current!.pointerId = e.pointerId
             }}
-            onPointerMove={(e) => moveTo(e.clientX)}
+            onPointerMove={(e) => moveTo(e.clientX, e.clientY)}
             onPointerUp={(e) => {
               if (e.pointerId !== gesture.current?.pointerId) return
-              moveTo(e.clientX)
+              moveTo(e.clientX, e.clientY)
               endGesture()
             }}
             onPointerCancel={() => endGesture()}
@@ -135,14 +160,14 @@ export default function ClipBlock({
             onPointerDown={(e) => {
               if (e.button !== 0) return
               e.stopPropagation()
-              beginGesture('trim-end', e.clientX, clip.start, clip.duration)
+              beginGesture('trim-end', e, clip.start, clip.duration)
               e.currentTarget.setPointerCapture(e.pointerId)
               gesture.current!.pointerId = e.pointerId
             }}
-            onPointerMove={(e) => moveTo(e.clientX)}
+            onPointerMove={(e) => moveTo(e.clientX, e.clientY)}
             onPointerUp={(e) => {
               if (e.pointerId !== gesture.current?.pointerId) return
-              moveTo(e.clientX)
+              moveTo(e.clientX, e.clientY)
               endGesture()
             }}
             onPointerCancel={() => endGesture()}

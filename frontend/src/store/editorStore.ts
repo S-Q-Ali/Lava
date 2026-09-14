@@ -48,6 +48,7 @@ interface EditorActions {
   removeClip(id: string): void
   moveClip(id: string, start: number): void
   moveClipRipple(id: string, start: number): void
+  moveClipToTrack(id: string, trackId: string): void
   trimClip(id: string, patch: { start?: number; duration?: number }): void
   splitClip(id: string, at: number): void
   duplicateClip(id: string): void
@@ -128,6 +129,8 @@ export const useEditorStore = create<EditorState>()(
         set((s) => ({ clips: ops.moveClip(s.clips, id, start) })),
       moveClipRipple: (id, start) =>
         set((s) => ({ clips: ops.moveClipRipple(s.clips, id, start) })),
+      moveClipToTrack: (id, trackId) =>
+        set((s) => ({ clips: ops.moveClipToTrack(s.clips, id, trackId) })),
       trimClip: (id, patch) =>
         set((s) => ({ clips: ops.trimClip(s.clips, id, patch) })),
       splitClip: (id, at) =>
