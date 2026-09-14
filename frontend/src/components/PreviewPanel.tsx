@@ -1,11 +1,14 @@
-import { useRef, useState } from 'react'
+import { memo, useRef, useState } from 'react'
 import { useEditorStore } from '../store/editorStore'
 import { clipsAtTime } from '../editor/ops'
 import { getAssetFile } from '../media/importer'
 import { getFFmpegProvider, type RenderClipInput } from '../services/ffmpeg'
+import { resolveProxyUrl } from '../services/proxy'
+import { useProxyStore } from '../store/proxyStore'
 import { captionsRenderPayload } from './CaptionPanel'
 import { usePresetStore } from '../store/presetStore'
 import { resolveCaptionStyle } from '../editor/templateEditor'
+import type { Asset } from '../editor/types'
 
 function formatTime(t: number): string {
   const m = Math.floor(t / 60)
@@ -15,6 +18,19 @@ function formatTime(t: number): string {
     .toString()
     .padStart(3, '0')}`
 }
+
+const MediaElement = memo(function MediaElement({
+  src,
+  asset,
+}: {
+  src: string
+  asset: Asset
+}) {
+  if (asset.kind === 'image') {
+    return <img src={src} alt={asset.name} loading="lazy" decoding="async" />
+  }
+  return <video src={src} controls preload="metadata" />
+})
 
 export default function PreviewPanel() {
   const assets = useEditorStore((s) => s.assets)
@@ -32,6 +48,12 @@ export default function PreviewPanel() {
   const activeAsset = activeClip
     ? assets.find((a) => a.id === activeClip.assetId)
     : undefined
+
+  // Proxy-aware preview: use the low-res proxy when available (lazy resolve),
+  // otherwise fall back to the original blob URL. Render always uses originals.
+  // The subscription re-renders this panel when a lazy proxy lands in the cache.
+  useProxyStore((s) => s.version)
+  const previewSrc = activeAsset ? resolveProxyUrl(activeAsset) : null
 
   // Caption live preview
   const allCaptions = useEditorStore((s) => s.captions)
@@ -123,12 +145,10 @@ export default function PreviewPanel() {
       <div className="preview-stage">
         {renderUrl ? (
           <video src={renderUrl} controls />
-        ) : activeAsset?.kind === 'image' ? (
-          <img src={activeAsset.url} alt={activeAsset.name} />
-        ) : activeAsset?.kind === 'video' ? (
-          <video src={activeAsset.url} controls />
         ) : activeAsset?.kind === 'audio' ? (
           <div className="audio-placeholder">{activeAsset.name}</div>
+        ) : activeAsset && previewSrc ? (
+          <MediaElement src={previewSrc} asset={activeAsset} />
         ) : (
           <p className="empty">No media at playhead. Import assets to start.</p>
         )}

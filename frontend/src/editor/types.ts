@@ -41,6 +41,7 @@ export interface Asset {
   name: string
   url: string
   meta: AssetMeta
+  proxyUrl?: string
 }
 
 export type MotionType =
