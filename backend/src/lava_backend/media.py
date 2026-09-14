@@ -378,7 +378,7 @@ def render(
     if caption_items:
         ass_path = _write_ass_file(config, caption_items, settings, job_id)
 
-    filter_complex, expected_duration = build_transition_graph(clips, list(transitions), settings)
+    filter_complex, expected_duration = build_transition_graph(clips, list(transitions or ()), settings)
     if ass_path is not None:
         final_label = "[voutc]"
         filter_complex = filter_complex.replace(

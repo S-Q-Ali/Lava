@@ -170,3 +170,22 @@ def test_render_motion_with_dissolve_keeps_duration_math(tmp_path):
         transitions=[BetweenSpec(first=0, second=1, type="dissolve", duration=0.5)],
     )
     assert result.duration == pytest.approx(3.5, abs=0.2)
+
+def test_render_accepts_explicit_transitions_none(tmp_path):
+    """Passing transitions=None behaves like the default empty tuple."""
+    cfg = config_module.Config.load()
+    imgs = [tmp_path / "a.png", tmp_path / "b.png"]
+    for i, name in enumerate(["a.png", "b.png"]):
+        subprocess.run(
+            [str(cfg.ffmpeg_bin), "-y", "-f", "lavfi", "-i", f"color=c={['red', 'blue'][i]}:s=64x48:rate=1", "-frames:v", "1", str(imgs[i])],
+            check=True,
+            capture_output=True,
+        )
+    clips = [
+        RenderClip(file_index=0, start=0, duration=1.0),
+        RenderClip(file_index=1, start=1.0, duration=1.0),
+    ]
+    settings = RenderSettings(width=64, height=48, fps=10)
+    with_empty = render(cfg, imgs, clips, settings, transitions=[])
+    with_none = render(cfg, imgs, clips, settings, transitions=None)
+    assert with_empty.duration == with_none.duration == pytest.approx(2.0, abs=0.2)
