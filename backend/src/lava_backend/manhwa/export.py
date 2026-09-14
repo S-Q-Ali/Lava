@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from io import BytesIO
-from typing import Literal
+from typing import Iterator, Literal
 
 from PIL import Image
 
@@ -88,6 +88,50 @@ def manifest_rows(panels: list[Panel], *, fmt: Format) -> list[dict]:
     ]
 
 
+def normalize_panels(panels: list[Panel]) -> list[Panel]:
+    """Validate + order panels into the export reading sequence.
+
+    Empty/duplicate/overlapping layouts raise ``ManhwaError``; the **`order`
+    field is the sequencing authority**, so the result is always in 1..n
+    order-field sequence (module 5 corrections reorder by it).
+    """
+    if not panels:
+        raise ManhwaError("panel list must not be empty")
+    sequence = sorted(panels, key=lambda p: (p.order, p.y, p.x))
+    return normalize_layout(sequence)
+
+
+def _iter_files(
+    source: Image.Image,
+    ordered: list[Panel],
+    *,
+    fmt: Format,
+    quality: int,
+) -> Iterator[tuple[str, bytes]]:
+    """Lazily crop + encode one export file pair (name, bytes) at a time.
+
+    Only one panel's payload exists in memory at any instant, so large exports
+    never accumulate the full collection before zip/pack generation.
+    """
+    total = len(ordered)
+    for panel in ordered:
+        yield (
+            _export_name(panel.order, total, fmt),
+            encode_panel(crop_panel(source, panel), fmt=fmt, quality=quality),
+        )
+
+
+def iter_export_files(
+    source: Image.Image,
+    panels: list[Panel],
+    *,
+    fmt: Format = "png",
+    quality: int = JPG_QUALITY_DEFAULT,
+) -> Iterator[tuple[str, bytes]]:
+    """Lazy (name, bytes) stream over the whole export; order is normalized."""
+    yield from _iter_files(source, normalize_panels(panels), fmt=fmt, quality=quality)
+
+
 def materialize_export(
     source: Image.Image,
     panels: list[Panel],
@@ -97,21 +141,15 @@ def materialize_export(
 ) -> ExportBundle:
     """Crop + encode all panels into an ordered bundle with its manifest.
 
-    Panels are normalized through `normalize_layout`: empty/duplicate/overlapping
-    layouts raise `ManhwaError`; the **`order` field is the sequencing
-    authority** (module 5 corrections reorder by it), so the returned files
-    and manifest are always in 1..n order-field sequence.
+    Materializes every file in memory (equivalent to ``list(iter_export_files)
+    ``); prefer the iterator when exporting to disk or a stream.
     """
-    if not panels:
-        raise ManhwaError("panel list must not be empty")
-    sequence = sorted(panels, key=lambda p: (p.order, p.y, p.x))
-    ordered = normalize_layout(sequence)
-    total = len(ordered)
-    files = [
-        ExportFile(
-            name=_export_name(panel.order, total, fmt),
-            data=encode_panel(crop_panel(source, panel), fmt=fmt, quality=quality),
-        )
-        for panel in ordered
-    ]
-    return ExportBundle(fmt=fmt, manifest=manifest_rows(ordered, fmt=fmt), files=files)
+    ordered = normalize_panels(panels)
+    return ExportBundle(
+        fmt=fmt,
+        manifest=manifest_rows(ordered, fmt=fmt),
+        files=[
+            ExportFile(name=name, data=data)
+            for name, data in _iter_files(source, ordered, fmt=fmt, quality=quality)
+        ],
+    )

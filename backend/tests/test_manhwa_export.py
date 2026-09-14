@@ -21,6 +21,7 @@ from lava_backend.manhwa.export import (
     ExportBundle,
     crop_panel,
     encode_panel,
+    iter_export_files,
     manifest_rows,
     materialize_export,
 )
@@ -170,3 +171,41 @@ class TestRealStripExport:
         assert [f.name for f in bundle.files] == [
             f"panel_{i}.png" for i in range(1, len(bundle.files) + 1)
         ]
+
+
+class TestLazyExport:
+    def _panels(self, fixture) -> list:
+        gray, ana_w, ana_h, _ = load_analysis_image(fixture.image)
+        cuts = detect_cuts(row_features(gray), ana_h)
+        return build_panels(
+            cuts, source_id="s1", src_w=fixture.src_w, src_h=fixture.src_h,
+            ana_w=ana_w, ana_h=ana_h,
+        )
+
+    def test_iter_export_files_decodes_lazily(self, monkeypatch) -> None:
+        """encode_panel fires once per yield — never for the whole collection up front."""
+        fixture = AVAILABLE["clean_white"]()
+        panels = self._panels(fixture)
+        calls = []
+
+        def spy(*args, **kwargs):
+            calls.append(1)
+            return encode_panel(*args, **kwargs)
+
+        monkeypatch.setattr("lava_backend.manhwa.export.encode_panel", spy)
+        it = iter_export_files(fixture.image, panels, fmt="png")
+        name, _ = next(it)
+        assert name == "panel_1.png"
+        assert len(calls) == 1, "lazy: one encode per yielded file"
+        rest = list(it)
+        assert len(rest) + 1 == len(panels)
+        assert len(calls) == len(panels)
+
+    def test_materialize_matches_iterator_payloads(self) -> None:
+        fixture = AVAILABLE["clean_white"]()
+        panels = self._panels(fixture)
+        bundle = materialize_export(fixture.image, panels, fmt="png")
+        streamed = list(iter_export_files(fixture.image, panels, fmt="png"))
+        assert [f.name for f in bundle.files] == [n for n, _ in streamed]
+        assert [f.data for f in bundle.files] == [d for _, d in streamed]
+        assert bundle.manifest == manifest_rows(panels, fmt="png")

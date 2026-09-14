@@ -13,15 +13,17 @@ import re
 import shutil
 import uuid
 import zipfile
-from io import BytesIO
 from pathlib import Path
+from tempfile import SpooledTemporaryFile
 
 from fastapi import APIRouter, File, Form, Request, Response, UploadFile
+from fastapi.responses import StreamingResponse
 
 from lava_backend.errors import ApiError
 from lava_backend.manhwa import correct
 from lava_backend.manhwa.detect import detect_strip, _open_source
-from lava_backend.manhwa.export import encode_panel, materialize_export
+from lava_backend.manhwa.errors import ManhwaError
+from lava_backend.manhwa.export import encode_panel
 from lava_backend.manhwa.panels import StripRegistry, panel_to_dict
 from lava_backend.manhwa import export as export_mod
 
@@ -306,24 +308,33 @@ def export_strip(source_id: str, format: str = "png", quality: int = export_mod.
     registry = load_registry(get_config(), source_id)
     source_image, _, _ = _open_source(_source_path(registry, get_config()))
     try:
-        bundle = materialize_export(
-            source_image, registry.panels, fmt=format, quality=quality
-        )
-    except ValueError as exc:
+        ordered = export_mod.normalize_panels(registry.panels)
+    except ManhwaError as exc:
         raise ApiError(422, "EXPORT_INVALID", str(exc)) from exc
     except Exception as exc:
         raise ApiError(422, "EXPORT_FAILED", str(exc)) from exc
+    manifest_payload = __import__("json").dumps({
+        "format": format,
+        "panels": export_mod.manifest_rows(ordered, fmt=format),
+    }, indent=2)
 
-    buffer = BytesIO()
-    with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as archive:
-        archive.writestr("manifest.json", __import__("json").dumps({
-            "format": bundle.fmt,
-            "panels": bundle.manifest,
-        }, indent=2))
-        for file in bundle.files:
-            archive.writestr(file.name, file.data)
-    return Response(
-        content=buffer.getvalue(),
+    def emit():
+        # Zip central directory forces a single pass, so the archive is buffered
+        # to a spool (RAM up to 1 MiB, disk beyond) and streamed back — the whole
+        # export never sits in memory: one panel at a time, 64 KiB chunks out.
+        with SpooledTemporaryFile(max_size=1 << 20) as spool:
+            with zipfile.ZipFile(spool, "w", zipfile.ZIP_DEFLATED) as archive:
+                archive.writestr("manifest.json", manifest_payload)
+                for name, data in export_mod.iter_export_files(
+                    source_image, ordered, fmt=format, quality=quality
+                ):
+                    archive.writestr(name, data)
+            spool.seek(0)
+            while chunk := spool.read(64 * 1024):
+                yield chunk
+
+    return StreamingResponse(
+        emit(),
         media_type="application/zip",
         headers={
             "Content-Disposition": f'attachment; filename="{source_id}-panels.zip"',
