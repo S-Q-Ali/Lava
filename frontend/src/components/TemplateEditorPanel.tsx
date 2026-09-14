@@ -73,6 +73,12 @@ export function TemplateEditorPanel() {
         ? 'center'
         : 'flex-end'
 
+  // CSS approximation of each libass animation treatment for live preview.
+  const animationPreviewClass =
+    draft.animation === 'none'
+      ? ''
+      : `template-preview-anim template-preview-anim-${draft.animation}`
+
   return (
     <section className="template-panel" aria-label="Template editor">
       <h3>Template editor</h3>
@@ -95,7 +101,7 @@ export function TemplateEditorPanel() {
         aria-label="Caption preview"
       >
         <span
-          className="template-preview-text"
+          className={`template-preview-text${animationPreviewClass ? ` ${animationPreviewClass}` : ''}`}
           style={{
             fontFamily: draft.fontFamily,
             fontSize: `${draft.fontSize}px`,
