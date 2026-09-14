@@ -1541,3 +1541,72 @@ escaping, consistent with the D-025 lesson. Drag reorder uses the
 - Commit this docs entry, run `graphify update .`, push on go-ahead.
   Then M9: proxy preview generation, memory tuning for tall strips,
   baseline hardware validation.
+
+## Session 28 — M9 hardware validation plan + module 1 `proxy-preview` (4 slices)
+
+### WHAT
+M9 started. Wrote the four-module plan (`docs/SPEC-m9-capability-map.md`,
+`docs/SPEC-proxy-preview.md`, `tasks/plan-m9.md`; user-approved): module 1
+`proxy-preview`, module 2 `runtime-optimization` (lazy model load, render
+`run_in_executor` offload + configurable timeout, bundle baseline), module 3
+`memory-tuning` (manhwa streaming decode, disk-streamed export, cache GC,
+motion upscale knob), module 4 `baseline-validation` (measurement doc + Mac
+reference + CONSTRAINTS enforcement). Shipped module 1 in three slices:
+
+- **Slice 1 `proxy-core` (`3f789e9`)** — `backend/src/lava_backend/proxy.py`:
+  `file_hash` (sha256→16 hex), `ProxyResult`, `generate_image_proxy` (WebP q80,
+  max width 480 / max height 960, no upscale), `generate_video_proxy`
+  (MP4 `scale=-2:min(ih\,480)`, 15 fps, ≤120 s, libx264 veryfast crf 28,
+  `-an`, `+faststart`), `_probe_dims` via ffprobe; `Config.proxy_dir`
+  (`cache/backend/proxy`). 16 tests. Backend 404 → 420.
+- **Slice 2 `proxy-api` (`0b6af2d`)** — `POST/GET /api/proxy` in `main.py`
+  (multipart upload → generate → cache-hit path returning stored metadata;
+  `_PROXY_ID = ^[0-9a-f]{16}$`; 422 PROXY_UNSUPPORTED / 422 PROXY_FAILED /
+  404 NOT_FOUND). 8 API tests. Backend 420 → 428.
+- **Slice 3 `preview-preview` (`c9b0a34`)** — `services/proxy.ts`
+  (`requestProxy` → `{base}/api/proxy/{id}`, returns null when sidecar
+  offline/fails; `resolveProxyUrl` = module cache keyed by blob URL +
+  pending-set dedupe, bumps transient `store/proxyStore.ts` version when a
+  proxy lands), `Asset.proxyUrl?`, `PreviewPanel` subscribes to the proxy
+  store and renders a memoized `MediaElement` (`<img loading=lazy decoding=async>`
+  / `<video preload=metadata>`) from `resolveProxyUrl(asset)`, falling back to
+  the original blob URL. Render path untouched. 13 tests (8 service, 5 panel).
+  Frontend 284 → 297.
+
+### HOW
+TDD per slice (tests first, then implementation, full suite + build + lint
+before each commit). Proxy resolution is lazy (first preview render triggers
+the request) instead of eager-at-import so imports never wait on the sidecar
+and files that are never previewed cost no I/O. ProxyId is content-derived so
+re-previewing the same file is a cache hit. FFmpeg scale commas must be
+escaped (`min(ih\,480)`) — a bare `min(ih,480)` fails the filter parse, same
+class of trap as the D-025 brace escape.
+
+### Decisions
+- **D-033** — Proxy previews as a dedicated backend service: deterministic
+  SHA-prefix IDs, WebP/MP4 downscales cached under `cache/backend/proxy`,
+  frontend lazy resolve + version-bump swap, render path untouched.
+- Lazy (not eager-at-import) proxy generation.
+- Proxy errors degrade to the original URL; the app never errors on proxy
+  failure.
+
+### Verify
+- Backend: `./.venv/bin/python3 -m pytest` 428 passed (24 proxy tests).
+- Frontend: `npx vitest run` 297 passed, `npm run build` clean, oxlint
+  0 errors (2 pre-existing warnings — CaptionPanel, FontPanel).
+- Commits: `3f789e9`, `0b6af2d`, `c9b0a34`.
+
+### Limitations
+- Preview substitutes a low-res proxy; visual fidelity at preview differs from
+  render (expected — preview is for speed, render for fidelity).
+- Video proxies strip audio; voice/music tracks still use originals in render.
+- Proxy cache has no GC yet (module 3 `memory-tuning` adds cache GC via
+  `gc.py` + `POST /api/gc`).
+
+### Next step
+- Commit this docs entry + plan docs (`SPEC-m9-capability-map.md`,
+  `SPEC-proxy-preview.md`, `plan-m9.md`), run `graphify update .`, full
+  regression, push on user go-ahead. Then module 2 `runtime-optimization`:
+  slice 1 lazy model factory (`_get_embedder`/`_get_transcriber`), slice 2
+  render `run_in_executor` offload + `render.timeoutSeconds` config, slice 3
+  bundle baseline, slices 4–5 tests + docs (D-034).

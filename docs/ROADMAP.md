@@ -92,10 +92,10 @@ Definition of done for ANY milestone installments within it: implementation exis
 - [ ] Performance work (proxy previews, memory tuning — M9 hardware validation)
 
 ## Milestone 9 — Hardware validation
-- Test on baseline HP Pavilion 15
-- Proxy preview
-- CPU fallback
-- Memory/performance optimization
+- [x] Proxy preview — deterministic SHA-prefix proxy service (`POST/GET /api/proxy`): WebP images (max 480×960) / MP4 video (height ≤480, 15fps, ≤120s), cache under `cache/backend/proxy`, frontend lazy resolve + memoized PreviewPanel render; render path untouched. Backend 404 → 428, frontend 284 → 297 (D-033)
+- [ ] Test on baseline HP Pavilion 15
+- [ ] CPU fallback
+- [ ] Memory/performance optimization
 
 ## Milestone 10 — Release hardening
 - Packaging

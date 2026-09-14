@@ -163,3 +163,32 @@ Build order: panel-model → panel-detection → panel-order → panel-export �
 - [ ] Task 4 (slice 4): ManhwaPanel actions (split/merge/crop/delete/add/reorder/redetect/reset/export)
 - [ ] Task 5 (slice 5): App left-rail tabs + CSS
 - [ ] Task 6 (slice 6): docs D-033/ROADMAP M7 complete/SESSION_LOG 26 + graphify + regression + push go-ahead
+
+## M9 — Hardware validation (capability map SPEC-m9-capability-map.md)
+Build order: proxy-preview → runtime-optimization → memory-tuning → baseline-validation
+
+### Module 1: proxy-preview (SPEC-proxy-preview.md, tasks/plan-m9.md)
+- [ ] Slice 1: proxy-core — `_file_hash`, `generate_image_proxy`, `generate_video_proxy`, `ProxyResult`, `Config.proxy_dir` + RED unit tests
+- [ ] Slice 2: proxy-api — `POST /api/proxy`, `GET /api/proxy/{proxyId}`, ProxyId gate + API tests
+- [ ] Slice 3: frontend — `services/proxy.ts`, `Asset.proxyUrl`, importer wiring, PreviewPanel memoization + tests
+- [ ] Slice 4: docs D-033/ROADMAP/FEATURES/SESSION_LOG 28 + graphify + regression + push go-ahead
+
+### Module 2: runtime-optimization
+- [ ] Slice 1: lazy model factory — `_get_embedder()`, `_get_transcriber()` + tests
+- [ ] Slice 2: async render offload — `run_in_executor` in render endpoint + tests
+- [ ] Slice 3: configurable timeout — `render.timeoutSeconds` config + frontend constant + tests
+- [ ] Slice 4: frontend bundle baseline — measure, CONSTRAINTS row fill
+- [ ] Slice 5: docs D-034/ROADMAP/SESSION_LOG 29 + graphify + regression + push go-ahead
+
+### Module 3: memory-tuning
+- [ ] Slice 1: manhwa streaming decode — `Image.draft()` in detect + tests
+- [ ] Slice 2: export bundle streaming — disk-streamed zip + tests
+- [ ] Slice 3: cache GC — `gc.py` + `POST /api/gc` + tests
+- [ ] Slice 4: motion upscale config — `motion.upscaleFactor` + parity tests
+- [ ] Slice 5: docs D-035/ROADMAP/SESSION_LOG 30 + graphify + regression + push go-ahead
+
+### Module 4: baseline-validation
+- [ ] Slice 1: HP measurement checklist (`M9-MEASUREMENT.md`)
+- [ ] Slice 2: Mac reference measurement
+- [ ] Slice 3: CONSTRAINTS enforcement + ROADMAP M9 complete
+- [ ] Slice 4: docs D-036/SESSION_LOG 31 + graphify + final push
