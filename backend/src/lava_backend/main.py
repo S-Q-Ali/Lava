@@ -411,6 +411,33 @@ def serve_proxy(proxy_id: str):
     raise ApiError(404, "NOT_FOUND", "no such proxy")
 
 
+class GcOptions(BaseModel):
+    ttlDays: int | None = None
+    dryRun: bool = False
+
+
+@app.post(f"{API_V1}/gc")
+async def run_gc(options: GcOptions | None = None):
+    """Purge stale, regenerable cache artifacts (proxy files only)."""
+    from .gc import purge_stale_proxies
+
+    config = get_config()
+    ttl = options.ttlDays if options is not None else None
+    dry_run = options.dryRun if options is not None else False
+    if ttl is not None and (isinstance(ttl, bool) or ttl < 1):
+        raise ApiError(422, "GC_INVALID", "ttlDays must be a positive integer")
+
+    report = await asyncio.to_thread(
+        purge_stale_proxies, config, ttl_days=ttl, dry_run=dry_run
+    )
+    return {
+        "purged": report.purged,
+        "freedBytes": report.freedBytes,
+        "remaining": report.remaining,
+        "scope": report.scope,
+    }
+
+
 def _font_registry_path(config) -> Path:
     return Path(config.fonts_dir) / "licenses.json"
 
