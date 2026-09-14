@@ -1731,3 +1731,55 @@ or a re-opened draft never fires. `Path.utime` does not exist — tests use
   push on go-ahead. Then module 4 `measurement`: `docs/M9-MEASUREMENT.md`
   HP-baseline checklist, Mac reference measurement, CONSTRAINTS enforcement,
   docs D-036.
+
+## Session 31 — M9 module 4 `baseline-validation` (4 slices)
+
+### WHAT
+Final M9 proof gate on the authored side:
+
+- **Slice 1 checklist** — `docs/M9-MEASUREMENT.md`: seven items (cold import,
+  image proxy 4000x6000, video proxy, preview render 5x3s, full render 10
+  clips + transitions + captions + motion, memory peak snapshots, frontend
+  LCP) plus a per-machine results table and a memory-snapshot methodology
+  (Activity Monitor / Task Manager / DevTools heap).
+- **Slice 2 benchmark + Mac reference** — `tools/m9-macro-bench.py` drives the
+  real `lava_backend.proxy`/`lava_backend.media` and prints the same rows on
+  any machine. Mac row captured: cold import 0.50 s, image proxy 0.11 s, video
+  proxy 0.44 s (593 KB), preview render 1.11 s, full render 2.47 s. The bench
+  found a latent crash: `render(transitions=None)` did `list(None)`; fixed
+  with `list(transitions or ())` + regression test. Backend → 457.
+- **Slice 3 enforcement** — CONSTRAINTS measured rows updated (backend 457,
+  fresh test command `backend/.venv/bin/python -m pytest`, render-time bound
+  ≤ 120 s on the HP with the Mac reference 2.47 s); ROADMAP M9 measurement tick
+  + explicit pending physical rows; FEATURES §10 measurement bullet; todo.md
+  module 4 ticks.
+- **Slice 4 docs** (this entry) — D-036, then graphify + regression.
+
+### HOW
+Wrote the checklist as the spec first, then the script, then RUN THE SCRIPT on
+each machine — the Mac numbers are real output, not estimates. Rendering is
+capped (1280x720@10fps, ≤ 24 s of footage) so one pass fits in ~2 min even on
+the weak baseline. The HP Pavilion 15 row stays TBD: it must be run on the
+physical machine before M9 closes, and any bound violation triggers a fix slice
+before close.
+
+### Decisions
+- **D-036** — One identical script + one doc, two machine rows.
+
+### Verify
+- Backend: `./.venv/bin/python -m pytest` 457 passed (+1 regression test).
+- Frontend untouched this module (297 baseline holds).
+- Commits: `960197a` (slice 1+2), this docs commit (slice 3+4).
+
+### Limitations
+- HP-baseline row and CPU-fallback validation are physically pending on the
+  target machine; the authored repo side of M9 is complete but M9 does not
+  formally close until those rows land and, if needed, fixes are verified.
+- Video-proxy row uses a 12 s source (the real 5 min clip scales roughly
+  linearly through the 120 s proxy duration cap).
+
+### Next step
+- Commit slice 3+4 docs (D-036, ROADMAP, FEATURES, CONSTRAINTS, todo.md), run
+  `graphify update .`, run full regression (457), push on go-ahead. M9 is then
+  complete on the authoring machine; HP runs `tools/m9-macro-bench.py` and
+  fills `docs/M9-MEASUREMENT.md` to formally close M9.

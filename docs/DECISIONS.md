@@ -773,3 +773,33 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
 - **Status**: Locked and shipped for M9 module 3 `memory-tuning` (commits
   0337b7d, 108bcb8, 0d858e7, 30a4a0d; backend 437 → 456). Next: module 4
   `measurement`.
+
+## D-036 — M9 measurement log + identical macro benchmark (baseline-validation)
+
+- **Date**: 2026-09-14
+- **WHAT**: Module 4 of M9 (final proof gate). A single reproducible benchmark
+  (`tools/m9-macro-bench.py`) drives the real sidecar modules — Pillow proxies
+  and FFmpeg renders — producing the exact same five timing rows on any
+  machine, plus a memory-snapshot methodology and a frontend LCP note. Results
+  live in `docs/M9-MEASUREMENT.md` under per-machine rows.
+- **WHY**: "It feels slow" is not a gate. With the same script and checklists on
+  the dev Mac and the HP Pavilion 15 baseline, a hardware regression is a
+  one-line copy-paste to prove, and the CONSTRAINTS boundary gets a number
+  instead of a vibe (render-time row: ≤ 120 s on the baseline HP).
+- **HOW**: The Mac reference row was captured head-of-run (cold import 0.50 s,
+  image proxy 0.11 s, video proxy 0.44 s, preview render 1.11 s, full render
+  2.47 s; render passes are 1280x720 @ 10 fps to keep one pass under about
+  two minutes even on the weak baseline). Benchmarking render() with no
+  transitions exposed a latent crash (`list(transitions)` on `None`) — fixed
+  to `list(transitions or ())` and covered by a regression test. The HP row
+  stays TBD until the physical machine is available; there it fills the same
+  table and, if any row violates the bound, a fix slice runs before M9 closes.
+- **Alternatives considered**: separate per-machine ad-hoc timing scripts
+  (rejected — no way to compare like-for-like); a full Lighthouse-only gate
+  (kept as the frontend LCP item but too heavyweight to be the sole frontend
+  proxy — manual DevTools timing stays acceptable); measuring only on the HP
+  (rejected — the reference row is what tells us how far the HP lags).
+- **Status**: Locked. Mac reference logged, CONSTRAINTS measured rows updated
+  (backend 457), ROADMAP M9 measurement tick done. HP-baseline row and CPU
+  fallback validation remain physically pending on the target machine. Module
+  4 = done on the authored side; M9 fully closes when the HP row lands.

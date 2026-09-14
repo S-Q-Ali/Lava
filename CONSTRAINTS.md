@@ -21,7 +21,7 @@ Diff-scoped guard: references/floor-guard.md (exit 0/1/2).
 |-----------|------|-----------|---------|
 | Types (frontend) | Zero type errors, strict | `npm run build` (tsc -b) | task end |
 | Lint (frontend) | Zero errors from oxlint config | `npm run lint` (oxlint) | task end |
-| Tests (backend) | Zero failures, add don't drop | `uv sync --extra dev && uv run pytest` | task end |
+| Tests (backend) | Zero failures, add don't drop | `backend/.venv/bin/python -m pytest` | task end |
 | Tests (frontend) | Zero failures, add don't drop | `npx vitest run` | task end |
 
 ## Declared, tools pending (BLOCK once installed)
@@ -45,9 +45,13 @@ Lighthouse, osv-scanner, semgrep — must be live before a feature ships.
 
 | Metric | Today | Direction |
 |--------|-------|-----------|
-| Backend test count | 437 passed | must not fall |
+| Backend test count | 457 passed | must not fall |
 | Frontend test count | 297 passed (33 files) | must not fall |
 | Frontend bundle (main) | 91.8 kB gzip / 307.2 kB raw | must stay ≤ 500 kB gzip (M9 baseline) |
+| Render time (10-clip benchmark pass) | Mac ref: 2.47 s; HP: TBD | ≤ 120 s on the HP baseline (M9) |
+
+M9 macro benchmark: `backend/.venv/bin/python tools/m9-macro-bench.py`
+(Mac reference logged in `docs/M9-MEASUREMENT.md`; HP row pending).
 
 ## Exceptions
 

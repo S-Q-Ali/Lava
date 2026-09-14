@@ -94,9 +94,10 @@ Definition of done for ANY milestone installments within it: implementation exis
 ## Milestone 9 — Hardware validation
 - [x] Proxy preview — deterministic SHA-prefix proxy service (`POST/GET /api/proxy`): WebP images (max 480×960) / MP4 video (height ≤480, 15fps, ≤120s), cache under `cache/backend/proxy`, frontend lazy resolve + memoized PreviewPanel render; render path untouched. Backend 404 → 428, frontend 284 → 297 (D-033)
 - [x] Runtime optimization — lazy model factories (matcher/transcriber built on first use, startup touches no model bytes), all blocking FFmpeg/ONNX/whisper work offloaded to threads (`asyncio.to_thread`) so health answers during render, configurable render timeout (`render.timeoutSeconds` default 600 → `renderTimeoutMs` on health, 600s client abort). Backend → 437, bundle baseline 91.8 kB gzip (≤500 kB gate) (D-034)
-- [x] Memory/performance optimization — manhwa JPEG draft decode at analysis resolution (full strip never fully decoded unless crops are saved), export zips streamed from a spooled temp file (lazy panel encode, 64 KiB chunks out), `POST /api/gc` proxy cache GC (`gc.proxyTtlDays`, dry-run support), `motion.upscaleFactor` config knob (default 3). Backend → 456 (D-035)
-- [ ] Test on baseline HP Pavilion 15
-- [ ] CPU fallback
+- [x] Memory/performance optimization — manhwa JPEG draft decode at analysis resolution (full strip never fully decoded unless crops are saved), export zips streamed from a spooled temp file (lazy panel encode, 64 KiB chunks out), `POST /api/gc` proxy cache GC (`gc.proxyTtlDays`, dry-run support), `motion.upscaleFactor` config knob (default 3). Backend → 457 (D-035)
+- [x] Measurement — `docs/M9-MEASUREMENT.md` (7-item checklist, memory snapshot methodology, `tools/m9-macro-bench.py` runnable on both machines). Mac reference row logged; HP-baseline row pending on real hardware. Backend → 457 (D-036)
+- [ ] Test on baseline HP Pavilion 15 (hardware pending — needs the physical machine)
+- [ ] CPU fallback (validate on the HP once hardware is present)
 
 ## Milestone 10 — Release hardening
 - Packaging
