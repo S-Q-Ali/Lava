@@ -144,9 +144,9 @@
     "semantic_hash": "c4f908ed8d2716a1aaafb2f2e10f2893"
   },
   "studio.config.json": {
-    "mtime": 1789406419.8717504,
-    "seen": 1789407046.698751,
-    "ast_hash": "67eaa1b3d4114950c6a3a7015ff39bc1",
+    "mtime": 1789408969.271315,
+    "seen": 1789409282.9971788,
+    "ast_hash": "778c5e45a78ab2b87c74e009214f9057",
     "semantic_hash": ""
   },
   ".opencode/references/accessibility-checklist.md": {
@@ -348,15 +348,15 @@
     "semantic_hash": ""
   },
   "docs/DECISIONS.md": {
-    "mtime": 1789406943.3656862,
-    "seen": 1789407046.6987991,
-    "ast_hash": "8428f7dff508ab552d042827ebbced45",
+    "mtime": 1789409149.4440804,
+    "seen": 1789409282.997227,
+    "ast_hash": "7a8341ff33b9e9d43ee0163c1894efd1",
     "semantic_hash": ""
   },
   "docs/FEATURES.md": {
-    "mtime": 1789406973.231275,
-    "seen": 1789407046.6988,
-    "ast_hash": "38aace890b3571c580ac49241bc037a8",
+    "mtime": 1789409232.308301,
+    "seen": 1789409282.997229,
+    "ast_hash": "b721bde7b0b1923152faa6995dd783ea",
     "semantic_hash": ""
   },
   "docs/PRODUCT_SPEC.md": {
@@ -366,15 +366,15 @@
     "semantic_hash": ""
   },
   "docs/ROADMAP.md": {
-    "mtime": 1789406932.906366,
-    "seen": 1789407046.698802,
-    "ast_hash": "db851d813a568d9c3fc555f23ca42e6e",
+    "mtime": 1789409227.799085,
+    "seen": 1789409282.997231,
+    "ast_hash": "19c7e2c5b7f641003b78c619dc281f34",
     "semantic_hash": ""
   },
   "docs/SESSION_LOG.md": {
-    "mtime": 1789406956.272619,
-    "seen": 1789407046.698803,
-    "ast_hash": "71f42e9e2f07db27261d2fbab64551ce",
+    "mtime": 1789409252.1502118,
+    "seen": 1789409282.997233,
+    "ast_hash": "b374cb352a48a28d3a10374de2beca21",
     "semantic_hash": ""
   },
   "docs/TEST_PLAN.md": {
@@ -420,9 +420,9 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/config.py": {
-    "mtime": 1789406428.591266,
-    "seen": 1789407046.698557,
-    "ast_hash": "04123dfa889197157d537b9b56c11c3e",
+    "mtime": 1789408930.2104924,
+    "seen": 1789409282.9969769,
+    "ast_hash": "5423169c9bf3649416491ffa628bfb38",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/errors.py": {
@@ -432,15 +432,15 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/main.py": {
-    "mtime": 1789406440.4877422,
-    "seen": 1789407046.698563,
-    "ast_hash": "066e4d30717ba73328607cdb39e0991f",
+    "mtime": 1789408960.0953503,
+    "seen": 1789409282.9969869,
+    "ast_hash": "6f4eff3715dd96bf59818e4ec9f6acf5",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/media.py": {
-    "mtime": 1789406437.4697626,
-    "seen": 1789407046.6985788,
-    "ast_hash": "4c81c9531cfacf8be28d9694dcbebda8",
+    "mtime": 1789408956.5355377,
+    "seen": 1789409282.997003,
+    "ast_hash": "84584c93a7ebdaa15d4857aeab1a52be",
     "semantic_hash": ""
   },
   "backend/tests/conftest.py": {
@@ -510,9 +510,9 @@
     "semantic_hash": ""
   },
   "tasks/todo.md": {
-    "mtime": 1789407012.2674158,
-    "seen": 1789407046.6988769,
-    "ast_hash": "af17ad35ef80c817f6883d8a83ee03b5",
+    "mtime": 1789409267.4574907,
+    "seen": 1789409282.9973068,
+    "ast_hash": "e15e302c46654f6769832294f4ad76db",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/transcribe.py": {
@@ -786,9 +786,9 @@
     "semantic_hash": ""
   },
   "backend/tests/test_image_motion.py": {
-    "mtime": 1789218432.221988,
-    "seen": 1789219026.0165918,
-    "ast_hash": "116ebd047e2fc00d45ff7be0f0ef07fc",
+    "mtime": 1789408985.8701754,
+    "seen": 1789409282.997026,
+    "ast_hash": "a6425ef681ff1a32146040287238ebb8",
     "semantic_hash": ""
   },
   "frontend/src/components/MotionPanel.test.tsx": {
@@ -1194,9 +1194,9 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/manhwa/detect.py": {
-    "mtime": 1789332603.454371,
-    "seen": 1789332800.19353,
-    "ast_hash": "772ed75fcea5368569e55d9d2d319b53",
+    "mtime": 1789407402.5657399,
+    "seen": 1789409282.996994,
+    "ast_hash": "6d34306ec2fd28ecce3ef907fc1f9c2d",
     "semantic_hash": ""
   },
   "backend/tests/manhwa_strips.py": {
@@ -1248,15 +1248,15 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/manhwa/export.py": {
-    "mtime": 1789332654.9718883,
-    "seen": 1789332800.193534,
-    "ast_hash": "1b58213355791edcfd9d3eb2b30d621d",
+    "mtime": 1789408236.343836,
+    "seen": 1789409282.996997,
+    "ast_hash": "311a3cc1647496b0c5582e479d62a87c",
     "semantic_hash": ""
   },
   "backend/tests/test_manhwa_export.py": {
-    "mtime": 1789332670.9415622,
-    "seen": 1789332800.193569,
-    "ast_hash": "71a16cb9b97e069a5b297f4d24f8cd3f",
+    "mtime": 1789408303.463067,
+    "seen": 1789409282.997034,
+    "ast_hash": "49abdfc1b75d3da7da03d79c9ebdcdf2",
     "semantic_hash": ""
   },
   "docs/SPEC-panel-export.md": {
@@ -1296,9 +1296,9 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/manhwa/api.py": {
-    "mtime": 1789334218.9922326,
-    "seen": 1789334359.971231,
-    "ast_hash": "4b87fc5bb898c8df5981819616cdf38f",
+    "mtime": 1789408329.775206,
+    "seen": 1789409282.996991,
+    "ast_hash": "59ffff46587082583be4f2f55c91d733",
     "semantic_hash": ""
   },
   "backend/tests/test_manhwa_api.py": {
@@ -1422,9 +1422,27 @@
     "semantic_hash": ""
   },
   "backend/tests/test_runtime.py": {
-    "mtime": 1789406522.9863312,
-    "seen": 1789407046.6986198,
-    "ast_hash": "4476a7821ec7268d9380cad40636ae14",
+    "mtime": 1789409034.7398057,
+    "seen": 1789409282.997049,
+    "ast_hash": "c1221f29fb0ffc0a493467ea05de444b",
+    "semantic_hash": ""
+  },
+  "backend/src/lava_backend/gc.py": {
+    "mtime": 1789408490.7569141,
+    "seen": 1789409282.996983,
+    "ast_hash": "95f58132d66aaa955a78309c5ac552a4",
+    "semantic_hash": ""
+  },
+  "backend/tests/test_gc.py": {
+    "mtime": 1789408697.815557,
+    "seen": 1789409282.9970229,
+    "ast_hash": "1fcf23bdff0fd614ea8129450c805eb0",
+    "semantic_hash": ""
+  },
+  "backend/tests/test_manhwa_decode.py": {
+    "mtime": 1789407898.3349411,
+    "seen": 1789409282.997031,
+    "ast_hash": "71e3b940db0260cf6e0cc8c97472fe07",
     "semantic_hash": ""
   }
 }
