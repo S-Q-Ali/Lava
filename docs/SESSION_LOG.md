@@ -1467,3 +1467,77 @@ on arbitrary test-tuning and hard-coded "it works on this image" assertions.
   docs). Then module 7 `panel-ui` (frontend): long-strip drop, detection
   review (preview + number + confidence), correction actions + drag reorder,
   export download — the last M7 module.
+
+## Session 26-27 — M7 panel-ui + M8 integrated editor (slices 1–4)
+
+### WHAT
+Two milestones advanced in one session span:
+
+**M7 module 7 `panel-ui` (M7 complete)** — `services/manhwa.ts` (typed client,
+defensive parsers, `ManhwaError`, 12 tests), `store/manhwaStore.ts` (status
+state machine: idle/uploading/loading/error; refresh/select/upload/apply/
+redetect/remove, 11 tests), `components/ManhwaPanel.tsx` (dropzone upload,
+strip list, panel review with thumbnail/number/confidence/userCorrected,
+Split/Merge/Adjust/Delete, Re-detect/Reset, PNG/JPG export, 8 tests),
+`App.tsx` left-rail Media|Manhwa tabs (default Media), `.manhwa-*` CSS.
+Frontend 253 → 284. ROADMAP M7 complete. Pushed `2fe86b2..9b4e4dc`.
+
+**M8 Integrated editor (slices 1–4, nearly complete)** —
+- Slice 1: `moveClipRipple` in ops.ts (following clips shift on move;
+  prevention of overlaps) + editorStore action + ClipBlock wiring;
+  audio mixing: `media.py render()` gains `audio_files` → per-input
+  `atrim` + `amix` → AAC track; `main.py` render endpoint accepts
+  `audio_files` multipart uploads. Commits `f947421`, `312f9e2`.
+- Slice 2: caption live preview overlay — PreviewPanel resolves the
+  caption at the playhead through the preset store and renders it styled
+  (color/font/size/outline/bold/alignment) at the bottom of the preview
+  stage. Commit `e4f301a`.
+- Slice 3a: pixel-space animations — `captions.py` adds ASS `{\p1}` drawing
+  payloads for manga speed lines and cinematic letterbox bars (braces
+  escaped `{{ }}` for `.format()`); tests updated to assert the drawing
+  payloads. Commit `39a523e`.
+- Slice 3b: animation motion preview — TemplateEditorPanel applies a CSS
+  animation class per treatment; five keyframe approximations (kinetic/
+  manga/cinematic/meme/storytelling) loop in the live preview. Commit
+  `277e0e3`.
+- Slice 4: manhwa drag reorder — HTML5 drag-and-drop on panel rows;
+  drop computes an exact id permutation and applies the reorder
+  correction op; `.drop-target` highlight. Commit `e246fc6`.
+- Docs: ROADMAP M1 ripple/audio ticks, M8 checklist, status line.
+
+### HOW
+Same vertical TDD pattern as M2–M7 (each slice built + verified before
+commit). The ASS drawing payloads hit the `.format()` brace trap a third
+time (`{\p1}` read as a format field → KeyError) — fixed with `{{\p1}}`
+escaping, consistent with the D-025 lesson. Drag reorder uses the
+`text/manhwa-panel-index` dataTransfer key and guards self-drops.
+
+### Decisions
+- Audio mixing is render-time only (no preview playback mixing yet);
+  `amix duration=longest` trimmed per input to the expected render
+  duration; AAC 128k output. No new ADR — extends D-008/D-017 surfaces.
+- Caption overlay is a CSS approximation of libass output (real burn-in
+  remains render-side); alignment maps top→left/bottom→right/else center
+  for text-align, position pinned bottom 8%.
+- Ripple is move-only (trim stays local) — conservative, no surprise
+  shifts when edge-trimming.
+
+### Verify
+- Backend: `uv run pytest` 404 passed (35 captions incl. new drawing
+  assertions).
+- Frontend: `npx vitest run` 284 passed, `tsc -b` clean, oxlint
+  0 errors (2 pre-existing warnings), `npm run build` ok.
+- Commits: `f947421`, `312f9e2`, `e4f301a`, `39a523e`, `277e0e3`,
+  `e246fc6` + this docs commit.
+
+### Limitations
+- Audio: no per-track volume/ducking; all inputs mixed at unit gain.
+- Caption overlay: karaoke/kinetic word timing not animated in preview;
+  approximation only (real output = libass burn-in).
+- Drag reorder: no keyboard-accessible move up/down fallback yet.
+- Performance work (proxy previews, memory tuning) deferred to M9.
+
+### Next step
+- Commit this docs entry, run `graphify update .`, push on go-ahead.
+  Then M9: proxy preview generation, memory tuning for tall strips,
+  baseline hardware validation.
