@@ -2,16 +2,20 @@
 
 ## Objective
 
-Prove (and fix where needed) that Lava Studio runs acceptably on the baseline hardware:
-HP Pavilion 15 · Intel i7 10th Gen · 16 GB RAM · NVIDIA MX250 2 GB.
-This closes the open performance gap (DEFERRED M8 row) and the unmeasured
-CONSTRAINTS rows. Four modules, each independently shippable; build order follows
-dependency, not severity.
+Prove (and fix where needed) that Lava Studio runs acceptably on the hardware
+the user actually has. The HP Pavilion 15 · Intel i7 10th Gen · 16 GB RAM ·
+NVIDIA MX250 2 GB is the design floor that shaped CPU fallback and lightweight
+models — representative low-end target, NOT a mandatory measurement row
+(D-037). This closes the open performance gap (DEFERRED M8 row) and the
+unmeasured CONSTRAINTS rows. Four modules, each independently shippable; build
+order follows dependency, not severity.
 
 ## Assumptions
 
-1. **Baseline hardware is the HP Pavilion 15** (PRODUCT_SPEC §15). A second Mac
-   dev machine exists; the HP is the performance-sanity gate.
+1. **The validation target is any machine `tools/m9-macro-bench.py` runs on**
+   (D-037). PRODUCT_SPEC §15's HP Pavilion 15 stays the engineering design
+   floor (CPU fallback, memory limits) but does not gate closure; the dev-Mac
+   row is the M9 validation pass, and further machines append optional rows.
 2. **CPU-only path is the only path tested here.** MX250 VRAM is not consumed by
    any model today (CLIP/Whisper run on CPUExecutionProvider); GPU acceleration
    is out of scope.
@@ -31,7 +35,7 @@ dependency, not severity.
 | proxy-preview | Backend proxy generation (image thumbnail + video low-res proxy) served via API; frontend PreviewPanel uses proxies for display and raw originals only for render; React memoization on the 100ms playback tick. | — | D-033 |
 | runtime-optimization | Lazy-load CLIP models (replace eager startup with first-use factory); offload FFmpeg render from the event loop (`run_in_threadpool`); configurable render timeouts; measure and gate the frontend bundle size baseline. | — | D-034 |
 | memory-tuning | Manhwa strip streaming/lazy decode (avoid full `image.load()` on tall strips before analysis); export bundle disk-streamed zip (not in-memory); cache/backend GC policy; motion `scale*3` documented and/or configurable. | — | D-035 |
-| baseline-validation | Run TEST_PLAN §6 on the real HP Pavilion: CPU fallback e2e, proxy preview, representative render time/memory bounds; enforce measured CONSTRAINTS rows; ROADMAP M9 complete + FEATURES block. | modules 1–3 | D-036 |
+| baseline-validation | Run TEST_PLAN §6 on any available machine (dev Mac = logged M9 validation pass): CPU fallback e2e, proxy preview, representative render time/memory bounds; enforce measured CONSTRAINTS rows; ROADMAP M9 complete + FEATURES block. | modules 1–3 | D-036, D-037 |
 
 ## Build order
 

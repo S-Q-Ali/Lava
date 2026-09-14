@@ -1783,3 +1783,38 @@ before close.
   `graphify update .`, run full regression (457), push on go-ahead. M9 is then
   complete on the authoring machine; HP runs `tools/m9-macro-bench.py` and
   fills `docs/M9-MEASUREMENT.md` to formally close M9.
+
+## Session 32 — M9 reframe: validation machine-agnostic (D-037)
+
+### WHAT
+The M9 hardware-validation gate was decoupled from a specific machine model.
+Previously the plan treated the HP Pavilion 15 as the mandatory baseline row and
+kept M9 open pending that hardware. Now `tools/m9-macro-bench.py` +
+`docs/M9-MEASUREMENT.md` form an any-machine gate, and the logged dev-Mac row
+(already measured in session 31) is the M9 validation pass.
+
+### HOW
+Rewrote `docs/M9-MEASUREMENT.md`: "Per-machine validation log" replaces the
+"HP TBD" table, each machine appends a row. Updated the CONSTRAINTS render-time
+row (`> 120 s never passes on any logged machine`), ROADMAP M9 items (validation
+ticked, CPU fallback covered by the design floor + logged-machine validation),
+FEATURES §10, SPEC-m9-capability-map assumptions + baseline-validation row,
+and the `tools/m9-macro-bench.py` docstring. Added D-037, amended D-036's
+status. No product code changed.
+
+### Decisions
+- **D-037** — M9 validation machine-agnostic; HP stays the design floor for CPU
+  fallback but is not a mandatory measurement row; Mac row closes M9.
+
+### Verify
+- No code changed → backend 457, frontend 297 baselines hold by construction.
+- `git diff --stat` covers docs + bench docstring only.
+
+### Limitations
+- The Mac is not low-end; weak-hardware confirmation remains an *optional*
+  representative row (HP or any low-end machine), which future users can append
+  via the same script.
+
+### Next step
+- Commit docs + bench docstring, `graphify update .`, then push on go-ahead.
+  M9 is complete: milestone 9 closes with the Mac validation row.

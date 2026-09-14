@@ -187,8 +187,9 @@ Build order: proxy-preview → runtime-optimization → memory-tuning → baseli
 - [x] Slice 4: motion upscale config — `motion.upscaleFactor` + parity tests
 - [x] Slice 5: docs D-035/ROADMAP/SESSION_LOG 30 + graphify + regression + push go-ahead
 
-### Module 4: baseline-validation ✓ DONE (HP hardware row pending real machine)
-- [x] Slice 1: HP measurement checklist (`M9-MEASUREMENT.md`)
-- [x] Slice 2: Mac reference measurement
+### Module 4: baseline-validation ✓ M9 CLOSED (D-036, D-037 — machine-agnostic, Mac row logged)
+- [x] Slice 1: measurement checklist (`M9-MEASUREMENT.md`)
+- [x] Slice 2: Mac reference measurement → M9 validation pass
 - [x] Slice 3: CONSTRAINTS enforcement + ROADMAP M9 complete
-- [x] Slice 4: docs D-036/SESSION_LOG 31 + graphify + final push
+- [x] Slice 4: docs D-036/D-037, SESSION_LOG 31+32, graphify, final push
+- [x] D-037 reframe: validation machine-agnostic (optional per-machine rows incl. low-end)

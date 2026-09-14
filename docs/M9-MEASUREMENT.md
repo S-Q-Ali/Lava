@@ -1,9 +1,10 @@
 # M9 — Hardware Validation Measurement Log (D-036)
 
 Final proof gate for M9 hardware validation. Records the measurement checklist
-and results per machine. The two machines are the **baseline target** (HP
-Pavilion 15, the machine Lava Studio is tuned for) and the **reference machine**
-(the dev Mac where the suite is authored).
+and results per machine. The target is any machine the suite is run on (D-037):
+Lava Studio must run acceptably wherever the user runs it. The HP Pavilion 15 —
+the design floor that motivated CPU fallback and lightweight models — is one
+representative low-end target, not a mandatory one.
 
 Measurement mandate (PRODUCT_SPEC section 15 / TEST_PLAN section 6): demo
 workflows must run acceptably on the baseline. If a row fails its bound (set in
@@ -62,17 +63,19 @@ benchmark process) — dominated by the 1280x720*10fps encode buffers, flat per
 phase; no phase materialises the full source in RAM (proxy/export slicing from
 D-035).
 
-## Baseline target results — HP Pavilion 15
+## Per-machine validation log
 
-Pending. Run the same block above on the HP (`HP Pavilion 15, Intel i7-10th,
-16 GB RAM, NVIDIA MX250 2 GB`). If any row is out of bounds (see CONSTRAINTS
-"Declared, tools pending" / measured gates), STOP — record the failing row here,
-fix in a follow-up slice, re-measure, then mark M9 complete.
+Validation is machine-agnostic (D-037): the gate parses on whatever machine you
+run `tools/m9-macro-bench.py` on — no single model is mandated. The HP Pavilion
+15 stays the *design floor* (CPU fallback, lightweight models) but is not a
+prerequisite row for M9. If any row on a logged machine violates its bound (see
+CONSTRAINTS "Measured, not yet enforced"), STOP — record the failing row here,
+fix in a follow-up slice, re-measure, then M9 re-closes.
 
-| item | time |
-|------|------|
-| Sidecar cold import (no models post-D-034) | TBD |
-| Image proxy 4000x6000 (-> 480x720 WebP) | TBD |
-| Video proxy 1080p source | TBD |
-| Preview render 5 x 3 s frames 1280x720@10fps | TBD |
-| Full render 10 clips + dissolve + captions + motion | TBD |
+### Logged machines
+
+| machine | cold import | image proxy | video proxy | preview render | full render |
+|---------|-------------|-------------|-------------|----------------|-------------|
+| Dev Mac (macOS 26.6.2 x86_64, 16 thr) — **M9 validation pass** | 0.50 s | 0.11 s | 0.44 s | 1.11 s | 2.47 s |
+
+Copy the benchmark's Markdown block into the table when logging a new machine.

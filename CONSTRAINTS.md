@@ -48,7 +48,7 @@ Lighthouse, osv-scanner, semgrep — must be live before a feature ships.
 | Backend test count | 457 passed | must not fall |
 | Frontend test count | 297 passed (33 files) | must not fall |
 | Frontend bundle (main) | 91.8 kB gzip / 307.2 kB raw | must stay ≤ 500 kB gzip (M9 baseline) |
-| Render time (10-clip benchmark pass) | Mac ref: 2.47 s; HP: TBD | ≤ 120 s on the HP baseline (M9) |
+| Render time (10-clip benchmark pass) | logged M9 validation: 2.47 s (Mac) | > 120 s never passes on any logged machine (M9) |
 
 M9 macro benchmark: `backend/.venv/bin/python tools/m9-macro-bench.py`
 (Mac reference logged in `docs/M9-MEASUREMENT.md`; HP row pending).

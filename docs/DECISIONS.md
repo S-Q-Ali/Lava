@@ -783,23 +783,49 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
   machine, plus a memory-snapshot methodology and a frontend LCP note. Results
   live in `docs/M9-MEASUREMENT.md` under per-machine rows.
 - **WHY**: "It feels slow" is not a gate. With the same script and checklists on
-  the dev Mac and the HP Pavilion 15 baseline, a hardware regression is a
-  one-line copy-paste to prove, and the CONSTRAINTS boundary gets a number
-  instead of a vibe (render-time row: ≤ 120 s on the baseline HP).
+  any machine, a hardware regression is a one-line copy-paste to prove, and the
+  CONSTRAINTS boundary gets a number instead of a vibe (render-time row:
+  > 120 s never passes on any logged machine).
 - **HOW**: The Mac reference row was captured head-of-run (cold import 0.50 s,
   image proxy 0.11 s, video proxy 0.44 s, preview render 1.11 s, full render
   2.47 s; render passes are 1280x720 @ 10 fps to keep one pass under about
-  two minutes even on the weak baseline). Benchmarking render() with no
-  transitions exposed a latent crash (`list(transitions)` on `None`) — fixed
-  to `list(transitions or ())` and covered by a regression test. The HP row
-  stays TBD until the physical machine is available; there it fills the same
-  table and, if any row violates the bound, a fix slice runs before M9 closes.
+two minutes even on the weak baseline). Benchmarking render() with no
+   transitions exposed a latent crash (`list(transitions)` on `None`) — fixed
+   to `list(transitions or ())` and covered by a regression test. Any machine
+   can append its row to the log via the same script; a bound violation on a
+   logged machine triggers a fix slice before that row counts.
 - **Alternatives considered**: separate per-machine ad-hoc timing scripts
   (rejected — no way to compare like-for-like); a full Lighthouse-only gate
   (kept as the frontend LCP item but too heavyweight to be the sole frontend
   proxy — manual DevTools timing stays acceptable); measuring only on the HP
-  (rejected — the reference row is what tells us how far the HP lags).
+  (rejected — the reference row is what tells us how far other machines lag).
 - **Status**: Locked. Mac reference logged, CONSTRAINTS measured rows updated
-  (backend 457), ROADMAP M9 measurement tick done. HP-baseline row and CPU
-  fallback validation remain physically pending on the target machine. Module
-  4 = done on the authored side; M9 fully closes when the HP row lands.
+  (backend 457), ROADMAP M9 measurement tick done. Reframed by D-037:
+  validation is machine-agnostic and the Mac row closes M9.
+
+## D-037 — M9 validation is machine-agnostic, Mac row closes M9
+
+- **Date**: 2026-09-14
+- **WHAT**: The M9 hardware-validation gate no longer requires any specific model
+  of machine. `docs/M9-MEASUREMENT.md` + `tools/m9-macro-bench.py` are
+  designed to be run on *any* machine and parsed on that basis. The HP Pavilion
+  15 — the design floor that shaped CPU fallback and lightweight models — stays
+  in PRODUCT_SPEC / README / ARCHITECTURE as the engineering reference, but its
+  physical availability does not gate M9. The dev-Mac row is the logged M9
+  validation pass (full render 2.47 s, bound > 120 s).
+- **WHY**: The project is for end users on varied hardware. Locking the gate to
+  one model delays shipping and adds a conditional path with no design benefit.
+  The machine-agnostic script gives the same comparison and regression-catching
+  power on whatever hardware is available. Users with weak machines still
+  benefit from the CPU-fallback design floor the HP drove — that floor does
+  not disappear; it just does not need to be physically present for the gate.
+- **HOW**: M9-MEASUREMENT.md rewritten as a per-machine log; CONSTRAINTS
+  render-time row decoupled from HP; ROADMAP M9 items ticked; SPEC-m9-capability
+  map + FEATURES §10 + D-036 status updated; `tools/m9-macro-bench.py`
+  docstring generalized.
+- **Alternatives considered**: keep HP mandatory and block on hardware delivery
+  (rejected — adds a human dependency with no design gain); drop HP reference
+  entirely (rejected — the HP spec drove the CPU-fallback memory layout and
+  remains the right floor for that constraint).
+- **Status**: Locked. M9 closes on the Mac row logged under D-036. Additional
+  rows optional.

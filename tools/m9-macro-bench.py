@@ -2,7 +2,8 @@
 
 Runs the M9-MEASUREMENT.md checklist items on THIS machine via the real
 backend modules (Pillow proxies + ffmpeg renders). Designed to be run
-identically on the HP Pavilion 15 baseline and a reference Mac:
+identically on any machine (D-037) — dev Mac, baseline HP Pavilion 15, or
+anything else in between:
 
     ./.venv/bin/python tools/m9-macro-bench.py
 

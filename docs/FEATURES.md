@@ -210,10 +210,10 @@ Operations: split, trim, move, delete, duplicate, replace asset, re-time, reorde
   cache files older than `gc.proxyTtlDays` (default 7, `dryRun` supported);
   `motion.upscaleFactor` (default 3, validated 1..8) tunes the zoom/pan
   headroom scale in the render filter chain.
-- M9 measurement log (D-036): `docs/M9-MEASUREMENT.md` — 7-item benchmark
-  checklist plus `tools/m9-macro-bench.py`, identical on the dev Mac and the
-  HP Pavilion 15 baseline. Reference row logged; the HP row is filled on the
-  physical machine before M9 closes.
+- M9 measurement log (D-036, D-037): `docs/M9-MEASUREMENT.md` — 7-item benchmark
+  checklist plus `tools/m9-macro-bench.py`, identical on any machine. The dev
+  Mac row is the logged M9 validation pass; additional machines (including the
+  HP Pavilion 15 design floor) can be appended as optional rows.
 - Proxy previews; full-resolution offline render. Implemented (D-033): deterministic SHA-prefix proxy service `POST/GET /api/proxy` — image proxies are WebP (quality 80, max width 480, max height 960, no upscale), video proxies are MP4 (height ≤480, 15 fps, max 120 s, audio stripped), cached under `cache/backend/proxy`; the preview panel lazily requests a proxy per asset and renders the memoized `<img>`/`<video>` from it, falling back to the original blob URL when the sidecar is offline. Renders always use original assets.
 - Configurable local-first directories (`.venv/`, `node_modules/`, `models/`, `cache/`, `temp/`, `projects/`, `tools/ffmpeg/`).
-- Performance sanity checks on the baseline HP Pavilion 15.
+- Performance sanity checks per logged machine (`tools/m9-macro-bench.py`, see the M9 measurement log).

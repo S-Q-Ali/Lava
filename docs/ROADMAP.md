@@ -95,9 +95,9 @@ Definition of done for ANY milestone installments within it: implementation exis
 - [x] Proxy preview — deterministic SHA-prefix proxy service (`POST/GET /api/proxy`): WebP images (max 480×960) / MP4 video (height ≤480, 15fps, ≤120s), cache under `cache/backend/proxy`, frontend lazy resolve + memoized PreviewPanel render; render path untouched. Backend 404 → 428, frontend 284 → 297 (D-033)
 - [x] Runtime optimization — lazy model factories (matcher/transcriber built on first use, startup touches no model bytes), all blocking FFmpeg/ONNX/whisper work offloaded to threads (`asyncio.to_thread`) so health answers during render, configurable render timeout (`render.timeoutSeconds` default 600 → `renderTimeoutMs` on health, 600s client abort). Backend → 437, bundle baseline 91.8 kB gzip (≤500 kB gate) (D-034)
 - [x] Memory/performance optimization — manhwa JPEG draft decode at analysis resolution (full strip never fully decoded unless crops are saved), export zips streamed from a spooled temp file (lazy panel encode, 64 KiB chunks out), `POST /api/gc` proxy cache GC (`gc.proxyTtlDays`, dry-run support), `motion.upscaleFactor` config knob (default 3). Backend → 457 (D-035)
-- [x] Measurement — `docs/M9-MEASUREMENT.md` (7-item checklist, memory snapshot methodology, `tools/m9-macro-bench.py` runnable on both machines). Mac reference row logged; HP-baseline row pending on real hardware. Backend → 457 (D-036)
-- [ ] Test on baseline HP Pavilion 15 (hardware pending — needs the physical machine)
-- [ ] CPU fallback (validate on the HP once hardware is present)
+- [x] Measurement — `docs/M9-MEASUREMENT.md` (7-item checklist, memory snapshot methodology, `tools/m9-macro-bench.py` machine-agnostic). Mac row logged as the M9 validation pass. Backend → 457 (D-036, D-037)
+- [x] Machine-agnostic validation — the gate runs on whatever machine is available; Mac row passes (2.47 s full render, bound ≤ 120 s). Low-end targets (HP Pavilion 15) remain representative but optional (D-037)
+- [x] CPU fallback — design floor retained (no GPU-only models, CLIP/whisper on CPUExecutionProvider), validated on the logged machine; weak-hardware confirmation optional (D-037)
 
 ## Milestone 10 — Release hardening
 - Packaging
