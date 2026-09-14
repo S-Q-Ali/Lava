@@ -144,6 +144,14 @@ export function ManhwaPanel() {
                 nextPanelId={index < detail.panels.length - 1 ? detail.panels[index + 1].id : undefined}
                 isBusy={isBusy}
                 onApply={apply}
+                dragIndex={index}
+                totalCount={detail.panels.length}
+                onReorder={(fromIndex, toIndex) => {
+                  const ids = detail.panels.map((p) => p.id)
+                  const [moved] = ids.splice(fromIndex, 1)
+                  ids.splice(toIndex, 0, moved)
+                  void apply({ op: 'reorder', ids })
+                }}
               />
             ))}
           </div>
@@ -180,20 +188,45 @@ interface ManhwaPanelRowProps {
   nextPanelId: string | undefined
   isBusy: boolean
   onApply: (op: CorrectionOp) => Promise<void>
+  dragIndex: number
+  totalCount: number
+  onReorder: (fromIndex: number, toIndex: number) => void
 }
 
-function ManhwaPanelRow({ panel, nextPanelId, isBusy, onApply }: ManhwaPanelRowProps) {
+function ManhwaPanelRow({ panel, nextPanelId, isBusy, onApply, dragIndex, onReorder }: ManhwaPanelRowProps) {
   const [showAdjust, setShowAdjust] = useState(false)
   const [adjustX, setAdjustX] = useState(panel.x)
   const [adjustY, setAdjustY] = useState(panel.y)
   const [adjustW, setAdjustW] = useState(panel.w)
   const [adjustH, setAdjustH] = useState(panel.h)
+  const [dropTarget, setDropTarget] = useState(false)
 
   const confidencePct = Math.round(panel.confidence * 100)
   const isLowConfidence = panel.confidence < 0.5
 
   return (
-    <div className={`manhwa-panel-row${panel.userCorrected ? ' user-corrected' : ''}`}>
+    <div
+      className={`manhwa-panel-row${panel.userCorrected ? ' user-corrected' : ''}${dropTarget ? ' drop-target' : ''}`}
+      draggable={!isBusy}
+      onDragStart={(e) => {
+        e.dataTransfer.setData('text/manhwa-panel-index', String(dragIndex))
+        e.dataTransfer.effectAllowed = 'move'
+      }}
+      onDragOver={(e) => {
+        e.preventDefault()
+        e.dataTransfer.dropEffect = 'move'
+        setDropTarget(true)
+      }}
+      onDragLeave={() => setDropTarget(false)}
+      onDrop={(e) => {
+        e.preventDefault()
+        setDropTarget(false)
+        const from = Number(e.dataTransfer.getData('text/manhwa-panel-index'))
+        if (!Number.isNaN(from) && from !== dragIndex) {
+          onReorder(from, dragIndex)
+        }
+      }}
+    >
       <div className="manhwa-panel-thumb">
         <img src={panelImageUrl(panel.sourceId, panel.id)} alt={`Panel ${panel.order}`} />
       </div>

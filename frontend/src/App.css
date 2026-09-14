@@ -1537,6 +1537,11 @@
   border-color: var(--accent);
 }
 
+.manhwa-panel-row.drop-target {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
 .manhwa-panel-thumb {
   width: 48px;
   height: 48px;
