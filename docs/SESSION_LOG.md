@@ -1672,3 +1672,62 @@ read/default/report, `_run` timeout message).
   slice 1 manhwa streaming decode (`Image.draft`), slice 2 export bundle
   streaming to disk, slice 3 cache GC (`gc.py` + `POST /api/gc`), slice 4
   motion upscale config (`motion.upscaleFactor`), slice 5 docs (D-035).
+
+## Session 30 — M9 module 3 `memory-tuning` (5 slices)
+
+### WHAT
+Shipped the third M9 module across five slices:
+
+- **Slice 1 manhwa draft decode** — `_open_source` returns a lazy PIL image
+  (no `Image.load()`); `load_analysis_image` re-opens the JPEG and calls
+  `Image.draft("RGB", (ana_w, ana_h))` so analysis decodes at ≤512 px and the
+  full tall strip never materialises in RAM; full decode is deferred to the
+  `save=True` crop path. `test_manhwa_decode.py` (6 tests): draft used for
+  JPEG, skipped for PNG/in-memory images, save=False writes nothing, crops stay
+  original-res on JPEG, draft-vs-full parity within ±2 px. (Commit `0337b7d`)
+- **Slice 2 streamed export** — `materialize_export` now wraps a lazy
+  `iter_export_files` generator (one panel encoded per yield).
+  `/api/manhwa/strips/{id}/export` writes the zip to a `SpooledTemporaryFile`
+  (RAM ≤1 MiB, spills to disk) and streams 64 KiB chunks; full collection never
+  sits in RAM. Lazy + parity tests added. (Commit `108bcb8`)
+- **Slice 3 cache GC** — new `gc.py` (`purge_stale_proxies`, `GcReport`): only
+  content-hash proxy files (`16hex.webp` / `16hex_proxy.mp4`) older than TTL
+  are removed; stray files untouched. `Config.proxy_ttl_days` (default 7) from
+  `studio.config.json` `gc.proxyTtlDays`; `POST /api/gc` accepts `ttlDays`
+  + `dryRun`, offloads via `asyncio.to_thread`, returns
+  `{purged,freedBytes,remaining,scope}`. 7 tests. (Commit `0d858e7`)
+- **Slice 4 upscale config** — `RenderSettings.upscale_factor` (default 3)
+  replaces the hardcoded `scale=iw*3:ih*3`; validated 1..8 (MOTION_INVALID);
+  the sidecar injects `Config.motion_upscale_factor` from
+  `studio.config.json` `motion.upscaleFactor`. Render parity kept on the
+  default. 4 tests. (Commit `30a4a0d`)
+- **Slice 5 docs** (this entry) — D-035, ROADMAP M9 memory-tuning tick,
+  FEATURES §10 memory bullet.
+
+### HOW
+TDD per slice. Bug found mid-testing: in Pillow 12+ `JpegImageFile` defines its
+own `draft`, so test spies patch `JpegImageFile.draft` (not `Image.Image.draft`)
+or a re-opened draft never fires. `Path.utime` does not exist — tests use
+`os.utime`. `API_V1` is `"/api"`, so probes on `/api/v1/gc` 404'd.
+
+### Decisions
+- **D-035** — Draft decode + streamed export + cache GC + upscale config.
+  GC scope is strictly regenerable proxy files; uploads, manhwa registries and
+  renders are never touched. Upscale factor is a config knob, not a per-request
+  field, to keep the render contract simple.
+
+### Verify
+- Backend: `./.venv/bin/python -m pytest` 456 passed (19 new).
+- Commits: `0337b7d`, `108bcb8`, `0d858e7`, `30a4a0d`.
+
+### Limitations
+- `Image.draft` only helps JPEG; PNG strips still decode fully for analysis
+  (Pillow has no PNG draft path) — acceptable since the dominant upload format
+  is JPEG, and PNG strips of the same pixel count are proportionally rarer.
+- GC is manual (`POST /api/gc`); no scheduled sweep yet.
+
+### Next step
+- Commit this docs entry (D-035, ROADMAP, FEATURES), run `graphify update .`,
+  push on go-ahead. Then module 4 `measurement`: `docs/M9-MEASUREMENT.md`
+  HP-baseline checklist, Mac reference measurement, CONSTRAINTS enforcement,
+  docs D-036.

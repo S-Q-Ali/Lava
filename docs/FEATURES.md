@@ -203,6 +203,13 @@ Operations: split, trim, move, delete, duplicate, replace asset, re-time, reorde
   (`asyncio.to_thread`) so health and proxy requests answer during a render.
   The render timeout is configurable (`render.timeoutSeconds`, default 600,
   reported as `renderTimeoutMs` on `/api/health`).
+- Memory tuning (D-035): manhwa analysis decodes a JPEG strip straight to the
+  ≤512 px analysis size via `Image.draft`, so full-resolution pixels never
+  materialise in RAM unless crops are saved; export zips stream from a spooled
+  temp file one panel at a time (64 KiB chunks); `POST /api/gc` sweeps proxy
+  cache files older than `gc.proxyTtlDays` (default 7, `dryRun` supported);
+  `motion.upscaleFactor` (default 3, validated 1..8) tunes the zoom/pan
+  headroom scale in the render filter chain.
 - Proxy previews; full-resolution offline render. Implemented (D-033): deterministic SHA-prefix proxy service `POST/GET /api/proxy` — image proxies are WebP (quality 80, max width 480, max height 960, no upscale), video proxies are MP4 (height ≤480, 15 fps, max 120 s, audio stripped), cached under `cache/backend/proxy`; the preview panel lazily requests a proxy per asset and renders the memoized `<img>`/`<video>` from it, falling back to the original blob URL when the sidecar is offline. Renders always use original assets.
 - Configurable local-first directories (`.venv/`, `node_modules/`, `models/`, `cache/`, `temp/`, `projects/`, `tools/ffmpeg/`).
 - Performance sanity checks on the baseline HP Pavilion 15.

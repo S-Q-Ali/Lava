@@ -180,12 +180,12 @@ Build order: proxy-preview → runtime-optimization → memory-tuning → baseli
 - [x] Slice 4: frontend bundle baseline — 91.8 kB gzip / 307.2 kB raw ≤ 500 kB gate; CONSTRAINTS row filled
 - [x] Slice 5: docs D-034/ROADMAP/SESSION_LOG 29 + graphify + regression
 
-### Module 3: memory-tuning
-- [ ] Slice 1: manhwa streaming decode — `Image.draft()` in detect + tests
-- [ ] Slice 2: export bundle streaming — disk-streamed zip + tests
-- [ ] Slice 3: cache GC — `gc.py` + `POST /api/gc` + tests
-- [ ] Slice 4: motion upscale config — `motion.upscaleFactor` + parity tests
-- [ ] Slice 5: docs D-035/ROADMAP/SESSION_LOG 30 + graphify + regression + push go-ahead
+### Module 3: memory-tuning ✓ DONE
+- [x] Slice 1: manhwa streaming decode — `Image.draft()` in detect + tests
+- [x] Slice 2: export bundle streaming — disk-streamed zip + tests
+- [x] Slice 3: cache GC — `gc.py` + `POST /api/gc` + tests
+- [x] Slice 4: motion upscale config — `motion.upscaleFactor` + parity tests
+- [x] Slice 5: docs D-035/ROADMAP/SESSION_LOG 30 + graphify + regression + push go-ahead
 
 ### Module 4: baseline-validation
 - [ ] Slice 1: HP measurement checklist (`M9-MEASUREMENT.md`)

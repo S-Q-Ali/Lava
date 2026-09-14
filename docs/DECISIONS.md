@@ -728,3 +728,48 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
 - **Status**: Locked and shipped for M9 module 2 `runtime-optimization`
   (commit 949f64c backend, c89518f frontend; backend 428 → 437; bundle baseline
   91.8 kB gzip with a ≤ 500 kB gate). Next: module 3 `memory-tuning`.
+
+## D-035 — Draft decode, streamed export, cache GC, upscale config (M9 memory-tuning)
+
+- **Date**: 2026-09-14
+- **WHAT**: Module 3 of M9. Manhwa analysis decodes a tall JPEG strip straight
+  to the analysis size (≤512 px) via `Image.draft` so the full-resolution strip
+  never materialises in RAM; export zips are streamed from a spooled temp file
+  one panel at a time instead of building the whole archive in memory; regenerable
+  proxy cache files older than a configurable TTL are swept by a new
+  `POST /api/gc` endpoint; the zoom/pan headroom upscale factor is now a
+  configurable integer (default 3, validated 1..8) instead of a hardcoded `3`.
+- **WHY**: The baseline machine has 16 GB RAM but only 2 GB GPU + integrated
+  graphics; tall manhwa strips and multi-panel exports can spike memory to
+  dangerous levels; proxy files accumulate on disk with no self-cleanup; the
+  hardcoded `scale=iw*3` pre-zoom headroom cannot be tuned for very large or
+  very small source images.
+- **HOW**:
+  - `_open_source` now returns a lazy PIL image (no `Image.load()`). Analysis
+    re-opens the file pointer and calls `Image.draft("RGB", (ana_w, ana_h))`
+    so JPEGs decode at the downsampled size; the full resolution is deferred
+    to the `save=True` crop path. Tests verify draft invocation, non-JPEG
+    fallback, in-memory bypass, parity vs full-decode and original-res crops.
+  - `materialize_export` delegates to a new lazy `iter_export_files` generator
+    that encodes one panel per yield; `SpooledTemporaryFile` writes the zip
+    (RAM ≤ 1 MiB, spills to disk) and streams 64 KiB chunks back. Existing
+    test suite plus new lazy-parity tests confirm the export is identical.
+  - `gc.py` defines `GcReport` / `purge_stale_proxies` against content-hash
+    proxy files (16-hex `.webp` / `_proxy.mp4`); stray files are ignored.
+    `studio.config.json` `gc.proxyTtlDays` feeds `Config.proxy_ttl_days`
+    (default 7). `POST /api/gc` accepts optional `ttlDays` and `dryRun`,
+    offloads via `asyncio.to_thread`, returns `{purged,freedBytes,
+    remaining,scope}`. 7 tests cover stale/safe/TTL/endpoint.
+  - `studio.config.json` gains `motion.upscaleFactor` →
+    `Config.motion_upscale_factor`. `RenderSettings` carries `upscale_factor`
+    (default 3); `_motion_filters` emits `scale=iw*N:ih*N:flags=bicubic`
+    where N = `upscale_factor`, validated 1..8. Existing tests pass unchanged
+    (default 3); new tests cover custom factor, range rejection and default.
+- **Alternatives considered**: a background sweep thread (rejected — overkill
+  for a single-user local sidecar); canvas-based client-side proxy decode
+  (rejected — duplicated CPU cost and misses server disk cache); `draw`
+  for streaming JPEG (rejected — JPEG is sequential, draft is the canonical
+  Pillow path and covers the dominant format).
+- **Status**: Locked and shipped for M9 module 3 `memory-tuning` (commits
+  0337b7d, 108bcb8, 0d858e7, 30a4a0d; backend 437 → 456). Next: module 4
+  `measurement`.
