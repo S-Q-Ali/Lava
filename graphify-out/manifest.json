@@ -42,15 +42,15 @@
     "semantic_hash": "2d0c59cdca2006e6b8745dfd1f121314"
   },
   "frontend/src/components/PreviewPanel.tsx": {
-    "mtime": 1789240263.9366708,
-    "seen": 1789240649.221749,
-    "ast_hash": "c0bfd3b022e9ed760182a79f741b26a4",
+    "mtime": 1789340394.7728078,
+    "seen": 1789398097.429045,
+    "ast_hash": "8d55ab5a9ecd6e8ebc8a69b45bddd1a3",
     "semantic_hash": ""
   },
   "frontend/src/components/timeline/ClipBlock.tsx": {
-    "mtime": 1789218822.9430342,
-    "seen": 1789219026.016633,
-    "ast_hash": "94a97bf5254d02ae30eb39abdf929a8d",
+    "mtime": 1789339864.314842,
+    "seen": 1789398097.4290571,
+    "ast_hash": "d01682a9f6f09a71b55bf0eb86c2f24a",
     "semantic_hash": ""
   },
   "frontend/src/components/timeline/TimelinePanel.tsx": {
@@ -78,9 +78,9 @@
     "semantic_hash": ""
   },
   "frontend/src/editor/ops.ts": {
-    "mtime": 1789163929.5095198,
-    "seen": 1789164963.8932228,
-    "ast_hash": "3f9086ccdc939f22a6330cb0d1d812c9",
+    "mtime": 1789339565.3472784,
+    "seen": 1789398097.429085,
+    "ast_hash": "2097fa3895f8b1719fbce8e21bd41911",
     "semantic_hash": ""
   },
   "frontend/src/editor/types.ts": {
@@ -108,9 +108,9 @@
     "semantic_hash": ""
   },
   "frontend/src/store/editorStore.ts": {
-    "mtime": 1789295165.2750793,
-    "seen": 1789295451.958108,
-    "ast_hash": "fa1a7b926310adcce44bbf25029f753c",
+    "mtime": 1789339523.063462,
+    "seen": 1789398097.4291399,
+    "ast_hash": "78ed140bbffafda9b03e86eca15c908f",
     "semantic_hash": ""
   },
   "frontend/tsconfig.app.json": {
@@ -366,15 +366,15 @@
     "semantic_hash": ""
   },
   "docs/ROADMAP.md": {
-    "mtime": 1789337878.3799124,
-    "seen": 1789338028.979351,
-    "ast_hash": "5bbffa2b84e0cb7686d3b97386db8a00",
+    "mtime": 1789398007.8797839,
+    "seen": 1789398097.429246,
+    "ast_hash": "8501ea0e212935eaa1ce8f3a8cf6a269",
     "semantic_hash": ""
   },
   "docs/SESSION_LOG.md": {
-    "mtime": 1789334344.5976465,
-    "seen": 1789334359.971493,
-    "ast_hash": "3b4540df1e7cca185c3b452a0bfe2feb",
+    "mtime": 1789398071.1603553,
+    "seen": 1789398097.429248,
+    "ast_hash": "987c5e812ba639858e9f23cb67cbd50d",
     "semantic_hash": ""
   },
   "docs/TEST_PLAN.md": {
@@ -432,15 +432,15 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/main.py": {
-    "mtime": 1789333735.6869073,
-    "seen": 1789334359.971227,
-    "ast_hash": "8befe0b8002c68e58b1e3bd4151c452a",
+    "mtime": 1789340143.5139842,
+    "seen": 1789398097.4288,
+    "ast_hash": "2579e5bb3551751e81509c84a8ebbd6b",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/media.py": {
-    "mtime": 1789313924.7609093,
-    "seen": 1789324386.65779,
-    "ast_hash": "ae8504290f4244bc302f2749baf54fc2",
+    "mtime": 1789339988.9661946,
+    "seen": 1789398097.428861,
+    "ast_hash": "defc014a74d1a99c8133a068ba8dbb4a",
     "semantic_hash": ""
   },
   "backend/tests/conftest.py": {
@@ -822,15 +822,15 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/captions.py": {
-    "mtime": 1789308790.9187248,
-    "seen": 1789309537.366815,
-    "ast_hash": "ac898ca7836beedfafe352c61811ffda",
+    "mtime": 1789340560.51451,
+    "seen": 1789398097.428759,
+    "ast_hash": "a3ceafdf44ea64fd74f401893579e06a",
     "semantic_hash": ""
   },
   "backend/tests/test_captions.py": {
-    "mtime": 1789308621.3129368,
-    "seen": 1789309537.366855,
-    "ast_hash": "f6969c12de25e5faefdd865236bc2dc0",
+    "mtime": 1789340628.9987013,
+    "seen": 1789398097.4289029,
+    "ast_hash": "a4a06b8cb7474c5d44cd88975b369348",
     "semantic_hash": ""
   },
   "frontend/src/components/CaptionPanel.test.tsx": {
@@ -1074,9 +1074,9 @@
     "semantic_hash": ""
   },
   "frontend/src/components/TemplateEditorPanel.tsx": {
-    "mtime": 1789309359.0610745,
-    "seen": 1789309537.3669271,
-    "ast_hash": "e00c8f42cec13876eff8770a61cb692a",
+    "mtime": 1789397481.9537172,
+    "seen": 1789398097.429049,
+    "ast_hash": "7bdd7fe345056695f164c283b5e98be4",
     "semantic_hash": ""
   },
   "frontend/src/editor/templateEditor.test.ts": {
@@ -1326,9 +1326,9 @@
     "semantic_hash": ""
   },
   "frontend/src/components/ManhwaPanel.tsx": {
-    "mtime": 1789337507.0585527,
-    "seen": 1789338028.9787788,
-    "ast_hash": "e954986d46c2922a3bc2cda182fbe27d",
+    "mtime": 1789397883.9025488,
+    "seen": 1789398097.42903,
+    "ast_hash": "c1168739ed92bb085a156468a86420c8",
     "semantic_hash": ""
   },
   "frontend/src/services/manhwa.test.ts": {
