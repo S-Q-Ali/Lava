@@ -78,15 +78,38 @@ class GutterBand:
 
 
 def load_analysis_image(image: Image.Image, max_width: int = DEFAULT_MAX_WIDTH):
-    """Convert to gray float analysis image; returns (gray, ana_w, ana_h, factor)."""
-    rgb = image.convert("RGB")
-    src_w, src_h = rgb.size
-    arr = np.asarray(rgb, dtype=np.float32)
+    """Convert to gray float analysis image; returns (gray, ana_w, ana_h, factor).
+
+    Peak memory guard: for JPEG strips the pixels are decoded straight to the
+    analysis size via ``Image.draft`` (Pillow then reads only a decimated
+    subset), so a tall full-resolution strip never materialises in RAM just to
+    be downscaled. Non-JPEG (or already-decoded) images fall back to a normal
+    convert+resize.
+    """
+    src_w, src_h = image.size
     ana_w, ana_h, factor = analysis_scale(src_w, src_h, max_width)
-    if (ana_w, ana_h) != (src_w, src_h):
-        arr = cv2.resize(arr, (ana_w, ana_h), interpolation=cv2.INTER_AREA)
+    arr = _analysis_array(image, (ana_w, ana_h))
     gray = arr[..., 0] * 0.299 + arr[..., 1] * 0.587 + arr[..., 2] * 0.114
     return gray, ana_w, ana_h, factor
+
+
+def _analysis_array(image: Image.Image, size: tuple[int, int]) -> np.ndarray:
+    """Decode ``image`` to a float32 RGB array at ``size`` (draft when possible)."""
+    decoded = image
+    fp = getattr(image, "fp", None)
+    if getattr(image, "format", None) == "JPEG" and fp is not None and tuple(size) != image.size:
+        try:
+            fp.seek(0)
+            draft = Image.open(fp)
+            draft.draft("RGB", size)
+            decoded = draft
+        except Exception:
+            decoded = image
+    rgb = decoded.convert("RGB")
+    arr = np.asarray(rgb, dtype=np.float32)
+    if tuple(rgb.size) != tuple(size):
+        arr = cv2.resize(arr, tuple(size), interpolation=cv2.INTER_AREA)
+    return arr
 
 
 def _bg_estimate(gray: np.ndarray) -> int:
@@ -307,7 +330,7 @@ def detect_strip(
         base = Path(cache_dir) / "manhwa" / source_id
         base.mkdir(parents=True, exist_ok=True)
         for panel in panels:
-            crop = image.crop((panel.x, panel.y, panel.x + panel.w, panel.y + panel.h))
+            crop = image.crop((panel.x, panel.y, panel.x + panel.w, panel.y + panel.h)).convert("RGB")
             crop.save(base / asset_name(panel.order, len(panels)), format="PNG")
         StripRegistry(
             path=base / "registry.json",
@@ -323,7 +346,13 @@ def detect_strip(
 
 
 def _open_source(source: str | Path | Image.Image) -> tuple[Image.Image, str, str]:
-    """Return (RGB image, mime, source file name); unreadable → ManhwaError."""
+    """Return (image, mime, source file name); unreadable → ManhwaError.
+
+    For path inputs the image is returned **lazy** (PIL headers only, no pixels
+    decoded) so callers can choose when to incur the decode cost.  The first
+    consumer that needs pixel data (``convert``, ``crop``, ``save``) will
+    trigger a full load; the analysis path avoids this via JPEG draft decoding.
+    """
     if isinstance(source, Image.Image):
         image = source.convert("RGB") if source.mode != "RGB" else source
         return image, (source.format or "png").lower(), str(getattr(source, "filename", "") or "image")
@@ -332,9 +361,7 @@ def _open_source(source: str | Path | Image.Image) -> tuple[Image.Image, str, st
         with Image.open(path) as probe:
             probe.verify()
         image = Image.open(path)
-        image.load()
     except (OSError, ValueError) as exc:
         raise ManhwaError(f"can't read image {path}: {exc}") from exc
     mime = (image.format or path.suffix.lstrip(".").lower()).lower()
-    image = image.convert("RGB") if image.mode != "RGB" else image
     return image, mime, path.name
