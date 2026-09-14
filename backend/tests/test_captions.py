@@ -211,11 +211,15 @@ class TestAnimation:
 
     def test_manga_impact_pop_render(self):
         line = build_dialogue_line(make_item(style=style(animation="manga")))
-        assert "{fscx200\\fscy200\\alpha&HFF&\\t(0,180,2,\\fscx100\\fscy100\\alpha&H00&)}Warm sunsets" in line
+        assert "{fscx200\\fscy200\\alpha&HFF&\\t(0,180,2,\\fscx100\\fscy100\\alpha&H00&)}" in line
+        assert "{\\p1}m 0 0 l 100 0" in line
+        assert "{\\p0}Warm sunsets" in line
 
     def test_cinematic_fade_and_scale(self):
         line = build_dialogue_line(make_item(style=style(animation="cinematic")))
-        assert "{fad(400,400)}{fscx96\\fscy96\\t(0,2000,1,\\fscx100\\fscy100)}Warm sunsets" in line
+        assert "{fad(400,400)}{fscx96\\fscy96\\t(0,2000,1,\\fscx100\\fscy100)}" in line
+        assert "{\\p1}m 0 0 l 100 0" in line
+        assert "{\\p0}Warm sunsets" in line
 
     def test_meme_wobble_ramps(self):
         line = build_dialogue_line(make_item(style=style(animation="meme")))

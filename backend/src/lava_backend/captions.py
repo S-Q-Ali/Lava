@@ -195,9 +195,21 @@ def _kinetic_word_tokens(item: CaptionItemSpec, uppercase: bool) -> list[tuple[s
     return [(p.upper() if uppercase else p, i * step) for i, p in enumerate(parts)]
 
 
+# ASS drawing: speed lines (manga) and letterbox bars (cinematic)
+# {{\p1}} enables drawing mode, {{\p0}} disables. Coordinates are in PlayRes units.
+# Double braces {{ }} escape them from Python .format().
+_MANGA_SPEED_LINES = (
+    "{{\\p1}}m 0 0 l 100 0 m 0 50 l 80 50 m 0 100 l 60 100 "
+    "m 20 0 l 120 20 m 40 80 l 140 100 m 0 30 l 90 30 m 10 70 l 110 70{{\\p0}}"
+)
+_CINEMATIC_LETTERBOX = (
+    "{{\\p1}}m 0 0 l 100 0 l 100 10 l 0 10 "  # top bar
+    "m 0 90 l 100 90 l 100 100 l 0 90{{\\p0}}"  # bottom bar
+)
+
 _ANIMATION_WRAPPERS: dict[str, str] = {
-    "manga": "{{fscx200\\fscy200\\alpha&HFF&\\t(0,180,2,\\fscx100\\fscy100\\alpha&H00&)}}",
-    "cinematic": "{{fad(400,400)}}{{fscx96\\fscy96\\t(0,{dur_ms},1,\\fscx100\\fscy100)}}",
+    "manga": "{{fscx200\\fscy200\\alpha&HFF&\\t(0,180,2,\\fscx100\\fscy100\\alpha&H00&)}}" + _MANGA_SPEED_LINES,
+    "cinematic": "{{fad(400,400)}}{{fscx96\\fscy96\\t(0,{dur_ms},1,\\fscx100\\fscy100)}}" + _CINEMATIC_LETTERBOX,
     "meme": "{{fscx108\\fscy108\\t(0,60,1,\\fscx100\\fscy100)\\t(60,120,1,\\fscx106\\fscy106)\\t(120,180,1,\\fscx100\\fscy100)}}",
     "storytelling": "{{fad(600,600)}}{{fscx98\\fscy98\\t(0,{dur_ms},1,\\fscx100\\fscy100)}}",
 }
