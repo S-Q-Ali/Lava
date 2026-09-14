@@ -265,6 +265,7 @@ async def render_endpoint(
                 width=settings_model.width,
                 height=settings_model.height,
                 fps=settings_model.fps,
+                upscale_factor=config.motion_upscale_factor,
             ),
             transitions=transition_specs,
             captions=caption_specs,

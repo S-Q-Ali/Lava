@@ -37,6 +37,7 @@ class Config:
     max_renders: int = 12
     render_timeout_seconds: int = 600
     proxy_ttl_days: int = 7
+    motion_upscale_factor: int = 3
 
     @classmethod
     def load(cls) -> "Config":
@@ -51,6 +52,10 @@ class Config:
         render_timeout_seconds = int(render.get("timeoutSeconds", 600))
         gc = payload.get("gc", {})
         proxy_ttl_days = int(gc.get("proxyTtlDays", 7))
+        motion = payload.get("motion", {})
+        motion_upscale_factor = int(motion.get("upscaleFactor", 3))
+        if not (1 <= motion_upscale_factor <= 8):
+            raise ValueError("motion.upscaleFactor must be an integer in 1..8")
 
         cache = root / "cache" / "backend"
         return cls(
@@ -71,6 +76,7 @@ class Config:
             presets_dir=root / "presets",
             render_timeout_seconds=render_timeout_seconds,
             proxy_ttl_days=proxy_ttl_days,
+            motion_upscale_factor=motion_upscale_factor,
         )
 
 

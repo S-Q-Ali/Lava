@@ -130,6 +130,11 @@ def test_config_defaults_render_timeout_when_missing(monkeypatch):
     assert Config.load().render_timeout_seconds == 600
 
 
+def test_config_defaults_motion_upscale_factor_when_missing(monkeypatch):
+    monkeypatch.setattr("lava_backend.config._payload", lambda: {})
+    assert Config.load().motion_upscale_factor == 3
+
+
 def test_health_reports_render_timeout_ms(client):
     res = client.get("/api/health")
     assert res.status_code == 200

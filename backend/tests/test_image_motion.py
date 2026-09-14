@@ -109,6 +109,28 @@ def test_unknown_or_offrange_motion_rejected(mtype):
     assert exc.value.code == "MOTION_INVALID"
 
 
+def test_custom_upscale_factor_replaces_default_three():
+    m = MotionSpec(type="zoom-in", strength=1.0)
+    filters = _motion_filters(m, RenderSettings(width=W, height=H, fps=10, upscale_factor=2), 2.0)
+    assert "scale=iw*2:ih*2:flags=bicubic" in filters[0]
+    zoompan_scale = "s=640x360"
+    assert zoompan_scale in filters[1]
+
+
+def test_upscale_factor_out_of_range_rejected():
+    m = MotionSpec(type="zoom-in", strength=1.0)
+    for bad in (0, 9):
+        with pytest.raises(ApiError) as exc:
+            _motion_filters(m, RenderSettings(width=W, height=H, fps=10, upscale_factor=bad), 2.0)
+        assert exc.value.code == "MOTION_INVALID"
+
+
+def test_upscale_factor_default_is_three():
+    m = MotionSpec(type="zoom-in", strength=1.0)
+    filters = _motion_filters(m, RenderSettings(width=W, height=H, fps=10), 2.0)
+    assert "scale=iw*3:ih*3:flags=bicubic" in filters[0]
+
+
 def test_render_motion_clip_keeps_duration(tmp_path):
     cfg = config_module.Config.load()
     img = tmp_path / "a.png"

@@ -47,6 +47,7 @@ class RenderSettings:
     width: int = 1280
     height: int = 720
     fps: int = 30
+    upscale_factor: int = 3
 
 
 @dataclass
@@ -89,11 +90,15 @@ def _motion_filters(motion: MotionSpec, settings: RenderSettings, duration: floa
     _validate_motion(motion)
     if motion.strength <= 0.0:
         return []
+    if not (1 <= settings.upscale_factor <= 8):
+        raise ApiError(
+            422, "MOTION_INVALID", "upscale factor must be an integer in 1..8"
+        )
     F = 1 + 0.15 * motion.strength
     W, H = settings.width, settings.height
     N = max(2, int(round(duration * settings.fps)))
     span = f"on/{N - 1:g}"
-    upscale = "scale=iw*3:ih*3:flags=bicubic"
+    upscale = f"scale=iw*{settings.upscale_factor:g}:ih*{settings.upscale_factor:g}:flags=bicubic"
     slide_x = f"(iw-iw/{F:g})"
     slide_y = f"(ih-ih/{F:g})"
     center_x = f"{slide_x}/2"
