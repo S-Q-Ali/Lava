@@ -698,3 +698,33 @@ Lightweight architecture decision records (WHAT / WHY / HOW / Alternatives / Sta
 - **Status**: Locked and shipped for M9 module 1 `proxy-preview` (slices 1–3:
   proxy-core 3f789e9, proxy-api 0b6af2d, preview-preview c9b0a34; backend
   404 → 428, frontend 284 → 297). Next: module 2 `runtime-optimization`.
+
+## D-034 — Lazy models + thread offload + configurable render timeout (M9 runtime-optimization)
+
+- **Date**: 2026-09-14
+- **WHAT**: Module 2 of M9. Model objects are no longer built at server import;
+  every blocking FFmpeg/ONNX/whisper call runs off the event loop in a thread;
+  the render timeout is configurable instead of a hard 120 s/180 s.
+- **WHY**: The weak baseline CPU and the shared local sidecar mean long, blocking
+  work inside async handlers stalls every other request (health polling, proxy
+  generation, probes) and a fixed short timeout silently kills legitimate long
+  renders. Making the timeout a config lets the measurement phase (module 4)
+  tune it per machine without code changes.
+- **HOW**: `matching._get_matcher` / `transcribe._get_transcriber` build the real
+  embedder/transcriber on first request and cache on `app.state` (tests keep
+  injecting fakes on the same state). `render_endpoint`, `create_proxy`,
+  `matching.assign` and `transcriber.transcribe` run through
+  `asyncio.to_thread(...)` so the loop stays free (verified by a concurrency
+  test: `/api/health` answers while a render is in flight). `studio.config.json`
+  gains `render.timeoutSeconds` (default 600) → `Config.render_timeout_seconds`
+  → `media._run` timeout, and `/api/health` exposes `renderTimeoutMs`; the
+  frontend abort went from a hard 180 000 ms to `RENDER_TIMEOUT_MS` 600 000 ms
+  matching the server default.
+- **Alternatives considered**: a job queue with status endpoints (rejected —
+  overkill while the sidecar is single-user local; offload preserves the
+  synchronous request/response contract); eager model warm-up at startup
+  (rejected — costs RAM and seconds on every start for features users may never
+  hit, and module 3 memory-tuning forbids it on the baseline).
+- **Status**: Locked and shipped for M9 module 2 `runtime-optimization`
+  (commit 949f64c backend, c89518f frontend; backend 428 → 437; bundle baseline
+  91.8 kB gzip with a ≤ 500 kB gate). Next: module 3 `memory-tuning`.

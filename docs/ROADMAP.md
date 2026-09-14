@@ -93,6 +93,7 @@ Definition of done for ANY milestone installments within it: implementation exis
 
 ## Milestone 9 — Hardware validation
 - [x] Proxy preview — deterministic SHA-prefix proxy service (`POST/GET /api/proxy`): WebP images (max 480×960) / MP4 video (height ≤480, 15fps, ≤120s), cache under `cache/backend/proxy`, frontend lazy resolve + memoized PreviewPanel render; render path untouched. Backend 404 → 428, frontend 284 → 297 (D-033)
+- [x] Runtime optimization — lazy model factories (matcher/transcriber built on first use, startup touches no model bytes), all blocking FFmpeg/ONNX/whisper work offloaded to threads (`asyncio.to_thread`) so health answers during render, configurable render timeout (`render.timeoutSeconds` default 600 → `renderTimeoutMs` on health, 600s client abort). Backend → 437, bundle baseline 91.8 kB gzip (≤500 kB gate) (D-034)
 - [ ] Test on baseline HP Pavilion 15
 - [ ] CPU fallback
 - [ ] Memory/performance optimization

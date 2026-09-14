@@ -197,6 +197,12 @@ Operations: split, trim, move, delete, duplicate, replace asset, re-time, reorde
 
 - CPU fallback is mandatory.
 - Lightweight models and optional model packs.
+- Lazy model loading and non-blocking jobs (D-034): matcher/transcriber are
+  built on first use (startup touches no model bytes); FFmpeg render, proxy
+  generation, ONNX matching and whisper transcription run off the event loop
+  (`asyncio.to_thread`) so health and proxy requests answer during a render.
+  The render timeout is configurable (`render.timeoutSeconds`, default 600,
+  reported as `renderTimeoutMs` on `/api/health`).
 - Proxy previews; full-resolution offline render. Implemented (D-033): deterministic SHA-prefix proxy service `POST/GET /api/proxy` — image proxies are WebP (quality 80, max width 480, max height 960, no upscale), video proxies are MP4 (height ≤480, 15 fps, max 120 s, audio stripped), cached under `cache/backend/proxy`; the preview panel lazily requests a proxy per asset and renders the memoized `<img>`/`<video>` from it, falling back to the original blob URL when the sidecar is offline. Renders always use original assets.
 - Configurable local-first directories (`.venv/`, `node_modules/`, `models/`, `cache/`, `temp/`, `projects/`, `tools/ffmpeg/`).
 - Performance sanity checks on the baseline HP Pavilion 15.

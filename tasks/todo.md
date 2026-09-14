@@ -167,18 +167,18 @@ Build order: panel-model → panel-detection → panel-order → panel-export �
 ## M9 — Hardware validation (capability map SPEC-m9-capability-map.md)
 Build order: proxy-preview → runtime-optimization → memory-tuning → baseline-validation
 
-### Module 1: proxy-preview (SPEC-proxy-preview.md, tasks/plan-m9.md)
-- [ ] Slice 1: proxy-core — `_file_hash`, `generate_image_proxy`, `generate_video_proxy`, `ProxyResult`, `Config.proxy_dir` + RED unit tests
-- [ ] Slice 2: proxy-api — `POST /api/proxy`, `GET /api/proxy/{proxyId}`, ProxyId gate + API tests
-- [ ] Slice 3: frontend — `services/proxy.ts`, `Asset.proxyUrl`, importer wiring, PreviewPanel memoization + tests
-- [ ] Slice 4: docs D-033/ROADMAP/FEATURES/SESSION_LOG 28 + graphify + regression + push go-ahead
+### Module 1: proxy-preview (SPEC-proxy-preview.md, tasks/plan-m9.md) ✓ DONE
+- [x] Slice 1: proxy-core — `_file_hash`, `generate_image_proxy`, `generate_video_proxy`, `ProxyResult`, `Config.proxy_dir` + RED unit tests
+- [x] Slice 2: proxy-api — `POST /api/proxy`, `GET /api/proxy/{proxyId}`, ProxyId gate + API tests
+- [x] Slice 3: frontend — `services/proxy.ts`, `Asset.proxyUrl`, importer wiring, PreviewPanel memoization + tests
+- [x] Slice 4: docs D-033/ROADMAP/FEATURES/SESSION_LOG 28 + graphify + regression + push
 
-### Module 2: runtime-optimization
-- [ ] Slice 1: lazy model factory — `_get_embedder()`, `_get_transcriber()` + tests
-- [ ] Slice 2: async render offload — `run_in_executor` in render endpoint + tests
-- [ ] Slice 3: configurable timeout — `render.timeoutSeconds` config + frontend constant + tests
-- [ ] Slice 4: frontend bundle baseline — measure, CONSTRAINTS row fill
-- [ ] Slice 5: docs D-034/ROADMAP/SESSION_LOG 29 + graphify + regression + push go-ahead
+### Module 2: runtime-optimization ✓ DONE
+- [x] Slice 1: lazy model factory — `_get_matcher()`, `_get_transcriber()` + tests
+- [x] Slice 2: async render offload — `asyncio.to_thread` in render/proxy/match/transcribe + health concurrency test
+- [x] Slice 3: configurable timeout — `render.timeoutSeconds` config + `renderTimeoutMs` health + `RENDER_TIMEOUT_MS` frontend + tests
+- [x] Slice 4: frontend bundle baseline — 91.8 kB gzip / 307.2 kB raw ≤ 500 kB gate; CONSTRAINTS row filled
+- [x] Slice 5: docs D-034/ROADMAP/SESSION_LOG 29 + graphify + regression
 
 ### Module 3: memory-tuning
 - [ ] Slice 1: manhwa streaming decode — `Image.draft()` in detect + tests

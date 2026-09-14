@@ -1610,3 +1610,65 @@ class of trap as the D-025 brace escape.
   slice 1 lazy model factory (`_get_embedder`/`_get_transcriber`), slice 2
   render `run_in_executor` offload + `render.timeoutSeconds` config, slice 3
   bundle baseline, slices 4–5 tests + docs (D-034).
+
+## Session 29 — M9 module 2 `runtime-optimization` (5 slices)
+
+### WHAT
+Shipped the second M9 module in this session span:
+
+- **Slice 1 lazy models** — `main.py` no longer constructs the matcher or
+  transcriber at import; `matching._get_matcher` and `transcribe._get_transcriber`
+  build them on first use (cached on `app.state`, pre-injected test fakes
+  respected). Startup now touches no model bytes. (Commit `949f64c`)
+- **Slice 2 async offload** — every blocking call inside an async handler is
+  now moved off the event loop: FFmpeg render (`render_endpoint`),
+  image/video proxy generation (`create_proxy`), ONNX matching
+  (`matching.assign`) and whisper transcription (`transcriber.transcribe`)
+  all run via `asyncio.to_thread`. A new concurrency test proves `/api/health`
+  answers while a render is deliberately in flight.
+- **Slice 3 configurable timeout** — `studio.config.json` gains
+  `render.timeoutSeconds` (default 600) → `Config.render_timeout_seconds` →
+  `media._run` timeout (TOOL_TIMEOUT message names the seconds). `/api/health`
+  exposes `renderTimeoutMs`. Frontend swaps the hard 180 s render abort for
+  `RENDER_TIMEOUT_MS` 600 000 s matching the server default. (Committs `949f64c`,
+  `c89518f`)
+- **Slice 4 bundle baseline** — main bundle measured 91.8 kB gzip / 307.2 kB
+  raw; CONSTRAINTS measured rows updated (bundle ≤ 500 kB gzip gate, backend
+  437, frontend 297 test floors). (Commit `c89518f`)
+
+### HOW
+TDD per slice. The `_get_matcher`/`_get_transcriber` factories return `state`
+values via `getattr`; the routes must pass `request.app.state`, not
+`request.app` — a first wiring attempt passed the app instance and the lazy
+factory rebuilt real models over the inference fakes, breaking three existing
+tests (they now assert the fake is honoured). Verified with
+`./.venv/bin/python -m pytest` (437) then `npx vitest run` (297) + build +
+lint. `test_runtime.py` holds the 9 new tests (startup-no-models, build-once-
+reuse, injected-fake passthrough, health-during-render, config timeout
+read/default/report, `_run` timeout message).
+
+### Decisions
+- **D-034** — Lazy models + thread offload + configurable timeout. No job
+  queue: synchronous request/response is preserved by offloading to threads.
+- Bundle baseline is the CONSTRAINTS ratchet floor for this machine; module 4
+  re-measures on the baseline HP.
+
+### Verify
+- Backend: `./.venv/bin/python -m pytest` 437 passed (9 new).
+- Frontend: `npx vitest run` 297 passed, build clean, oxlint 0 errors
+  (2 pre-existing warnings).
+- Commits: `949f64c`, `c89518f`.
+
+### Limitations
+- The event loop is now responsive, but a full render still monopolizes CPU
+  (single-user local sidecar); module 4 measures render times on the baseline.
+- Client timeout is a constant mirroring the server default; it does not yet
+  read `renderTimeoutMs` live from `/api/health` (config change requires a
+  frontend bump).
+
+### Next step
+- Commit this docs entry (D-034, ROADMAP M9 runtime-optimization tick), run
+  `graphify update .`, push on go-ahead. Then module 3 `memory-tuning`:
+  slice 1 manhwa streaming decode (`Image.draft`), slice 2 export bundle
+  streaming to disk, slice 3 cache GC (`gc.py` + `POST /api/gc`), slice 4
+  motion upscale config (`motion.upscaleFactor`), slice 5 docs (D-035).
