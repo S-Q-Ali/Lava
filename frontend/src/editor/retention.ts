@@ -41,7 +41,7 @@ function hookStrength(beats: Beat[]): number {
     /\b(did you know|imagine|what if|secret|hidden|never|always|every)\b/,
     /\b(stop|listen|watch|look|wait|hold)\b/,
     /\?$/,
-    /\!$/,
+    /!$/,
   ]
   let score = 0
   for (const pattern of hookPatterns) {
