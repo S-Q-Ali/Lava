@@ -1818,3 +1818,39 @@ status. No product code changed.
 ### Next step
 - Commit docs + bench docstring, `graphify update .`, then push on go-ahead.
   M9 is complete: milestone 9 closes with the Mac validation row.
+
+## Session 33 — Beta impression (D-038)
+
+### WHAT
+Declared **beta**: feature-complete with every authored CI gate green (backend
+457, frontend 297, bundle ≤ 500 kB, M9 measured on the Mac row) is now a *named,
+first-class, first-class phase* — tagged `v0.1.0-beta.0` — handed off for
+hands-on testing on whatever machine a tester has, *before* anything is called
+"final". Final = beta + M10 release hardening. The reframe that killed the
+"almost final, one more pass" infinite loop: an unfinished editor can never be
+proven done by looking at it, so the hand-off moment gets a name and a version.
+
+### HOW
+- **D-038** authored in DECISIONS: beta is a first-class release phase; Mac row
+  gates beta (Mac = same as logged M9 pass, machine-agnostic per D-036/D-037);
+  final awaits M10.
+- **ROADMAP:** `## Milestone 9.5 — Beta impression` block between M9 and M10,
+  all items ticked; FEATURES §10 beta bullet; tasks TODO tick.
+- **Versions harmonised** → `0.1.0-beta.0`: frontend `package.json` (0.0.0 →
+  beta), backend `pyproject.toml` + FastAPI title (0.1.0 → beta). Verified no
+  test asserts the app-version string; the only `version == 1` assert is the
+  *preset-schema* version (untouched).
+
+### Verify
+- Backend 457 passed; frontend 297 passed; both `tsc -b` green; bundle ≤ 500
+  kB. Working tree: docs + two version strings + one bench docstring typo fix.
+
+### Limitations
+- Beta is from-source testing on whatever machine a tester uses; no prebuilt
+  installers and no single mandated hardware row (D-036/D-037). Mac row is the
+  logged beta validation pass.
+
+### Next step
+- Commit docs + bench docstring, `graphify update .`, tag `v0.1.0-beta.0`, then
+  push + tag + GitHub prerelease on go-ahead. Beta closes as slice 1 of M10's
+  shadow slice; M10 release hardening starts next.

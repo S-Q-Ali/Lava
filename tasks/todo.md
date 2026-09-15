@@ -193,3 +193,5 @@ Build order: proxy-preview → runtime-optimization → memory-tuning → baseli
 - [x] Slice 3: CONSTRAINTS enforcement + ROADMAP M9 complete
 - [x] Slice 4: docs D-036/D-037, SESSION_LOG 31+32, graphify, final push
 - [x] D-037 reframe: validation machine-agnostic (optional per-machine rows incl. low-end)
+
+- [x] D-038: beta is first-class (0.1.0-beta.0, git tag v0.1.0-beta.0, D-038, SESSION 33). Backend 457 / frontend 297 untouched.

@@ -99,6 +99,16 @@ Definition of done for ANY milestone installments within it: implementation exis
 - [x] Machine-agnostic validation — the gate runs on whatever machine is available; Mac row passes (2.47 s full render, bound ≤ 120 s). Low-end targets (HP Pavilion 15) remain representative but optional (D-037)
 - [x] CPU fallback — design floor retained (no GPU-only models, CLIP/whisper on CPUExecutionProvider), validated on the logged machine; weak-hardware confirmation optional (D-037)
 
+## Milestone 9.5 — Beta impression
+
+Beta = feature-complete, every authored CI gate green, awaiting hands-on testing
+(D-038). Final = beta + M10 release hardening. The tag `v0.1.0-beta.0` is the
+beta cut; hands-on testers run from source on whatever machine they have and
+log into `docs/M9-MEASUREMENT.md` + `docs/M10-measurement.md` (optional rows).
+
+- [x] Beta meaning + phase — D-038 locked; beta/final split documented; versions → `0.1.0-beta.0` (backend + frontend), git tag `v0.1.0-beta.0` on the beta cut
+- [x] Hands-on validation slice — M9 macro bench is runnable on any machine; Mac row closes the authored-side gate; extra machine rows optional (D-036/D-037 mandate)
+
 ## Milestone 10 — Release hardening
 - Packaging
 - Installer/local app workflow

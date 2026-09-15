@@ -216,4 +216,8 @@ Operations: split, trim, move, delete, duplicate, replace asset, re-time, reorde
   HP Pavilion 15 design floor) can be appended as optional rows.
 - Proxy previews; full-resolution offline render. Implemented (D-033): deterministic SHA-prefix proxy service `POST/GET /api/proxy` — image proxies are WebP (quality 80, max width 480, max height 960, no upscale), video proxies are MP4 (height ≤480, 15 fps, max 120 s, audio stripped), cached under `cache/backend/proxy`; the preview panel lazily requests a proxy per asset and renders the memoized `<img>`/`<video>` from it, falling back to the original blob URL when the sidecar is offline. Renders always use original assets.
 - Configurable local-first directories (`.venv/`, `node_modules/`, `models/`, `cache/`, `temp/`, `projects/`, `tools/ffmpeg/`).
-- Performance sanity checks per logged machine (`tools/m9-macro-bench.py`, see the M9 measurement log).
+- Performance sanity checks per logged machine (`tools/m9-macro-bench.py`, see the M9 measurement log).- Beta phase (D-038): feature-complete with all authored CI gates green
+  (backend 457, frontend 297, bundle ≤ 500 kB, M9 measured) is a *named phase*,
+  tagged `v0.1.0-beta.0`, handed to hands-on testers on whatever machine they
+  have (any hardware, same `tools/m9-macro-bench.py` row log). Final = beta +
+  M10 release hardening. Run from source; no prebuilt installers in beta.

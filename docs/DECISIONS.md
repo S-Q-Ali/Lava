@@ -829,3 +829,39 @@ two minutes even on the weak baseline). Benchmarking render() with no
   remains the right floor for that constraint).
 - **Status**: Locked. M9 closes on the Mac row logged under D-036. Additional
   rows optional.
+
+## D-038 — Beta is a first-class release phase; Mac row gates beta; final awaits M10
+
+- **Date**: 2026-09-14
+- **WHAT**: Lava Studio goes out as a named **beta** before anything is called
+  "final". Beta = feature-complete, every authored CI gate green (backend 457,
+  frontend 297, bundle ≤ 500 kB gzip, M9 measured render-time bound quench),
+  handed to real hands-on users to test from source on whatever machine they
+  have. "Final" (1.0) additionally requires M10 release-hardening (packaging /
+  preview split + change-shaped release notes) and re-confirming no known-open
+  bound. Concretely: the version strings move to `0.1.0-beta.0` (frontend
+  package.json was still on the Vite-template `0.0.0`; backend was `0.1.0` — the
+  two now read the same beta tag and a git tag `v0.1.0-beta.0` points at the
+  beta cut).
+- **WHY**: Nobody can prove a local editor is done by looking at it. There needs
+  to be a moment where the product is deliberately labelled "not final, please
+  break it" and handed over — that moment IS beta. Without it, either we
+  over-claim with "final" or we never ship a shared artifact at all. The dev-Mac
+  M9 validation row (D-036/D-037) is the beta gate: it already proved render
+  time, memory, and CPU-fallback shape on the hardware at hand. Additional
+  machines (including the HP design floor) append optional beta rows; none gate.
+- **HOW**: Version bumps (`frontend/package.json` 0.0.0 → 0.1.0-beta.0,
+  `backend/pyproject.toml` + FastAPI title 0.1.0 → 0.1.0-beta.0 — verified no
+  runtime test or doc asserted the old string except the *preset-schema* version
+  `== 1`, which is untouched); D-038 + ROADMAP M9.5 (beta) block + FEATURES §10
+  beta line written; graphify updated; full regression re-run; tagged
+  `v0.1.0-beta.0`.
+- **Alternatives considered**: call the current state "final" (rejected — M10
+  hardening is unimplemented, and mislabelling erodes the only trust metric we
+  have); keep everything untagged until 1.0 (rejected — beta's whole point is a
+  stop where humans shove real files and clips at it, and a tag makes that stop
+  reachable); give beta a different product name (rejected — it is the same
+  product, an earlier stage).
+- **Status**: Locked on the Mac row. Beta artifacts are the `v0.1.0-beta.0`
+  tag at HEAD. Full regression green (457 / 297); graphified; tag created.
+  Final still needs M10.

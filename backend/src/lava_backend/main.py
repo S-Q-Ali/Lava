@@ -46,7 +46,7 @@ from .media import (
 from .proxy import ProxyError, file_hash, generate_image_proxy, generate_video_proxy
 from .transcribe import router as transcribe_router
 
-app = FastAPI(title="Lava Studio Media Sidecar", version="0.1.0")
+app = FastAPI(title="Lava Studio Media Sidecar", version="0.1.0-beta.0")
 
 app.state.tmp_dir = get_config().cache_dir / "tmp"
 app.state.tmp_dir.mkdir(parents=True, exist_ok=True)
