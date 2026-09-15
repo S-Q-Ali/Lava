@@ -1925,3 +1925,35 @@ Phase 1B of the V2 restructuring: replace the stacked InspectorPanel with dedica
 
 ### Next step
 - Phase 1C: `v2-bottom-assets` — bottom assets panel with category tabs, asset grid, Image-to-Image AI tool, and Tips panel.
+
+---
+
+## Session 36 — V2 Frontend: Bottom Assets Panel
+
+### Purpose (WHY)
+Phase 1C of the V2 restructuring: add the bottom assets panel with category tabs, asset grid, Image-to-Image AI tool, and Tips panel, matching the V2 reference layout.
+
+### WHAT
+- **AssetsPanel** (`components/AssetsPanel.tsx` + `.css`): horizontal panel with 7 category tabs (Recent, All, Images, Videos, Audio, Image to Image, Tips). Each tab routes to the appropriate content panel.
+- **AssetGrid** (`components/AssetGrid.tsx` + `.css`): thumbnail grid of assets, filtered by category. Shows empty states for each category. Supports drag-and-drop. Recent tab shows 24 most recent.
+- **ImageToImagePanel** (`components/ImageToImagePanel.tsx` + `.css`): drop zone for source image, prompt input, style preset select (Comic/Manhwa, Realistic, Anime, Cinematic), Generate button. Placeholder for future AI integration.
+- **TipsPanel** (`components/TipsPanel.tsx` + `.css`): 5 static contextual tips covering import, AI voice matching, manhwa panels, auto captions, and keyboard shortcuts.
+- **App.tsx** updated: bottom section splits timeline + assets vertically with `bottom-section` grid.
+- 11 new tests (7 AssetsPanel + 4 AssetGrid). Total frontend: 348.
+
+### HOW
+- Skills loaded: `frontend-ui-engineering`.
+- Existing editor store used for asset data.
+- TDD: tests written for AssetsPanel and AssetGrid.
+
+### Verify
+- Frontend: `npx vitest run` 348 passed (337 → 348: +11). `npx tsc -b` clean. `npx oxlint src` 0 errors (3 pre-existing warnings).
+- Commit: `dc8915d`.
+
+### Limitations
+- ImageToImagePanel is a placeholder — no actual AI inference wired yet.
+- AssetGrid thumbnails use simple `<img>` tags — no lazy loading or virtualization for large asset sets.
+- Tips content is static — not contextual to current workflow state.
+
+### Next step
+- Phase 1D: `v2-extractor` — presentation/image extractor panel in LeftWorkspace.

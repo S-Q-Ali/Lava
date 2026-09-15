@@ -24,9 +24,9 @@
     "semantic_hash": ""
   },
   "frontend/src/App.tsx": {
-    "mtime": 1789482317.353493,
-    "seen": 1789482583.9902458,
-    "ast_hash": "fcdff2db38d733feed2271b94e12d0c4",
+    "mtime": 1789482959.0587287,
+    "seen": 1789483134.0035882,
+    "ast_hash": "fc020ee3bce2d66198bf31ec120c7aa0",
     "semantic_hash": ""
   },
   "frontend/src/components/InspectorPanel.tsx": {
@@ -372,9 +372,9 @@
     "semantic_hash": ""
   },
   "docs/SESSION_LOG.md": {
-    "mtime": 1789482560.5575879,
-    "seen": 1789482583.990437,
-    "ast_hash": "e26b0ecbfc0d8fdffeae59ae9701c00b",
+    "mtime": 1789483119.2490385,
+    "seen": 1789483134.003863,
+    "ast_hash": "7a7689611aae3cf59b3ab26fa6a06c59",
     "semantic_hash": ""
   },
   "docs/TEST_PLAN.md": {
@@ -1545,6 +1545,42 @@
     "mtime": 1789482334.2255101,
     "seen": 1789482583.990282,
     "ast_hash": "e31d64b8a7cf56541006c2333e4d5454",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/AssetGrid.test.tsx": {
+    "mtime": 1789483069.6538718,
+    "seen": 1789483134.003596,
+    "ast_hash": "f42de4fd68ad965b9aff9ef2a59e76b5",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/AssetGrid.tsx": {
+    "mtime": 1789482784.051167,
+    "seen": 1789483134.003598,
+    "ast_hash": "7f3e58cf9f8096f5fb967a99adb0c9ec",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/AssetsPanel.test.tsx": {
+    "mtime": 1789483051.363022,
+    "seen": 1789483134.0035992,
+    "ast_hash": "211303b702245f89db625a4e7e9aa78d",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/AssetsPanel.tsx": {
+    "mtime": 1789482841.9103966,
+    "seen": 1789483134.0036008,
+    "ast_hash": "78e53f3a3e29fa013cd9eccfb4d7eb2d",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/ImageToImagePanel.tsx": {
+    "mtime": 1789483019.286182,
+    "seen": 1789483134.003616,
+    "ast_hash": "c3c399a6a7e970e0461ed31d47fee743",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/TipsPanel.tsx": {
+    "mtime": 1789482822.4862075,
+    "seen": 1789483134.003654,
+    "ast_hash": "b7012a46779718eaa2c4dc8d5b527ecb",
     "semantic_hash": ""
   }
 }
