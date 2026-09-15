@@ -62,6 +62,7 @@ export default function TranscriptPanel() {
   const transcripts = useEditorStore((s) => s.transcripts)
   const setPlayhead = useEditorStore((s) => s.setPlayhead)
   const updateTranscriptWord = useEditorStore((s) => s.updateTranscriptWord)
+  const resegmentTranscript = useEditorStore((s) => s.resegmentTranscript)
   const selectedClipId = useEditorStore((s) => s.selectedClipId)
   const analysis = useTranscriptStore((s) => s.analysis)
   const analyze = useTranscriptStore((s) => s.analyze)
@@ -162,6 +163,18 @@ export default function TranscriptPanel() {
                 </span>
               </div>
             ))}
+          </div>
+          <div className="transcript-actions">
+            <button
+              type="button"
+              className="resegment-btn"
+              onClick={() => resegmentTranscript(selectedAsset.id)}
+            >
+              Re-segment Beats
+            </button>
+            <p className="transcript-hint">
+              Re-run beat segmentation after editing words. Beat timings update on matched clips.
+            </p>
           </div>
         </>
       )}

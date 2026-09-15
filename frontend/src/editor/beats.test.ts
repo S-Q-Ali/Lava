@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { segmentBeats } from './beats'
+import { segmentBeats, resegmentBeats } from './beats'
 import type { Transcript } from './types'
 
 function transcript(overrides: Partial<Transcript> = {}): Transcript {
@@ -163,5 +163,56 @@ describe('segmentBeats', () => {
 
   it('returns an empty list for an empty transcript', () => {
     expect(segmentBeats(transcript())).toEqual([])
+  })
+})
+
+describe('resegmentBeats', () => {
+  it('preserves beat IDs when text matches', () => {
+    const t = transcript({
+      segments: [
+        { id: 0, text: 'hello world', start: 0, end: 2, avgLogprob: -0.1, confidence: 0.9, words: [] },
+        { id: 1, text: 'goodbye', start: 2, end: 4, avgLogprob: -0.1, confidence: 0.9, words: [] },
+      ],
+    })
+    const prev = segmentBeats(t)
+    expect(prev.length).toBe(2)
+    const reseg = resegmentBeats(t, prev)
+    expect(reseg.length).toBe(2)
+    expect(reseg[0].id).toBe(prev[0].id)
+    expect(reseg[1].id).toBe(prev[1].id)
+  })
+
+  it('assigns new IDs when text changes', () => {
+    const t1 = transcript({
+      segments: [
+        { id: 0, text: 'hello world', start: 0, end: 2, avgLogprob: -0.1, confidence: 0.9, words: [] },
+      ],
+    })
+    const prev = segmentBeats(t1)
+    const t2 = transcript({
+      segments: [
+        { id: 0, text: 'changed text', start: 0, end: 2, avgLogprob: -0.1, confidence: 0.9, words: [] },
+      ],
+    })
+    const reseg = resegmentBeats(t2, prev)
+    expect(reseg.length).toBe(1)
+    expect(reseg[0].id).not.toBe(prev[0].id)
+    expect(reseg[0].text).toBe('changed text')
+  })
+
+  it('handles empty previous beats', () => {
+    const t = transcript({
+      segments: [
+        { id: 0, text: 'new beat', start: 0, end: 2, avgLogprob: -0.1, confidence: 0.9, words: [] },
+      ],
+    })
+    const reseg = resegmentBeats(t, [])
+    expect(reseg.length).toBe(1)
+    expect(reseg[0].text).toBe('new beat')
+  })
+
+  it('handles empty transcript', () => {
+    const reseg = resegmentBeats(transcript(), [])
+    expect(reseg).toEqual([])
   })
 })

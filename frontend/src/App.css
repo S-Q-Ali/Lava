@@ -278,6 +278,22 @@
   cursor: default;
 }
 
+.transcript-actions {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.resegment-btn {
+  background: var(--accent) !important;
+  color: #fff !important;
+  width: 100%;
+}
+
+.resegment-btn:hover {
+  background: #d4822e !important;
+}
+
 /* Transitions */
 .transitions-panel {
   border-top: 1px solid var(--border);

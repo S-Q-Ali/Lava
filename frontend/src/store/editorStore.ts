@@ -18,6 +18,7 @@ import {
   removeCaption as omitCaption,
 } from '../editor/captions'
 import type { CaptionItem } from '../editor/captions'
+import { segmentBeats } from '../editor/beats'
 
 export interface MatchClipInput {
   trackId: string
@@ -70,6 +71,7 @@ interface EditorActions {
   setCaptionStyle(id: string, styleId: string): void
   applyPresetStyle(styleId: string, captionIds?: string[]): void
   removeCaption(id: string): void
+  resegmentTranscript(assetId: string): void
   undo(): void
   redo(): void
   reset(): void
@@ -253,6 +255,28 @@ export const useEditorStore = create<EditorState>()(
             })),
           ),
         })),
+      resegmentTranscript: (assetId) =>
+        set((s) => {
+          const transcript = s.transcripts[assetId]
+          if (!transcript) return s
+          const newBeats = segmentBeats(transcript)
+          const clipsWithBeat = s.clips
+            .map((clip, idx) => ({ clip, idx }))
+            .filter(({ clip }) => clip.beatId !== undefined)
+          const clips = [...s.clips]
+          for (const { clip, idx } of clipsWithBeat) {
+            const matchIdx = newBeats.findIndex((b) => b.id === clip.beatId)
+            if (matchIdx >= 0) {
+              const beat = newBeats[matchIdx]
+              clips[idx] = {
+                ...clip,
+                start: beat.start,
+                duration: Math.max(0.001, beat.end - beat.start),
+              }
+            }
+          }
+          return { clips }
+        }),
       undo: (): void => useEditorStore.temporal.getState().undo(),
       redo: (): void => useEditorStore.temporal.getState().redo(),
       reset: () => install(initialState()),

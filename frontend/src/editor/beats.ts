@@ -39,10 +39,21 @@ function splitSegment(
   return parts
 }
 
+function stableBeatId(start: number, end: number, text: string): string {
+  const key = `${start.toFixed(4)}:${end.toFixed(4)}:${text}`
+  let hash = 0
+  for (let i = 0; i < key.length; i++) {
+    const ch = key.charCodeAt(i)
+    hash = ((hash << 5) - hash + ch) | 0
+  }
+  return `b${(hash >>> 0).toString(36)}`
+}
+
 /**
  * Turns an M2 transcript into ordered visual beats: one per segment, split
  * further whenever an intra-segment pause is at or above the beat threshold.
  * A pause at or above threshold means a pause belongs to the following beat.
+ * Uses positional IDs (b0, b1, ...) for initial segmentation.
  */
 export function segmentBeats(
   transcript: { segments: TranscriptSegment[]; pauses: TranscriptPause[] },
@@ -67,4 +78,31 @@ export function segmentBeats(
     }
   }
   return beats
+}
+
+/**
+ * Re-segments a transcript after text edits, using stable content-based IDs.
+ * Beats whose text matches a previous beat preserve the old ID; new/changed
+ * beats get a content-based stable ID (hash of start+end+text).
+ */
+export function resegmentBeats(
+  transcript: { segments: TranscriptSegment[]; pauses: TranscriptPause[] },
+  previousBeats: Beat[],
+  { pauseThreshold = PAUSE_BEAT_THRESHOLD } = {},
+): Beat[] {
+  const newBeats = segmentBeats(transcript, { pauseThreshold })
+
+  const prevByText = new Map<string, Beat>()
+  for (const beat of previousBeats) {
+    if (!prevByText.has(beat.text)) prevByText.set(beat.text, beat)
+  }
+
+  return newBeats.map((beat) => {
+    const prev = prevByText.get(beat.text)
+    if (prev) {
+      prevByText.delete(beat.text)
+      return { ...beat, id: prev.id }
+    }
+    return { ...beat, id: stableBeatId(beat.start, beat.end, beat.text) }
+  })
 }
