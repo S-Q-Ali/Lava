@@ -1,16 +1,16 @@
-# Graph Report - Lava  (2026-09-15)
+# Graph Report - Lava  (2026-09-14)
 
 ## Corpus Check
-- 240 files · ~186,960 words
+- 240 files · ~186,349 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 3244 nodes · 5717 edges · 194 communities (182 shown, 10 thin omitted)
+- 3235 nodes · 5708 edges · 189 communities (176 shown, 11 thin omitted)
 - Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 228 edges (avg confidence: 0.93)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `6b7c3696`
+- Built from commit: `d1daf6da`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -90,7 +90,7 @@
 - Session 2026-09-12 — Session 4: M1 completion (save/load + clip editing)
 - Session 2026-09-12 — Session 5: M2 voice analysis (first slice)
 - Session 2026-09-12 — Session 6: M3 semantic image matching (first slice)
-- Panel
+- export.py
 - Session 12 — M4 module 4: image-motion (Ken Burns/drift on stills)
 - Spec: Timing fit + manual timing override (M3 remainder, slice-set B)
 - Implementation Plan: M3 remainder — timing fit + manual timing override
@@ -133,7 +133,7 @@
 - Spec: font-system (M6 module 1)
 - Session 14 — M6 module 1: font-system shipped (spec → plan → TDD slices → docs)
 - Spec: preset-registry (M6 module 2)
-- types.ts
+- TestClient
 - Spec: preset-import (M6 module 3)
 - Session 16 — M6 module 3 `preset-import` (import/export/delete + Custom writes)
 - TranscriptPanel.tsx
@@ -145,8 +145,8 @@
 - detect_strip
 - Spec: template-editor (M6 module 4)
 - Session 18 — M6 module 5 `animated-captions` (ASS treatments + contract)
-- RenderSettings
-- build_transition_graph
+- generate_video_proxy
+- media.py
 - Plan — M6 module 5: animated-captions
 - Index of decisions
 - SPEC — M7 module 1: `panel-model`
@@ -165,7 +165,7 @@
 - Plan — M7 module 1: panel-model
 - ApiError
 - make_panel
-- media.py
+- FontPanel.tsx
 - Session 25 — M7 module 6 `manhwa-api` (backend complete)
 - SPEC — M7 module 2: `panel-detection`
 - order.py
@@ -181,13 +181,13 @@
 - SPEC — M7 module 4: `panel-export`
 - Plan — M7 module 4: panel-export (full-res PNG/JPG + manifest)
 - Session 28 — M9 hardware validation plan + module 1 `proxy-preview` (4 slices)
-- panels.py
+- Panel
 - Session 26-27 — M7 panel-ui + M8 integrated editor (slices 1–4)
 - SPEC — M7 module 5: `panel-correction`
 - project.ts
 - Session 24 — M7 module 5 `panel-correction` (pure list ops) + export order fix
 - matching.py
-- App.tsx
+- TestProxyAPI
 - Plan — M7 module 5: panel-correction (pure list ops)
 - analysis_scale
 - SPEC — M7 module 7 `panel-ui` (Frontend Manhwa Correction View)
@@ -196,17 +196,12 @@
 - AI Video Studio — Architecture
 - FakeBatchTokenizer
 - AI Video Studio — Session Log
-- import_preset_payload
-- preset_registry.py
+- purge_stale_proxies
+- file_hash
 - M9 — Hardware Validation Measurement Log (D-036)
 - Session 31 — M9 module 4 `baseline-validation` (4 slices)
 - D-010 — Local faster-whisper as the ASR engine
-- InspectorPanel.tsx
-- validate_layout
-- lava_backend/__init__.py
-- update_preset
-- Session 32 — M9 reframe: validation machine-agnostic (D-037)
-- preset_to_export_dict
+- TestHelpers
 
 ## God Nodes (most connected - your core abstractions)
 1. `useEditorStore` - 60 edges
@@ -216,7 +211,7 @@
 5. `vitest` - 34 edges
 6. `_panel()` - 33 edges
 7. `EditorActions` - 33 edges
-8. `AI Video Studio — Session Log` - 33 edges
+8. `AI Video Studio — Session Log` - 32 edges
 9. `detect_strip()` - 30 edges
 10. `ManhwaError` - 30 edges
 
@@ -235,15 +230,15 @@
 ## Import Cycles
 - None detected.
 
-## Communities (194 total, 10 thin omitted)
+## Communities (189 total, 11 thin omitted)
 
 ### Community 0 - "package.json"
 Cohesion: 0.06
 Nodes (34): dependencies, react, react-dom, zundo, zustand, devDependencies, jsdom, oxlint (+26 more)
 
 ### Community 1 - "transitions.ts"
-Cohesion: 0.09
-Nodes (30): betweenLabel(), clipName(), imageA, imageB, unmount(), TransitionsPanel(), BetweenTransition, clampTransitionDuration() (+22 more)
+Cohesion: 0.12
+Nodes (25): betweenLabel(), clipName(), TransitionsPanel(), BetweenTransition, clampTransitionDuration(), ClipLike, DEFAULT_DURATIONS, defaultDuration() (+17 more)
 
 ### Community 2 - "localDirs"
 Cohesion: 0.08
@@ -270,8 +265,8 @@ Cohesion: 0.07
 Nodes (29): Browser Testing with DevTools, Common Rationalizations, DAMP Over DRY in Tests, Decision Guide, Discover the Stack First, Name Tests Descriptively, One Assertion Per Concept, Overview (+21 more)
 
 ### Community 8 - "ops.ts"
-Cohesion: 0.22
-Nodes (14): addClip(), addClips(), ClipInput, clipsAtTime(), createClip(), duplicateClip(), moveClip(), newId() (+6 more)
+Cohesion: 0.11
+Nodes (25): InspectorPanel(), kindOf(), MediaPanel(), TimelinePanel(), addClip(), addClips(), createClip(), duplicateClip() (+17 more)
 
 ### Community 9 - "fetch-ffmpeg.mjs"
 Cohesion: 0.24
@@ -374,8 +369,8 @@ Cohesion: 0.25
 Nodes (8): Decisions, HOW, Limitations, Next step, Purpose (WHY), Session 2026-09-12 — Milestone 0 bootstrap + Milestone 1 media foundation, Verify, WHAT
 
 ### Community 37 - "AI Video Studio — Decision Log"
-Cohesion: 0.11
-Nodes (18): AI Video Studio — Decision Log, D-001 — Web-first editor shell (Vite + React + TypeScript), D-002 — Zustand + Zundo for state and undo/redo, D-003 — Project-local FFmpeg binary, D-004 — FFmpeg provider abstraction, D-005 — Curated vendor skills; reference clones kept local, D-006 — Commit `graphify-out/`; code-only pass for now, D-007 — Written session log + decisions log for continuity (+10 more)
+Cohesion: 0.12
+Nodes (17): AI Video Studio — Decision Log, D-001 — Web-first editor shell (Vite + React + TypeScript), D-002 — Zustand + Zundo for state and undo/redo, D-003 — Project-local FFmpeg binary, D-004 — FFmpeg provider abstraction, D-005 — Curated vendor skills; reference clones kept local, D-006 — Commit `graphify-out/`; code-only pass for now, D-007 — Written session log + decisions log for continuity (+9 more)
 
 ### Community 38 - "Implementation Plan: M3 — Semantic image matching (first slice)"
 Cohesion: 0.14
@@ -414,8 +409,8 @@ Cohesion: 0.50
 Nodes (3): For --cluster-only, For --update (incremental re-extraction), graphify reference: incremental update and cluster-only
 
 ### Community 52 - "validate_preset"
-Cohesion: 0.17
-Nodes (14): PresetError, ValueError, Raised when a preset record is malformed., _require_bool(), _require_number(), _require_string(), validate_preset(), test_validate_accepts_valid_animation() (+6 more)
+Cohesion: 0.12
+Nodes (26): build_registry_entries(), load_registry(), merge_preset_layers(), Preset, PresetError, Path, ValueError, Caption-preset registry (M6 module 2). A preset is a shipped-or-user caption… (+18 more)
 
 ### Community 53 - "test_render.py"
 Cohesion: 0.16
@@ -438,8 +433,8 @@ Cohesion: 0.14
 Nodes (13): Architecture Decisions, Checkpoint: 1–2, Checkpoint: 2, Checkpoint: full, Implementation Plan: transitions-ui (M4 module 3), Open Questions, Overview, Phase 1: Store (slice 1) (+5 more)
 
 ### Community 61 - "useEditorStore"
-Cohesion: 0.08
-Nodes (13): MotionPanel(), applyClips(), clipWith(), imageAsset, unmount(), videoAsset, ClipBlock(), TransitionType (+5 more)
+Cohesion: 0.09
+Nodes (14): ClipBlock(), DragMode, PX_PER_SECOND, TRACK_HEIGHT, TrackRow(), chipWidthPx(), imageA, imageB (+6 more)
 
 ### Community 62 - "parse_captions"
 Cohesion: 0.05
@@ -462,16 +457,16 @@ Cohesion: 0.18
 Nodes (11): Boundaries, Capability Map, Code Style, Commands, Objective, Open Questions, Project Structure, Spec: Voice Analysis (M2 first slice) (+3 more)
 
 ### Community 67 - "test_preset_import.py"
-Cohesion: 0.08
-Nodes (10): _envelope(), test_import_accepts_known_license_ref(), test_import_accepts_multipart_custom_id(), test_import_bare_preset_without_envelope(), test_import_forces_custom_category(), test_import_preserves_style_flags(), test_import_valid_envelope(), test_post_creates_custom_preset() (+2 more)
+Cohesion: 0.07
+Nodes (28): import_preset_payload(), _payload_to_preset_dict(), preset_to_export_dict(), PresetImportError, ValueError, Preset import/export (M6 module 3). Import accepts the `lava-preset` envelope…, Raised when an imported preset fails validation., Validate + normalise an imported preset payload. Forces category to Custom and… (+20 more)
 
 ### Community 68 - "fontStore.ts"
-Cohesion: 0.12
-Nodes (22): FONT_EXTENSIONS, FontPanel(), LICENSE_TYPES, arial, unmount(), ensureFontFace(), FontLicense, FontMetadata (+14 more)
+Cohesion: 0.21
+Nodes (15): FontLicense, FontMetadata, parseFontMetadata(), parseLicense(), registered, resetFontFaceRegistrations(), deleteFont(), failHttp() (+7 more)
 
 ### Community 69 - "manhwa_strips.py"
-Cohesion: 0.11
-Nodes (40): _darken(), _gutter_strip(), _identity_strip(), _image(), make_borderless(), make_bubbles(), seam_draw(), make_clean_black() (+32 more)
+Cohesion: 0.10
+Nodes (42): _darken(), _gutter_strip(), _identity_strip(), _image(), make_borderless(), make_bubbles(), seam_draw(), make_clean_black() (+34 more)
 
 ### Community 70 - ".prettierrc.json"
 Cohesion: 0.40
@@ -501,9 +496,9 @@ Nodes (8): Decisions, HOW, Limitations, Next step, Purpose (WHY), Session 2026-0
 Cohesion: 0.25
 Nodes (8): Decisions, HOW, Limitations, Next step, Purpose (WHY), Session 2026-09-12 — Session 6: M3 semantic image matching (first slice), Verify, WHAT
 
-### Community 77 - "Panel"
+### Community 77 - "export.py"
 Cohesion: 0.08
-Nodes (32): crop_panel(), encode_panel(), _export_name(), ExportBundle, ExportFile, iter_export_files(), _iter_files(), manifest_rows() (+24 more)
+Nodes (31): crop_panel(), encode_panel(), _export_name(), ExportBundle, ExportFile, iter_export_files(), _iter_files(), manifest_rows() (+23 more)
 
 ### Community 78 - "Session 12 — M4 module 4: image-motion (Ken Burns/drift on stills)"
 Cohesion: 0.29
@@ -534,8 +529,8 @@ Cohesion: 0.25
 Nodes (7): Checkpoints, Implementation Plan: M3 final — multilingual image matching, Risks / mitigation, Slice 1 — multilingual core (backend, TDD), Slice 2 — wiring (auto-select), Slice 3 — real-model smoke (manual, non-committed), Slice 4 — docs, review, commit, push
 
 ### Community 85 - "PreviewPanel.tsx"
-Cohesion: 0.13
-Nodes (26): captionsRenderPayload(), formatTime(), MediaElement, PreviewPanel(), unmount(), Asset, AssetKind, AssetMeta (+18 more)
+Cohesion: 0.09
+Nodes (28): App(), LeftTab, CaptionPanel(), captionsRenderPayload(), transcript, unmount(), voice, formatTime() (+20 more)
 
 ### Community 86 - "Spec: `transitions-core` — transition model, heuristics, persistence"
 Cohesion: 0.14
@@ -554,8 +549,8 @@ Cohesion: 0.29
 Nodes (6): Boundaries, Build order, Capability Map: M4 — Transition / Animation Engine, Dependency direction notes, Open questions, Per-module gating
 
 ### Community 90 - "generate_image_proxy"
-Cohesion: 0.07
-Nodes (27): file_hash(), generate_image_proxy(), generate_video_proxy(), _probe_dims(), ProxyError, ProxyResult, Exception, Path (+19 more)
+Cohesion: 0.21
+Nodes (8): generate_image_proxy(), Create a WebP thumbnail of an image, preserving aspect ratio., _make_image(), Tests for backend proxy generation (proxy-core slice)., Create a small test PNG image., TestConfigProxyDir, TestGenerateImageProxy, TestProxyResult
 
 ### Community 91 - "Spec: `transitions-render` — transitions in the FFmpeg render pipeline"
 Cohesion: 0.18
@@ -594,8 +589,8 @@ Cohesion: 0.18
 Nodes (10): Boundaries / non-goals, Edit ops (pure), Generation — `segmentCaptions(transcript, options?)`, Model (`frontend/src/editor/captions.ts`), Project round-trip (`project.ts`), Spec: M5 Module 1 — caption-core, Store (`editorStore`), Verify (+2 more)
 
 ### Community 100 - "main.py"
-Cohesion: 0.12
-Nodes (39): get_config(), error_response(), is_allowed_font_name(), api_error_handler(), _builtin_by_id(), ClipMetadata, create_proxy(), delete_font() (+31 more)
+Cohesion: 0.11
+Nodes (46): get_config(), error_response(), is_allowed_font_name(), _all_presets(), api_error_handler(), _builtin_by_id(), ClipMetadata, create_preset() (+38 more)
 
 ### Community 101 - "Spec: M5 Module 3 — caption-render"
 Cohesion: 0.22
@@ -615,7 +610,7 @@ Nodes (27): preprocess_image(), Image, Encoding, FakeTokenizer, make_embedder(),
 
 ### Community 105 - "templateEditor.ts"
 Cohesion: 0.16
-Nodes (22): FLAGS, TemplateEditorPanel(), overwrite(), patch(), saveAsNew(), selectBase(), ANIMATION_OPTIONS, CAPTION_STYLES (+14 more)
+Nodes (22): captionToWire(), FLAGS, TemplateEditorPanel(), overwrite(), patch(), saveAsNew(), selectBase(), ANIMATION_OPTIONS (+14 more)
 
 ### Community 106 - "Spec: M6 — Template/Font System"
 Cohesion: 0.09
@@ -638,8 +633,8 @@ Cohesion: 0.18
 Nodes (13): ClipEmbedder, cosine_similarity(), l2_normalize(), _output_names(), _pick(), _pick_by_names(), ndarray, Return the output matching one of ``names`` (case-insensitive, exact). Falls… (+5 more)
 
 ### Community 111 - "editor/presets.ts"
-Cohesion: 0.17
-Nodes (18): CaptionStyle, BUILTIN_CATEGORIES, captionStyleFromPreset(), isCategory(), parsePreset(), Preset, PresetCategory, good (+10 more)
+Cohesion: 0.18
+Nodes (18): CaptionStyle, isCaptionAnimation(), BUILTIN_CATEGORIES, captionStyleFromPreset(), isCategory(), parsePreset(), Preset, PresetCategory (+10 more)
 
 ### Community 112 - "Implementation Plan: preset-registry (M6 module 2)"
 Cohesion: 0.17
@@ -658,8 +653,8 @@ Cohesion: 0.25
 Nodes (8): Decisions, HOW, Limitations, Next step, Purpose (WHY), Session 15 — M6 module 2: preset-registry shipped (13 categories, one-click apply), Verify, WHAT
 
 ### Community 116 - "_panel"
-Cohesion: 0.07
-Nodes (33): add_panel(), adjust_panel(), delete_panel(), _fresh_id(), merge_panels(), M7 module 5: pure panel correction ops (module 5 slice 2). Split / Merge /…, Replace one panel's bounds (crop/expand within the source). The new box must…, Insert a user-defined panel (near-certain: confidence 1.0). The new panel gets… (+25 more)
+Cohesion: 0.06
+Nodes (36): add_panel(), adjust_panel(), delete_panel(), _fresh_id(), merge_panels(), M7 module 5: pure panel correction ops (module 5 slice 2). Split / Merge /…, Replace one panel's bounds (crop/expand within the source). The new box must…, Insert a user-defined panel (near-certain: confidence 1.0). The new panel gets… (+28 more)
 
 ### Community 117 - "Spec: font-system (M6 module 1)"
 Cohesion: 0.18
@@ -673,9 +668,9 @@ Nodes (8): Decisions, HOW, Limitations, Next step, Purpose (WHY), Session 14 —
 Cohesion: 0.25
 Nodes (7): Acceptance criteria, Architecture decisions, Files, Open questions, Scope, Slices, Spec: preset-registry (M6 module 2)
 
-### Community 120 - "types.ts"
-Cohesion: 0.13
-Nodes (17): transcript, unmount(), voice, MOTION_TYPES, labelFor(), PAUSE_BEAT_THRESHOLD, segmentBeats(), splitSegment() (+9 more)
+### Community 120 - "TestClient"
+Cohesion: 0.20
+Nodes (13): fonts_client(), fixture, _cfg(), _img(), Path, Tests for disk cache GC: proxy purge + /api/gc endpoint., TestGCProxyEndpoint, TestPurgeStaleProxies (+5 more)
 
 ### Community 121 - "Spec: preset-import (M6 module 3)"
 Cohesion: 0.25
@@ -686,8 +681,8 @@ Cohesion: 0.29
 Nodes (7): Decisions, HOW, Limitations, Next step, Session 16 — M6 module 3 `preset-import` (import/export/delete + Custom writes), Verify, WHAT
 
 ### Community 123 - "TranscriptPanel.tsx"
-Cohesion: 0.15
-Nodes (14): attachPauses(), buildNodes(), confidenceLabel(), lowConfidence(), Node, TranscriptPanel(), parseTranscript(), transcribeAsset() (+6 more)
+Cohesion: 0.14
+Nodes (15): attachPauses(), buildNodes(), confidenceLabel(), lowConfidence(), Node, TranscriptPanel(), TranscriptPause, TranscriptWord (+7 more)
 
 ### Community 124 - "SPEC — M6 module 5: `animated-captions`"
 Cohesion: 0.18
@@ -698,20 +693,20 @@ Cohesion: 0.15
 Nodes (12): Architecture decisions, Checkpoints, Implementation Plan: template-editor (M6 module 4), Open questions, Overview, Risks and mitigations, Task 1 — pure editor model (slice 1), Task 2 — API overwrite (slice 2) (+4 more)
 
 ### Community 126 - "matchingStore.ts"
-Cohesion: 0.09
-Nodes (26): MatchPanel(), Beat, hasTimingOverride(), MIN_AUTO_DURATION, pacedEnd(), TAIL_HOLD, TimedBeat, TIMING_EPSILON (+18 more)
+Cohesion: 0.08
+Nodes (33): MatchPanel(), Beat, labelFor(), PAUSE_BEAT_THRESHOLD, segmentBeats(), splitSegment(), wordsInPart(), hasTimingOverride() (+25 more)
 
 ### Community 127 - "detect.py"
 Cohesion: 0.08
-Nodes (36): _analysis_array(), _bg_estimate(), _bordered_by_content(), build_panels(), Cut, detect_cuts(), find_gutter_bands(), GutterBand (+28 more)
+Nodes (33): _analysis_array(), _bg_estimate(), _bordered_by_content(), build_panels(), Cut, detect_cuts(), find_gutter_bands(), GutterBand (+25 more)
 
 ### Community 128 - "Session 17 — M6 module 4 `template-editor` (draft model, PUT overwrite, panel, render-path fix)"
 Cohesion: 0.29
 Nodes (7): Decisions, HOW, Limitations, Next step, Session 17 — M6 module 4 `template-editor` (draft model, PUT overwrite, panel, render-path fix), Verify, WHAT
 
 ### Community 129 - "detect_strip"
-Cohesion: 0.11
-Nodes (20): detect_strip(), Any, Path, Detect panels in a vertical strip; optionally persist crops + registry. The…, asset_name(), Zero-padded asset file name, e.g. `panel_001.png`. Width = len(str(total))., Memory-tuning tests: JPEG draft decode and lazy open path., In-memory Image (no fp) falls back to full convert, never attempts draft. (+12 more)
+Cohesion: 0.08
+Nodes (27): detect_strip(), _open_source(), Any, Path, Detect panels in a vertical strip; optionally persist crops + registry. The…, Return (image, mime, source file name); unreadable → ManhwaError. For path…, asset_for_id(), asset_name() (+19 more)
 
 ### Community 130 - "Spec: template-editor (M6 module 4)"
 Cohesion: 0.25
@@ -721,13 +716,13 @@ Nodes (7): Acceptance criteria, ASSUMPTIONS I'M MAKING, Files, Objective, Open q
 Cohesion: 0.29
 Nodes (7): Decisions, HOW, Limitations, Next step, Session 18 — M6 module 5 `animated-captions` (ASS treatments + contract), Verify, WHAT
 
-### Community 132 - "RenderSettings"
-Cohesion: 0.24
-Nodes (23): _motion_filters(), MotionSpec, _prep_chain(), Zoom/pan FX via zoompan (per-frame z/x/y), scaled for source headroom., RenderSettings, _validate_motion(), clip(), parametrize (+15 more)
+### Community 132 - "generate_video_proxy"
+Cohesion: 0.19
+Nodes (11): generate_video_proxy(), _probe_dims(), ProxyError, ProxyResult, Exception, Path, Proxy generation for preview surfaces (low-res, preview-only). Proxies are…, Return (width, height) of a video via ffprobe, defaulting to (0, 0). (+3 more)
 
-### Community 133 - "build_transition_graph"
-Cohesion: 0.20
-Nodes (24): BetweenSpec, build_transition_graph(), _invalid(), EdgeSpec, _filter_complex(), Return (filter_complex, total_duration) for a clip fold with transitions. Pure…, RenderClip, test_build_transition_graph_with_motion_keeps_parity_when_absent() (+16 more)
+### Community 133 - "media.py"
+Cohesion: 0.08
+Nodes (66): Lava Studio media sidecar package., _ass_filter_string(), BetweenSpec, build_transition_graph(), _invalid(), check_binary(), EdgeSpec, _filter_complex() (+58 more)
 
 ### Community 134 - "Plan — M6 module 5: animated-captions"
 Cohesion: 0.29
@@ -770,12 +765,12 @@ Cohesion: 0.33
 Nodes (5): Plan — M6 module 6 (final): license-tracking, Task 1 (slice 1) — Backend pure resolver, Task 2 (slice 2) — Render integration, Task 3 (slice 3) — Frontend parity + badge, Task 4 (slice 4) — Docs + graphify + regression + push
 
 ### Community 144 - "Config"
-Cohesion: 0.11
-Nodes (18): Config, _payload(), Resolve Lava Studio project-local configuration and paths., reset_config(), tool_versions(), ToolVersions, _clean_config(), client() (+10 more)
+Cohesion: 0.13
+Nodes (16): Config, _payload(), Resolve Lava Studio project-local configuration and paths., reset_config(), tool_versions(), ToolVersions, _clean_config(), client() (+8 more)
 
 ### Community 145 - "editorStore.ts"
-Cohesion: 0.15
-Nodes (18): DragMode, PX_PER_SECOND, TRACK_HEIGHT, TrackRow(), chipWidthPx(), imageA, imageB, unmount() (+10 more)
+Cohesion: 0.08
+Nodes (31): MOTION_TYPES, MotionPanel(), applyClips(), clipWith(), imageAsset, unmount(), videoAsset, imageA (+23 more)
 
 ### Community 146 - "Capability Map: M7 Manhwa / Webtoon Extractor"
 Cohesion: 0.25
@@ -790,16 +785,16 @@ Cohesion: 0.29
 Nodes (7): HOW, Limitations, Next step, Session 20 — M7 module 1 `panel-model` (frozen model, anchored mapping, git-clean registry) + CONSTRAINTS.md, Verify, WHAT, WHY
 
 ### Community 150 - "ApiError"
-Cohesion: 0.09
-Nodes (35): ApiError, Exception, Consistent error semantics for the sidecar API., apply_correction(), _apply_panels(), delete_strip(), export_strip(), get_strip() (+27 more)
+Cohesion: 0.10
+Nodes (34): ApiError, Exception, Consistent error semantics for the sidecar API., apply_correction(), _apply_panels(), delete_strip(), export_strip(), get_strip() (+26 more)
 
 ### Community 151 - "make_panel"
 Cohesion: 0.30
 Nodes (4): make_panel(), _panel(), M7 module 1: panel model, coordinate mapping, asset naming, StripRegistry., TestPanel
 
-### Community 152 - "media.py"
-Cohesion: 0.24
-Nodes (16): _ass_filter_string(), check_binary(), _float(), _int(), probe(), ProbeResult, ProbeStream, Path (+8 more)
+### Community 152 - "FontPanel.tsx"
+Cohesion: 0.17
+Nodes (7): FONT_EXTENSIONS, FontPanel(), LICENSE_TYPES, arial, unmount(), ensureFontFace(), fontPreviewUrl()
 
 ### Community 153 - "Session 25 — M7 module 6 `manhwa-api` (backend complete)"
 Cohesion: 0.25
@@ -810,12 +805,12 @@ Cohesion: 0.17
 Nodes (11): Boundaries, Commands, Fixtures (deterministic, synthetic — TEST_PLAN §2), Function surface (`manhwa/detect.py`), Objective, Open questions, Pipeline, Signals & thresholds (module constants, not per-image tuning) (+3 more)
 
 ### Community 155 - "order.py"
-Cohesion: 0.12
-Nodes (14): M7 Manhwa extractor — shared error type., attribute_confidence(), _certain_confidence(), guard_layout(), order_panels(), M7 module 3: reading order, confidence attribution, layout guards. Pure data…, Sort into natural top→bottom reading order and renumber `order` 1..n. Sort key…, Attach each panel a confidence equal to its two bounding boundaries' min.… (+6 more)
+Cohesion: 0.11
+Nodes (16): M7 Manhwa extractor — shared error type., attribute_confidence(), _boxes_overlap(), _certain_confidence(), guard_layout(), order_panels(), M7 module 3: reading order, confidence attribution, layout guards. Pure data…, Sort into natural top→bottom reading order and renumber `order` 1..n. Sort key… (+8 more)
 
 ### Community 156 - "PresetPanel.test.tsx"
-Cohesion: 0.24
-Nodes (4): jsonResponse(), presets, smartFetchMock(), unmount()
+Cohesion: 0.15
+Nodes (7): PresetPanel(), jsonResponse(), presets, smartFetchMock(), unmount(), downloadPresetFile(), exportPresetPayload()
 
 ### Community 157 - "TemplateEditorPanel.test.tsx"
 Cohesion: 0.25
@@ -838,8 +833,8 @@ Cohesion: 0.33
 Nodes (5): Plan — M7 module 2: panel-detection (OpenCV hybrid signals), Slice 1 — analysis image + row features + clean-gutter cuts (RED first), Slice 2 — rescue pass + edge cases, Slice 3 — build_panels + registry integration, Slice 4 — docs + graphify + regression + push gate
 
 ### Community 162 - "test_manhwa_api.py"
-Cohesion: 0.06
-Nodes (31): GcReport, _proxy_files(), purge_stale_proxies(), Path, Garbage collection for regenerable disk caches. Only artifacts that are derived…, Proxy-labelled files only; stray files in the dir are never collected., Delete proxy files not accessed within `ttl_days` (default: config). Names not…, fonts_client() (+23 more)
+Cohesion: 0.10
+Nodes (11): client(), _png_bytes(), fixture, M7 module 6: manhwa-api HTTP tests (isolated tmp storage)., TestCorrectionOps, TestDeleteStrip, TestExport, TestPanelServe (+3 more)
 
 ### Community 163 - "Plan — M7 module 3: panel-order (pure normalization layer)"
 Cohesion: 0.40
@@ -861,9 +856,9 @@ Nodes (4): Plan — M7 module 4: panel-export (full-res PNG/JPG + manifest), Sli
 Cohesion: 0.29
 Nodes (7): Decisions, HOW, Limitations, Next step, Session 28 — M9 hardware validation plan + module 1 `proxy-preview` (4 slices), Verify, WHAT
 
-### Community 168 - "panels.py"
-Cohesion: 0.10
-Nodes (21): asset_for_id(), boxes_from_cuts(), _expect_float(), _expect_int(), _expect_str(), id_for_asset(), map_bounds_to_source(), map_cut_to_source() (+13 more)
+### Community 168 - "Panel"
+Cohesion: 0.13
+Nodes (18): boxes_from_cuts(), _expect_float(), _expect_int(), _expect_str(), map_bounds_to_source(), map_cut_to_source(), _map_line(), Panel (+10 more)
 
 ### Community 169 - "Session 26-27 — M7 panel-ui + M8 integrated editor (slices 1–4)"
 Cohesion: 0.29
@@ -874,7 +869,7 @@ Cohesion: 0.22
 Nodes (8): Boundaries, Commands, Functions, Objective, Sequence semantics (important — module-3 contract stays intact), SPEC — M7 module 5: `panel-correction`, Testing (TDD), Wire precedence
 
 ### Community 171 - "project.ts"
-Cohesion: 0.17
+Cohesion: 0.18
 Nodes (22): isAsset(), isClip(), isRecord(), isTrack(), isTranscript(), parseCaptions(), parseProjectJson(), parseProjectModel() (+14 more)
 
 ### Community 172 - "Session 24 — M7 module 5 `panel-correction` (pure list ops) + export order fix"
@@ -885,9 +880,9 @@ Nodes (8): Files, HOW, Limitations, Next step, Session 24 — M7 module 5 `panel
 Cohesion: 0.12
 Nodes (13): MultilingualClipEmbedder, Composed multilingual CLIP: images from a base ClipEmbedder, text from the…, EmbedFailure, _get_matcher(), match(), _parse_beats(), Exception, Request (+5 more)
 
-### Community 174 - "App.tsx"
-Cohesion: 0.22
-Nodes (10): App(), LeftTab, InspectorPanel(), kindOf(), MediaPanel(), TimelinePanel(), projectDuration(), readProjectFromFile() (+2 more)
+### Community 174 - "TestProxyAPI"
+Cohesion: 0.17
+Nodes (5): _make_video(), Path, Tests for POST /api/proxy and GET /api/proxy/{proxyId}., Create a tiny test video via FFmpeg lavfi., TestProxyAPI
 
 ### Community 175 - "Plan — M7 module 5: panel-correction (pure list ops)"
 Cohesion: 0.33
@@ -921,17 +916,17 @@ Nodes (6): WordPiece batch tokenization for the multilingual text tower. ``sente
 Cohesion: 0.22
 Nodes (9): AI Video Studio — Session Log, Decisions, HOW, Limitations, Next step, Session 30 — M9 module 3 `memory-tuning` (5 slices), Template, Verify (+1 more)
 
-### Community 183 - "import_preset_payload"
-Cohesion: 0.21
-Nodes (14): import_preset_payload(), _payload_to_preset_dict(), PresetImportError, ValueError, Preset import/export (M6 module 3). Import accepts the `lava-preset` envelope…, Raised when an imported preset fails validation., Validate + normalise an imported preset payload. Forces category to Custom and…, Deterministic-ish, unique-ish id from a label (import UI convenience). (+6 more)
+### Community 183 - "purge_stale_proxies"
+Cohesion: 0.32
+Nodes (7): GcReport, _proxy_files(), purge_stale_proxies(), Path, Garbage collection for regenerable disk caches. Only artifacts that are derived…, Proxy-labelled files only; stray files in the dir are never collected., Delete proxy files not accessed within `ttl_days` (default: config). Names not…
 
-### Community 184 - "preset_registry.py"
-Cohesion: 0.26
-Nodes (12): build_registry_entries(), load_registry(), merge_preset_layers(), Preset, Path, Caption-preset registry (M6 module 2). A preset is a shipped-or-user caption…, Load presets from the registry file; fall back to built-ins on any issue., Built-ins first (canonical ids), then custom records — custom wins on id… (+4 more)
+### Community 184 - "file_hash"
+Cohesion: 0.43
+Nodes (3): file_hash(), Deterministic stable id for a file's content (16 hex chars)., TestFileHash
 
 ### Community 185 - "M9 — Hardware Validation Measurement Log (D-036)"
-Cohesion: 0.25
-Nodes (7): Checklist, How to reproduce any row, Logged machines, M9 — Hardware Validation Measurement Log (D-036), Memory peak — how to snapshot, Per-machine validation log, Reference machine results — dev Mac
+Cohesion: 0.29
+Nodes (6): Baseline target results — HP Pavilion 15, Checklist, How to reproduce any row, M9 — Hardware Validation Measurement Log (D-036), Memory peak — how to snapshot, Reference machine results — dev Mac
 
 ### Community 186 - "Session 31 — M9 module 4 `baseline-validation` (4 slices)"
 Cohesion: 0.29
@@ -941,43 +936,19 @@ Nodes (7): Decisions, HOW, Limitations, Next step, Session 31 — M9 module 4 `b
 Cohesion: 0.33
 Nodes (6): D-010 — Local faster-whisper as the ASR engine, D-011 — Transcripts persist inside the project file (version unchanged), D-012 — CLIP ViT-B/32 ONNX (fp32) for semantic image matching, D-013 — Match meta persists as `clip.beatId`; one undoable auto-match, D-014 — Timing overrides survive re-matches (transient derivation, no new persistence), D-015 — Multilingual matching via a composed two-session embedder (no new stack)
 
-### Community 188 - "InspectorPanel.tsx"
-Cohesion: 0.29
-Nodes (6): CaptionPanel(), captionToWire(), PresetPanel(), downloadPresetFile(), exportPresetPayload(), usePresetStore
-
-### Community 189 - "validate_layout"
-Cohesion: 0.31
-Nodes (5): _boxes_overlap(), Check a layout for the invariants every consumer cares about. Raises…, Positive-area intersection of two axis-aligned boxes (touching = no)., validate_layout(), TestValidateLayout
-
-### Community 190 - "lava_backend/__init__.py"
-Cohesion: 0.29
-Nodes (3): Lava Studio media sidecar package., make_clip(), test_probe_reports_media_metadata()
-
-### Community 191 - "update_preset"
-Cohesion: 0.43
-Nodes (7): _all_presets(), create_preset(), _preset_registry_path(), Request, save_registry_presets(), update_preset(), put
-
-### Community 192 - "Session 32 — M9 reframe: validation machine-agnostic (D-037)"
-Cohesion: 0.29
-Nodes (7): Decisions, HOW, Limitations, Next step, Session 32 — M9 reframe: validation machine-agnostic (D-037), Verify, WHAT
-
-### Community 193 - "preset_to_export_dict"
-Cohesion: 0.50
-Nodes (4): preset_to_export_dict(), test_export_has_envelope(), test_export_round_trips_through_import(), test_import_round_trips_animation()
-
 ## Knowledge Gaps
-- **1351 isolated node(s):** `$schema`, `plugin`, `lava-backend`, `$schema`, `plugins` (+1346 more)
-  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 1760 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
-- **10 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **1344 isolated node(s):** `$schema`, `plugin`, `lava-backend`, `$schema`, `plugins` (+1339 more)
+  These have ≤1 connection - possible missing edges or undocumented components. (Counts symbols only; 1753 node(s) total have ≤1 connection when file, concept and rationale nodes are included.)
+- **11 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `ApiError` connect `ApiError` to `main.py`, `build_transition_graph`, `RenderSettings`, `matching.py`, `Config`, `media.py`, `transcribe.py`, `update_preset`?**
+- **Why does `ApiError` connect `ApiError` to `main.py`, `media.py`, `matching.py`, `Config`, `transcribe.py`?**
   _High betweenness centrality (0.018) - this node is a cross-community bridge._
-- **Why does `AI Video Studio — Session Log` connect `AI Video Studio — Session Log` to `Session 17 — M6 module 4 `template-editor` (draft model, PUT overwrite, panel, render-path fix)`, `Session 18 — M6 module 5 `animated-captions` (ASS treatments + contract)`, `Session 19 — M6 module 6 `license-tracking` (render guard + manifest; M6 done)`, `Session 20 — M7 module 1 `panel-model` (frozen model, anchored mapping, git-clean registry) + CONSTRAINTS.md`, `Session 25 — M7 module 6 `manhwa-api` (backend complete)`, `Session 21 — M7 module 2 `panel-detection`: hybrid signals, rescue seams, source mapping, registry persistence`, `Session 22 — M7 module 3 `panel-order` (pure normalization layer) + modules 1–2 pushed`, `README.md`, `Session 2026-09-12 — Milestone 0 bootstrap + Milestone 1 media foundation`, `Session 23 — M7 module 4 `panel-export` (full-res crops + manifest)`, `Session 28 — M9 hardware validation plan + module 1 `proxy-preview` (4 slices)`, `Session 26-27 — M7 panel-ui + M8 integrated editor (slices 1–4)`, `Session 24 — M7 module 5 `panel-correction` (pure list ops) + export order fix`, `Session 29 — M9 module 2 `runtime-optimization` (5 slices)`, `Session 31 — M9 module 4 `baseline-validation` (4 slices)`, `Session 32 — M9 reframe: validation machine-agnostic (D-037)`, `Session 2026-09-12 — Session 2: continuity system + commit discipline`, `Session 2026-09-12 — Session 3: media sidecar (real rendering)`, `Session 2026-09-12 — Session 4: M1 completion (save/load + clip editing)`, `Session 2026-09-12 — Session 5: M2 voice analysis (first slice)`, `Session 2026-09-12 — Session 6: M3 semantic image matching (first slice)`, `Session 12 — M4 module 4: image-motion (Ken Burns/drift on stills)`, `Session 2026-09-12 — Session 7: M3 remainder — timing fit + manual timing override`, `Session 2026-09-12 — Session 8: M3 final pass — multilingual image matching (Urdu/Roman-Urdu)`, `Session 2026-09-12 — Session 9: M4 module 1 — transitions-core`, `Session 2026-09-12 — Session 10: M4 module 2 — transitions-render`, `Session 2026-09-12 — Session 11: M4 module 3 — transitions-ui`, `Session 13 — M5 caption engine complete (all four modules)`, `Session 15 — M6 module 2: preset-registry shipped (13 categories, one-click apply)`, `Session 14 — M6 module 1: font-system shipped (spec → plan → TDD slices → docs)`, `Session 16 — M6 module 3 `preset-import` (import/export/delete + Custom writes)`?**
-  _High betweenness centrality (0.015) - this node is a cross-community bridge._
-- **Why does `ManhwaError` connect `_panel` to `detect_strip`, `.load`, `panels.py`, `Panel`, `ApiError`, `order.py`, `validate_layout`, `detect.py`?**
+- **Why does `AI Video Studio — Session Log` connect `AI Video Studio — Session Log` to `Session 17 — M6 module 4 `template-editor` (draft model, PUT overwrite, panel, render-path fix)`, `Session 18 — M6 module 5 `animated-captions` (ASS treatments + contract)`, `Session 19 — M6 module 6 `license-tracking` (render guard + manifest; M6 done)`, `Session 20 — M7 module 1 `panel-model` (frozen model, anchored mapping, git-clean registry) + CONSTRAINTS.md`, `Session 25 — M7 module 6 `manhwa-api` (backend complete)`, `Session 21 — M7 module 2 `panel-detection`: hybrid signals, rescue seams, source mapping, registry persistence`, `Session 22 — M7 module 3 `panel-order` (pure normalization layer) + modules 1–2 pushed`, `README.md`, `Session 2026-09-12 — Milestone 0 bootstrap + Milestone 1 media foundation`, `Session 23 — M7 module 4 `panel-export` (full-res crops + manifest)`, `Session 28 — M9 hardware validation plan + module 1 `proxy-preview` (4 slices)`, `Session 26-27 — M7 panel-ui + M8 integrated editor (slices 1–4)`, `Session 24 — M7 module 5 `panel-correction` (pure list ops) + export order fix`, `Session 29 — M9 module 2 `runtime-optimization` (5 slices)`, `Session 31 — M9 module 4 `baseline-validation` (4 slices)`, `Session 2026-09-12 — Session 2: continuity system + commit discipline`, `Session 2026-09-12 — Session 3: media sidecar (real rendering)`, `Session 2026-09-12 — Session 4: M1 completion (save/load + clip editing)`, `Session 2026-09-12 — Session 5: M2 voice analysis (first slice)`, `Session 2026-09-12 — Session 6: M3 semantic image matching (first slice)`, `Session 12 — M4 module 4: image-motion (Ken Burns/drift on stills)`, `Session 2026-09-12 — Session 7: M3 remainder — timing fit + manual timing override`, `Session 2026-09-12 — Session 8: M3 final pass — multilingual image matching (Urdu/Roman-Urdu)`, `Session 2026-09-12 — Session 9: M4 module 1 — transitions-core`, `Session 2026-09-12 — Session 10: M4 module 2 — transitions-render`, `Session 2026-09-12 — Session 11: M4 module 3 — transitions-ui`, `Session 13 — M5 caption engine complete (all four modules)`, `Session 15 — M6 module 2: preset-registry shipped (13 categories, one-click apply)`, `Session 14 — M6 module 1: font-system shipped (spec → plan → TDD slices → docs)`, `Session 16 — M6 module 3 `preset-import` (import/export/delete + Custom writes)`?**
+  _High betweenness centrality (0.012) - this node is a cross-community bridge._
+- **Why does `ManhwaError` connect `_panel` to `detect_strip`, `.load`, `Panel`, `export.py`, `ApiError`, `order.py`, `detect.py`?**
   _High betweenness centrality (0.011) - this node is a cross-community bridge._
 - **Are the 17 inferred relationships involving `ApiError` (e.g. with `api_error_handler()` and `apply_correction()`) actually correct?**
   _`ApiError` has 17 INFERRED edges - model-reasoned connections that need verification._
@@ -986,4 +957,4 @@ _Questions this graph is uniquely positioned to answer:_
 - **Are the 23 inferred relationships involving `Panel` (e.g. with `add_panel()` and `adjust_panel()`) actually correct?**
   _`Panel` has 23 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `$schema`, `plugin`, `lava-backend` to the rest of the system?**
-  _1351 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _1344 weakly-connected nodes found - possible documentation gaps or missing edges._

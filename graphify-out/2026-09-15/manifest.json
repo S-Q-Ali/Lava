@@ -114,10 +114,10 @@
     "semantic_hash": ""
   },
   "frontend/tsconfig.app.json": {
-    "mtime": 1789474857.4551759,
-    "seen": 1789474978.024908,
-    "ast_hash": "043cabad20619389e202cb51318e4fc4",
-    "semantic_hash": ""
+    "mtime": 1789153855.6838653,
+    "seen": 1789154456.4949498,
+    "ast_hash": "5f2dafd737dea8a4ddcbb10f5113ac5a",
+    "semantic_hash": "5f2dafd737dea8a4ddcbb10f5113ac5a"
   },
   "frontend/tsconfig.json": {
     "mtime": 1789153855.6841314,
@@ -348,15 +348,15 @@
     "semantic_hash": ""
   },
   "docs/DECISIONS.md": {
-    "mtime": 1789411115.1565046,
-    "seen": 1789474978.0249758,
-    "ast_hash": "3a4287fb041a3754b31f37087c3227fc",
+    "mtime": 1789409971.9512613,
+    "seen": 1789410001.668921,
+    "ast_hash": "5d1822e614904d8ba78965965fca221c",
     "semantic_hash": ""
   },
   "docs/FEATURES.md": {
-    "mtime": 1789411057.1318684,
-    "seen": 1789474978.024978,
-    "ast_hash": "2e98b5591750881bd3eebc5f4d2aafdb",
+    "mtime": 1789409948.8262615,
+    "seen": 1789410001.6689222,
+    "ast_hash": "dcb38bbe856c0f7069cc5c1ca828d3c5",
     "semantic_hash": ""
   },
   "docs/PRODUCT_SPEC.md": {
@@ -366,15 +366,15 @@
     "semantic_hash": ""
   },
   "docs/ROADMAP.md": {
-    "mtime": 1789411036.0578766,
-    "seen": 1789474978.024982,
-    "ast_hash": "f57b8702e96591147fa2a184dd33ed52",
+    "mtime": 1789409941.7373257,
+    "seen": 1789410001.668926,
+    "ast_hash": "70c76ebb5ca043368ee70412b20d3799",
     "semantic_hash": ""
   },
   "docs/SESSION_LOG.md": {
-    "mtime": 1789411132.2329175,
-    "seen": 1789474978.0249841,
-    "ast_hash": "12bf0ddf1a0500407409e3642df01343",
+    "mtime": 1789409988.0598662,
+    "seen": 1789410001.668927,
+    "ast_hash": "912e2dd8fe0b8dbe9ba8b820f5277917",
     "semantic_hash": ""
   },
   "docs/TEST_PLAN.md": {
@@ -510,9 +510,9 @@
     "semantic_hash": ""
   },
   "tasks/todo.md": {
-    "mtime": 1789411137.98518,
-    "seen": 1789474978.025079,
-    "ast_hash": "e6ad6b8bde5ed7db65e580759387bdb2",
+    "mtime": 1789409956.1443183,
+    "seen": 1789410001.669003,
+    "ast_hash": "c55a04f89ac34673d14608d7b121f1fd",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/transcribe.py": {
@@ -1170,9 +1170,9 @@
     "semantic_hash": ""
   },
   "CONSTRAINTS.md": {
-    "mtime": 1789411030.932241,
-    "seen": 1789474978.02497,
-    "ast_hash": "3d765facbf23a1df33507594f7ebcaf6",
+    "mtime": 1789409932.2428157,
+    "seen": 1789410001.668915,
+    "ast_hash": "fdb6ae65b8406b53b27677fdf2e8bdb4",
     "semantic_hash": ""
   },
   "docs/SPEC-m7-capability-map.md": {
@@ -1404,9 +1404,9 @@
     "semantic_hash": ""
   },
   "docs/SPEC-m9-capability-map.md": {
-    "mtime": 1789411070.5492225,
-    "seen": 1789474978.025005,
-    "ast_hash": "60baee6a6729377e90ed20e27dd42e4c",
+    "mtime": 1789403555.2011797,
+    "seen": 1789404863.09092,
+    "ast_hash": "bc76d26cb1920f8096d8c1cb9481ba95",
     "semantic_hash": ""
   },
   "docs/SPEC-proxy-preview.md": {
@@ -1446,9 +1446,9 @@
     "semantic_hash": ""
   },
   "docs/M9-MEASUREMENT.md": {
-    "mtime": 1789411025.8329136,
-    "seen": 1789474978.0249789,
-    "ast_hash": "099b634dfd052099adb28caa6f216d78",
+    "mtime": 1789409858.0183053,
+    "seen": 1789410001.6689239,
+    "ast_hash": "10a078a7e5318d47e00fe4624a46b96b",
     "semantic_hash": ""
   }
 }

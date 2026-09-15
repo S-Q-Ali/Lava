@@ -1,0 +1,20 @@
+{
+  "0": "vitest",
+  "1": "PreviewPanel.tsx",
+  "2": "PresetPanel.test.tsx",
+  "3": "editorStore.ts",
+  "4": "matchingStore.ts",
+  "5": "manhwa.ts",
+  "6": "useEditorStore",
+  "7": "transitions.ts",
+  "8": "package.json",
+  "9": "ops.ts",
+  "10": "project.ts",
+  "11": "captions.ts",
+  "12": "compilerOptions",
+  "13": "compilerOptions",
+  "14": ".oxlintrc.json",
+  "15": ".prettierrc.json",
+  "16": "tsconfig.json",
+  "17": "README.md"
+}
