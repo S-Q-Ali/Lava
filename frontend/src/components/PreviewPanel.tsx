@@ -1,4 +1,4 @@
-import { memo, useRef, useState } from 'react'
+import { memo, useMemo, useRef, useState } from 'react'
 import { useEditorStore } from '../store/editorStore'
 import { clipsAtTime } from '../editor/ops'
 import { getAssetFile } from '../media/importer'
@@ -43,11 +43,14 @@ export default function PreviewPanel() {
   const [renderUrl, setRenderUrl] = useState<string | null>(null)
   const [renderError, setRenderError] = useState<string | null>(null)
 
-  const activeClip =
-    clips.find((c) => c.id === selectedClipId) ?? clipsAtTime(clips, playhead)[0]
-  const activeAsset = activeClip
-    ? assets.find((a) => a.id === activeClip.assetId)
-    : undefined
+  const activeClip = useMemo(
+    () => clips.find((c) => c.id === selectedClipId) ?? clipsAtTime(clips, playhead)[0],
+    [clips, selectedClipId, playhead],
+  )
+  const activeAsset = useMemo(
+    () => (activeClip ? assets.find((a) => a.id === activeClip.assetId) : undefined),
+    [assets, activeClip],
+  )
 
   // Proxy-aware preview: use the low-res proxy when available (lazy resolve),
   // otherwise fall back to the original blob URL. Render always uses originals.
@@ -58,17 +61,23 @@ export default function PreviewPanel() {
   // Caption live preview
   const allCaptions = useEditorStore((s) => s.captions)
   const presets = usePresetStore((s) => s.presets)
-  const currentCaption = allCaptions.find(
-    (c) => playhead >= c.start && playhead < c.start + c.duration,
+  const currentCaption = useMemo(
+    () => allCaptions.find((c) => playhead >= c.start && playhead < c.start + c.duration),
+    [allCaptions, playhead],
   )
-  const captionStyle = currentCaption
-    ? resolveCaptionStyle(currentCaption.styleId, presets)
-    : null
-  const captionText = currentCaption
-    ? captionStyle?.uppercase
-      ? currentCaption.text.toUpperCase()
-      : currentCaption.text
-    : null
+  const captionStyle = useMemo(
+    () => (currentCaption ? resolveCaptionStyle(currentCaption.styleId, presets) : null),
+    [currentCaption, presets],
+  )
+  const captionText = useMemo(
+    () =>
+      currentCaption
+        ? captionStyle?.uppercase
+          ? currentCaption.text.toUpperCase()
+          : currentCaption.text
+        : null,
+    [currentCaption, captionStyle],
+  )
 
   const togglePlay = () => {
     playingRef.current = !playingRef.current
