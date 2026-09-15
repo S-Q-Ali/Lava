@@ -31,7 +31,7 @@
 
 .workspace {
   display: grid;
-  grid-template-columns: 240px 1fr 260px;
+  grid-template-columns: 64px 240px 1fr 260px;
   min-height: 0;
 }
 
@@ -43,11 +43,12 @@
   min-height: 0;
 }
 
-.left-panel {
-  border-left: none;
-  border-top: none;
-  border-bottom: none;
-  padding: 12px;
+.left-panel-v2 {
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
   overflow-y: auto;
 }
 

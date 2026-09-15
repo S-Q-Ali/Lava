@@ -1,0 +1,46 @@
+.nav-rail {
+  display: flex;
+  flex-direction: column;
+  width: 64px;
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  padding: 4px 0;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.nav-rail-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 4px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  color: var(--text-dim);
+  font-size: 10px;
+  transition: color 0.1s, background 0.1s;
+}
+
+.nav-rail-item:hover {
+  color: var(--text);
+  background: var(--panel-2);
+}
+
+.nav-rail-item.active {
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.nav-rail-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.nav-rail-label {
+  font-size: 9px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}

@@ -10,7 +10,7 @@ describe('App mount (React 19 store snapshot stability)', () => {
     document.body.appendChild(container)
     const root = createRoot(container)
     expect(() => act(() => root.render(<App />))).not.toThrow()
-    expect(container.textContent).toContain('Lava — AI Video Studio')
+    expect(container.textContent).toContain('AI Studio')
     act(() => root.unmount())
     container.remove()
   })
