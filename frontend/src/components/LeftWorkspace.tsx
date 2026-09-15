@@ -2,6 +2,7 @@ import MediaPanel from './MediaPanel'
 import ManhwaPanel from './ManhwaPanel'
 import { CaptionPanel } from './CaptionPanel'
 import { PresetPanel } from './PresetPanel'
+import ExtractorPanel from './ExtractorPanel'
 import './LeftWorkspace.css'
 
 type LeftWorkspaceProps = {
@@ -46,7 +47,11 @@ export default function LeftWorkspace({ activeNav }: LeftWorkspaceProps) {
     case 'home':
       return <Placeholder title="Home" />
     case 'projects':
-      return <Placeholder title="Projects" />
+      return (
+        <div className="left-workspace-content">
+          <ExtractorPanel />
+        </div>
+      )
     case 'export':
       return <Placeholder title="Export" />
     default:

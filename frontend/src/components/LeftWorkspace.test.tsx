@@ -52,9 +52,10 @@ describe('LeftWorkspace', () => {
     expect(host.textContent).toContain('Coming soon')
   })
 
-  it('renders placeholder for projects', () => {
+  it('renders ExtractorPanel when activeNav is projects', () => {
     mount('projects')
-    expect(host.textContent).toContain('Coming soon')
+    expect(host.querySelector('.extractor-panel')).not.toBeNull()
+    expect(host.textContent).toContain('Extractor')
   })
 
   it('renders placeholder for export', () => {
