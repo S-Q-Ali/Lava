@@ -1,0 +1,74 @@
+.ai-match-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.ai-match-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.ai-match-icon {
+  font-size: 14px;
+}
+
+.ai-match-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.ai-match-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.ai-match-tab {
+  flex: 1;
+  padding: 6px 8px;
+  font-size: 11px;
+  text-align: center;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+}
+
+.ai-match-tab:hover {
+  color: var(--text);
+}
+
+.ai-match-tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.ai-match-body {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.ai-match-content {
+  padding: 8px 12px;
+}
+
+.ai-match-settings {
+  padding: 16px 12px;
+}
+
+.ai-match-settings-hint {
+  color: var(--text-dim);
+  font-size: 12px;
+  margin: 0;
+}

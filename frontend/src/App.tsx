@@ -3,7 +3,7 @@ import TopBar from './components/TopBar'
 import NavRail from './components/NavRail'
 import LeftWorkspace from './components/LeftWorkspace'
 import PreviewPanel from './components/PreviewPanel'
-import InspectorPanel from './components/InspectorPanel'
+import RightPanel from './components/RightPanel'
 import TimelinePanel from './components/timeline/TimelinePanel'
 import './App.css'
 
@@ -22,7 +22,7 @@ function App() {
           <PreviewPanel />
         </main>
         <aside className="right-panel">
-          <InspectorPanel />
+          <RightPanel />
         </aside>
       </div>
       <footer className="bottom-panel">
