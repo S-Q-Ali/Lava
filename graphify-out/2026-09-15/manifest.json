@@ -24,9 +24,9 @@
     "semantic_hash": ""
   },
   "frontend/src/App.tsx": {
-    "mtime": 1789482959.0587287,
-    "seen": 1789483134.0035882,
-    "ast_hash": "fc020ee3bce2d66198bf31ec120c7aa0",
+    "mtime": 1789485265.2868862,
+    "seen": 1789485637.805783,
+    "ast_hash": "d8665b74d39e2bcfa5c000bba9fb5549",
     "semantic_hash": ""
   },
   "frontend/src/components/InspectorPanel.tsx": {
@@ -42,9 +42,9 @@
     "semantic_hash": "2d0c59cdca2006e6b8745dfd1f121314"
   },
   "frontend/src/components/PreviewPanel.tsx": {
-    "mtime": 1789404726.5430584,
-    "seen": 1789404863.090728,
-    "ast_hash": "9ecff90a228cb9bbb7b3512978d0a402",
+    "mtime": 1789485164.3715804,
+    "seen": 1789485637.805838,
+    "ast_hash": "9e8386a31ef9b18e0a0fee5cc94e97aa",
     "semantic_hash": ""
   },
   "frontend/src/components/timeline/ClipBlock.tsx": {
@@ -108,9 +108,9 @@
     "semantic_hash": ""
   },
   "frontend/src/store/editorStore.ts": {
-    "mtime": 1789400927.7716694,
-    "seen": 1789404863.09081,
-    "ast_hash": "080549282cbda261e9383ad3342d73b9",
+    "mtime": 1789484700.6438723,
+    "seen": 1789485637.805933,
+    "ast_hash": "0a0873fd8395ebb0262218f76dab1d90",
     "semantic_hash": ""
   },
   "frontend/tsconfig.app.json": {
@@ -336,9 +336,9 @@
     "semantic_hash": ""
   },
   "README.md": {
-    "mtime": 1789157837.4409206,
-    "seen": 1789157864.226518,
-    "ast_hash": "e54f1b31ec225def46d2f34a917b1419",
+    "mtime": 1789485384.2550352,
+    "seen": 1789485637.80602,
+    "ast_hash": "0eb2fc352954c0451996494f6377e2a8",
     "semantic_hash": ""
   },
   "docs/ARCHITECTURE.md": {
@@ -372,9 +372,9 @@
     "semantic_hash": ""
   },
   "docs/SESSION_LOG.md": {
-    "mtime": 1789483508.5710776,
-    "seen": 1789483522.377006,
-    "ast_hash": "b2cb74d90a991564153f4834e2a56c4c",
+    "mtime": 1789485622.6355486,
+    "seen": 1789485637.806032,
+    "ast_hash": "4efec457be455761461449e17456964d",
     "semantic_hash": ""
   },
   "docs/TEST_PLAN.md": {
@@ -552,9 +552,9 @@
     "semantic_hash": ""
   },
   "frontend/src/components/TranscriptPanel.tsx": {
-    "mtime": 1789159959.1938906,
-    "seen": 1789159983.439848,
-    "ast_hash": "60919d2861be76acb67890cd92d93417",
+    "mtime": 1789484572.2135756,
+    "seen": 1789485637.805853,
+    "ast_hash": "f838cb39fb9c6731f487aea3c9830271",
     "semantic_hash": ""
   },
   "frontend/src/services/voice.test.ts": {
@@ -618,15 +618,15 @@
     "semantic_hash": ""
   },
   "frontend/src/editor/beats.test.ts": {
-    "mtime": 1789164735.7974775,
-    "seen": 1789164963.893218,
-    "ast_hash": "a0102f9c3059e93d519c55238c41e0f4",
+    "mtime": 1789484772.7776713,
+    "seen": 1789485637.805869,
+    "ast_hash": "bcfc83e01b696a70465219faef04181b",
     "semantic_hash": ""
   },
   "frontend/src/editor/beats.ts": {
-    "mtime": 1789163733.9198718,
-    "seen": 1789164963.893219,
-    "ast_hash": "638849d6f070f022c14c157e2a1cd1b7",
+    "mtime": 1789484901.12762,
+    "seen": 1789485637.805871,
+    "ast_hash": "baeb3d04d384371fa806e596b6fb9110",
     "semantic_hash": ""
   },
   "frontend/src/services/match.test.ts": {
@@ -1593,6 +1593,42 @@
     "mtime": 1789483344.4138017,
     "seen": 1789483522.376807,
     "ast_hash": "6bccfdd012bd6e3cbe4899671fb8b276",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/ErrorBoundary.tsx": {
+    "mtime": 1789485229.755049,
+    "seen": 1789485637.805803,
+    "ast_hash": "2cefffdf538de89a2eee2ceeaa17fedb",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/ToastContainer.tsx": {
+    "mtime": 1789485244.885288,
+    "seen": 1789485637.8058481,
+    "ast_hash": "2131f0b376fa0fa8cb94e076c1018011",
+    "semantic_hash": ""
+  },
+  "frontend/src/editor/retention.test.ts": {
+    "mtime": 1789485074.7383156,
+    "seen": 1789485637.80589,
+    "ast_hash": "c1f271058aa78b30ab69e8698a3491c0",
+    "semantic_hash": ""
+  },
+  "frontend/src/editor/retention.ts": {
+    "mtime": 1789485521.7231452,
+    "seen": 1789485637.805892,
+    "ast_hash": "5f2d0c7051e59d0f0ed3fc5db59c0c2c",
+    "semantic_hash": ""
+  },
+  "frontend/src/store/toastStore.ts": {
+    "mtime": 1789485237.3062525,
+    "seen": 1789485637.8059509,
+    "ast_hash": "d5eb6854c9d7d9f09c5aff98784282e4",
+    "semantic_hash": ""
+  },
+  "tasks/plan-remaining.md": {
+    "mtime": 1789484057.2668414,
+    "seen": 1789485637.80611,
+    "ast_hash": "4387c65c943b88718defc15818c9ff32",
     "semantic_hash": ""
   }
 }

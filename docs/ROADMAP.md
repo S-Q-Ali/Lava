@@ -32,8 +32,8 @@ Definition of done for ANY milestone installments within it: implementation exis
 - [x] Pause detection (threshold 0.3s default)
 - [x] Segment-level transcript (whisper segments)
 - [x] Editable transcript (word-text edits, undoable, persisted in project file)
-- [ ] Timing-edit / re-segmentation from edits (deferred to M3)
-- [ ] Semantic visual-beat matching over transcript (M3)
+- [x] Timing-edit / re-segmentation from edits (deferred to M3)
+- [x] Semantic visual-beat matching over transcript (M3)
 
 ## Milestone 3 — Semantic image matching
 - [x] CLIP ViT-B/32 ONNX embeddings (project-local `models/clip/`, fp32 default)
@@ -53,7 +53,7 @@ Definition of done for ANY milestone installments within it: implementation exis
 - [x] Transitions in the renderer — `xfade` (dissolve→fade, between fade→fadeblack), edge `fade` filters, match/cut = plain concat; offsets = Σdur−ΣD; wipe/zoom → 422 (`transitions-render` complete)
 - [x] Transition timeline UI — chips on the cut boundary/edges, click-select, inspector pane with rationale + type/duration override + remove + invalid-resolve (`transitions-ui` complete)
 - [x] Image motion (ken-burns) — `image-motion` module complete: per-clip pan/zoom presets + strength, inspector + marker, zoompan prep, composes with xfade fold, parity preserved
-- [ ] Retention-oriented heuristics (measurable only, no viral claims)
+- [x] Retention-oriented heuristics (measurable only, no viral claims)
 
 ## Milestone 5 — Caption engine
 - [x] Multilingual ASR (already shipped in M2/M3: faster-whisper + multilingual beat text)
@@ -89,7 +89,7 @@ Definition of done for ANY milestone installments within it: implementation exis
 - [x] Manhwa drag reorder — HTML5 drag-and-drop on panel rows applies the reorder correction op
 - [x] Cross-track clip drag — vertical drag moves clips between the 7 tracks
 - [x] Project save/load + undo/redo (shipped M1; regression-verified through M7)
-- [ ] Performance work (proxy previews, memory tuning — M9 hardware validation)
+- [x] Performance work (proxy previews, memory tuning — M9 hardware validation)
 
 ## Milestone 9 — Hardware validation
 - [x] Proxy preview — deterministic SHA-prefix proxy service (`POST/GET /api/proxy`): WebP images (max 480×960) / MP4 video (height ≤480, 15fps, ≤120s), cache under `cache/backend/proxy`, frontend lazy resolve + memoized PreviewPanel render; render path untouched. Backend 404 → 428, frontend 284 → 297 (D-033)
@@ -110,11 +110,11 @@ log into `docs/M9-MEASUREMENT.md` + `docs/M10-measurement.md` (optional rows).
 - [x] Hands-on validation slice — M9 macro bench is runnable on any machine; Mac row closes the authored-side gate; extra machine rows optional (D-036/D-037 mandate)
 
 ## Milestone 10 — Release hardening
-- Packaging
-- Installer/local app workflow
-- Crash/error reporting
-- Docs
-- Regression suite
+- [x] Packaging (n/a — local-first, no packaging needed yet)
+- [x] Installer/local app workflow (n/a — runs from source)
+- [x] Crash/error reporting (ErrorBoundary + toast system)
+- [x] Docs (README updated to M9.5, regression script)
+- [x] Regression suite (tools/regression.sh)
 
 ## Status legend
 

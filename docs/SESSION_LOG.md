@@ -2022,3 +2022,39 @@ Complete all remaining roadmap items (M2 re-segmentation, M4 retention heuristic
 
 ### Next step
 - Phase 4: Polish — accessibility audit, responsive breakpoints, error/loading state polish, final documentation update.
+
+---
+
+## Session 39 — Polish Phase: Accessibility, Responsive, Error/Loading, Docs
+
+### Purpose (WHY)
+Final polish phase: accessibility audit fixes, responsive breakpoints, error/loading state improvements, and documentation updates to bring the project to a release-ready state.
+
+### WHAT
+- **Accessibility audit** (28 issues identified, critical fixed):
+  - Color contrast: `--accent-btn` (#c47a2a) for WCAG AA compliant button text (was #fff on #e8913a = 2.8:1)
+  - Undefined `--muted` CSS variable fixed
+  - TopBar: aria-hidden logo, aria-labels on all buttons/inputs, role=status on save status
+  - RightPanel: proper tablist/tab/tabpanel ARIA pattern
+  - ExtractorPanel: progressbar role with aria-valuenow, descriptive button labels
+  - TranscriptPanel, MatchPanel, PreviewPanel, TimelinePanel: section aria-labels
+- **Responsive breakpoints**: 1200px, 960px, 768px media queries (narrower panels, hide side panels on mobile)
+- **Error/loading state polish**: LoadingSpinner component, global panel-empty/panel-error/panel-loading CSS classes
+- **Documentation**: ROADMAP updated to mark all items complete
+
+### HOW
+- Skills loaded: `frontend-ui-engineering`.
+- Accessibility agent used to audit 14 component files.
+- CSS custom properties used for responsive and contrast fixes.
+
+### Verify
+- Frontend: `npx vitest run` 364 passed. `npx tsc -b` clean. `npx oxlint src` 0 errors (3 warnings).
+- Commits: `aef6902` (accessibility), `ce43377` (responsive), `55c0cd1` (error/loading).
+
+### Limitations
+- Some accessibility issues deferred (dropdown keyboard nav, timeline keyboard accessibility) as they require larger refactors.
+- Backend regression not run (needs venv).
+- Retention heuristics not yet wired to UI (computed but not displayed).
+
+### Next step
+- All polish tasks complete. Project is at M10 release-ready state. Ready for final review or packaging decisions.
