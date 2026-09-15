@@ -1957,3 +1957,33 @@ Phase 1C of the V2 restructuring: add the bottom assets panel with category tabs
 
 ### Next step
 - Phase 1D: `v2-extractor` — presentation/image extractor panel in LeftWorkspace.
+
+---
+
+## Session 37 — V2 Frontend: Presentation/Image Extractor
+
+### Purpose (WHY)
+Phase 1D of the V2 restructuring: add the presentation/image extractor panel in LeftWorkspace, replacing the Projects placeholder with a functional upload/select/extract workflow.
+
+### WHAT
+- **ExtractorPanel** (`components/ExtractorPanel.tsx` + `.css`): upload zone for PDF/PPT/PPTX/KEY/ODP files, page thumbnails with select/deselect, All/None/Clear toolbar, Extract button with progress bar. Extracted pages become image assets in the editor store.
+- **LeftWorkspace** updated: `projects` nav item now routes to ExtractorPanel (was placeholder).
+- 6 new tests. Updated 1 existing test (projects placeholder → ExtractorPanel). Total frontend: 354.
+
+### HOW
+- Skills loaded: `frontend-ui-engineering`.
+- File upload uses native `<input type="file">` with `multiple` and format filters.
+- Extracted pages are converted to editor assets via `addAsset`.
+- TDD: tests written for ExtractorPanel; LeftWorkspace test updated.
+
+### Verify
+- Frontend: `npx vitest run` 354 passed (348 → 354: +6). `npx tsc -b` clean. `npx oxlint src` 0 errors (3 pre-existing warnings).
+- Commit: `cea8e89`.
+
+### Limitations
+- File parsing (actual page extraction from PDF/PPT) is not implemented — current version treats uploaded files as images directly. Real extraction requires a backend worker or WASM module.
+- Page previews use `URL.createObjectURL` which may leak memory if not revoked.
+- No drag-and-drop reordering of extracted pages.
+
+### Next step
+- All 5 V2 modules complete (Topbar, Nav Rail, Right Panels, Bottom Assets, Extractor). V2 frontend restructuring is feature-complete. Next: regression audit, final polish, or move to remaining roadmap items (M10, M11, M12).
