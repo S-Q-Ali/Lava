@@ -1854,3 +1854,43 @@ proven done by looking at it, so the hand-off moment gets a name and a version.
 - Commit docs + bench docstring, `graphify update .`, tag `v0.1.0-beta.0`, then
   push + tag + GitHub prerelease on go-ahead. Beta closes as slice 1 of M10's
   shadow slice; M10 release hardening starts next.
+
+---
+
+## Session 34 — V2 Frontend: Topbar + Nav Rail + Left Workspace
+
+### Purpose (WHY)
+The V2 spec (`AI_VIDEO_STUDIO_MASTER_SPEC_V2_EXACT_FRONTEND.md`) mandates reproducing the exact AI Studio frontend from a supplied screenshot. The current editor has a generic layout (2-tab left panel, simple topbar, stacked inspector). This session shipped Phase 1A of the V2 restructuring: the topbar redesign and the 7-item navigation rail.
+
+### WHAT
+- **TopBar** (`components/TopBar.tsx` + `TopBar.css`): brand mark (⚡ AI Studio), "Create · Edit · Inspire" subtitle, editable project title (click-to-edit with input), undo/redo buttons, saved status indicator (✓ Saved / ● Unsaved), 16:9 aspect ratio selector dropdown, Preview and Export buttons, profile and settings dropdown placeholders. Replaces the inline topbar in App.tsx.
+- **NavRail** (`components/NavRail.tsx` + `NavRail.css` + `navItems.ts`): 7-item vertical navigation rail (Home, Projects, Media, AI Tools, Captions, Templates, Export) with emoji icons, active state highlighting, ARIA `aria-current="page"`, and `onSelect` callback. 64px wide, sits left of the workspace.
+- **LeftWorkspace** (`components/LeftWorkspace.tsx` + `LeftWorkspace.css`): switches content based on active nav item — Media → MediaPanel, AI Tools → ManhwaPanel, Captions → CaptionPanel, Templates → PresetPanel, Home/Projects/Export → "Coming soon" placeholder.
+- **App.tsx** rewrite: `TopBar` + `NavRail` + `LeftWorkspace` replace the old inline topbar and 2-tab left panel. Grid layout updated to `64px 240px 1fr 260px`.
+- **Theme tokens** (`index.css`): accent changed from blue `#4f8cff` to amber `#e8913a`; added `--accent-teal: #3ab0a2` and `--accent-teal-soft` for status accents; `--track-captions` updated to teal.
+- **Tests**: 33 new tests (10 TopBar + 6 NavRail + 7 LeftWorkspace). Total frontend: 320.
+- **Plan**: `tasks/plan-v2-frontend.md` with 5-module capability map (v2-topbar, v2-left-nav, v2-right-panels, v2-bottom-assets, v2-extractor).
+
+### HOW
+- Skills loaded: `spec-driven-development`, `frontend-ui-engineering`.
+- TDD: tests written for each component before or alongside implementation.
+- Followed existing repo patterns: `createRoot` + `act` for component tests, `useShallow` for store selectors, colocated CSS files.
+- CSS: new `.topbar-v2-*` and `.nav-rail-*` namespaces to avoid collisions with existing styles.
+
+### Decisions
+- D-039 — V2 topbar uses brand mark + subtitle + editable project title pattern. Locked.
+- D-040 — Nav rail is 64px wide with emoji icons (interim; SVG icons deferred to polish pass). Locked.
+- D-041 — LeftWorkspace routes nav items to existing panels (MediaPanel, ManhwaPanel, CaptionPanel, PresetPanel) with placeholders for unimplemented nav items. Locked.
+
+### Verify
+- Frontend: `npx vitest run` 320 passed (297 → 320: +10 TopBar, +6 NavRail, +7 LeftWorkspace). `npx tsc -b` clean. `npx oxlint src` 0 errors (2 pre-existing warnings).
+- Commit: `5c24952`.
+
+### Limitations
+- Profile/settings dropdowns are placeholder only (no functional logic).
+- Nav rail uses emoji icons; SVG icon pass deferred.
+- "Coming soon" placeholders for Home, Projects, Export nav items.
+- Aspect ratio selector stores local state only; not wired to preview/render.
+
+### Next step
+- Phase 1B: `v2-right-panels` — dedicated AI Match + Auto Captions panels replacing the stacked InspectorPanel. Then Phase 1C (bottom assets) and Phase 1D (extractor).
