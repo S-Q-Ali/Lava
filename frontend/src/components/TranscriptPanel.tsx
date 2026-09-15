@@ -87,7 +87,7 @@ export default function TranscriptPanel() {
   else if (!transcript && !busy && file) statusText = 'Not analyzed yet.'
 
   return (
-    <section className="transcript-panel">
+    <section className="transcript-panel" aria-label="Narration transcript">
       <div className="inspector-stats">
         <h4>Narration analysis</h4>
         {statusText && <p className="transcript-hint">{statusText}</p>}

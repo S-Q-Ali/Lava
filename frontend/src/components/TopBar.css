@@ -127,9 +127,9 @@
 }
 
 .topbar-v2-btn-primary {
-  background: var(--accent);
+  background: var(--accent-btn);
   color: #fff;
-  border-color: var(--accent);
+  border-color: var(--accent-btn);
 }
 
 .topbar-v2-btn-primary:hover {

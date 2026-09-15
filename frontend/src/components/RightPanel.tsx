@@ -11,12 +11,15 @@ export default function RightPanel() {
 
   return (
     <div className="right-panel-v2">
-      <div className="right-panel-switcher">
+      <div className="right-panel-switcher" role="tablist">
         <button
           type="button"
           className={`right-panel-switcher-btn${view === 'ai-match' ? ' active' : ''}`}
           onClick={() => setView('ai-match')}
           title="AI Match"
+          role="tab"
+          aria-selected={view === 'ai-match'}
+          aria-label="AI Match"
         >
           ⚡
         </button>
@@ -25,6 +28,9 @@ export default function RightPanel() {
           className={`right-panel-switcher-btn${view === 'auto-captions' ? ' active' : ''}`}
           onClick={() => setView('auto-captions')}
           title="Auto Captions"
+          role="tab"
+          aria-selected={view === 'auto-captions'}
+          aria-label="Auto Captions"
         >
           💬
         </button>
@@ -33,12 +39,15 @@ export default function RightPanel() {
           className={`right-panel-switcher-btn${view === 'inspector' ? ' active' : ''}`}
           onClick={() => setView('inspector')}
           title="Inspector"
+          role="tab"
+          aria-selected={view === 'inspector'}
+          aria-label="Inspector"
         >
           🔍
         </button>
       </div>
 
-      <div className="right-panel-content">
+      <div className="right-panel-content" role="tabpanel">
         {view === 'ai-match' && <AIMatchPanel />}
         {view === 'auto-captions' && <AutoCaptionsPanel />}
         {view === 'inspector' && <InspectorPanel />}

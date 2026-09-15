@@ -5,7 +5,9 @@
   --border: #262b36;
   --text: #c8cdd8;
   --text-dim: #8a91a0;
+  --muted: var(--text-dim);
   --accent: #e8913a;
+  --accent-btn: #c47a2a;
   --accent-soft: rgba(232, 145, 58, 0.18);
   --accent-teal: #3ab0a2;
   --accent-teal-soft: rgba(58, 176, 162, 0.18);

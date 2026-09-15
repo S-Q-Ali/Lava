@@ -72,7 +72,7 @@ export default function TopBar() {
     <header className="topbar-v2">
       <div className="topbar-v2-left">
         <div className="topbar-v2-brand">
-          <span className="topbar-v2-logo">⚡</span>
+          <span className="topbar-v2-logo" aria-hidden="true">⚡</span>
           <div className="topbar-v2-brand-text">
             <span className="topbar-v2-title">AI Studio</span>
             <span className="topbar-v2-subtitle">Create · Edit · Inspire</span>
@@ -93,6 +93,7 @@ export default function TopBar() {
                 if (e.key === 'Escape') setIsEditingTitle(false)
               }}
               autoFocus
+              aria-label="Project name"
             />
           ) : (
             <button
@@ -110,13 +111,13 @@ export default function TopBar() {
 
       <div className="topbar-v2-right">
         <div className="topbar-v2-actions">
-          <button type="button" className="topbar-v2-btn-icon" onClick={model.undo} title="Undo">
+          <button type="button" className="topbar-v2-btn-icon" onClick={model.undo} title="Undo" aria-label="Undo">
             ↩
           </button>
-          <button type="button" className="topbar-v2-btn-icon" onClick={model.redo} title="Redo">
+          <button type="button" className="topbar-v2-btn-icon" onClick={model.redo} title="Redo" aria-label="Redo">
             ↪
           </button>
-          <span className={`topbar-v2-saved${saved ? ' is-saved' : ''}`}>
+          <span className={`topbar-v2-saved${saved ? ' is-saved' : ''}`} role="status" aria-live="polite">
             {saved ? '✓ Saved' : '● Unsaved'}
           </span>
         </div>
@@ -127,6 +128,7 @@ export default function TopBar() {
             value={aspectRatio}
             onChange={(e) => setAspectRatio(e.target.value as AspectRatio)}
             title="Aspect ratio"
+            aria-label="Aspect ratio"
           >
             {ASPECT_RATIOS.map((r) => (
               <option key={r} value={r}>
@@ -154,10 +156,11 @@ export default function TopBar() {
             className="topbar-v2-btn-icon"
             onClick={() => openProjectInputRef.current?.click()}
             title="Open project"
+            aria-label="Open project"
           >
             📂
           </button>
-          <button type="button" className="topbar-v2-btn-icon" onClick={handleSave} title="Save project">
+          <button type="button" className="topbar-v2-btn-icon" onClick={handleSave} title="Save project" aria-label="Save project">
             💾
           </button>
         </div>

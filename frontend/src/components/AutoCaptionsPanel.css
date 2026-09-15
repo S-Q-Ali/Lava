@@ -185,7 +185,7 @@
 }
 
 .auto-captions-generate-btn {
-  background: var(--accent);
+  background: var(--accent-btn);
   color: #fff;
   border: none;
   border-radius: 4px;

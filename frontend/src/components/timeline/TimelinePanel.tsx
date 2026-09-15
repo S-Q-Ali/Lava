@@ -22,7 +22,7 @@ export default function TimelinePanel() {
   }
 
   return (
-    <section className="panel timeline-panel">
+    <section className="panel timeline-panel" aria-label="Timeline">
       <div className="timeline-ruler">
         <div className="track-label-header" />
         <div className="ruler-scale">

@@ -45,7 +45,7 @@ export default function MatchPanel() {
       ' — undo anytime.'
 
   return (
-    <section className="transcript-panel">
+    <section className="transcript-panel" aria-label="Image matching">
       <div className="inspector-stats">
         <h4>Image matching</h4>
         {statusLine && <p className="transcript-hint">{statusLine}</p>}

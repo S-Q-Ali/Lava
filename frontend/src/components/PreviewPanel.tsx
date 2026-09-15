@@ -150,7 +150,7 @@ export default function PreviewPanel() {
   }
 
   return (
-    <section className="panel preview-panel">
+    <section className="panel preview-panel" aria-label="Preview">
       <div className="preview-stage">
         {renderUrl ? (
           <video src={renderUrl} controls />

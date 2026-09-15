@@ -112,6 +112,7 @@ export default function ExtractorPanel() {
                 type="button"
                 className="extractor-toolbar-btn"
                 onClick={selectAll}
+                aria-label="Select all pages"
               >
                 All
               </button>
@@ -119,6 +120,7 @@ export default function ExtractorPanel() {
                 type="button"
                 className="extractor-toolbar-btn"
                 onClick={deselectAll}
+                aria-label="Deselect all pages"
               >
                 None
               </button>
@@ -126,6 +128,7 @@ export default function ExtractorPanel() {
                 type="button"
                 className="extractor-toolbar-btn extractor-toolbar-danger"
                 onClick={clearAll}
+                aria-label="Clear all pages"
               >
                 Clear
               </button>
@@ -167,7 +170,7 @@ export default function ExtractorPanel() {
 
             {extracting ? (
               <div className="extractor-progress">
-                <div className="extractor-progress-bar">
+                <div className="extractor-progress-bar" role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100} aria-label="Extraction progress">
                   <div
                     className="extractor-progress-fill"
                     style={{ width: `${progress}%` }}
