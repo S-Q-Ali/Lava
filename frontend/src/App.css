@@ -67,10 +67,25 @@
   min-height: 0;
 }
 
-.bottom-panel {
+.bottom-section {
+  display: grid;
+  grid-template-rows: auto 1fr;
   border-top: 1px solid var(--border);
+  min-height: 280px;
+  max-height: 40vh;
+}
+
+.bottom-panel {
   background: var(--panel);
-  min-height: 220px;
+  min-height: 120px;
+  max-height: 50%;
+  overflow-y: auto;
+}
+
+.assets-panel-container {
+  background: var(--panel);
+  border-top: 1px solid var(--border);
+  overflow: hidden;
 }
 
 /* Preview */

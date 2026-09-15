@@ -5,6 +5,7 @@ import LeftWorkspace from './components/LeftWorkspace'
 import PreviewPanel from './components/PreviewPanel'
 import RightPanel from './components/RightPanel'
 import TimelinePanel from './components/timeline/TimelinePanel'
+import AssetsPanel from './components/AssetsPanel'
 import './App.css'
 
 function App() {
@@ -25,9 +26,14 @@ function App() {
           <RightPanel />
         </aside>
       </div>
-      <footer className="bottom-panel">
-        <TimelinePanel />
-      </footer>
+      <div className="bottom-section">
+        <footer className="bottom-panel">
+          <TimelinePanel />
+        </footer>
+        <section className="assets-panel-container">
+          <AssetsPanel />
+        </section>
+      </div>
     </div>
   )
 }
