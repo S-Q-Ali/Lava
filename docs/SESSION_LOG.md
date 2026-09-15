@@ -1894,3 +1894,34 @@ The V2 spec (`AI_VIDEO_STUDIO_MASTER_SPEC_V2_EXACT_FRONTEND.md`) mandates reprod
 
 ### Next step
 - Phase 1B: `v2-right-panels` — dedicated AI Match + Auto Captions panels replacing the stacked InspectorPanel. Then Phase 1C (bottom assets) and Phase 1D (extractor).
+
+---
+
+## Session 35 — V2 Frontend: Right Panels (AI Match + Auto Captions)
+
+### Purpose (WHY)
+Phase 1B of the V2 restructuring: replace the stacked InspectorPanel with dedicated AI Match and Auto Captions panels on the right side, matching the V2 reference layout.
+
+### WHAT
+- **AIMatchPanel** (`components/AIMatchPanel.tsx` + `.css`): dedicated panel with header (⚡ AI Match), tabs (Voice + Images / Settings). Voice+Images tab contains the existing TranscriptPanel + MatchPanel. Settings tab is a placeholder.
+- **AutoCaptionsPanel** (`components/AutoCaptionsPanel.tsx` + `.css`): dedicated panel with toggle on/off, language selector (Auto-detect, English, Urdu, Roman Urdu, Mixed), style selector, Customize button, transcript preview, Auto/Manual timing buttons, Generate Captions button, and full caption list with text/style/duration editing and remove.
+- **RightPanel** (`components/RightPanel.tsx` + `.css`): container with icon switcher (⚡ AI Match, 💬 Auto Captions, 🔍 Inspector) to toggle between right-side views. InspectorPanel remains accessible via the switcher.
+- **App.tsx** updated to use `RightPanel` instead of `InspectorPanel`.
+- 17 new tests (5 AIMatch + 7 AutoCaptions + 5 RightPanel). Total frontend: 337.
+
+### HOW
+- Skills loaded: `frontend-ui-engineering`.
+- Existing panels (TranscriptPanel, MatchPanel, CaptionPanel) reused inside the new containers — no logic duplication.
+- TDD: tests written for each new component.
+
+### Verify
+- Frontend: `npx vitest run` 337 passed (320 → 337: +17). `npx tsc -b` clean. `npx oxlint src` 0 errors (3 pre-existing warnings).
+- Commit: `92d49af`.
+
+### Limitations
+- Settings tab in AIMatchPanel is placeholder only.
+- Auto/Manual timing toggle is local state only; not wired to caption generation logic.
+- Caption styles are not rendered as live previews in the panel (render happens at burn-in).
+
+### Next step
+- Phase 1C: `v2-bottom-assets` — bottom assets panel with category tabs, asset grid, Image-to-Image AI tool, and Tips panel.

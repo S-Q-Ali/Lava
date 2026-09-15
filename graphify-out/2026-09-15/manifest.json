@@ -24,9 +24,9 @@
     "semantic_hash": ""
   },
   "frontend/src/App.tsx": {
-    "mtime": 1789337681.582469,
-    "seen": 1789338028.978724,
-    "ast_hash": "a0d4986c088c2b9d78a9691092a2450d",
+    "mtime": 1789481459.0578504,
+    "seen": 1789482110.3583832,
+    "ast_hash": "abe1e53f110b99350d777c747abe5abc",
     "semantic_hash": ""
   },
   "frontend/src/components/InspectorPanel.tsx": {
@@ -372,9 +372,9 @@
     "semantic_hash": ""
   },
   "docs/SESSION_LOG.md": {
-    "mtime": 1789476743.6212668,
-    "seen": 1789476810.649853,
-    "ast_hash": "c169bebfec0825e151824b430ed09865",
+    "mtime": 1789482098.2905614,
+    "seen": 1789482110.358568,
+    "ast_hash": "4216a00289d40c243851bc059c17de6f",
     "semantic_hash": ""
   },
   "docs/TEST_PLAN.md": {
@@ -738,9 +738,9 @@
     "semantic_hash": ""
   },
   "frontend/src/App.test.tsx": {
-    "mtime": 1789216070.3069506,
-    "seen": 1789217496.846802,
-    "ast_hash": "bda56547c76ad5909c44a454839c19ca",
+    "mtime": 1789481230.535976,
+    "seen": 1789482110.358381,
+    "ast_hash": "35210bfd3552620e9624d882bdb17a07",
     "semantic_hash": ""
   },
   "frontend/src/components/TransitionsPanel.test.tsx": {
@@ -1449,6 +1449,66 @@
     "mtime": 1789411025.8329136,
     "seen": 1789474978.0249789,
     "ast_hash": "099b634dfd052099adb28caa6f216d78",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/LeftWorkspace.test.tsx": {
+    "mtime": 1789481516.978351,
+    "seen": 1789482110.358392,
+    "ast_hash": "b4374273d40297ea9d4ec55a47a7ed34",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/LeftWorkspace.tsx": {
+    "mtime": 1789481439.0057244,
+    "seen": 1789482110.3583941,
+    "ast_hash": "4b1cff5b34458ac431f95240ffa4bef6",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/NavRail.test.tsx": {
+    "mtime": 1789481560.2286692,
+    "seen": 1789482110.358405,
+    "ast_hash": "91976bfc0108d30a6a2d6c1d0089f7d7",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/NavRail.tsx": {
+    "mtime": 1789481421.5595875,
+    "seen": 1789482110.3584058,
+    "ast_hash": "e0136406e337528ad8e19042e4029b07",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/TopBar.test.tsx": {
+    "mtime": 1789481354.9338803,
+    "seen": 1789482110.3584158,
+    "ast_hash": "7b125de93bc6e55c418f5b3a6f59a98a",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/TopBar.tsx": {
+    "mtime": 1789481152.4168956,
+    "seen": 1789482110.3584168,
+    "ast_hash": "21c15c319be84dc68f51f928abf7cd3e",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/navItems.ts": {
+    "mtime": 1789481415.7480278,
+    "seen": 1789482110.358423,
+    "ast_hash": "579d377dffd3222f213e9a659b588baf",
+    "semantic_hash": ""
+  },
+  "AGENTS_V2_EXACT_FRONTEND.md": {
+    "mtime": 1789479766.58669,
+    "seen": 1789482110.3585532,
+    "ast_hash": "1bad750e3f18e7463b1cc4a487fb46b1",
+    "semantic_hash": ""
+  },
+  "AI_VIDEO_STUDIO_MASTER_SPEC_V2_EXACT_FRONTEND.md": {
+    "mtime": 1789479765.4019089,
+    "seen": 1789482110.3585548,
+    "ast_hash": "590af7ed862d54dcb80c5be02141cd63",
+    "semantic_hash": ""
+  },
+  "tasks/plan-v2-frontend.md": {
+    "mtime": 1789481092.4763303,
+    "seen": 1789482110.3586419,
+    "ast_hash": "b638938fa07d5c57df1e275d6c8656e3",
     "semantic_hash": ""
   }
 }
