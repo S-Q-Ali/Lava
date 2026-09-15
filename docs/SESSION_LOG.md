@@ -1987,3 +1987,38 @@ Phase 1D of the V2 restructuring: add the presentation/image extractor panel in 
 
 ### Next step
 - All 5 V2 modules complete (Topbar, Nav Rail, Right Panels, Bottom Assets, Extractor). V2 frontend restructuring is feature-complete. Next: regression audit, final polish, or move to remaining roadmap items (M10, M11, M12).
+
+---
+
+## Session 38 — Remaining Features + Regression Audit + Polish Prep
+
+### Purpose (WHY)
+Complete all remaining roadmap items (M2 re-segmentation, M4 retention heuristics, M8 performance), M10 release hardening (error boundary, docs, regression script), and run a full regression audit before polish phase.
+
+### WHAT
+- **Timing-edit re-segmentation** (M2): `resegmentBeats()` with stable content-based IDs, `resegmentTranscript` store action, "Re-segment Beats" button in TranscriptPanel. 4 new tests.
+- **Retention heuristics** (M4): `analyzeRetention()` with 4 measurable metrics (hook strength, pacing, duration variation, narrative progression) + suggestions. 6 new tests.
+- **Performance** (M8): PreviewPanel memoized with `useMemo` for active clip/asset/caption lookups.
+- **Crash/error reporting** (M10): `ErrorBoundary` class component + `ToastContainer` + `toastStore` (zustand). 4 toast types, auto-dismiss.
+- **Documentation** (M10): README updated to M9.5 beta status with getting started section.
+- **Regression script** (M10): `tools/regression.sh` — 6-step verification (build, tests, lint, backend, strict, bundle).
+- **Regression audit**: tsc clean, 364 tests passing, 0 lint errors (3 pre-existing warnings).
+
+### HOW
+- Skills loaded: `frontend-ui-engineering`, `planning-and-task-breakdown`.
+- TDD: tests written for resegmentBeats and analyzeRetention.
+- Research agent used to assess implementation status of 4 remaining features.
+
+### Verify
+- Frontend: `npx vitest run` 364 passed. `npx tsc -b` clean. `npx oxlint src` 0 errors (3 warnings).
+- Backend: not tested in this session (needs venv setup).
+- Commits: `952478a` (re-segmentation), `616bc0e` (retention), `c0f2f98` (perf), `43618c9` (error boundary), `81f604c` (docs), `674a265` (lint fix).
+
+### Limitations
+- Backend regression not run (needs Python venv with fastapi installed).
+- Retention heuristics are basic — no UI integration yet (metrics computed but not displayed in any panel).
+- Error boundary only catches render errors, not async errors.
+- Toast system is standalone — not wired to any store actions yet.
+
+### Next step
+- Phase 4: Polish — accessibility audit, responsive breakpoints, error/loading state polish, final documentation update.

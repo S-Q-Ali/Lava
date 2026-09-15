@@ -372,9 +372,9 @@
     "semantic_hash": ""
   },
   "docs/SESSION_LOG.md": {
-    "mtime": 1789483119.2490385,
-    "seen": 1789483134.003863,
-    "ast_hash": "7a7689611aae3cf59b3ab26fa6a06c59",
+    "mtime": 1789483508.5710776,
+    "seen": 1789483522.377006,
+    "ast_hash": "b2cb74d90a991564153f4834e2a56c4c",
     "semantic_hash": ""
   },
   "docs/TEST_PLAN.md": {
@@ -1452,15 +1452,15 @@
     "semantic_hash": ""
   },
   "frontend/src/components/LeftWorkspace.test.tsx": {
-    "mtime": 1789481516.978351,
-    "seen": 1789482110.358392,
-    "ast_hash": "b4374273d40297ea9d4ec55a47a7ed34",
+    "mtime": 1789483405.48059,
+    "seen": 1789483522.3768141,
+    "ast_hash": "c2f425255d8afb2e7251f8cfb8726336",
     "semantic_hash": ""
   },
   "frontend/src/components/LeftWorkspace.tsx": {
-    "mtime": 1789481439.0057244,
-    "seen": 1789482110.3583941,
-    "ast_hash": "4b1cff5b34458ac431f95240ffa4bef6",
+    "mtime": 1789483370.822365,
+    "seen": 1789483522.376816,
+    "ast_hash": "25db9e4f02148d529a8ff71a880ff90b",
     "semantic_hash": ""
   },
   "frontend/src/components/NavRail.test.tsx": {
@@ -1581,6 +1581,18 @@
     "mtime": 1789482822.4862075,
     "seen": 1789483134.003654,
     "ast_hash": "b7012a46779718eaa2c4dc8d5b527ecb",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/ExtractorPanel.test.tsx": {
+    "mtime": 1789483461.6622345,
+    "seen": 1789483522.376804,
+    "ast_hash": "acc2bf1ecd58333b4cd964d57b7fd4ae",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/ExtractorPanel.tsx": {
+    "mtime": 1789483344.4138017,
+    "seen": 1789483522.376807,
+    "ast_hash": "6bccfdd012bd6e3cbe4899671fb8b276",
     "semantic_hash": ""
   }
 }
