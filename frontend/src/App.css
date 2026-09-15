@@ -1831,3 +1831,43 @@
   font-size: 13px;
   cursor: pointer;
 }
+
+/* Responsive breakpoints */
+@media (max-width: 1200px) {
+  .workspace {
+    grid-template-columns: 64px 200px 1fr 220px;
+  }
+}
+
+@media (max-width: 960px) {
+  .workspace {
+    grid-template-columns: 64px 180px 1fr 200px;
+  }
+
+  .bottom-section {
+    min-height: 220px;
+  }
+}
+
+@media (max-width: 768px) {
+  .workspace {
+    grid-template-columns: 48px 1fr;
+  }
+
+  .left-panel-v2 {
+    display: none;
+  }
+
+  .right-panel {
+    display: none;
+  }
+
+  .bottom-section {
+    min-height: 180px;
+    max-height: 50vh;
+  }
+
+  .assets-tabs {
+    overflow-x: auto;
+  }
+}
