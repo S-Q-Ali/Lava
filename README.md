@@ -12,17 +12,30 @@ Local-first professional AI Video Studio. A real editing tool that happens to ha
 
 ## Current status
 
-Milestone 0 (repository bootstrap) is done; Milestone 1 (media foundation) is done:
+**Milestone 9.5 (beta) complete.** All core features shipped:
 
-- Vite + React + TypeScript editor in `frontend/` with the spec layout: left media panel, center preview, bottom timeline, right inspector.
-- Timeline model with 7 core tracks, clips, playhead, split/delete/select, drag-move and edge-trim gestures, and undo/redo (Zustand + Zundo).
-- Web media importer (images, video, audio with metadata) that drops imported assets onto the timeline.
-- Project Save/Open: versioned `lava-studio` JSON files from the topbar.
-- Local media sidecar (`backend/`, FastAPI) + project-local FFmpeg: `POST /api/render` turns image/video clips into a real `mp4`; `PreviewPanel > Render` shows the output. Start it with `./scripts/sidecar.sh`.
+- V2 frontend layout: topbar, 64px nav rail, left workspace, center preview, right panels (AI Match + Auto Captions + Inspector), bottom assets, timeline.
+- Voice analysis: faster-whisper ASR, word timestamps, pause detection, editable transcript, re-segmentation.
+- Semantic image matching: CLIP ViT-B/32 ONNX embeddings, repetition-aware greedy assignment, confidence + alternatives.
+- Transition engine: clean cuts, contextual suggestions, xfade renderer, ken-burns motion.
+- Caption engine: 15 original presets, karaoke/kinetic/manga/cinematic/meme/storytelling animations, libass burn-in.
+- Template/font system: preset registry, import/export, template editor, license tracking.
+- Manhwa extractor: hybrid CV panel detection, ordering, split/merge/reorder, PNG/JPG export.
+- Hardware validation: proxy previews, lazy model loading, CPU fallback, streaming exports.
 
-Open M1 follow-ups: ripple editing, cross-track clip drag, audio-track mixing in render.
+## Getting started
 
-Details: [roadmap](docs/ROADMAP.md).
+### Frontend
+```bash
+cd frontend && npm install && npm run dev
+```
+
+### Backend (sidecar)
+```bash
+./scripts/sidecar.sh
+```
+
+The sidecar starts on `http://localhost:8000`. The frontend connects automatically.
 
 ## Documentation
 
