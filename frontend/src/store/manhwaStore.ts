@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import {
   listStrips,
   uploadStrip,
+  uploadPdf,
   getStrip,
   correctStrip,
   redetectStrip,
@@ -25,6 +26,7 @@ interface ManhwaStore {
   refresh(): Promise<void>
   select(id: string | null): Promise<void>
   upload(file: File): Promise<void>
+  uploadPdf(file: File): Promise<void>
   apply(op: CorrectionOp): Promise<void>
   redetect(): Promise<void>
   remove(id: string): Promise<void>
@@ -75,6 +77,24 @@ export const useManhwaStore = create<ManhwaStore>()((set, get) => ({
       })
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Could not upload strip.'
+      set({ status: { phase: 'error', error: message } })
+    }
+  },
+
+  uploadPdf: async (file) => {
+    set({ status: { phase: 'uploading' } })
+    try {
+      const result = await uploadPdf(file)
+      const strips = await listStrips()
+      const firstStrip = result.strips[0] ?? null
+      set({
+        status: { phase: 'idle' },
+        strips,
+        currentId: firstStrip?.sourceId ?? null,
+        detail: firstStrip,
+      })
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Could not upload PDF.'
       set({ status: { phase: 'error', error: message } })
     }
   },

@@ -199,3 +199,38 @@ export function sourceImageUrl(sourceId: string): string {
   const baseUrl = backendBaseUrl().replace(/\/$/, '')
   return `${baseUrl}/api/manhwa/strips/${encodeURIComponent(sourceId)}/source`
 }
+
+// -- PDF Upload --------------------------------------------------------------
+
+export interface PdfUploadResult {
+  strips: ManhwaStripDetail[]
+}
+
+function parseStripDetailFromPdf(value: unknown): ManhwaStripDetail {
+  const record = value as Record<string, unknown> | null
+  if (!record || typeof record.sourceId !== 'string') {
+    throw new ManhwaError('INVALID_RESPONSE', 'The sidecar returned an unexpected strip detail shape.')
+  }
+  return {
+    sourceId: record.sourceId,
+    sourceFile: typeof record.sourceFile === 'string' ? record.sourceFile : '',
+    width: typeof record.width === 'number' ? record.width : 0,
+    height: typeof record.height === 'number' ? record.height : 0,
+    mime: typeof record.mime === 'string' ? record.mime : '',
+    panels: Array.isArray(record.panels)
+      ? (record.panels as Array<unknown>).map(parsePanel)
+      : [],
+  }
+}
+
+export async function uploadPdf(file: File, signal?: AbortSignal): Promise<PdfUploadResult> {
+  const form = new FormData()
+  form.append('file', file, file.name)
+  const body = (await manhwaFetch('/strips/pdf', { method: 'POST', body: form, signal })) as Record<string, unknown>
+  if (!Array.isArray(body.strips)) {
+    throw new ManhwaError('INVALID_RESPONSE', 'The sidecar returned an unexpected PDF response shape.')
+  }
+  return {
+    strips: (body.strips as Array<unknown>).map(parseStripDetailFromPdf),
+  }
+}

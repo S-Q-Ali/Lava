@@ -10,6 +10,7 @@ export function ManhwaPanel() {
   const refresh = useManhwaStore((s) => s.refresh)
   const select = useManhwaStore((s) => s.select)
   const upload = useManhwaStore((s) => s.upload)
+  const uploadPdf = useManhwaStore((s) => s.uploadPdf)
   const apply = useManhwaStore((s) => s.apply)
   const redetect = useManhwaStore((s) => s.redetect)
   const remove = useManhwaStore((s) => s.remove)
@@ -27,9 +28,13 @@ export function ManhwaPanel() {
     (files: FileList | null) => {
       const file = files?.[0]
       if (!file) return
-      void upload(file)
+      if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
+        void uploadPdf(file)
+      } else {
+        void upload(file)
+      }
     },
-    [upload],
+    [upload, uploadPdf],
   )
 
   const handleDrop = useCallback(
@@ -74,20 +79,20 @@ export function ManhwaPanel() {
         <input
           ref={fileRef}
           type="file"
-          accept="image/*"
+          accept="image/*,.pdf"
           hidden
           onChange={(e) => handleFiles(e.target.files)}
         />
         <button type="button" onClick={() => fileRef.current?.click()} disabled={isBusy}>
-          {status.phase === 'uploading' ? 'Uploading…' : 'Drop or pick a long strip'}
+          {status.phase === 'uploading' ? 'Uploading…' : 'Drop or pick a strip / PDF'}
         </button>
-        <p className="manhwa-drop-hint">PNG, JPG, or WebP. Tall vertical image.</p>
+        <p className="manhwa-drop-hint">PNG, JPG, WebP, or PDF. Tall vertical strip or chapter PDF.</p>
       </div>
 
       {strips.length > 0 && (
         <div className="manhwa-strip-list">
-          <h4>Strips</h4>
-          {strips.map((strip) => (
+          <h4>Strips{strips.length > 1 ? ` (${strips.length} pages)` : ''}</h4>
+          {strips.map((strip, index) => (
             <div
               key={strip.sourceId}
               className={`manhwa-strip-row${strip.sourceId === currentId ? ' selected' : ''}`}
@@ -95,7 +100,7 @@ export function ManhwaPanel() {
             >
               <div className="manhwa-strip-info">
                 <span className="manhwa-strip-name" title={strip.sourceFile}>
-                  {strip.sourceFile}
+                  {strips.length > 1 ? `Page ${index + 1}` : strip.sourceFile}
                 </span>
                 <span className="manhwa-strip-meta">
                   {strip.panelCount} panels

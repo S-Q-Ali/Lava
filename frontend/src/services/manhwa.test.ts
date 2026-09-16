@@ -170,3 +170,46 @@ describe('manhwa service', () => {
     })
   })
 })
+
+describe('uploadPdf', () => {
+  beforeEach(() => {
+    vi.stubGlobal('fetch', vi.fn())
+  })
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
+  it('uploads PDF and returns strips', async () => {
+    const pdfResponse = {
+      strips: [
+        { ...stripDetail, sourceId: 'spdf1', sourceFile: 'page_001.png' },
+        { ...stripDetail, sourceId: 'spdf2', sourceFile: 'page_002.png' },
+      ],
+    }
+    vi.mocked(fetch).mockResolvedValue(jsonResponse(pdfResponse))
+    const file = new File(['dummy'], 'chapter.pdf', { type: 'application/pdf' })
+    const { uploadPdf } = await import('./manhwa')
+    const result = await uploadPdf(file)
+    expect(result.strips).toHaveLength(2)
+    expect(result.strips[0].sourceId).toBe('spdf1')
+    expect(result.strips[1].sourceId).toBe('spdf2')
+  })
+
+  it('sends POST with FormData', async () => {
+    vi.mocked(fetch).mockResolvedValue(jsonResponse({ strips: [] }))
+    const file = new File(['dummy'], 'test.pdf', { type: 'application/pdf' })
+    const { uploadPdf } = await import('./manhwa')
+    await uploadPdf(file)
+    expect(vi.mocked(fetch).mock.calls[0][1]?.method).toBe('POST')
+    expect(vi.mocked(fetch).mock.calls[0][1]?.body).toBeInstanceOf(FormData)
+  })
+
+  it('throws ManhwaError on API error', async () => {
+    vi.mocked(fetch).mockResolvedValue(
+      jsonResponse({ error: { code: 'PDF_EXTRACT_FAILED', message: 'Failed.' } }, false, 422),
+    )
+    const file = new File(['dummy'], 'bad.pdf', { type: 'application/pdf' })
+    const { uploadPdf } = await import('./manhwa')
+    await expect(uploadPdf(file)).rejects.toThrow(ManhwaError)
+  })
+})
