@@ -222,10 +222,10 @@ Build order: proxy-preview → runtime-optimization → memory-tuning → baseli
 - [x] Task 4.3: Add voiceover waveform visualization
 
 ### Phase 5: Extractor Fixes
-- [ ] Task 5.1: Add imported presentation card
-- [ ] Task 5.2: Add slide numbers to thumbnails
-- [ ] Task 5.3: Persist extracted images grid
-- [ ] Task 5.4: Add Export JPG/PNG buttons
+- [x] Task 5.1: Add imported presentation card
+- [x] Task 5.2: Add slide numbers to thumbnails
+- [x] Task 5.3: Persist extracted images grid
+- [x] Task 5.4: Add Export JPG/PNG buttons
 
 ### Phase 6: Image-to-Image
 - [ ] Task 6.1: Fix source state and add result display

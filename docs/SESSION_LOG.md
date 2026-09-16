@@ -2207,3 +2207,30 @@ Phase 4 of the V2 gap fix plan: makes the AI Match panel visual — matched imag
 ### Next step
 - Phase 5: Extractor Fixes (presentation card, slide numbers, persisted grid, JPG/PNG export).
 - Full plan: `tasks/plan-v2-frontend-gaps.md`, tasks: `tasks/todo.md` M11.
+
+---
+
+## Session 44 — V2 Frontend Gap Fixes: Phase 5 (Extractor Fixes)
+
+### Purpose (WHY)
+Phase 5 of the V2 gap fix plan: improves the Extractor panel with a presentation metadata card, slide number badges, persisted extracted images grid, and JPG/PNG export buttons.
+
+### WHAT
+- **Presentation metadata card** (`ExtractorPanel.tsx`): After importing files, a card shows the filename (or "N files" for multi), page count, and file type. Uses `extractor-meta-card` with icon + info stack.
+- **Slide number badges** (`ExtractorPanel.tsx`): Each page thumbnail displays a numbered badge (bottom-right corner, dark background overlay). Numbers track import order.
+- **Persisted extracted grid** (`ExtractorPanel.tsx`): After extraction, images are added to a `state` array that persists in the panel as a grid with filename + dimensions. The grid is not cleared when re-extracting. Remove button per card.
+- **Export JPG/PNG** (`ExtractorPanel.tsx`): Each extracted card has JPG and PNG buttons. Uses canvas to re-encode the image, creates a Blob URL, and triggers a download. JPG renders white background first for transparency.
+- **CSS additions** (`ExtractorPanel.css`): `.extractor-meta-card`, `.extractor-page-number` badge, `.extracted-grid`, `.extracted-card`, `.extracted-card-img`, `.extracted-card-info`, `.extracted-card-actions`, `.extracted-export-btn`.
+
+### Files changed
+- `frontend/src/components/ExtractorPanel.tsx` (metadata card, slide numbers, persisted grid, JPG/PNG export with canvas)
+- `frontend/src/components/ExtractorPanel.css` (new styles for all additions)
+
+### Verify
+- `npx tsc -b` — clean
+- `npx vitest run` — 370/370 pass
+- `npx oxlint` — 0 warnings, 0 errors
+
+### Next step
+- Phase 6: Image-to-Image (source state fix, result display, Apply Style button).
+- Full plan: `tasks/plan-v2-frontend-gaps.md`, tasks: `tasks/todo.md` M11.
