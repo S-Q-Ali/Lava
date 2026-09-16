@@ -2286,3 +2286,41 @@ Phase 7 (final): completes the V2 gap fix plan by adding timestamped transcript 
 ### Next step
 - All 23 tasks complete. Final checkpoint: run full verification, update docs, push.
 - Full plan: `tasks/plan-v2-frontend-gaps.md`, tasks: `tasks/todo.md` M11.
+
+---
+
+## Session 47 — Manhwa PDF Import + Panel Detection
+
+### Purpose (WHY)
+User wants to import a manhwa chapter PDF (each page = long vertical strip) and have the tool detect panels from each page and show them separated in sequence.
+
+### WHAT
+- **PDF extraction utility** (`backend/src/lava_backend/manhwa/pdf_extract.py`): New module using PyMuPDF (fitz) to extract each PDF page as a PNG image. `extract_pages(pdf_path, output_dir, dpi=150)` → list of PNG paths. Handles rotation, DPI scaling, empty/invalid PDFs.
+- **PDF upload endpoint** (`backend/src/lava_backend/manhwa/api.py`): New `POST /api/manhwa/strips/pdf` endpoint. Accepts multipart PDF → extracts pages → runs `detect_strip()` on each page → returns all strip summaries. Cleans up temp files after detection.
+- **PyMuPDF dependency** (`backend/pyproject.toml`): Added `pymupdf>=1.24`.
+- **Frontend PDF upload** (`frontend/src/services/manhwa.ts`): New `uploadPdf(file)` function. New `PdfUploadResult` type. Parser for PDF response with multiple strips.
+- **Store uploadPdf action** (`frontend/src/store/manhwaStore.ts`): New `uploadPdf(file)` action. Calls service, refreshes strip list, selects first strip.
+- **ManhwaPanel PDF support** (`frontend/src/components/ManhwaPanel.tsx`): Dropzone now accepts `.pdf` files. `handleFiles` routes PDFs to `uploadPdf()`, images to `upload()`. Strip list shows "Page N" for multi-strip PDFs. Updated hint text.
+- **Tests**: 11 PDF extraction tests (`test_manhwa_pdf.py`), 5 PDF upload API tests (`test_manhwa_api.py`), 3 frontend service tests (`manhwa.test.ts`).
+
+### Files changed
+- `backend/pyproject.toml` (pymupdf dependency)
+- `backend/src/lava_backend/manhwa/pdf_extract.py` (new: PDF page extraction)
+- `backend/src/lava_backend/manhwa/api.py` (new: POST /strips/pdf endpoint)
+- `backend/tests/test_manhwa_pdf.py` (new: 11 tests)
+- `backend/tests/test_manhwa_api.py` (5 new PDF upload tests)
+- `frontend/src/services/manhwa.ts` (uploadPdf function, PdfUploadResult type)
+- `frontend/src/services/manhwa.test.ts` (3 new uploadPdf tests)
+- `frontend/src/store/manhwaStore.ts` (uploadPdf action)
+- `frontend/src/components/ManhwaPanel.tsx` (PDF drop, multi-strip display)
+
+### Verify
+- Backend: `pytest tests/` — 473 passed
+- Frontend: `npx tsc -b` clean, `npx vitest run` — 373/373 pass, `npx oxlint` — 0 errors
+
+### Limitations
+- Combined ZIP export across multiple strips not yet implemented (per-strip export works)
+- Large PDFs (>50 pages) may be slow (processes sequentially)
+
+### Next step
+- Combined multi-strip export, batch operations on all strips from a PDF.
