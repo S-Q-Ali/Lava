@@ -2,6 +2,7 @@ import { useMemo, useRef, useState } from 'react'
 import type { Clip } from '../../editor/types'
 import { useEditorStore } from '../../store/editorStore'
 import { useTimelineZoom } from '../../hooks/useTimelineZoom'
+import { resolveProxyUrl } from '../../services/proxy'
 
 const MIN_DURATION = 0.1
 const LANE_HEIGHT = 56
@@ -38,6 +39,17 @@ export default function ClipBlock({
     baseTrackId: string
   } | null>(null)
   const [dragging, setDragging] = useState(false)
+
+  // Thumbnail / waveform from asset
+  const assets = useEditorStore((s) => s.assets)
+  const asset = useMemo(
+    () => assets.find((a) => a.id === clip.assetId),
+    [assets, clip.assetId],
+  )
+  const proxyUrl = useMemo(
+    () => (asset ? resolveProxyUrl(asset) : null),
+    [asset],
+  )
 
   const beginGesture = (
     mode: Exclude<DragMode, null>,
@@ -132,12 +144,33 @@ export default function ClipBlock({
     }
   }
 
+  // Thumbnail tiling for image/video clips
+  const thumbnailStyle: React.CSSProperties | undefined = useMemo(() => {
+    if (!proxyUrl || !asset || asset.kind === 'audio') return undefined
+    return {
+      backgroundImage: `url("${proxyUrl}")`,
+      backgroundSize: `${Math.max(56, clip.duration * pps * 0.3)}px 100%`,
+      backgroundRepeat: 'repeat-x',
+    }
+  }, [proxyUrl, asset, clip.duration, pps])
+
+  // Waveform style for audio clips
+  const waveformStyle: React.CSSProperties | undefined = useMemo(() => {
+    if (!asset || asset.kind !== 'audio') return undefined
+    return {
+      backgroundImage: `repeating-linear-gradient(90deg,
+        var(--accent) 0px, var(--accent) 2px,
+        transparent 2px, transparent 4px)`,
+    }
+  }, [asset])
+
   return (
     <div
       className={`clip-block${selected ? ' selected' : ''}${dragging ? ' dragging' : ''}`}
       style={{
         left: clip.start * pps,
         width: clip.duration * pps,
+        ...(thumbnailStyle ?? {}),
       }}
       onPointerDown={(e) => {
         if (e.button !== 0) return
@@ -156,6 +189,7 @@ export default function ClipBlock({
       onPointerCancel={() => endGesture()}
       title={`${clip.name} · ${clip.start.toFixed(2)}s → ${(clip.start + clip.duration).toFixed(2)}s`}
     >
+      {waveformStyle && <div className="clip-waveform" style={waveformStyle} />}
       <span className="clip-title">{clip.name}</span>
       {clip.motion && (
         <span className="clip-motion" title={`Motion: ${clip.motion.type}`}>

@@ -794,11 +794,21 @@
   cursor: grab;
 }
 
+.clip-waveform {
+  position: absolute;
+  inset: 0;
+  opacity: 0.3;
+  pointer-events: none;
+  z-index: 0;
+}
+
 .clip-block::before {
   content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(120deg, rgba(255, 255, 255, 0.08), transparent 60%);
+  z-index: 1;
+  pointer-events: none;
 }
 
 .clip-block.selected {
@@ -869,6 +879,9 @@
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: calc(100% - 8px);
+  z-index: 2;
+  pointer-events: none;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.7);
 }
 
 .clip-motion {
@@ -880,6 +893,7 @@
   color: var(--accent);
   text-transform: uppercase;
   pointer-events: none;
+  z-index: 2;
 }
 
 .motion-panel {
