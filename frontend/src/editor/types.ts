@@ -13,10 +13,20 @@ export const TRACK_TYPES = [
 
 export type TrackType = (typeof TRACK_TYPES)[number]
 
+const TRACK_DISPLAY_NAMES: Record<TrackType, string> = {
+  video: 'Video',
+  image: 'Images',
+  voice: 'Voiceover',
+  music: 'Music',
+  sfx: 'SFX',
+  captions: 'Captions',
+  text: 'Text',
+}
+
 export const DEFAULT_TRACKS: Track[] = TRACK_TYPES.map((type) => ({
   id: `track-${type}`,
   type,
-  name: type,
+  name: TRACK_DISPLAY_NAMES[type],
 }))
 
 export interface Track {

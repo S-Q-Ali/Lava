@@ -2,14 +2,18 @@ import { useRef, useState } from 'react'
 import { useEditorStore } from '../store/editorStore'
 import { useShallow } from 'zustand/react/shallow'
 import { saveProjectToFile, readProjectFromFile } from '../services/projectIO'
-import { getFFmpegProvider } from '../services/ffmpeg'
 import './TopBar.css'
 
 type AspectRatio = '16:9' | '9:16' | '1:1' | '4:3'
 
 const ASPECT_RATIOS: AspectRatio[] = ['16:9', '9:16', '1:1', '4:3']
 
-export default function TopBar() {
+type TopBarProps = {
+  onNavigate?: (id: string) => void
+  onPreview?: () => void
+}
+
+export default function TopBar({ onNavigate, onPreview }: TopBarProps) {
   const openProjectInputRef = useRef<HTMLInputElement>(null)
   const [aspectRatio, setAspectRatio] = useState<AspectRatio>('16:9')
   const [isEditingTitle, setIsEditingTitle] = useState(false)
@@ -49,13 +53,8 @@ export default function TopBar() {
     }
   }
 
-  const handleExport = async () => {
-    const provider = await getFFmpegProvider()
-    if (!provider.available) {
-      window.alert(`${provider.name}: ${provider.reason}`)
-      return
-    }
-    window.alert('Render queued via local FFmpeg sidecar.')
+  const handleExport = () => {
+    onNavigate?.('export')
   }
 
   const startEditTitle = () => {
@@ -137,7 +136,7 @@ export default function TopBar() {
             ))}
           </select>
 
-          <button type="button" className="topbar-v2-btn" onClick={handleExport}>
+          <button type="button" className="topbar-v2-btn" onClick={onPreview}>
             Preview
           </button>
           <button type="button" className="topbar-v2-btn topbar-v2-btn-primary" onClick={handleExport}>

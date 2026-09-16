@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { useEditorStore } from '../store/editorStore'
 import type { Asset, AssetKind } from '../editor/types'
 
-export type AssetCategory = 'all' | 'recent' | AssetKind
+export type AssetCategory = 'all' | 'recent' | 'documents' | AssetKind
 
 function sortRecent(a: Asset, b: Asset) {
   const aMtime = (a.meta as Record<string, unknown>)._mtime ?? 0
@@ -25,7 +25,9 @@ export function AssetGrid({ category }: { category: AssetCategory }) {
         <p className="asset-grid-empty-text">
           {category === 'recent'
             ? 'Import media to start building your project.'
-            : `No ${category} assets yet.`}
+            : category === 'all'
+              ? 'Import media to start building your project.'
+              : `No ${category} assets yet.`}
         </p>
       </div>
     )
@@ -44,7 +46,15 @@ function AssetThumb({ asset }: { asset: Asset }) {
   const proxy = asset.proxyUrl || asset.url
   const isAudio = asset.kind === 'audio'
   return (
-    <div className="asset-thumb" draggable title={asset.name}>
+    <div
+      className="asset-thumb"
+      draggable
+      title={asset.name}
+      onDragStart={(e) => {
+        e.dataTransfer.setData('application/x-lava-asset-id', asset.id)
+        e.dataTransfer.effectAllowed = 'copy'
+      }}
+    >
       {isAudio ? (
         <div className="asset-thumb-icon">🔊</div>
       ) : (

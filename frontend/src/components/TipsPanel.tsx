@@ -21,11 +21,19 @@ const tips = [
     description:
       'After analyzing a voice-over, captions are generated. Edit text, change styles, and adjust timing before burning.',
   },
-  {
-    title: 'Keyboard Shortcuts',
-    description:
-      'Ctrl+Z to undo, Ctrl+Shift+Z to redo. Space to play/pause. Drag handles on the timeline to trim clips.',
-  },
+]
+
+const shortcuts = [
+  { keys: 'Space', action: 'Play / Pause' },
+  { keys: '← →', action: 'Step 1 frame' },
+  { keys: 'Shift + ← →', action: 'Step 1 second' },
+  { keys: 'Ctrl+Z', action: 'Undo' },
+  { keys: 'Ctrl+Shift+Z', action: 'Redo' },
+  { keys: 'S', action: 'Split selected clip at playhead' },
+  { keys: 'Delete', action: 'Delete selected clip' },
+  { keys: 'Home', action: 'Go to start' },
+  { keys: 'End', action: 'Go to end' },
+  { keys: 'Ctrl + Scroll', action: 'Zoom timeline' },
 ]
 
 export default function TipsPanel() {
@@ -43,6 +51,19 @@ export default function TipsPanel() {
           </li>
         ))}
       </ul>
+      <div className="tips-header" style={{ marginTop: 12 }}>
+        <span className="tips-title">Keyboard Shortcuts</span>
+      </div>
+      <table className="tips-shortcuts">
+        <tbody>
+          {shortcuts.map((s) => (
+            <tr key={s.keys}>
+              <td className="tips-shortcut-keys">{s.keys}</td>
+              <td className="tips-shortcut-action">{s.action}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   )
 }

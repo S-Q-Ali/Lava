@@ -31,28 +31,28 @@ describe('AssetsPanel', () => {
     mount()
     const tabs = host.querySelectorAll('.assets-tab')
     expect(tabs.length).toBe(7)
-    expect(host.textContent).toContain('Recent')
-    expect(host.textContent).toContain('All')
+    expect(host.textContent).toContain('Media')
     expect(host.textContent).toContain('Images')
-    expect(host.textContent).toContain('Videos')
     expect(host.textContent).toContain('Audio')
+    expect(host.textContent).toContain('Videos')
+    expect(host.textContent).toContain('Documents')
     expect(host.textContent).toContain('Image to Image')
     expect(host.textContent).toContain('Tips')
   })
 
-  it('defaults to Recent tab', () => {
+  it('defaults to Media tab', () => {
     mount()
     const activeTab = host.querySelector('.assets-tab.active')
-    expect(activeTab?.textContent).toContain('Recent')
+    expect(activeTab?.textContent).toContain('Media')
   })
 
-  it('switches to All tab on click', () => {
+  it('switches to Images tab on click', () => {
     mount()
     const tabs = host.querySelectorAll('.assets-tab')
-    const allTab = Array.from(tabs).find((t) => t.textContent?.includes('All'))
-    act(() => (allTab as HTMLButtonElement).click())
+    const imgTab = Array.from(tabs).find((t) => t.textContent?.includes('Images'))
+    act(() => (imgTab as HTMLButtonElement).click())
     const activeTab = host.querySelector('.assets-tab.active')
-    expect(activeTab?.textContent).toContain('All')
+    expect(activeTab?.textContent).toContain('Images')
   })
 
   it('shows empty state when no assets exist', () => {

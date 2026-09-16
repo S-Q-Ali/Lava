@@ -56,3 +56,25 @@
   color: var(--text-dim);
   line-height: 1.4;
 }
+
+.tips-shortcuts {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+.tips-shortcuts td {
+  padding: 3px 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.tips-shortcut-keys {
+  color: var(--text);
+  font-family: monospace;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.tips-shortcut-action {
+  color: var(--text-dim);
+}

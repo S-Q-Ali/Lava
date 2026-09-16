@@ -29,7 +29,7 @@ afterEach(unmount)
 describe('AssetGrid', () => {
   it('shows empty state when no assets', () => {
     mount()
-    expect(host.textContent).toContain('No all assets yet')
+    expect(host.textContent).toContain('Import media')
   })
 
   it('shows recent empty state', () => {

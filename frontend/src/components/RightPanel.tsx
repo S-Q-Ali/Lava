@@ -48,8 +48,8 @@ export default function RightPanel() {
       </div>
 
       <div className="right-panel-content" role="tabpanel">
-        {view === 'ai-match' && <AIMatchPanel />}
-        {view === 'auto-captions' && <AutoCaptionsPanel />}
+        {view === 'ai-match' && <AIMatchPanel onClose={() => setView('inspector')} />}
+        {view === 'auto-captions' && <AutoCaptionsPanel onCustomize={() => setView('inspector')} />}
         {view === 'inspector' && <InspectorPanel />}
       </div>
     </div>

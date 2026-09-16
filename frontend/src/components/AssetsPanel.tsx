@@ -4,14 +4,14 @@ import ImageToImagePanel from './ImageToImagePanel'
 import TipsPanel from './TipsPanel'
 import './AssetsPanel.css'
 
-type BottomTab = 'recent' | 'all' | 'images' | 'videos' | 'audio' | 'i2i' | 'tips'
+type BottomTab = 'media' | 'images' | 'audio' | 'videos' | 'documents' | 'i2i' | 'tips'
 
 const tabDefs: { id: BottomTab; label: string; icon: string }[] = [
-  { id: 'recent', label: 'Recent', icon: '🕐' },
-  { id: 'all', label: 'All', icon: '📁' },
+  { id: 'media', label: 'Media', icon: '📁' },
   { id: 'images', label: 'Images', icon: '🖼' },
-  { id: 'videos', label: 'Videos', icon: '🎬' },
   { id: 'audio', label: 'Audio', icon: '🔊' },
+  { id: 'videos', label: 'Videos', icon: '🎬' },
+  { id: 'documents', label: 'Documents', icon: '📄' },
   { id: 'i2i', label: 'Image to Image', icon: '🎨' },
   { id: 'tips', label: 'Tips', icon: '💡' },
 ]
@@ -20,13 +20,12 @@ function tabToCategory(tab: BottomTab): AssetCategory {
   if (tab === 'images') return 'image'
   if (tab === 'videos') return 'video'
   if (tab === 'audio') return 'audio'
-  if (tab === 'all') return 'all'
-  if (tab === 'recent') return 'recent'
+  if (tab === 'media') return 'all'
   return 'all'
 }
 
 export default function AssetsPanel() {
-  const [activeTab, setActiveTab] = useState<BottomTab>('recent')
+  const [activeTab, setActiveTab] = useState<BottomTab>('media')
 
   return (
     <section className="assets-panel" aria-label="Assets Panel">
