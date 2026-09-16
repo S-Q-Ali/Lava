@@ -123,6 +123,26 @@ export default function TranscriptPanel() {
               Underscored words have low confidence — click a word to correct it.
             </p>
           )}
+
+          <div className="waveform-bar" aria-hidden="true">
+            {content.segments.map((segment) => {
+              const width = Math.max(8, Math.round(((segment.end - segment.start) / (content.segments[content.segments.length - 1]?.end ?? 1)) * 100))
+              const h1 = 30 + (segment.confidence / 100) * 50
+              const h2 = 20 + ((segment.end - segment.start) / (content.segments[content.segments.length - 1]?.end ?? 1)) * 60
+              return (
+                <div
+                  key={segment.id}
+                  className="waveform-segment"
+                  style={{ width: `${width}%` }}
+                  title={`S${segment.id}: ${segment.start.toFixed(1)}–${segment.end.toFixed(1)}s`}
+                >
+                  <div className="waveform-bar-fill" style={{ height: `${h1}%` }} />
+                  <div className="waveform-bar-fill secondary" style={{ height: `${h2}%` }} />
+                </div>
+              )
+            })}
+          </div>
+
           <div className="transcript-words">
             {nodes.map((node, index) => {
               if (node.type === 'break') return <br key={index} className="transcript-break" />
