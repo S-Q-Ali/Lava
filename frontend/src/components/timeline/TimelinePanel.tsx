@@ -1,7 +1,8 @@
+import { useRef } from 'react'
 import { useEditorStore } from '../../store/editorStore'
 import { projectDuration } from '../../editor/ops'
-import { PX_PER_SECOND } from './scale'
 import TrackRow from './TrackRow'
+import { useTimelineZoom } from '../../hooks/useTimelineZoom'
 
 export default function TimelinePanel() {
   const tracks = useEditorStore((s) => s.tracks)
@@ -10,6 +11,8 @@ export default function TimelinePanel() {
   const playhead = useEditorStore((s) => s.playhead)
   const captions = useEditorStore((s) => s.captions)
   const duration = Math.max(projectDuration(clips), playhead, 10)
+  const { pps, zoomIn, zoomOut, zoomToFit, handleWheel } = useTimelineZoom()
+  const lanesRef = useRef<HTMLDivElement>(null)
 
   const durationByAsset: Record<string, number | undefined> = {}
   for (const asset of assets) {
@@ -17,18 +20,25 @@ export default function TimelinePanel() {
   }
 
   const ticks = []
-  for (let t = 0; t <= duration; t += 1) {
+  const tickStep = pps >= 64 ? 0.5 : pps >= 16 ? 1 : 2
+  for (let t = 0; t <= duration; t += tickStep) {
     ticks.push(t)
   }
 
   return (
     <section className="panel timeline-panel" aria-label="Timeline">
+      <div className="timeline-toolbar">
+        <button type="button" onClick={() => zoomOut()} title="Zoom out (Ctrl+-)">−</button>
+        <span className="zoom-label">{Math.round(pps)} px/s</span>
+        <button type="button" onClick={() => zoomIn()} title="Zoom in (Ctrl++)">+</button>
+        <button type="button" onClick={() => zoomToFit(duration, (lanesRef.current?.clientWidth ?? 800))} title="Fit to timeline">⊞</button>
+      </div>
       <div className="timeline-ruler">
         <div className="track-label-header" />
         <div className="ruler-scale">
           {ticks.map((t) => (
-            <span key={t} className="ruler-tick" style={{ left: t * PX_PER_SECOND }}>
-              {t}s
+            <span key={t} className="ruler-tick" style={{ left: t * pps }}>
+              {tickStep >= 1 ? `${t}s` : `${t.toFixed(1)}`}
             </span>
           ))}
         </div>
@@ -41,7 +51,7 @@ export default function TimelinePanel() {
             </div>
           ))}
         </div>
-        <div className="timeline-lanes">
+        <div className="timeline-lanes" ref={lanesRef} onWheel={handleWheel}>
           {tracks.map((t) => (
             <TrackRow
               key={t.id}
@@ -53,7 +63,7 @@ export default function TimelinePanel() {
           ))}
           <div
             className="playhead"
-            style={{ left: playhead * PX_PER_SECOND }}
+            style={{ left: playhead * pps }}
           />
         </div>
       </div>

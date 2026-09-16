@@ -2,14 +2,9 @@ import type { Clip } from '../../editor/types'
 import { useEditorStore } from '../../store/editorStore'
 import { MAX_DURATION } from '../../editor/transitions'
 import type { BetweenTransition, EdgeTransition } from '../../editor/transitions'
-import { PX_PER_SECOND } from './scale'
+import { useTimelineZoom } from '../../hooks/useTimelineZoom'
 
 const MIN_CHIP_PX = 36
-const MAX_CHIP_PX = MAX_DURATION * PX_PER_SECOND
-
-function chipWidthPx(duration: number): number {
-  return Math.min(MAX_CHIP_PX, Math.max(MIN_CHIP_PX, duration * PX_PER_SECOND))
-}
 
 export default function TransitionOverlay({
   clips,
@@ -19,6 +14,10 @@ export default function TransitionOverlay({
   const transitions = useEditorStore((s) => s.transitions)
   const selectedTransitionId = useEditorStore((s) => s.selectedTransitionId)
   const setSelectedTransitionId = useEditorStore((s) => s.setSelectedTransitionId)
+  const { pps } = useTimelineZoom()
+
+  const chipWidthPx = (duration: number) =>
+    Math.min(MAX_DURATION * pps, Math.max(MIN_CHIP_PX, duration * pps))
 
   const byId = new Map(clips.map((c) => [c.id, c]))
   const between = transitions.filter(
@@ -47,7 +46,7 @@ export default function TransitionOverlay({
             data-type={t.type}
             data-transition-id={t.id}
             aria-label={`${t.type} transition between clips`}
-            style={{ left: cutAt * PX_PER_SECOND - width / 2, width }}
+            style={{ left: cutAt * pps - width / 2, width }}
             onClick={() => setSelectedTransitionId(t.id)}
             title={t.rationale}
           >
@@ -60,8 +59,8 @@ export default function TransitionOverlay({
         const width = chipWidthPx(t.duration)
         const left =
           t.at === 'start'
-            ? clip.start * PX_PER_SECOND
-            : (clip.start + clip.duration) * PX_PER_SECOND - width
+            ? clip.start * pps
+            : (clip.start + clip.duration) * pps - width
         return (
           <button
             key={t.id}

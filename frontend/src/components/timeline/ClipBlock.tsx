@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from 'react'
 import type { Clip } from '../../editor/types'
 import { useEditorStore } from '../../store/editorStore'
-import { PX_PER_SECOND } from './scale'
+import { useTimelineZoom } from '../../hooks/useTimelineZoom'
 
 const MIN_DURATION = 0.1
 const LANE_HEIGHT = 56
@@ -26,6 +26,7 @@ export default function ClipBlock({
   const trimClip = useEditorStore((s) => s.trimClip)
   const tracks = useEditorStore((s) => s.tracks)
   const trackIds = useMemo(() => tracks.map((t) => t.id), [tracks])
+  const { pps } = useTimelineZoom()
 
   const gesture = useRef<{
     mode: DragMode
@@ -67,9 +68,36 @@ export default function ClipBlock({
   const moveTo = (clientX: number, clientY: number) => {
     const g = gesture.current
     if (!g) return
-    const deltaSeconds = (clientX - g.startX) / PX_PER_SECOND
+    const deltaSeconds = (clientX - g.startX) / pps
     if (g.mode === 'move') {
-      moveClipRipple(clip.id, Math.max(0, g.baseStart + deltaSeconds))
+      let newStart = Math.max(0, g.baseStart + deltaSeconds)
+      // Snapping: find nearest snap point within threshold
+      const SNAP_THRESHOLD_PX = 5
+      const snapThresholdSec = SNAP_THRESHOLD_PX / pps
+      const playhead = useEditorStore.getState().playhead
+      const allClips = useEditorStore.getState().clips
+      const snapPoints: number[] = [0, playhead]
+      for (const c of allClips) {
+        if (c.id === clip.id) continue
+        if (c.trackId !== clip.trackId) continue
+        snapPoints.push(c.start, c.start + c.duration)
+      }
+      const clipEnd = newStart + clip.duration
+      let bestSnapDelta = Infinity
+      for (const pt of snapPoints) {
+        const dStart = Math.abs(newStart - pt)
+        if (dStart < snapThresholdSec && dStart < Math.abs(bestSnapDelta)) {
+          bestSnapDelta = pt - newStart
+        }
+        const dEnd = Math.abs(clipEnd - pt)
+        if (dEnd < snapThresholdSec && dEnd < Math.abs(bestSnapDelta)) {
+          bestSnapDelta = pt - clipEnd
+        }
+      }
+      if (Math.abs(bestSnapDelta) < snapThresholdSec) {
+        newStart = Math.max(0, newStart + bestSnapDelta)
+      }
+      moveClipRipple(clip.id, newStart)
       // Cross-track drag: vertical delta past one lane height moves the clip
       const laneDelta = Math.round((clientY - g.startY) / LANE_HEIGHT)
       if (laneDelta !== 0) {
@@ -108,8 +136,8 @@ export default function ClipBlock({
     <div
       className={`clip-block${selected ? ' selected' : ''}${dragging ? ' dragging' : ''}`}
       style={{
-        left: clip.start * PX_PER_SECOND,
-        width: clip.duration * PX_PER_SECOND,
+        left: clip.start * pps,
+        width: clip.duration * pps,
       }}
       onPointerDown={(e) => {
         if (e.button !== 0) return

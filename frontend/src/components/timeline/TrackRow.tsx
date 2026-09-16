@@ -1,9 +1,9 @@
 import type { Clip, Track } from '../../editor/types'
 import type { CaptionItem } from '../../editor/captions'
 import { useEditorStore } from '../../store/editorStore'
-import { PX_PER_SECOND } from './scale'
 import ClipBlock from './ClipBlock'
 import TransitionOverlay from './TransitionOverlay'
+import { useTimelineZoom } from '../../hooks/useTimelineZoom'
 
 export default function TrackRow({
   track,
@@ -18,6 +18,9 @@ export default function TrackRow({
 }) {
   const selectedClipId = useEditorStore((s) => s.selectedClipId)
   const setPlayhead = useEditorStore((s) => s.setPlayhead)
+  const addClip = useEditorStore((s) => s.addClip)
+  const assets = useEditorStore((s) => s.assets)
+  const { pps } = useTimelineZoom()
 
   const sorted = [...clips].sort((a, b) => a.start - b.start)
   const sortedCaptions = [...captions].sort((a, b) => a.start - b.start)
@@ -28,8 +31,25 @@ export default function TrackRow({
       data-track={track.type}
       onPointerDown={(e) => {
         const rect = e.currentTarget.getBoundingClientRect()
-        const seconds = (e.clientX - rect.left) / PX_PER_SECOND
+        const seconds = (e.clientX - rect.left) / pps
         setPlayhead(Math.max(0, seconds))
+      }}
+      onDragOver={(e) => {
+        if (e.dataTransfer.types.includes('application/x-lava-asset-id')) {
+          e.preventDefault()
+          e.dataTransfer.dropEffect = 'copy'
+        }
+      }}
+      onDrop={(e) => {
+        const assetId = e.dataTransfer.getData('application/x-lava-asset-id')
+        if (!assetId) return
+        e.preventDefault()
+        const asset = assets.find((a) => a.id === assetId)
+        if (!asset) return
+        const rect = e.currentTarget.getBoundingClientRect()
+        const dropTime = Math.max(0, (e.clientX - rect.left) / pps)
+        const duration = asset.meta.duration ?? 5
+        addClip({ trackId: track.id, assetId, name: asset.name, start: dropTime, duration })
       }}
     >
       {sorted.map((clip) => (
@@ -46,8 +66,8 @@ export default function TrackRow({
           className={`caption-block caption-block-${caption.source}`}
           title={caption.text}
           style={{
-            left: caption.start * PX_PER_SECOND,
-            width: Math.max(24, caption.duration * PX_PER_SECOND),
+            left: caption.start * pps,
+            width: Math.max(24, caption.duration * pps),
           }}
           onClick={(e) => {
             e.stopPropagation()

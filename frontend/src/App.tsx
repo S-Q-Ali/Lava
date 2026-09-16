@@ -8,15 +8,23 @@ import TimelinePanel from './components/timeline/TimelinePanel'
 import AssetsPanel from './components/AssetsPanel'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import ToastContainer from './components/ToastContainer'
+import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'
+import { useEditorStore } from './store/editorStore'
 import './App.css'
 
 function App() {
+  useKeyboardShortcuts()
   const [activeNav, setActiveNav] = useState('ai-tools')
+
+  const handlePreview = () => {
+    const { playing } = useEditorStore.getState()
+    useEditorStore.setState({ playing: !playing })
+  }
 
   return (
     <ErrorBoundary>
       <div className="app">
-        <TopBar />
+        <TopBar onNavigate={setActiveNav} onPreview={handlePreview} />
         <div className="workspace">
           <NavRail active={activeNav} onSelect={setActiveNav} />
           <aside className="left-panel-v2">

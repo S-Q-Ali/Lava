@@ -35,6 +35,7 @@ interface EditorBase {
   assets: Asset[]
   clips: Clip[]
   playhead: number
+  playing: boolean
   selectedClipId: string | null
   selectedTransitionId: string | null
   transitions: Transition[]
@@ -86,6 +87,7 @@ function initialState(): EditorBase {
     assets: [],
     clips: [],
     playhead: 0,
+    playing: false,
     selectedClipId: null,
     selectedTransitionId: null,
     transitions: [],
@@ -286,6 +288,7 @@ export const useEditorStore = create<EditorState>()(
           assets: model.assets,
           clips: model.clips,
           playhead: model.playhead,
+          playing: false,
           selectedClipId: model.selectedClipId,
           selectedTransitionId: null,
           transitions: model.transitions ?? [],
