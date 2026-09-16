@@ -16,6 +16,8 @@ import {
   updateCaptionText as patchCaptionText,
   updateCaptionTiming as patchCaptionTiming,
   removeCaption as omitCaption,
+  DEFAULT_CAPTION_STYLE_ID,
+  CAPTION_TRACK_ID,
 } from '../editor/captions'
 import type { CaptionItem } from '../editor/captions'
 import { segmentBeats } from '../editor/beats'
@@ -66,7 +68,7 @@ interface EditorActions {
   overrideTransition(id: string, type: TransitionType, duration?: number): void
   removeTransition(id: string): void
   resolveInvalidTransitions(): void
-  generateCaptions(assetId: string): void
+  generateCaptions(assetId: string, timingMode?: 'auto' | 'manual'): void
   updateCaptionText(id: string, text: string): void
   updateCaptionTiming(id: string, patch: { start?: number; duration?: number }): void
   setCaptionStyle(id: string, styleId: string): void
@@ -188,11 +190,32 @@ export const useEditorStore = create<EditorState>()(
           )
           return { transitions: s.transitions.filter((t) => !invalid.has(t.id)) }
         }),
-      generateCaptions: (assetId) =>
+      generateCaptions: (assetId, timingMode = 'auto') =>
         set((s) => {
           const transcript = s.transcripts[assetId]
           if (!transcript) return s
-          const fresh = segmentCaptions(transcript)
+          const asset = s.assets.find((a) => a.id === assetId)
+          const duration = asset?.meta.duration ?? 30
+          let fresh: ReturnType<typeof segmentCaptions>
+          if (timingMode === 'manual') {
+            // Even distribution: split total duration into N captions based on segment count
+            const count = transcript.segments.length || 1
+            const perCaption = duration / count
+            fresh = transcript.segments
+              .sort((a, b) => a.start - b.start)
+              .map((segment, i) => ({
+                id: `cap-${assetId}-${i}`,
+                trackId: CAPTION_TRACK_ID,
+                start: i * perCaption,
+                duration: perCaption,
+                text: segment.text,
+                styleId: DEFAULT_CAPTION_STYLE_ID,
+                source: 'auto' as const,
+                words: segment.words,
+              }))
+          } else {
+            fresh = segmentCaptions(transcript)
+          }
           const manual = s.captions.filter((c) => c.source === 'manual')
           return { captions: [...manual, ...fresh] }
         }),

@@ -7,6 +7,13 @@ import {
 } from '../editor/captionStyles'
 import './AutoCaptionsPanel.css'
 
+function formatTimestamp(t: number): string {
+  const m = Math.floor(t / 60)
+  const s = Math.floor(t % 60)
+  const ms = Math.floor((t % 1) * 100)
+  return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}.${ms.toString().padStart(2, '0')}`
+}
+
 export function AutoCaptionsPanel({ onCustomize }: { onCustomize?: () => void }) {
   const [enabled, setEnabled] = useState(true)
   const [timingMode, setTimingMode] = useState<'auto' | 'manual'>('auto')
@@ -78,8 +85,17 @@ export function AutoCaptionsPanel({ onCustomize }: { onCustomize?: () => void })
                 <span className="auto-captions-label">Transcript Preview</span>
               </div>
               <div className="auto-captions-preview-text">
-                {captions.slice(0, 3).map((c) => c.text).join(' ')}
-                {captions.length > 3 && '…'}
+                {captions.slice(0, 8).map((c) => (
+                  <div key={c.id} className="auto-captions-preview-line">
+                    <span className="auto-captions-preview-time">[{formatTimestamp(c.start)}]</span>
+                    {' '}{c.text}
+                  </div>
+                ))}
+                {captions.length > 8 && (
+                  <div className="auto-captions-preview-line auto-captions-preview-more">
+                    … {captions.length - 8} more lines
+                  </div>
+                )}
               </div>
             </div>
           )}
@@ -115,7 +131,7 @@ export function AutoCaptionsPanel({ onCustomize }: { onCustomize?: () => void })
                   key={asset.id}
                   type="button"
                   className="auto-captions-generate-btn"
-                  onClick={() => generateCaptions(asset.id)}
+                  onClick={() => generateCaptions(asset.id, timingMode)}
                 >
                   Generate Captions — {asset.name}
                 </button>

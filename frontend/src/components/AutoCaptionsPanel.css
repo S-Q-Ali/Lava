@@ -139,9 +139,28 @@
 .auto-captions-preview-text {
   font-size: 12px;
   color: var(--text-dim);
-  line-height: 1.4;
-  max-height: 48px;
+  line-height: 1.5;
+  max-height: 120px;
+  overflow-y: auto;
+  font-family: monospace;
+}
+
+.auto-captions-preview-line {
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.auto-captions-preview-time {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.auto-captions-preview-more {
+  color: var(--text-dim);
+  opacity: 0.6;
+  font-style: italic;
+  margin-top: 2px;
 }
 
 .auto-captions-timing {
