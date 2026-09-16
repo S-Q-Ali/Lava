@@ -4,7 +4,8 @@ import { createRoot } from 'react-dom/client'
 import { act } from 'react'
 import { useEditorStore } from '../store/editorStore'
 import { usePresetStore } from '../store/presetStore'
-import { CaptionPanel, captionsRenderPayload } from './CaptionPanel'
+import { CaptionPanel } from './CaptionPanel'
+import { captionsRenderPayload } from '../lib/captions'
 import type { Asset, Transcript } from '../editor/types'
 
 const voice: Asset = { id: 'v', kind: 'audio', name: 'narration.mp3', url: 'blob:v', meta: { duration: 4.4 } }

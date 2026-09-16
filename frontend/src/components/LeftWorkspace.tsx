@@ -3,6 +3,7 @@ import ManhwaPanel from './ManhwaPanel'
 import { CaptionPanel } from './CaptionPanel'
 import { PresetPanel } from './PresetPanel'
 import ExtractorPanel from './ExtractorPanel'
+import ExportPanel from './ExportPanel'
 import './LeftWorkspace.css'
 
 type LeftWorkspaceProps = {
@@ -53,7 +54,11 @@ export default function LeftWorkspace({ activeNav }: LeftWorkspaceProps) {
         </div>
       )
     case 'export':
-      return <Placeholder title="Export" />
+      return (
+        <div className="left-workspace-content">
+          <ExportPanel />
+        </div>
+      )
     default:
       return <Placeholder title={activeNav} />
   }

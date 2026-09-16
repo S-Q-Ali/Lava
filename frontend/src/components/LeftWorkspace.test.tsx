@@ -58,8 +58,8 @@ describe('LeftWorkspace', () => {
     expect(host.textContent).toContain('Extractor')
   })
 
-  it('renders placeholder for export', () => {
+  it('renders ExportPanel when activeNav is export', () => {
     mount('export')
-    expect(host.textContent).toContain('Coming soon')
+    expect(host.querySelector('.export-panel')).not.toBeNull()
   })
 })

@@ -3,9 +3,9 @@ import { backendBaseUrl } from '../services/ffmpeg'
 import { fontPreviewUrl } from '../services/fonts'
 import { ensureFontFace, type FontLicense } from '../editor/fonts'
 import { useFontStore } from '../store/fontStore'
+import { FONT_EXTENSIONS } from '../lib/fonts'
 
 const LICENSE_TYPES: Array<FontLicense['type']> = ['unknown', 'open', 'commercial', 'personal']
-export const FONT_EXTENSIONS = ['.ttf', '.otf']
 
 export function FontPanel() {
   const fonts = useFontStore((s) => s.fonts)
