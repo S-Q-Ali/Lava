@@ -291,3 +291,57 @@ class TestExport:
         source_id = _upload(client, body=_png_bytes(400, 1200)).json()["sourceId"]
         client.patch(f"/api/manhwa/strips/{source_id}/panels", json={"op": "reset"})
         assert client.get(f"/api/manhwa/strips/{source_id}/export").status_code == 422
+
+
+class TestPdfUpload:
+    def test_upload_pdf_creates_strips(self, client) -> None:
+        import fitz
+
+        # Create a 3-page PDF with long vertical pages (manhwa style)
+        doc = fitz.open()
+        for _ in range(3):
+            page = doc.new_page(width=400, height=1200)
+            shape = page.new_shape()
+            shape.draw_rect(page.rect)
+            shape.finish(color=(0.8, 0.8, 0.8), fill=(0.8, 0.8, 0.8))
+            shape.commit()
+        pdf_bytes = doc.tobytes()
+        doc.close()
+
+        response = client.post(
+            "/api/manhwa/strips/pdf",
+            files={"file": ("chapter.pdf", pdf_bytes, "application/pdf")},
+        )
+        assert response.status_code == 201
+        data = response.json()
+        assert "strips" in data
+        assert len(data["strips"]) == 3
+        for strip in data["strips"]:
+            assert "sourceId" in strip
+            assert "panelCount" in strip
+            assert strip["panelCount"] >= 1
+
+    def test_upload_pdf_no_file_400(self, client) -> None:
+        response = client.post("/api/manhwa/strips/pdf")
+        assert response.status_code == 400
+
+    def test_upload_pdf_not_pdf_400(self, client) -> None:
+        response = client.post(
+            "/api/manhwa/strips/pdf",
+            files={"file": ("image.png", _png_bytes(400, 1200), "image/png")},
+        )
+        assert response.status_code == 400
+
+    def test_upload_pdf_empty_file_400(self, client) -> None:
+        response = client.post(
+            "/api/manhwa/strips/pdf",
+            files={"file": ("empty.pdf", b"", "application/pdf")},
+        )
+        assert response.status_code == 400
+
+    def test_upload_pdf_invalid_file_422(self, client) -> None:
+        response = client.post(
+            "/api/manhwa/strips/pdf",
+            files={"file": ("bad.pdf", b"not a pdf", "application/pdf")},
+        )
+        assert response.status_code == 422
