@@ -9,6 +9,8 @@ import shutil
 import uuid
 from pathlib import Path
 
+from .fs import rmtree_safe
+
 from fastapi import FastAPI, File, Form, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, Response
@@ -273,7 +275,7 @@ async def render_endpoint(
             audio_files=audio_paths if audio_paths else None,
         )
     except Exception:
-        shutil.rmtree(upload_root, ignore_errors=True)
+        rmtree_safe(upload_root, ignore_errors=True)
         raise
     return {
         "jobId": result.jobId,

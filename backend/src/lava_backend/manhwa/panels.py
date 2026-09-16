@@ -261,7 +261,18 @@ class StripRegistry:
         try:
             with os.fdopen(fd, "w", encoding="utf-8") as fh:
                 json.dump(payload, fh, ensure_ascii=False, indent=2)
-            os.replace(tmp, self.path)
+            # On Windows, os.replace() can fail with PermissionError if the
+            # target is held open by another process. Retry a few times.
+            import time
+            for attempt in range(5):
+                try:
+                    os.replace(tmp, self.path)
+                    break
+                except PermissionError:
+                    if attempt < 4:
+                        time.sleep(0.05 * (attempt + 1))
+                    else:
+                        raise
         finally:
             if os.path.exists(tmp):
                 os.unlink(tmp)

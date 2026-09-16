@@ -5,7 +5,8 @@ backend modules (Pillow proxies + ffmpeg renders). Designed to be run
 identically on any machine (D-037) — dev Mac, baseline HP Pavilion 15, or
 anything else in between:
 
-    ./.venv/bin/python tools/m9-macro-bench.py
+    ./.venv/bin/python tools/m9-macro-bench.py        # macOS/Linux
+    .\.venv\Scripts\python.exe tools\m9-macro-bench.py  # Windows
 
 Output is a compact Markdown block meant to be pasted into
 docs/M9-MEASUREMENT.md under the machine's row. Rendering is kept light

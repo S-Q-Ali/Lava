@@ -13,6 +13,7 @@ dependencies = [
   "pydantic>=2.7",
   "python-multipart>=0.0.9",
   "onnxruntime==1.17.3 ; platform_machine == 'x86_64' and sys_platform == 'darwin'",
+  "onnxruntime>=1.17.3,<2 ; sys_platform == 'win32'",
   "faster-whisper>=1.2.1",
   "numpy<2",
   "pillow>=12.3.0",

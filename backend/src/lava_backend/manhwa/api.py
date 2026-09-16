@@ -13,6 +13,8 @@ import re
 import shutil
 import uuid
 import zipfile
+
+from ..fs import rmtree_safe
 from pathlib import Path
 from tempfile import SpooledTemporaryFile
 
@@ -209,7 +211,7 @@ async def upload_strip(request: Request, file: UploadFile | None = File(default=
             cache_dir=config.cache_dir,
         )
     except Exception as exc:
-        shutil.rmtree(base, ignore_errors=True)
+        rmtree_safe(base, ignore_errors=True)
         raise ApiError(422, "MANHWA_DETECT_FAILED", f"panel detection failed: {exc}") from exc
     return result
 
@@ -245,7 +247,7 @@ async def upload_pdf(request: Request, file: UploadFile | None = File(default=No
     try:
         page_paths = extract_pages(pdf_path, pages_dir)
     except Exception as exc:
-        shutil.rmtree(pdf_dir, ignore_errors=True)
+        rmtree_safe(pdf_dir, ignore_errors=True)
         raise ApiError(422, "PDF_EXTRACT_FAILED", f"PDF extraction failed: {exc}") from exc
 
     # Run panel detection on each page
@@ -258,7 +260,7 @@ async def upload_pdf(request: Request, file: UploadFile | None = File(default=No
         try:
             dest.write_bytes(page_path.read_bytes())
         except OSError as exc:
-            shutil.rmtree(page_strip_dir, ignore_errors=True)
+            rmtree_safe(page_strip_dir, ignore_errors=True)
             continue
         try:
             result = detect_strip(
@@ -277,11 +279,11 @@ async def upload_pdf(request: Request, file: UploadFile | None = File(default=No
                 "panels": result["panels"],
             })
         except Exception:
-            shutil.rmtree(page_strip_dir, ignore_errors=True)
+            rmtree_safe(page_strip_dir, ignore_errors=True)
             continue
 
     # Clean up the temporary PDF
-    shutil.rmtree(pdf_dir, ignore_errors=True)
+    rmtree_safe(pdf_dir, ignore_errors=True)
 
     if not strips:
         raise ApiError(422, "NO_PANELS", "No panels could be detected from the PDF.")
@@ -370,7 +372,7 @@ def delete_strip(source_id: str):
     base = strip_dir(config, source_id)
     if not base.exists():
         raise ApiError(404, "NOT_FOUND", f"no manhwa strip {source_id!r}")
-    shutil.rmtree(base, ignore_errors=True)
+    rmtree_safe(base, ignore_errors=True)
     return Response(status_code=204)
 
 

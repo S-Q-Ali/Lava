@@ -9,12 +9,20 @@
  *
  * Usage:
  *   node scripts/fetch-ffmpeg.mjs                # detect platform
- *   node scripts/fetch-ffmpeg.mjs --platform win32
+ *   node scripts/fetch-ffmpeg.mjs --platform=win32
  *   node scripts/fetch-ffmpeg.mjs --skip-verify
  */
 import { execFileSync } from "node:child_process";
 import { createWriteStream } from "node:fs";
-import { chmodSync, existsSync, mkdirSync, readdirSync, rmSync, statSync } from "node:fs";
+import {
+  chmodSync,
+  copyFileSync,
+  existsSync,
+  mkdirSync,
+  readdirSync,
+  rmSync,
+  statSync,
+} from "node:fs";
 import { Readable } from "node:stream";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -24,7 +32,9 @@ const binDir = join(root, "tools", "ffmpeg", "bin");
 const cacheDir = join(root, "cache", "ffmpeg-downloads");
 
 const args = process.argv.slice(2);
-const platformFlag = args.find((a) => a.startsWith("--platform="))?.split("=")[1];
+const platformFlag = args
+  .find((a) => a.startsWith("--platform="))
+  ?.split("=")[1];
 const skipVerify = args.includes("--skip-verify");
 
 const platform = platformFlag ?? process.platform;
@@ -32,7 +42,10 @@ const platform = platformFlag ?? process.platform;
 const sources = {
   darwin: () => [
     { name: "ffmpeg", url: "https://evermeet.cx/ffmpeg/getrelease/ffmpeg/zip" },
-    { name: "ffprobe", url: "https://evermeet.cx/ffmpeg/getrelease/ffprobe/zip" },
+    {
+      name: "ffprobe",
+      url: "https://evermeet.cx/ffmpeg/getrelease/ffprobe/zip",
+    },
   ],
   win32: () => [
     {
@@ -58,7 +71,8 @@ async function download(url, dest) {
   }
   console.log(`downloading ${url}`);
   const res = await fetch(url, { redirect: "follow" });
-  if (!res.ok) throw new Error(`download failed: ${res.status} ${res.statusText}`);
+  if (!res.ok)
+    throw new Error(`download failed: ${res.status} ${res.statusText}`);
   const file = createWriteStream(dest);
   const body = Readable.fromWeb(res.body);
   await new Promise((resolve, reject) => {
@@ -72,9 +86,27 @@ async function download(url, dest) {
 function extract(archive, targetDir) {
   mkdirSync(targetDir, { recursive: true });
   if (archive.endsWith(".zip")) {
-    execFileSync("unzip", ["-q", "-o", archive, "-d", targetDir], { stdio: "inherit" });
+    if (process.platform === "win32") {
+      // Use PowerShell on Windows (no unzip dependency)
+      execFileSync(
+        "powershell",
+        [
+          "-NoProfile",
+          "-Command",
+          `Expand-Archive -Path '${archive}' -DestinationPath '${targetDir}' -Force`,
+        ],
+        { stdio: "inherit" },
+      );
+    } else {
+      execFileSync("unzip", ["-q", "-o", archive, "-d", targetDir], {
+        stdio: "inherit",
+      });
+    }
   } else {
-    execFileSync("tar", ["-xJf", archive, "-C", targetDir], { stdio: "inherit" });
+    // tar.xz — used on Linux only
+    execFileSync("tar", ["-xJf", archive, "-C", targetDir], {
+      stdio: "inherit",
+    });
   }
 }
 
@@ -102,7 +134,11 @@ async function main() {
   const batches = make();
 
   for (const spec of batches) {
-    const ext = spec.url.endsWith(".zip") ? "zip" : spec.url.endsWith(".tar.xz") ? "tar.xz" : "bin";
+    const ext = spec.url.endsWith(".zip")
+      ? "zip"
+      : spec.url.endsWith(".tar.xz")
+        ? "tar.xz"
+        : "bin";
     const archive = join(cacheDir, `${spec.name}-${platform}.${ext}`);
     await download(spec.url, archive);
 
@@ -113,11 +149,15 @@ async function main() {
     if (spec.nested) {
       const target = findBinary(stage, spec.name);
       if (!target) throw new Error(`no ${spec.name} binary found in archive`);
-      execFileSync("cp", [target, join(binDir, platform === "win32" ? `${spec.name}.exe` : spec.name)]);
+      const dest = join(
+        binDir,
+        platform === "win32" ? `${spec.name}.exe` : spec.name,
+      );
+      copyFileSync(target, dest);
     } else {
       const target = findBinary(stage, spec.name);
       if (!target) throw new Error(`no ${spec.name} binary found in archive`);
-      execFileSync("cp", [target, join(binDir, spec.name)]);
+      copyFileSync(target, join(binDir, spec.name));
     }
     rmSync(stage, { recursive: true, force: true });
     console.log(`installed ${spec.name} -> ${binDir}`);
@@ -129,7 +169,10 @@ async function main() {
   }
 
   if (!skipVerify) {
-    const ffmpegPath = join(binDir, platform === "win32" ? "ffmpeg.exe" : "ffmpeg");
+    const ffmpegPath = join(
+      binDir,
+      platform === "win32" ? "ffmpeg.exe" : "ffmpeg",
+    );
     const out = execFileSync(ffmpegPath, ["-version"], { encoding: "utf8" });
     console.log(out.split("\n")[0]);
   }

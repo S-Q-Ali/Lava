@@ -3,10 +3,23 @@
 from __future__ import annotations
 
 import json
+import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 
-REPO_ROOT = Path(__file__).resolve().parents[3]
+_EXE = ".exe" if sys.platform == "win32" else ""
+
+
+def _find_repo_root(start: Path) -> Path:
+    """Walk up from *start* to find the repo root (has .git directory)."""
+    for parent in [start, *start.parents]:
+        if (parent / ".git").is_dir():
+            return parent
+    # Fallback: original assumption (4 levels up from config.py)
+    return start.parents[3]
+
+
+REPO_ROOT = _find_repo_root(Path(__file__).resolve().parent)
 CONFIG_PATH = REPO_ROOT / "studio.config.json"
 
 
@@ -15,6 +28,22 @@ def _payload() -> dict:
         return {}
     with CONFIG_PATH.open(encoding="utf-8") as fh:
         return json.load(fh)
+
+
+def _resolve_binary(root: Path, rel_dir: str, name: str) -> Path:
+    """Resolve a binary path, trying .exe suffix on Windows."""
+    base = root / rel_dir
+    # Try exact name first (works on Unix, and on Windows if no .exe)
+    candidate = base / name
+    if candidate.exists():
+        return candidate
+    # Try with .exe (Windows)
+    if _EXE:
+        candidate = base / (name + _EXE)
+        if candidate.exists():
+            return candidate
+    # Return default (will fail gracefully later)
+    return base / (name + _EXE)
 
 
 @dataclass(frozen=True)
@@ -61,8 +90,8 @@ class Config:
         return cls(
             root=root,
             backend_dir=root / "backend",
-            ffmpeg_bin=root / str(ffmpeg_rel) / "ffmpeg",
-            ffprobe_bin=root / str(ffmpeg_rel) / "ffprobe",
+            ffmpeg_bin=_resolve_binary(root, ffmpeg_rel, "ffmpeg"),
+            ffprobe_bin=_resolve_binary(root, ffmpeg_rel, "ffprobe"),
             host=host,
             port=port,
             cache_dir=cache,
