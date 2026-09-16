@@ -57,10 +57,59 @@
   font-size: 12px;
 }
 
+.i2i-file-input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .i2i-preview {
   max-width: 100%;
   max-height: 80px;
   border-radius: 4px;
+}
+
+/* Side-by-side layout */
+.i2i-layout {
+  display: flex;
+  gap: 8px;
+}
+
+.i2i-source-col,
+.i2i-result-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.i2i-col-label {
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.i2i-side-img {
+  width: 100%;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+
+.i2i-placeholder {
+  width: 100%;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed var(--border);
+  border-radius: 4px;
+  color: var(--text-dim);
+  font-size: 11px;
 }
 
 .i2i-field {
@@ -109,6 +158,20 @@
 .i2i-generate-btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+.i2i-apply-btn {
+  background: var(--track-image, #d4822e);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 7px 12px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.i2i-apply-btn:hover {
+  background: #e5953a;
 }
 
 .i2i-hint {
