@@ -2129,3 +2129,30 @@ Audit against `AI_VIDEO_STUDIO_MASTER_SPEC_V2_EXACT_FRONTEND.md` identified 35 m
 ### Next step
 - Phase 2: Preview Controls (scrub bar, duration display, volume, fit/display, fullscreen).
 - Full plan: `tasks/plan-v2-frontend-gaps.md`, tasks: `tasks/todo.md` M11.
+
+---
+
+## Session 41 — V2 Frontend Gap Fixes: Phase 2 (Preview Controls)
+
+### Purpose (WHY)
+Phase 2 of the V2 gap fix plan: adds professional preview controls that every video editor must have — scrub bar, duration display, volume, fit/display modes, and fullscreen.
+
+### WHAT
+- **Scrub bar** (`PreviewPanel.tsx`): Range input below the preview stage. Dragging updates playhead in real-time. Styled with amber thumb on dark track.
+- **Duration display**: Timecode now shows `current / total` format (e.g., `00:05.120 / 00:30.000`). Reads video duration from `loadedmetadata` event.
+- **Volume control**: Mute/unmute button (🔊/🔉/🔇) + volume slider (60px range input). Syncs to `<video>` element's volume/muted properties.
+- **Fit/display mode**: Button cycles through Fit, Fill, 50%, 100%. Updates `object-fit` (contain/cover) and `transform: scale()`.
+- **Fullscreen**: Button calls `requestFullscreen()` on the preview stage div.
+- **CSS**: Scrub bar, volume slider, display mode button, transport button hover styles. Custom range input styling with amber thumbs.
+
+### Files changed
+- `frontend/src/components/PreviewPanel.tsx` (scrub, duration, volume, display, fullscreen)
+- `frontend/src/App.css` (preview control styles)
+
+### Verify
+- `npx tsc -b` — clean
+- `npx vitest run` — 370/370 pass
+- `npx oxlint` — 0 warnings, 0 errors
+
+### Next step
+- Phase 3: Timeline Visuals (thumbnails on clips, audio waveforms).

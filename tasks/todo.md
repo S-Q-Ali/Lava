@@ -206,11 +206,11 @@ Build order: proxy-preview → runtime-optimization → memory-tuning → baseli
 - [x] Task 1.5: Wire Customize button in Auto Captions
 
 ### Phase 2: Preview Controls
-- [ ] Task 2.1: Add preview scrub bar (draggable seek)
-- [ ] Task 2.2: Add duration display (current / total)
-- [ ] Task 2.3: Add volume control (slider + mute)
-- [ ] Task 2.4: Add fit/display mode selector (Fit, Fill, 50%, 100%)
-- [ ] Task 2.5: Add fullscreen preview
+- [x] Task 2.1: Add preview scrub bar (draggable seek)
+- [x] Task 2.2: Add duration display (current / total)
+- [x] Task 2.3: Add volume control (slider + mute)
+- [x] Task 2.4: Add fit/display mode selector (Fit, Fill, 50%, 100%)
+- [x] Task 2.5: Add fullscreen preview
 
 ### Phase 3: Timeline Visuals
 - [ ] Task 3.1: Add thumbnails to timeline clips
