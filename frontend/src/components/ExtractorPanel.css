@@ -225,3 +225,148 @@
   opacity: 0.4;
   cursor: not-allowed;
 }
+
+/* Presentation metadata card */
+.extractor-meta-card {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--panel-2);
+  flex-shrink: 0;
+}
+
+.extractor-meta-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.extractor-meta-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.extractor-meta-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.extractor-meta-detail {
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+/* Slide number badge */
+.extractor-page-number {
+  position: absolute;
+  bottom: 22px;
+  right: 2px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 600;
+  padding: 1px 4px;
+  border-radius: 2px;
+  z-index: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Extracted images section */
+.extracted-section {
+  margin-top: 8px;
+  border-top: 1px solid var(--border);
+  padding-top: 8px;
+}
+
+.extracted-header {
+  margin-bottom: 6px;
+}
+
+.extracted-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+
+.extracted-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 6px;
+}
+
+.extracted-card {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--panel-2);
+}
+
+.extracted-card-img {
+  width: 100%;
+  height: 64px;
+  object-fit: cover;
+  display: block;
+}
+
+.extracted-card-info {
+  padding: 3px 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.extracted-card-name {
+  font-size: 9px;
+  color: var(--text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.extracted-card-dims {
+  font-size: 9px;
+  color: var(--text-dim);
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+}
+
+.extracted-card-actions {
+  display: flex;
+  gap: 3px;
+  padding: 3px 4px;
+}
+
+.extracted-export-btn {
+  flex: 1;
+  padding: 2px 0;
+  font-size: 9px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  color: var(--text-dim);
+  cursor: pointer;
+}
+
+.extracted-export-btn:hover {
+  border-color: var(--accent);
+  color: var(--text);
+  background: var(--accent-soft);
+}
+
+.extracted-export-remove {
+  flex: 0 0 18px;
+  padding: 0;
+  text-align: center;
+}
+
+.extracted-export-remove:hover {
+  border-color: var(--danger);
+  color: var(--danger);
+}
