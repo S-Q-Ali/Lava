@@ -2058,3 +2058,74 @@ Final polish phase: accessibility audit fixes, responsive breakpoints, error/loa
 
 ### Next step
 - All polish tasks complete. Project is at M10 release-ready state. Ready for final review or packaging decisions.
+
+---
+
+## Session 40 — V2 Frontend Gap Fixes: Phase 1 (Quick Fixes) + Timeline Zoom + Snapping + Drag-to-Timeline + Export Presets + Keyboard Shortcuts + Play Button Fix
+
+### Purpose (WHY)
+Audit against `AI_VIDEO_STUDIO_MASTER_SPEC_V2_EXACT_FRONTEND.md` identified 35 matched / 13 partial / 13 missing / 3 wrong items. Session 38 started the audit; this session delivers the first batch of fixes plus several high-impact features from the audit.
+
+### WHAT
+- **Keyboard shortcuts** (`useKeyboardShortcuts.ts`): Space=play/pause, arrows=frame step, Ctrl+Z/Y=undo/redo, S=split, Delete=remove, Home/End=navigate. Global keydown handler wired in App.tsx.
+- **Timeline zoom** (`useTimelineZoom.ts`): Reactive `pps` via `useSyncExternalStore`. Ctrl+scroll zoom, +/−/fit buttons in timeline toolbar. All timeline components (TimelinePanel, TrackRow, ClipBlock, TransitionOverlay) use the hook instead of the hardcoded `PX_PER_SECOND` constant.
+- **Play button fix** (`PreviewPanel.tsx`): Play/pause now calls `.play()`/`.pause()` on the `<video>` element and syncs playhead from `timeupdate` event. Added frame-step buttons (◀/▶). Added `playing` state to `editorStore`.
+- **Clip snapping** (`ClipBlock.tsx`): During move, clips snap to playhead and other clip edges within 5px threshold.
+- **Drag-to-timeline** (`TrackRow.tsx`, `AssetGrid.tsx`): Assets have `onDragStart` setting asset ID in dataTransfer. Timeline lanes have `onDragOver`/`onDrop` handlers that create clips at the drop position.
+- **Export presets** (`ExportPanel.tsx`): Platform presets (YouTube 1080p/4K, TikTok, Instagram Reels/Post, Twitter, Custom). Custom mode shows width/height/fps inputs.
+- **Track names** (`types.ts`): Display names now `Video`, `Images`, `Voiceover`, `Music`, `SFX`, `Captions`, `Text` per spec.
+- **Assets panel tabs** (`AssetsPanel.tsx`): Tabs now `Media`, `Images`, `Audio`, `Videos`, `Documents`, `Image-to-Image`, `Tips`.
+- **Preview button** (`TopBar.tsx`, `App.tsx`): Preview button toggles play/pause via `onPreview` prop (was navigating to export).
+- **AI Match close button** (`AIMatchPanel.tsx`, `RightPanel.tsx`): × button in header switches to Inspector view.
+- **Customize button** (`AutoCaptionsPanel.tsx`, `RightPanel.tsx`): Customize button navigates to Inspector.
+- **Tips panel** (`TipsPanel.tsx`): Complete keyboard shortcuts reference table.
+- **CSS**: Timeline toolbar styles, zoom label, AI Match close button styles.
+
+### HOW
+- Skills loaded: `planning-and-task-breakdown`, `spec-driven-development`, `git-workflow-and-versioning`.
+- Capability map created in `tasks/plan-v2-frontend-gaps.md` (7 modules, 23 tasks).
+- Tasks tracked in `tasks/todo.md` M11 section.
+- Per-task TDD approach: implement → tsc → vitest → oxlint → commit.
+- All 370 tests pass, 0 lint warnings, tsc clean.
+
+### Files changed
+- `frontend/src/hooks/useKeyboardShortcuts.ts` (new)
+- `frontend/src/hooks/useTimelineZoom.ts` (new)
+- `frontend/src/store/editorStore.ts` (playing state, loadProject fix)
+- `frontend/src/App.tsx` (keyboard shortcuts, onPreview)
+- `frontend/src/components/timeline/TimelinePanel.tsx` (zoom toolbar, reactive pps)
+- `frontend/src/components/timeline/TrackRow.tsx` (drop handler, reactive pps)
+- `frontend/src/components/timeline/ClipBlock.tsx` (snapping, reactive pps)
+- `frontend/src/components/timeline/TransitionOverlay.tsx` (reactive pps)
+- `frontend/src/components/PreviewPanel.tsx` (play button, frame step, video sync)
+- `frontend/src/components/TopBar.tsx` (Preview onPreview prop)
+- `frontend/src/components/AIMatchPanel.tsx` (close button)
+- `frontend/src/components/AutoCaptionsPanel.tsx` (Customize onCustomize prop)
+- `frontend/src/components/RightPanel.tsx` (wired onClose, onCustomize)
+- `frontend/src/components/AssetsPanel.tsx` (tab labels)
+- `frontend/src/components/AssetGrid.tsx` (onDragStart, documents category)
+- `frontend/src/components/ExportPanel.tsx` (platform presets)
+- `frontend/src/components/TipsPanel.tsx` + `.css` (shortcuts table)
+- `frontend/src/editor/types.ts` (track display names)
+- `frontend/src/App.css` (timeline toolbar styles)
+- `frontend/src/components/AIMatchPanel.css` (close button styles)
+- Tests updated: `AssetsPanel.test.tsx`, `AssetGrid.test.tsx`
+
+### Verify
+- Frontend: `npx vitest run` 370 passed. `npx tsc -b` clean. `npx oxlint` 0 warnings, 0 errors.
+- Backend: untouched.
+
+### Decisions
+- D-039 — V2 frontend gap fixes: capability map approach (7 modules, 23 tasks), phase-gated, incremental. Snapping threshold 5px. Zoom range 4–256 pps. Track display names follow spec exactly.
+
+### Limitations
+- Timeline thumbnails and audio waveforms not yet implemented (Phase 3).
+- Preview scrub bar, volume, fit/display, fullscreen not yet implemented (Phase 2).
+- Matched Images strip and View All not yet implemented (Phase 4).
+- Extractor fixes not yet implemented (Phase 5).
+- Image-to-Image result display not yet implemented (Phase 6).
+- Auto Captions transcript timestamps not yet implemented (Phase 7).
+
+### Next step
+- Phase 2: Preview Controls (scrub bar, duration display, volume, fit/display, fullscreen).
+- Full plan: `tasks/plan-v2-frontend-gaps.md`, tasks: `tasks/todo.md` M11.

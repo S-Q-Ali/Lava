@@ -195,3 +195,42 @@ Build order: proxy-preview → runtime-optimization → memory-tuning → baseli
 - [x] D-037 reframe: validation machine-agnostic (optional per-machine rows incl. low-end)
 
 - [x] D-038: beta is first-class (0.1.0-beta.0, git tag v0.1.0-beta.0, D-038, SESSION 33). Backend 457 / frontend 297 untouched.
+
+## M11 — V2 Frontend Gap Fixes (plan: `tasks/plan-v2-frontend-gaps.md`)
+
+### Phase 1: Quick Fixes
+- [x] Task 1.1: Fix track display names (lowercase → capitalized per spec)
+- [x] Task 1.2: Fix Assets panel tab labels (Media, Images, Audio, Videos, Documents)
+- [x] Task 1.3: Fix Preview button behavior (play/pause, not navigate to export)
+- [x] Task 1.4: Add close button to AI Match panel
+- [x] Task 1.5: Wire Customize button in Auto Captions
+
+### Phase 2: Preview Controls
+- [ ] Task 2.1: Add preview scrub bar (draggable seek)
+- [ ] Task 2.2: Add duration display (current / total)
+- [ ] Task 2.3: Add volume control (slider + mute)
+- [ ] Task 2.4: Add fit/display mode selector (Fit, Fill, 50%, 100%)
+- [ ] Task 2.5: Add fullscreen preview
+
+### Phase 3: Timeline Visuals
+- [ ] Task 3.1: Add thumbnails to timeline clips
+- [ ] Task 3.2: Add audio waveforms on voice/music tracks
+
+### Phase 4: AI Match Visual
+- [ ] Task 4.1: Add Matched Images strip (horizontal thumbnail scroll)
+- [ ] Task 4.2: Add View All button
+- [ ] Task 4.3: Add voiceover waveform visualization
+
+### Phase 5: Extractor Fixes
+- [ ] Task 5.1: Add imported presentation card
+- [ ] Task 5.2: Add slide numbers to thumbnails
+- [ ] Task 5.3: Persist extracted images grid
+- [ ] Task 5.4: Add Export JPG/PNG buttons
+
+### Phase 6: Image-to-Image
+- [ ] Task 6.1: Fix source state and add result display
+- [ ] Task 6.2: Add Apply Style button
+
+### Phase 7: Auto Captions Polish
+- [ ] Task 7.1: Add timestamps to transcript preview
+- [ ] Task 7.2: Wire caption timing mode (Auto/Manual)
