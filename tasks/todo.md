@@ -217,9 +217,9 @@ Build order: proxy-preview → runtime-optimization → memory-tuning → baseli
 - [x] Task 3.2: Add audio waveforms on voice/music tracks
 
 ### Phase 4: AI Match Visual
-- [ ] Task 4.1: Add Matched Images strip (horizontal thumbnail scroll)
-- [ ] Task 4.2: Add View All button
-- [ ] Task 4.3: Add voiceover waveform visualization
+- [x] Task 4.1: Add Matched Images strip (horizontal thumbnail scroll)
+- [x] Task 4.2: Add View All button
+- [x] Task 4.3: Add voiceover waveform visualization
 
 ### Phase 5: Extractor Fixes
 - [ ] Task 5.1: Add imported presentation card

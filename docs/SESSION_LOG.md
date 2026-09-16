@@ -2180,3 +2180,30 @@ Phase 2 of the V2 gap fix plan: adds professional preview controls that every vi
 
 ### Next step
 - Phase 3: Timeline Visuals (thumbnails on clips, audio waveforms).
+
+---
+
+## Session 43 — V2 Frontend Gap Fixes: Phase 4 (AI Match Visual)
+
+### Purpose (WHY)
+Phase 4 of the V2 gap fix plan: makes the AI Match panel visual — matched images show as a scrollable thumbnail strip, View All toggles grid view, and transcript shows a waveform visualization.
+
+### WHAT
+- **Matched images strip** (`MatchPanel.tsx`): Horizontal scrollable row of 64px thumbnail cards. Each card shows the matched proxy image, name tooltip, and confidence %. Toggleable to grid view.
+- **View All button** (`MatchPanel.tsx`): Toggles between strip (horizontal scroll) and grid (flex-wrap) layouts. Button text switches between "View All" and "Strip".
+- **Voiceover waveform** (`TranscriptPanel.tsx`): CSS-based dual-bar waveform visualization above the transcript words. Each segment renders two bars (confidence bar + duration bar) with different opacities.
+- **CSS additions** (`App.css`): `.match-strip`, `.match-thumb`, `.match-thumb-img`, `.match-grid` (33% width cards), `.match-view-all-btn`, `.waveform-bar`, `.waveform-segment`, `.waveform-bar-fill` with accent/image track colors.
+
+### Files changed
+- `frontend/src/components/MatchPanel.tsx` (thumbnail strip, View All toggle, proxy URL, useMemo hooks moved before early return)
+- `frontend/src/components/TranscriptPanel.tsx` (waveform bar above transcript words)
+- `frontend/src/App.css` (match-strip/grid CSS, waveform-bar CSS)
+
+### Verify
+- `npx tsc -b` — clean
+- `npx vitest run` — 370/370 pass
+- `npx oxlint` — 0 warnings, 0 errors
+
+### Next step
+- Phase 5: Extractor Fixes (presentation card, slide numbers, persisted grid, JPG/PNG export).
+- Full plan: `tasks/plan-v2-frontend-gaps.md`, tasks: `tasks/todo.md` M11.
