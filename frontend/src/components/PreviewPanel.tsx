@@ -1,11 +1,11 @@
-import { memo, useMemo, useRef, useState } from 'react'
+import { memo, useEffect, useMemo, useRef, useState } from 'react'
 import { useEditorStore } from '../store/editorStore'
 import { clipsAtTime } from '../editor/ops'
 import { getAssetFile } from '../media/importer'
 import { getFFmpegProvider, type RenderClipInput } from '../services/ffmpeg'
 import { resolveProxyUrl } from '../services/proxy'
 import { useProxyStore } from '../store/proxyStore'
-import { captionsRenderPayload } from './CaptionPanel'
+import { captionsRenderPayload } from '../lib/captions'
 import { usePresetStore } from '../store/presetStore'
 import { resolveCaptionStyle } from '../editor/templateEditor'
 import type { Asset } from '../editor/types'
@@ -22,23 +22,26 @@ function formatTime(t: number): string {
 const MediaElement = memo(function MediaElement({
   src,
   asset,
+  videoRef,
 }: {
   src: string
   asset: Asset
+  videoRef: React.RefObject<HTMLVideoElement | null>
 }) {
   if (asset.kind === 'image') {
     return <img src={src} alt={asset.name} loading="lazy" decoding="async" />
   }
-  return <video src={src} controls preload="metadata" />
+  return <video ref={videoRef} src={src} preload="metadata" />
 })
 
 export default function PreviewPanel() {
   const assets = useEditorStore((s) => s.assets)
   const clips = useEditorStore((s) => s.clips)
   const playhead = useEditorStore((s) => s.playhead)
+  const playing = useEditorStore((s) => s.playing)
   const selectedClipId = useEditorStore((s) => s.selectedClipId)
   const setPlayhead = useEditorStore((s) => s.setPlayhead)
-  const playingRef = useRef(false)
+  const videoRef = useRef<HTMLVideoElement | null>(null)
   const [rendering, setRendering] = useState(false)
   const [renderUrl, setRenderUrl] = useState<string | null>(null)
   const [renderError, setRenderError] = useState<string | null>(null)
@@ -52,9 +55,6 @@ export default function PreviewPanel() {
     [assets, activeClip],
   )
 
-  // Proxy-aware preview: use the low-res proxy when available (lazy resolve),
-  // otherwise fall back to the original blob URL. Render always uses originals.
-  // The subscription re-renders this panel when a lazy proxy lands in the cache.
   useProxyStore((s) => s.version)
   const previewSrc = activeAsset ? resolveProxyUrl(activeAsset) : null
 
@@ -79,21 +79,47 @@ export default function PreviewPanel() {
     [currentCaption, captionStyle],
   )
 
-  const togglePlay = () => {
-    playingRef.current = !playingRef.current
-    if (!playingRef.current) return
-    const step = () => {
-      if (!playingRef.current) return
-      const next = useEditorStore.getState().playhead + 0.1
+  // Sync play state with the video element
+  useEffect(() => {
+    const v = videoRef.current
+    if (!v) return
+    if (playing) {
+      v.play().catch(() => {})
+    } else {
+      v.pause()
+    }
+  }, [playing])
+
+  // Sync video currentTime with playhead on seek
+  useEffect(() => {
+    const v = videoRef.current
+    if (!v || playing) return
+    if (Math.abs(v.currentTime - playhead) > 0.05) {
+      v.currentTime = playhead
+    }
+  }, [playhead, playing])
+
+  // Sync playhead from video timeupdate when playing
+  useEffect(() => {
+    const v = videoRef.current
+    if (!v) return
+    const onTimeUpdate = () => {
+      if (!useEditorStore.getState().playing) return
       const end = useEditorStore.getState().clips.reduce(
         (m, c) => Math.max(m, c.start + c.duration),
         0,
       )
-      setPlayhead(next >= end ? 0 : next)
-      requestAnimationFrame(step)
+      if (v.currentTime >= end) {
+        v.pause()
+        useEditorStore.setState({ playing: false, playhead: 0 })
+        v.currentTime = 0
+        return
+      }
+      setPlayhead(v.currentTime)
     }
-    requestAnimationFrame(step)
-  }
+    v.addEventListener('timeupdate', onTimeUpdate)
+    return () => v.removeEventListener('timeupdate', onTimeUpdate)
+  }, [setPlayhead])
 
   const handleRender = async () => {
     setRenderError(null)
@@ -157,7 +183,7 @@ export default function PreviewPanel() {
         ) : activeAsset?.kind === 'audio' ? (
           <div className="audio-placeholder">{activeAsset.name}</div>
         ) : activeAsset && previewSrc ? (
-          <MediaElement src={previewSrc} asset={activeAsset} />
+          <MediaElement src={previewSrc} asset={activeAsset} videoRef={videoRef} />
         ) : (
           <p className="empty">No media at playhead. Import assets to start.</p>
         )}
@@ -181,11 +207,24 @@ export default function PreviewPanel() {
       </div>
       {renderError && <p className="render-error">{renderError}</p>}
       <div className="preview-transport">
-        <button type="button" onClick={togglePlay}>
-          Play
+        <button type="button" onClick={() => useEditorStore.setState({ playing: !playing })}>
+          {playing ? '⏸' : '▶'}
         </button>
         <button type="button" onClick={() => setPlayhead(0)}>
-          Rewind
+          ⏮
+        </button>
+        <button type="button" onClick={() => {
+          const step = 1 / 30
+          setPlayhead(Math.max(0, playhead - step))
+        }} title="Previous frame (←)">
+          ◀
+        </button>
+        <button type="button" onClick={() => {
+          const step = 1 / 30
+          const end = clips.reduce((m, c) => Math.max(m, c.start + c.duration), 0)
+          setPlayhead(Math.min(end, playhead + step))
+        }} title="Next frame (→)">
+          ▶
         </button>
         <span className="timecode">{formatTime(playhead)}</span>
         <button type="button" onClick={handleRender} disabled={rendering}>
