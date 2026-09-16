@@ -27,52 +27,29 @@ beforeEach(() => {
 afterEach(unmount)
 
 describe('RightPanel', () => {
-  it('renders three switcher buttons (AI Match, Auto Captions, Inspector)', () => {
+  it('renders both AI Match and Auto Captions stacked', () => {
     mount()
-    const buttons = host.querySelectorAll('.right-panel-switcher-btn')
-    expect(buttons.length).toBe(3)
+    expect(host.querySelector('.ai-match-panel')).not.toBeNull()
+    expect(host.querySelector('.auto-captions-panel')).not.toBeNull()
   })
 
-  it('defaults to AI Match view', () => {
+  it('shows AI Match title', () => {
     mount()
     expect(host.textContent).toContain('AI Match')
-    const activeBtn = host.querySelector('.right-panel-switcher-btn.active')
-    expect(activeBtn?.getAttribute('title')).toBe('AI Match')
   })
 
-  it('switches to Auto Captions view on click', () => {
+  it('shows Auto Captions title', () => {
     mount()
-    const buttons = host.querySelectorAll('.right-panel-switcher-btn')
-    const captionsBtn = Array.from(buttons).find(
-      (b) => b.getAttribute('title') === 'Auto Captions',
-    ) as HTMLButtonElement
-    act(() => captionsBtn.click())
     expect(host.textContent).toContain('Auto Captions')
-    expect(host.textContent).toContain('Language')
   })
 
-  it('switches to Inspector view on click', () => {
+  it('shows Voice + Images tab in AI Match', () => {
     mount()
-    const buttons = host.querySelectorAll('.right-panel-switcher-btn')
-    const inspectorBtn = Array.from(buttons).find(
-      (b) => b.getAttribute('title') === 'Inspector',
-    ) as HTMLButtonElement
-    act(() => inspectorBtn.click())
-    expect(host.textContent).toContain('Inspector')
-  })
-
-  it('switches back to AI Match from Inspector', () => {
-    mount()
-    const buttons = host.querySelectorAll('.right-panel-switcher-btn')
-    const inspectorBtn = Array.from(buttons).find(
-      (b) => b.getAttribute('title') === 'Inspector',
-    ) as HTMLButtonElement
-    act(() => inspectorBtn.click())
-    const aiMatchBtn = Array.from(buttons).find(
-      (b) => b.getAttribute('title') === 'AI Match',
-    ) as HTMLButtonElement
-    act(() => aiMatchBtn.click())
-    expect(host.textContent).toContain('AI Match')
     expect(host.textContent).toContain('Voice + Images')
+  })
+
+  it('shows Language selector in Auto Captions', () => {
+    mount()
+    expect(host.textContent).toContain('Language')
   })
 })

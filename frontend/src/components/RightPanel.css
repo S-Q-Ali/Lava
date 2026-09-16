@@ -5,36 +5,14 @@
   min-height: 0;
 }
 
-.right-panel-switcher {
-  display: flex;
-  border-bottom: 1px solid var(--border);
-  flex-shrink: 0;
-}
-
-.right-panel-switcher-btn {
-  flex: 1;
-  padding: 6px;
-  font-size: 14px;
-  text-align: center;
-  background: transparent;
-  border: none;
-  border-bottom: 2px solid transparent;
-  cursor: pointer;
-  color: var(--text-dim);
-}
-
-.right-panel-switcher-btn:hover {
-  color: var(--text);
-  background: var(--panel-2);
-}
-
-.right-panel-switcher-btn.active {
-  color: var(--accent);
-  border-bottom-color: var(--accent);
-}
-
-.right-panel-content {
+.right-panel-scroll {
   flex: 1;
   overflow-y: auto;
   min-height: 0;
+}
+
+.right-panel-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0;
 }

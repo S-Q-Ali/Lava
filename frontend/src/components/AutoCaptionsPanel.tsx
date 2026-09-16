@@ -14,7 +14,7 @@ function formatTimestamp(t: number): string {
   return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}.${ms.toString().padStart(2, '0')}`
 }
 
-export function AutoCaptionsPanel({ onCustomize }: { onCustomize?: () => void }) {
+export function AutoCaptionsPanel() {
   const [enabled, setEnabled] = useState(true)
   const [timingMode, setTimingMode] = useState<'auto' | 'manual'>('auto')
 
@@ -74,7 +74,7 @@ export function AutoCaptionsPanel({ onCustomize }: { onCustomize?: () => void })
               </select>
             </label>
 
-            <button type="button" className="auto-captions-customize" onClick={onCustomize}>
+            <button type="button" className="auto-captions-customize" onClick={() => {}}>
               Customize
             </button>
           </div>

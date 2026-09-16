@@ -32,9 +32,10 @@ describe('LeftWorkspace', () => {
     expect(host.querySelector('.media-panel')).not.toBeNull()
   })
 
-  it('renders ManhwaPanel when activeNav is ai-tools', () => {
+  it('renders ExtractorPanel with tabs when activeNav is ai-tools', () => {
     mount('ai-tools')
-    expect(host.querySelector('.manhwa-panel')).not.toBeNull()
+    expect(host.querySelector('.ai-tools-tabs')).not.toBeNull()
+    expect(host.querySelector('.extractor-panel')).not.toBeNull()
   })
 
   it('renders CaptionPanel when activeNav is captions', () => {
@@ -52,10 +53,9 @@ describe('LeftWorkspace', () => {
     expect(host.textContent).toContain('Coming soon')
   })
 
-  it('renders ExtractorPanel when activeNav is projects', () => {
+  it('renders placeholder for projects', () => {
     mount('projects')
-    expect(host.querySelector('.extractor-panel')).not.toBeNull()
-    expect(host.textContent).toContain('Extractor')
+    expect(host.textContent).toContain('Coming soon')
   })
 
   it('renders ExportPanel when activeNav is export', () => {

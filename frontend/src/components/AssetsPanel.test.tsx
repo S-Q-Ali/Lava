@@ -27,63 +27,55 @@ beforeEach(() => {
 afterEach(unmount)
 
 describe('AssetsPanel', () => {
-  it('renders all category tabs', () => {
+  it('renders sidebar with category tabs', () => {
     mount()
-    const tabs = host.querySelectorAll('.assets-tab')
-    expect(tabs.length).toBe(7)
+    expect(host.querySelector('.assets-sidebar')).not.toBeNull()
+    const tabs = host.querySelectorAll('.assets-sidebar-tab')
+    expect(tabs.length).toBe(5)
     expect(host.textContent).toContain('Media')
     expect(host.textContent).toContain('Images')
     expect(host.textContent).toContain('Audio')
     expect(host.textContent).toContain('Videos')
     expect(host.textContent).toContain('Documents')
-    expect(host.textContent).toContain('Image to Image')
-    expect(host.textContent).toContain('Tips')
+  })
+
+  it('renders Project Assets title', () => {
+    mount()
+    expect(host.textContent).toContain('Project Assets')
   })
 
   it('defaults to Media tab', () => {
     mount()
-    const activeTab = host.querySelector('.assets-tab.active')
+    const activeTab = host.querySelector('.assets-sidebar-tab.active')
     expect(activeTab?.textContent).toContain('Media')
   })
 
   it('switches to Images tab on click', () => {
     mount()
-    const tabs = host.querySelectorAll('.assets-tab')
+    const tabs = host.querySelectorAll('.assets-sidebar-tab')
     const imgTab = Array.from(tabs).find((t) => t.textContent?.includes('Images'))
     act(() => (imgTab as HTMLButtonElement).click())
-    const activeTab = host.querySelector('.assets-tab.active')
+    const activeTab = host.querySelector('.assets-sidebar-tab.active')
     expect(activeTab?.textContent).toContain('Images')
+  })
+
+  it('shows Recent section', () => {
+    mount()
+    expect(host.textContent).toContain('Recent')
+  })
+
+  it('shows Image to Image section', () => {
+    mount()
+    expect(host.querySelector('.assets-i2i-section')).not.toBeNull()
+  })
+
+  it('shows Tips section', () => {
+    mount()
+    expect(host.querySelector('.assets-tips-section')).not.toBeNull()
   })
 
   it('shows empty state when no assets exist', () => {
     mount()
     expect(host.textContent).toContain('Import media')
-  })
-
-  it('switches to Tips tab and shows tips content', () => {
-    mount()
-    const tabs = host.querySelectorAll('.assets-tab')
-    const tipsTab = Array.from(tabs).find((t) => t.textContent?.includes('Tips'))
-    act(() => (tipsTab as HTMLButtonElement).click())
-    expect(host.textContent).toContain('Import Media')
-    expect(host.textContent).toContain('AI Voice Matching')
-  })
-
-  it('switches to Image to Image tab', () => {
-    mount()
-    const tabs = host.querySelectorAll('.assets-tab')
-    const i2iTab = Array.from(tabs).find((t) => t.textContent?.includes('Image to Image'))
-    act(() => (i2iTab as HTMLButtonElement).click())
-    expect(host.textContent).toContain('Image to Image')
-    expect(host.textContent).toContain('Drop an image here')
-    expect(host.textContent).toContain('Generate')
-  })
-
-  it('switches to Images tab and shows empty state', () => {
-    mount()
-    const tabs = host.querySelectorAll('.assets-tab')
-    const imgTab = Array.from(tabs).find((t) => t.textContent?.includes('Images'))
-    act(() => (imgTab as HTMLButtonElement).click())
-    expect(host.textContent).toContain('No image assets yet')
   })
 })

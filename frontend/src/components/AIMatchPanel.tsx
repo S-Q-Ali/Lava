@@ -5,7 +5,7 @@ import './AIMatchPanel.css'
 
 type AIMatchTab = 'voice-images' | 'settings'
 
-export default function AIMatchPanel({ onClose }: { onClose?: () => void }) {
+export default function AIMatchPanel() {
   const [tab, setTab] = useState<AIMatchTab>('voice-images')
 
   return (
@@ -13,11 +13,6 @@ export default function AIMatchPanel({ onClose }: { onClose?: () => void }) {
       <div className="ai-match-header">
         <span className="ai-match-icon">⚡</span>
         <span className="ai-match-title">AI Match</span>
-        {onClose && (
-          <button type="button" className="ai-match-close" onClick={onClose} title="Close" aria-label="Close AI Match">
-            ×
-          </button>
-        )}
       </div>
 
       <div className="ai-match-tabs" role="tablist">

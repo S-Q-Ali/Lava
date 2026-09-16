@@ -30,21 +30,21 @@ function App() {
           <aside className="left-panel-v2">
             <LeftWorkspace activeNav={activeNav} />
           </aside>
-          <main className="center-panel">
-            <PreviewPanel />
-          </main>
+          <div className="center-column">
+            <main className="center-preview">
+              <PreviewPanel />
+            </main>
+            <footer className="center-timeline">
+              <TimelinePanel />
+            </footer>
+          </div>
           <aside className="right-panel">
             <RightPanel />
           </aside>
         </div>
-        <div className="bottom-section">
-          <footer className="bottom-panel">
-            <TimelinePanel />
-          </footer>
-          <section className="assets-panel-container">
-            <AssetsPanel />
-          </section>
-        </div>
+        <section className="bottom-bar">
+          <AssetsPanel />
+        </section>
       </div>
       <ToastContainer />
     </ErrorBoundary>

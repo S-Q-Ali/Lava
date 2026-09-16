@@ -33,6 +33,7 @@
   display: grid;
   grid-template-columns: 64px 240px 1fr 260px;
   min-height: 0;
+  overflow: hidden;
 }
 
 .panel {
@@ -53,6 +54,7 @@
 }
 
 .right-panel {
+  border-left: 1px solid var(--border);
   border-right: none;
   border-top: none;
   border-bottom: none;
@@ -60,31 +62,32 @@
   overflow-y: auto;
 }
 
-.center-panel {
-  background: var(--bg);
+.center-column {
   display: flex;
   flex-direction: column;
   min-height: 0;
+  overflow: hidden;
 }
 
-.bottom-section {
-  display: grid;
-  grid-template-rows: auto 1fr;
+.center-preview {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.center-timeline {
+  flex: none;
+  height: 180px;
   border-top: 1px solid var(--border);
-  min-height: 280px;
-  max-height: 40vh;
+  overflow: hidden;
 }
 
-.bottom-panel {
-  background: var(--panel);
+.bottom-bar {
+  border-top: 1px solid var(--border);
+  height: 160px;
   min-height: 120px;
-  max-height: 50%;
-  overflow-y: auto;
-}
-
-.assets-panel-container {
-  background: var(--panel);
-  border-top: 1px solid var(--border);
+  max-height: 200px;
   overflow: hidden;
 }
 
@@ -2151,8 +2154,8 @@
     grid-template-columns: 64px 180px 1fr 200px;
   }
 
-  .bottom-section {
-    min-height: 220px;
+  .bottom-bar {
+    height: 140px;
   }
 }
 
@@ -2169,9 +2172,9 @@
     display: none;
   }
 
-  .bottom-section {
-    min-height: 180px;
-    max-height: 50vh;
+  .bottom-bar {
+    height: 120px;
+    max-height: 30vh;
   }
 
   .assets-tabs {
