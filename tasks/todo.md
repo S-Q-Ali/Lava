@@ -228,8 +228,8 @@ Build order: proxy-preview → runtime-optimization → memory-tuning → baseli
 - [x] Task 5.4: Add Export JPG/PNG buttons
 
 ### Phase 6: Image-to-Image
-- [ ] Task 6.1: Fix source state and add result display
-- [ ] Task 6.2: Add Apply Style button
+- [x] Task 6.1: Fix source state and add result display
+- [x] Task 6.2: Add Apply Style button
 
 ### Phase 7: Auto Captions Polish
 - [ ] Task 7.1: Add timestamps to transcript preview

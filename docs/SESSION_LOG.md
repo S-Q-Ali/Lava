@@ -2234,3 +2234,29 @@ Phase 5 of the V2 gap fix plan: improves the Extractor panel with a presentation
 ### Next step
 - Phase 6: Image-to-Image (source state fix, result display, Apply Style button).
 - Full plan: `tasks/plan-v2-frontend-gaps.md`, tasks: `tasks/todo.md` M11.
+
+---
+
+## Session 45 — V2 Frontend Gap Fixes: Phase 6 (Image-to-Image)
+
+### Purpose (WHY)
+Phase 6 of the V2 gap fix plan: fixes the broken Image-to-Image panel — source image can now be set via drag-drop or file picker, result displays side-by-side, and Apply Style adds the generated image to the timeline.
+
+### WHAT
+- **Source state fix** (`ImageToImagePanel.tsx`): `const [source] = useState(null)` → `const [source, setSource] = useState(null)`. Drop zone is now clickable and supports drag-drop. Hidden file input with `accept="image/*"`.
+- **Result display** (`ImageToImagePanel.tsx`): Side-by-side layout with Source and Result columns. Canvas-based generation placeholder (applies tint per style). Result state persists after generation.
+- **Apply Style button** (`ImageToImagePanel.tsx`): Appears after generation. Fetches the data URL, converts to Blob, adds as image asset and clip to timeline image track.
+- **CSS additions** (`ImageToImagePanel.css`): `.i2i-layout` flex row, `.i2i-side-img` (72px cover), `.i2i-placeholder`, `.i2i-apply-btn` with track-image color.
+
+### Files changed
+- `frontend/src/components/ImageToImagePanel.tsx` (fixed useState, drag-drop, side-by-side result, Apply Style button)
+- `frontend/src/components/ImageToImagePanel.css` (layout, side images, placeholder, apply button)
+
+### Verify
+- `npx tsc -b` — clean
+- `npx vitest run` — 370/370 pass
+- `npx oxlint` — 0 warnings, 0 errors
+
+### Next step
+- Phase 7: Auto Captions Polish (timestamps in preview, Auto/Manual timing toggle).
+- Full plan: `tasks/plan-v2-frontend-gaps.md`, tasks: `tasks/todo.md` M11.
