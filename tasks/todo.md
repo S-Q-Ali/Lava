@@ -232,5 +232,5 @@ Build order: proxy-preview → runtime-optimization → memory-tuning → baseli
 - [x] Task 6.2: Add Apply Style button
 
 ### Phase 7: Auto Captions Polish
-- [ ] Task 7.1: Add timestamps to transcript preview
-- [ ] Task 7.2: Wire caption timing mode (Auto/Manual)
+- [x] Task 7.1: Add timestamps to transcript preview
+- [x] Task 7.2: Wire caption timing mode (Auto/Manual)

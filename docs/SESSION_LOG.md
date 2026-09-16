@@ -2260,3 +2260,29 @@ Phase 6 of the V2 gap fix plan: fixes the broken Image-to-Image panel — source
 ### Next step
 - Phase 7: Auto Captions Polish (timestamps in preview, Auto/Manual timing toggle).
 - Full plan: `tasks/plan-v2-frontend-gaps.md`, tasks: `tasks/todo.md` M11.
+
+---
+
+## Session 46 — V2 Frontend Gap Fixes: Phase 7 (Auto Captions Polish)
+
+### Purpose (WHY)
+Phase 7 (final): completes the V2 gap fix plan by adding timestamped transcript preview and wiring the Auto/Manual timing mode toggle.
+
+### WHAT
+- **Timestamped preview** (`AutoCaptionsPanel.tsx`): Transcript preview now shows `[MM:SS.ms] text` format for each caption line (up to 8 lines, then "… N more"). Monospace font, accent-colored timestamps, scrollable.
+- **Timing mode wiring** (`editorStore.ts`): `generateCaptions(assetId, timingMode)` now accepts `'auto' | 'manual'`. Auto mode uses existing `segmentCaptions()` (AI-based pause detection). Manual mode evenly distributes total asset duration across segments.
+- **CSS additions** (`AutoCaptionsPanel.css`): `.auto-captions-preview-line`, `.auto-captions-preview-time` (accent color), `.auto-captions-preview-more`, monospace font for preview, scrollable max-height.
+
+### Files changed
+- `frontend/src/components/AutoCaptionsPanel.tsx` (timestamped preview, timing mode passed to generate)
+- `frontend/src/store/editorStore.ts` (generateCaptions accepts timingMode, manual even-distribution, CAPTION_TRACK_ID import)
+- `frontend/src/components/AutoCaptionsPanel.css` (timestamp styling, scrollable preview)
+
+### Verify
+- `npx tsc -b` — clean
+- `npx vitest run` — 370/370 pass
+- `npx oxlint` — 0 warnings, 0 errors
+
+### Next step
+- All 23 tasks complete. Final checkpoint: run full verification, update docs, push.
+- Full plan: `tasks/plan-v2-frontend-gaps.md`, tasks: `tasks/todo.md` M11.
