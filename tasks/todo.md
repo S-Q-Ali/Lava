@@ -213,8 +213,8 @@ Build order: proxy-preview → runtime-optimization → memory-tuning → baseli
 - [x] Task 2.5: Add fullscreen preview
 
 ### Phase 3: Timeline Visuals
-- [ ] Task 3.1: Add thumbnails to timeline clips
-- [ ] Task 3.2: Add audio waveforms on voice/music tracks
+- [x] Task 3.1: Add thumbnails to timeline clips
+- [x] Task 3.2: Add audio waveforms on voice/music tracks
 
 ### Phase 4: AI Match Visual
 - [ ] Task 4.1: Add Matched Images strip (horizontal thumbnail scroll)

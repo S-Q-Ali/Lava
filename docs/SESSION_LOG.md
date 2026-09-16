@@ -2127,7 +2127,31 @@ Audit against `AI_VIDEO_STUDIO_MASTER_SPEC_V2_EXACT_FRONTEND.md` identified 35 m
 - Auto Captions transcript timestamps not yet implemented (Phase 7).
 
 ### Next step
-- Phase 2: Preview Controls (scrub bar, duration display, volume, fit/display, fullscreen).
+- Phase 3: Timeline Visuals (thumbnails on clips, audio waveforms).
+
+---
+
+## Session 42 — V2 Frontend Gap Fixes: Phase 3 (Timeline Visuals)
+
+### Purpose (WHY)
+Phase 3 of the V2 gap fix plan: makes the timeline visually informative like professional editors — image/video clips show thumbnail strips, audio clips show waveform bars.
+
+### WHAT
+- **Thumbnail strips** (`ClipBlock.tsx`): Image/video clips display a tiled thumbnail background from the asset proxy URL. Background size scales with clip duration (`background-size: <width>px 100%, repeat-x`). Creates a filmstrip effect.
+- **Audio waveforms** (`ClipBlock.tsx`): Voice/music clips get a `clip-waveform` div with repeating gradient bars (`--accent` colored, 2px wide, 4px cycle). Opacity 0.3, pointer-events none. Reads asset kind from store.
+- **CSS updates** (`App.css`): `.clip-waveform` positioned absolute inset, z-index 0. `.clip-block::before` gradient bumped to z-index 1. `.clip-title` and `.clip-motion` bumped to z-index 2 with `text-shadow` for readability over thumbnails.
+
+### Files changed
+- `frontend/src/components/timeline/ClipBlock.tsx` (proxy URL, thumbnail/waveform styles, waveform div)
+- `frontend/src/App.css` (clip-waveform, z-index layering, text-shadow)
+
+### Verify
+- `npx tsc -b` — clean
+- `npx vitest run` — 370/370 pass
+- `npx oxlint` — 0 warnings, 0 errors
+
+### Next step
+- Phase 4: AI Match Visual (matched images strip, View All, voiceover waveform).
 - Full plan: `tasks/plan-v2-frontend-gaps.md`, tasks: `tasks/todo.md` M11.
 
 ---
