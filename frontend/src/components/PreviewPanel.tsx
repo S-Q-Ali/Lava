@@ -1,6 +1,6 @@
 import { memo, useEffect, useMemo, useRef, useState } from 'react'
 import { useEditorStore } from '../store/editorStore'
-import { clipsAtTime } from '../editor/ops'
+import { clipsAtTime, projectDuration } from '../editor/ops'
 import { getAssetFile } from '../media/importer'
 import { getFFmpegProvider, type RenderClipInput } from '../services/ffmpeg'
 import { resolveProxyUrl } from '../services/proxy'
@@ -19,19 +19,37 @@ function formatTime(t: number): string {
     .padStart(3, '0')}`
 }
 
+type DisplayMode = 'fit' | 'fill' | '50' | '100'
+
+const DISPLAY_MODES: { id: DisplayMode; label: string }[] = [
+  { id: 'fit', label: 'Fit' },
+  { id: 'fill', label: 'Fill' },
+  { id: '50', label: '50%' },
+  { id: '100', label: '100%' },
+]
+
 const MediaElement = memo(function MediaElement({
   src,
   asset,
   videoRef,
+  displayMode,
 }: {
   src: string
   asset: Asset
   videoRef: React.RefObject<HTMLVideoElement | null>
+  displayMode: DisplayMode
 }) {
+  const objectFit = displayMode === 'fill' ? 'cover' : 'contain'
+  const scale = displayMode === '50' ? 0.5 : displayMode === '100' ? 1 : undefined
+
+  const style: React.CSSProperties = scale !== undefined
+    ? { transform: `scale(${scale})`, transformOrigin: 'center', objectFit }
+    : { objectFit }
+
   if (asset.kind === 'image') {
-    return <img src={src} alt={asset.name} loading="lazy" decoding="async" />
+    return <img src={src} alt={asset.name} loading="lazy" decoding="async" style={style} />
   }
-  return <video ref={videoRef} src={src} preload="metadata" />
+  return <video ref={videoRef} src={src} preload="metadata" style={style} />
 })
 
 export default function PreviewPanel() {
@@ -42,9 +60,14 @@ export default function PreviewPanel() {
   const selectedClipId = useEditorStore((s) => s.selectedClipId)
   const setPlayhead = useEditorStore((s) => s.setPlayhead)
   const videoRef = useRef<HTMLVideoElement | null>(null)
+  const stageRef = useRef<HTMLDivElement>(null)
   const [rendering, setRendering] = useState(false)
   const [renderUrl, setRenderUrl] = useState<string | null>(null)
   const [renderError, setRenderError] = useState<string | null>(null)
+  const [volume, setVolume] = useState(1)
+  const [muted, setMuted] = useState(false)
+  const [displayMode, setDisplayMode] = useState<DisplayMode>('fit')
+  const [duration, setDuration] = useState(0)
 
   const activeClip = useMemo(
     () => clips.find((c) => c.id === selectedClipId) ?? clipsAtTime(clips, playhead)[0],
@@ -57,6 +80,8 @@ export default function PreviewPanel() {
 
   useProxyStore((s) => s.version)
   const previewSrc = activeAsset ? resolveProxyUrl(activeAsset) : null
+
+  const totalDuration = useMemo(() => projectDuration(clips), [clips])
 
   // Caption live preview
   const allCaptions = useEditorStore((s) => s.captions)
@@ -117,9 +142,42 @@ export default function PreviewPanel() {
       }
       setPlayhead(v.currentTime)
     }
+    const onLoadedMetadata = () => setDuration(v.duration)
     v.addEventListener('timeupdate', onTimeUpdate)
-    return () => v.removeEventListener('timeupdate', onTimeUpdate)
+    v.addEventListener('loadedmetadata', onLoadedMetadata)
+    return () => {
+      v.removeEventListener('timeupdate', onTimeUpdate)
+      v.removeEventListener('loadedmetadata', onLoadedMetadata)
+    }
   }, [setPlayhead])
+
+  // Sync volume
+  useEffect(() => {
+    const v = videoRef.current
+    if (!v) return
+    v.volume = volume
+    v.muted = muted
+  }, [volume, muted])
+
+  const handleScrub = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = Number(e.target.value)
+    setPlayhead(val)
+  }
+
+  const cycleDisplayMode = () => {
+    const idx = DISPLAY_MODES.findIndex((d) => d.id === displayMode)
+    setDisplayMode(DISPLAY_MODES[(idx + 1) % DISPLAY_MODES.length].id)
+  }
+
+  const handleFullscreen = () => {
+    if (stageRef.current) {
+      if (document.fullscreenElement) {
+        document.exitFullscreen()
+      } else {
+        stageRef.current.requestFullscreen()
+      }
+    }
+  }
 
   const handleRender = async () => {
     setRenderError(null)
@@ -175,15 +233,17 @@ export default function PreviewPanel() {
     }
   }
 
+  const mediaDuration = duration || totalDuration
+
   return (
     <section className="panel preview-panel" aria-label="Preview">
-      <div className="preview-stage">
+      <div className="preview-stage" ref={stageRef}>
         {renderUrl ? (
           <video src={renderUrl} controls />
         ) : activeAsset?.kind === 'audio' ? (
           <div className="audio-placeholder">{activeAsset.name}</div>
         ) : activeAsset && previewSrc ? (
-          <MediaElement src={previewSrc} asset={activeAsset} videoRef={videoRef} />
+          <MediaElement src={previewSrc} asset={activeAsset} videoRef={videoRef} displayMode={displayMode} />
         ) : (
           <p className="empty">No media at playhead. Import assets to start.</p>
         )}
@@ -206,11 +266,23 @@ export default function PreviewPanel() {
         )}
       </div>
       {renderError && <p className="render-error">{renderError}</p>}
+      <div className="preview-scrub">
+        <input
+          type="range"
+          className="preview-scrub-input"
+          min={0}
+          max={mediaDuration || 1}
+          step={0.01}
+          value={playhead}
+          onChange={handleScrub}
+          aria-label="Seek"
+        />
+      </div>
       <div className="preview-transport">
-        <button type="button" onClick={() => useEditorStore.setState({ playing: !playing })}>
+        <button type="button" onClick={() => useEditorStore.setState({ playing: !playing })} title={playing ? 'Pause' : 'Play'}>
           {playing ? '⏸' : '▶'}
         </button>
-        <button type="button" onClick={() => setPlayhead(0)}>
+        <button type="button" onClick={() => setPlayhead(0)} title="Go to start">
           ⏮
         </button>
         <button type="button" onClick={() => {
@@ -221,12 +293,33 @@ export default function PreviewPanel() {
         </button>
         <button type="button" onClick={() => {
           const step = 1 / 30
-          const end = clips.reduce((m, c) => Math.max(m, c.start + c.duration), 0)
-          setPlayhead(Math.min(end, playhead + step))
+          setPlayhead(Math.min(totalDuration, playhead + step))
         }} title="Next frame (→)">
           ▶
         </button>
-        <span className="timecode">{formatTime(playhead)}</span>
+        <span className="timecode">{formatTime(playhead)} / {formatTime(mediaDuration)}</span>
+        <div className="preview-volume">
+          <button type="button" onClick={() => setMuted(!muted)} title={muted ? 'Unmute' : 'Mute'}>
+            {muted ? '🔇' : volume > 0.5 ? '🔊' : volume > 0 ? '🔉' : '🔇'}
+          </button>
+          <input
+            type="range"
+            className="preview-volume-input"
+            min={0}
+            max={1}
+            step={0.05}
+            value={muted ? 0 : volume}
+            onChange={(e) => { setVolume(Number(e.target.value)); setMuted(false) }}
+            aria-label="Volume"
+          />
+        </div>
+        <button type="button" onClick={cycleDisplayMode} title={`Display: ${displayMode}`} className="preview-display-mode">
+          {DISPLAY_MODES.find((d) => d.id === displayMode)?.label}
+        </button>
+        <button type="button" onClick={handleFullscreen} title="Fullscreen">
+          ⛶
+        </button>
+        <div className="preview-transport-spacer" />
         <button type="button" onClick={handleRender} disabled={rendering}>
           {rendering ? 'Rendering…' : 'Render'}
         </button>
