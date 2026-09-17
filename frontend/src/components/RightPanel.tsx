@@ -1,5 +1,6 @@
 import AIMatchPanel from './AIMatchPanel'
 import { AutoCaptionsPanel } from './AutoCaptionsPanel'
+import InspectorPanel from './InspectorPanel'
 import './RightPanel.css'
 
 export default function RightPanel() {
@@ -9,6 +10,8 @@ export default function RightPanel() {
         <AIMatchPanel />
         <div className="right-panel-divider" />
         <AutoCaptionsPanel />
+        <div className="right-panel-divider" />
+        <InspectorPanel />
       </div>
     </div>
   )

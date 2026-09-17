@@ -5,17 +5,36 @@ import { CaptionPanel } from './CaptionPanel'
 import { PresetPanel } from './PresetPanel'
 import ExtractorPanel from './ExtractorPanel'
 import ExportPanel from './ExportPanel'
+import { useEditorStore } from '../store/editorStore'
+import { projectDuration } from '../editor/ops'
 import './LeftWorkspace.css'
 
 type LeftWorkspaceProps = {
   activeNav: string
 }
 
-function Placeholder({ title }: { title: string }) {
+function WorkspaceOverview({ title }: { title: 'Home' | 'Projects' }) {
+  const assets = useEditorStore((s) => s.assets)
+  const clips = useEditorStore((s) => s.clips)
+  const duration = projectDuration(clips)
   return (
     <div className="left-workspace-placeholder">
-      <p>{title}</p>
-      <p className="left-workspace-hint">Coming soon</p>
+      <h3>{title}</h3>
+      {title === 'Home' ? (
+        <>
+          <p>Start by importing media, then drag assets to the timeline.</p>
+          <div className="workspace-overview-stats">
+            <span>{assets.length} assets</span>
+            <span>{clips.length} clips</span>
+            <span>{duration.toFixed(1)}s timeline</span>
+          </div>
+        </>
+      ) : (
+        <>
+          <p>Projects are saved as local .lava.json files.</p>
+          <p className="left-workspace-hint">Use Save and Open in the top bar to manage project files.</p>
+        </>
+      )}
     </div>
   )
 }
@@ -43,9 +62,9 @@ export default function LeftWorkspace({ activeNav }: LeftWorkspaceProps) {
         </div>
       )
     case 'home':
-      return <Placeholder title="Home" />
+      return <WorkspaceOverview title="Home" />
     case 'projects':
-      return <Placeholder title="Projects" />
+      return <WorkspaceOverview title="Projects" />
     case 'export':
       return (
         <div className="left-workspace-content">
@@ -53,7 +72,7 @@ export default function LeftWorkspace({ activeNav }: LeftWorkspaceProps) {
         </div>
       )
     default:
-      return <Placeholder title={activeNav} />
+      return <WorkspaceOverview title="Home" />
   }
 }
 

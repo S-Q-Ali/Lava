@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { useEditorStore } from '../store/editorStore'
 import { importFiles } from '../media/importer'
 import { projectDuration } from '../editor/ops'
@@ -17,11 +17,34 @@ export default function MediaPanel() {
   const addClip = useEditorStore((s) => s.addClip)
   const removeAsset = useEditorStore((s) => s.removeAsset)
   const inputRef = useRef<HTMLInputElement>(null)
+  const [importing, setImporting] = useState(false)
+  const [importError, setImportError] = useState<string | null>(null)
 
   const onPick = async (files: FileList | null) => {
     if (!files) return
-    const imported = await importFiles(Array.from(files))
-    for (const asset of imported) addAsset(asset)
+    setImportError(null)
+    const selected = Array.from(files)
+    const supported = selected.filter((file) =>
+      file.type.startsWith('image/') ||
+      file.type.startsWith('video/') ||
+      file.type.startsWith('audio/'),
+    )
+    if (supported.length !== selected.length) {
+      setImportError('Some files were skipped. Choose image, video or audio files.')
+    }
+    if (supported.length === 0) return
+    setImporting(true)
+    try {
+      const imported = await importFiles(supported)
+      for (const asset of imported) addAsset(asset)
+      if (imported.length === 0) {
+        setImportError('The selected media could not be read. Try another file.')
+      }
+    } catch (error) {
+      setImportError(error instanceof Error ? error.message : 'Media import failed.')
+    } finally {
+      setImporting(false)
+    }
   }
 
   const addToTimeline = (assetId: string) => {
@@ -31,6 +54,12 @@ export default function MediaPanel() {
     const trackId = `track-${kindOf(asset.meta.mimeType ?? 'image')}`
     const start = projectDuration(clips)
     addClip({ trackId, assetId, name: asset.name, start, duration })
+  }
+
+  const handleRemove = (assetId: string) => {
+    const asset = assets.find((item) => item.id === assetId)
+    if (asset?.url.startsWith('blob:')) URL.revokeObjectURL(asset.url)
+    removeAsset(assetId)
   }
 
   return (
@@ -44,9 +73,10 @@ export default function MediaPanel() {
         hidden
         onChange={(e) => onPick(e.target.files)}
       />
-      <button type="button" onClick={() => inputRef.current?.click()}>
-        Import media
+      <button type="button" onClick={() => inputRef.current?.click()} disabled={importing}>
+        {importing ? 'Reading media…' : 'Import media'}
       </button>
+      {importError && <p className="panel-error" role="alert">{importError}</p>}
       <ul className="asset-list">
         {assets.length === 0 && <li className="empty">No media imported.</li>}
         {assets.map((a) => (
@@ -74,7 +104,7 @@ export default function MediaPanel() {
               <button type="button" onClick={() => addToTimeline(a.id)}>
                 +
               </button>
-              <button type="button" onClick={() => removeAsset(a.id)}>
+              <button type="button" onClick={() => handleRemove(a.id)}>
                 ×
               </button>
             </div>

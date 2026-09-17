@@ -48,14 +48,14 @@ describe('LeftWorkspace', () => {
     expect(host.querySelector('.preset-panel')).not.toBeNull()
   })
 
-  it('renders placeholder for home', () => {
+  it('renders useful home guidance', () => {
     mount('home')
-    expect(host.textContent).toContain('Coming soon')
+    expect(host.textContent).toContain('Start by importing media')
   })
 
-  it('renders placeholder for projects', () => {
+  it('renders project save guidance', () => {
     mount('projects')
-    expect(host.textContent).toContain('Coming soon')
+    expect(host.textContent).toContain('local .lava.json files')
   })
 
   it('renders ExportPanel when activeNav is export', () => {

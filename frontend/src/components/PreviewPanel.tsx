@@ -32,11 +32,13 @@ const MediaElement = memo(function MediaElement({
   src,
   asset,
   videoRef,
+  audioRef,
   displayMode,
 }: {
   src: string
   asset: Asset
   videoRef: React.RefObject<HTMLVideoElement | null>
+  audioRef: React.RefObject<HTMLAudioElement | null>
   displayMode: DisplayMode
 }) {
   const objectFit = displayMode === 'fill' ? 'cover' : 'contain'
@@ -49,6 +51,9 @@ const MediaElement = memo(function MediaElement({
   if (asset.kind === 'image') {
     return <img src={src} alt={asset.name} loading="lazy" decoding="async" style={style} />
   }
+  if (asset.kind === 'audio') {
+    return <audio ref={audioRef} src={src} preload="metadata" />
+  }
   return <video ref={videoRef} src={src} preload="metadata" style={style} />
 })
 
@@ -60,6 +65,7 @@ export default function PreviewPanel() {
   const selectedClipId = useEditorStore((s) => s.selectedClipId)
   const setPlayhead = useEditorStore((s) => s.setPlayhead)
   const videoRef = useRef<HTMLVideoElement | null>(null)
+  const audioRef = useRef<HTMLAudioElement | null>(null)
   const stageRef = useRef<HTMLDivElement>(null)
   const [rendering, setRendering] = useState(false)
   const [renderUrl, setRenderUrl] = useState<string | null>(null)
@@ -74,8 +80,12 @@ export default function PreviewPanel() {
     [clips, selectedClipId, playhead],
   )
   const activeAsset = useMemo(
-    () => (activeClip ? assets.find((a) => a.id === activeClip.assetId) : undefined),
-    [assets, activeClip],
+    () => {
+      const playheadClip = clipsAtTime(clips, playhead)[0]
+      const clip = playheadClip ?? (selectedClipId ? clips.find((c) => c.id === selectedClipId) : undefined)
+      return clip ? assets.find((a) => a.id === clip.assetId) : undefined
+    },
+    [assets, clips, playhead, selectedClipId],
   )
 
   useProxyStore((s) => s.version)
@@ -106,10 +116,12 @@ export default function PreviewPanel() {
 
   // Sync play state with the video element
   useEffect(() => {
-    const v = videoRef.current
+    const v = videoRef.current ?? audioRef.current
     if (!v) return
     if (playing) {
-      v.play().catch(() => {})
+      v.play().catch(() => {
+        useEditorStore.setState({ playing: false })
+      })
     } else {
       v.pause()
     }
@@ -117,30 +129,35 @@ export default function PreviewPanel() {
 
   // Sync video currentTime with playhead on seek
   useEffect(() => {
-    const v = videoRef.current
+    const v = videoRef.current ?? audioRef.current
     if (!v || playing) return
-    if (Math.abs(v.currentTime - playhead) > 0.05) {
-      v.currentTime = playhead
+    const clipStart = activeClip?.start ?? 0
+    const localTime = Math.max(0, playhead - clipStart)
+    if (Math.abs(v.currentTime - localTime) > 0.05) {
+      v.currentTime = localTime
     }
-  }, [playhead, playing])
+  }, [activeClip?.start, playhead, playing])
+
+  useEffect(() => {
+    const media = videoRef.current ?? audioRef.current
+    if (!media || !activeClip) return
+    media.currentTime = Math.max(0, playhead - activeClip.start)
+  }, [activeAsset?.id, activeClip, playhead])
 
   // Sync playhead from video timeupdate when playing
   useEffect(() => {
-    const v = videoRef.current
+    const v = videoRef.current ?? audioRef.current
     if (!v) return
     const onTimeUpdate = () => {
       if (!useEditorStore.getState().playing) return
-      const end = useEditorStore.getState().clips.reduce(
-        (m, c) => Math.max(m, c.start + c.duration),
-        0,
-      )
-      if (v.currentTime >= end) {
+      const clipEnd = activeClip ? activeClip.start + activeClip.duration : totalDuration
+      if (activeClip && v.currentTime >= activeClip.duration) {
         v.pause()
-        useEditorStore.setState({ playing: false, playhead: 0 })
+        useEditorStore.setState({ playing: false, playhead: clipEnd })
         v.currentTime = 0
         return
       }
-      setPlayhead(v.currentTime)
+      setPlayhead((activeClip?.start ?? 0) + v.currentTime)
     }
     const onLoadedMetadata = () => setDuration(v.duration)
     v.addEventListener('timeupdate', onTimeUpdate)
@@ -149,7 +166,23 @@ export default function PreviewPanel() {
       v.removeEventListener('timeupdate', onTimeUpdate)
       v.removeEventListener('loadedmetadata', onLoadedMetadata)
     }
-  }, [setPlayhead])
+  }, [activeClip, setPlayhead, totalDuration])
+
+  useEffect(() => {
+    if (!playing || activeAsset?.kind === 'video' || activeAsset?.kind === 'audio') return
+    const timer = window.setInterval(() => {
+      const state = useEditorStore.getState()
+      const next = state.playhead + 0.1
+      const end = projectDuration(state.clips)
+      if (next >= end) {
+        state.setPlayhead(end)
+        useEditorStore.setState({ playing: false })
+      } else {
+        state.setPlayhead(next)
+      }
+    }, 100)
+    return () => window.clearInterval(timer)
+  }, [activeAsset?.kind, playing])
 
   // Sync volume
   useEffect(() => {
@@ -172,9 +205,13 @@ export default function PreviewPanel() {
   const handleFullscreen = () => {
     if (stageRef.current) {
       if (document.fullscreenElement) {
-        document.exitFullscreen()
+        void document.exitFullscreen().catch(() => {
+          setRenderError('Could not exit fullscreen mode.')
+        })
       } else {
-        stageRef.current.requestFullscreen()
+        void stageRef.current.requestFullscreen().catch(() => {
+          setRenderError('Fullscreen is not available in this window.')
+        })
       }
     }
   }
@@ -240,10 +277,14 @@ export default function PreviewPanel() {
       <div className="preview-stage" ref={stageRef}>
         {renderUrl ? (
           <video src={renderUrl} controls />
-        ) : activeAsset?.kind === 'audio' ? (
-          <div className="audio-placeholder">{activeAsset.name}</div>
         ) : activeAsset && previewSrc ? (
-          <MediaElement src={previewSrc} asset={activeAsset} videoRef={videoRef} displayMode={displayMode} />
+          <MediaElement
+            src={previewSrc}
+            asset={activeAsset}
+            videoRef={videoRef}
+            audioRef={audioRef}
+            displayMode={displayMode}
+          />
         ) : (
           <p className="empty">No media at playhead. Import assets to start.</p>
         )}
