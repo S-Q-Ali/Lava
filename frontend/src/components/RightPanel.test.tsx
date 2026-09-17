@@ -52,4 +52,10 @@ describe('RightPanel', () => {
     mount()
     expect(host.textContent).toContain('Language')
   })
+
+  it('shows the selection inspector alongside AI tools', () => {
+    mount()
+    expect(host.textContent).toContain('Inspector')
+    expect(host.textContent).toContain('Select a clip to inspect.')
+  })
 })

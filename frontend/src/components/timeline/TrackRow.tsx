@@ -31,7 +31,7 @@ export default function TrackRow({
       data-track={track.type}
       onPointerDown={(e) => {
         const rect = e.currentTarget.getBoundingClientRect()
-        const seconds = (e.clientX - rect.left) / pps
+        const seconds = (e.clientX - rect.left + e.currentTarget.scrollLeft) / pps
         setPlayhead(Math.max(0, seconds))
       }}
       onDragOver={(e) => {
@@ -47,7 +47,7 @@ export default function TrackRow({
         const asset = assets.find((a) => a.id === assetId)
         if (!asset) return
         const rect = e.currentTarget.getBoundingClientRect()
-        const dropTime = Math.max(0, (e.clientX - rect.left) / pps)
+        const dropTime = Math.max(0, (e.clientX - rect.left + e.currentTarget.scrollLeft) / pps)
         const duration = asset.meta.duration ?? 5
         addClip({ trackId: track.id, assetId, name: asset.name, start: dropTime, duration })
       }}

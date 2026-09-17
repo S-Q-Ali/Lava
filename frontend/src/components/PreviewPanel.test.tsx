@@ -72,7 +72,7 @@ describe('PreviewPanel proxy preview', () => {
     expect(after?.getAttribute('src')).toBe('http://127.0.0.1:7860/api/proxy/abcd1234ef567890')
   })
 
-  it('renders a placeholder for audio assets without touching the proxy', () => {
+  it('renders an audio transport for audio assets without touching the proxy', () => {
     const asset: Asset = { id: 'v1', kind: 'audio', name: 'vo.m4a', url: 'blob:vo', meta: {} }
     useEditorStore.getState().addAsset(asset)
     useEditorStore.getState().addClip({
@@ -83,8 +83,7 @@ describe('PreviewPanel proxy preview', () => {
       duration: 2,
     })
     mountPanel()
-    expect(host.textContent).toContain('vo.m4a')
-    expect(host.querySelector('img, video')).toBeNull()
+    expect(host.querySelector('audio')).not.toBeNull()
   })
 
   it('shows the empty state with no media at the playhead', () => {

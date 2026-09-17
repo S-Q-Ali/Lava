@@ -37,7 +37,10 @@ const sources = {
   win32: () => [
     {
       name: "ffmpeg",
-      url: "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip",
+      urls: [
+        "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip",
+        "https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-win64-gpl.zip",
+      ],
       nested: true,
     },
   ],
@@ -57,7 +60,7 @@ async function download(url, dest) {
     return;
   }
   console.log(`downloading ${url}`);
-  const res = await fetch(url, { redirect: "follow" });
+  const res = await fetch(url, { redirect: "follow", signal: AbortSignal.timeout(30_000) });
   if (!res.ok) throw new Error(`download failed: ${res.status} ${res.statusText}`);
   const file = createWriteStream(dest);
   const body = Readable.fromWeb(res.body);
@@ -72,7 +75,18 @@ async function download(url, dest) {
 function extract(archive, targetDir) {
   mkdirSync(targetDir, { recursive: true });
   if (archive.endsWith(".zip")) {
-    execFileSync("unzip", ["-q", "-o", archive, "-d", targetDir], { stdio: "inherit" });
+    if (process.platform === "win32") {
+      const escapedArchive = archive.replaceAll("'", "''");
+      const escapedTarget = targetDir.replaceAll("'", "''");
+      execFileSync("powershell", [
+        "-NoProfile",
+        "-NonInteractive",
+        "-Command",
+        `Expand-Archive -LiteralPath '${escapedArchive}' -DestinationPath '${escapedTarget}' -Force`,
+      ], { stdio: "inherit" });
+    } else {
+      execFileSync("unzip", ["-q", "-o", archive, "-d", targetDir], { stdio: "inherit" });
+    }
   } else {
     execFileSync("tar", ["-xJf", archive, "-C", targetDir], { stdio: "inherit" });
   }
@@ -102,9 +116,23 @@ async function main() {
   const batches = make();
 
   for (const spec of batches) {
-    const ext = spec.url.endsWith(".zip") ? "zip" : spec.url.endsWith(".tar.xz") ? "tar.xz" : "bin";
+    const urls = spec.urls ?? [spec.url];
+    const selectedUrl = urls.find((url) => url);
+    const ext = selectedUrl.endsWith(".zip") ? "zip" : selectedUrl.endsWith(".tar.xz") ? "tar.xz" : "bin";
     const archive = join(cacheDir, `${spec.name}-${platform}.${ext}`);
-    await download(spec.url, archive);
+    let lastError;
+    for (const url of urls) {
+      try {
+        await download(url, archive);
+        lastError = undefined;
+        break;
+      } catch (error) {
+        lastError = error;
+        rmSync(archive, { force: true });
+        console.warn(`download failed for ${url}; trying the next source`);
+      }
+    }
+    if (lastError) throw lastError;
 
     const stage = join(cacheDir, `stage-${spec.name}`);
     rmSync(stage, { recursive: true, force: true });

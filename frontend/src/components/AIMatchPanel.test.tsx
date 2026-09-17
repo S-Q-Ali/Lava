@@ -52,7 +52,8 @@ describe('AIMatchPanel', () => {
     act(() => (settingsTab as HTMLButtonElement).click())
     const selectedTab = host.querySelector('[role="tab"][aria-selected="true"]')
     expect(selectedTab?.textContent).toContain('Settings')
-    expect(host.textContent).toContain('Match settings will be available here')
+    expect(host.textContent).toContain('Local sidecar')
+    expect(host.textContent).toContain('Check connection')
   })
 
   it('switches back to Voice + Images tab', () => {

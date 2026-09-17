@@ -82,8 +82,38 @@
   padding: 16px 12px;
 }
 
+.ai-match-setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.ai-match-status {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ai-match-status-ready {
+  color: var(--accent-teal);
+}
+
+.ai-match-status-unavailable {
+  color: var(--danger);
+}
+
+.ai-match-status-checking {
+  color: var(--text-dim);
+}
+
 .ai-match-settings-hint {
   color: var(--text-dim);
   font-size: 12px;
   margin: 0;
+}
+
+.ai-match-settings button {
+  margin-top: 10px;
 }

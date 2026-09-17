@@ -2324,3 +2324,65 @@ User wants to import a manhwa chapter PDF (each page = long vertical strip) and 
 
 ### Next step
 - Combined multi-strip export, batch operations on all strips from a PDF.
+
+---
+
+## Session 48 — Desktop Editor Shell and Transport Hardening
+
+### WHAT
+- Added a desktop-only responsive editor plan and task list covering the shell,
+  preview, timeline, assets, inspector, AI workflows and verification.
+- Added collapsible left workspace and right inspector panels with accessible
+  controls and narrow-window drawer behavior.
+- Kept the timeline lanes horizontally scrollable in a resized desktop window.
+- Added useful Home and Projects guidance instead of inert "Coming soon"
+  placeholders.
+- Added the selection Inspector to the right-side editor tools.
+- Fixed preview selection so the playhead's active clip takes precedence over a
+  stale selected clip.
+- Added audio preview playback and synchronized media time relative to clip
+  start; still-image playback now advances the playhead.
+- Fixed timeline seek and asset-drop coordinates when lanes are horizontally
+  scrolled.
+- Added media import loading/error states and revoked blob URLs when assets are
+  removed.
+
+### HOW
+- Changes are in `frontend/src/App.tsx`, `App.css`, preview/timeline/media
+  components and focused tests.
+- Plan and task files are `tasks/plan-responsive-pro-editor.md` and
+  `tasks/todo-responsive-pro-editor.md`.
+- Graphify was updated after the shell changes.
+
+### WHY
+The product must behave like an editable desktop video editor rather than a
+static dashboard. Narrow desktop windows must preserve access to panels,
+transport must follow the actual timeline, and failed media operations must be
+visible and recoverable.
+
+### Verify
+- Frontend build passed.
+- Frontend lint passed.
+- Focused editor tests passed (18 tests after the workflow slice).
+- Full baseline before the slice: 44 test files, 374 tests passed.
+
+### Next step
+- Continue with timeline edit verification (selection, split, trim, move,
+  ripple, cross-track and undo/redo), then complete asset/project and AI
+  workflow verification.
+
+### Session 48 update
+
+- Added store-level regression coverage for split, trim, cross-track move,
+  ripple movement and undo behavior (`frontend/src/store/editorStore.test.ts`).
+- Full frontend regression now passes with 45 test files and 378 tests.
+- Browser smoke verified no page overflow at 1280px and 900px desktop widths.
+- Backend dependencies were installed with `uv` and the sidecar starts, but
+  health remains unavailable until project-local FFmpeg is present.
+- Hardened `scripts/fetch-ffmpeg.mjs` with a Windows PowerShell ZIP extractor,
+  download timeout and GitHub fallback. Both configured sources were
+  unavailable from this environment, so FFmpeg installation remains pending.
+- Replaced the AI Match Settings placeholder with a real local-sidecar health
+  status and a retryable connection check.
+- Added editor-store tests for split, trim, cross-track movement, ripple
+  movement and undo behavior.

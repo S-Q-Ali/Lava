@@ -37,6 +37,21 @@ cd frontend && npm install && npm run dev
 
 The sidecar starts on `http://localhost:8000`. The frontend connects automatically.
 
+### Fast Windows test bundle
+
+For quick testing during development, build a portable test folder instead of a
+single installer:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\build-test.ps1
+.\dist\portable-test\run-test.bat
+```
+
+This creates a disposable bundle with the compiled frontend and backend source.
+The first run creates the backend environment with `uv`; no installer packaging
+is performed, so rebuilding stays fast. Keep the `tools` folder with FFmpeg in
+the project if render and media-probe testing is required.
+
 ## Documentation
 
 Canonical references live in `docs/`:

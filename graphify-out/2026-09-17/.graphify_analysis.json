@@ -1,0 +1,394 @@
+{
+  "communities": {
+    "0": [
+      "frontend_package",
+      "frontend_package_dependencies",
+      "frontend_package_dependencies_react",
+      "frontend_package_dependencies_react_dom",
+      "frontend_package_dependencies_zundo",
+      "frontend_package_dependencies_zustand",
+      "frontend_package_devdependencies",
+      "frontend_package_devdependencies_oxlint",
+      "frontend_package_devdependencies_types_node",
+      "frontend_package_devdependencies_types_react",
+      "frontend_package_devdependencies_types_react_dom",
+      "frontend_package_devdependencies_typescript",
+      "frontend_package_devdependencies_vite",
+      "frontend_package_devdependencies_vitejs_plugin_react",
+      "frontend_package_devdependencies_vitest",
+      "frontend_package_name",
+      "frontend_package_private",
+      "frontend_package_scripts",
+      "frontend_package_scripts_build",
+      "frontend_package_scripts_dev",
+      "frontend_package_scripts_lint",
+      "frontend_package_scripts_preview",
+      "frontend_package_type",
+      "frontend_package_version",
+      "frontend_vite_config",
+      "ref_oxlint",
+      "ref_react_dom",
+      "ref_types_node",
+      "ref_types_react",
+      "ref_types_react_dom",
+      "ref_typescript",
+      "ref_vite",
+      "ref_vitejs_plugin_react"
+    ],
+    "1": [
+      "frontend_src_app",
+      "frontend_src_app_app",
+      "frontend_src_components_inspectorpanel",
+      "frontend_src_components_inspectorpanel_inspectorpanel",
+      "frontend_src_components_mediapanel",
+      "frontend_src_components_mediapanel_kindof",
+      "frontend_src_components_mediapanel_mediapanel",
+      "frontend_src_components_previewpanel",
+      "frontend_src_components_previewpanel_formattime",
+      "frontend_src_components_previewpanel_previewpanel",
+      "frontend_src_components_timeline_clipblock_clipblock",
+      "frontend_src_components_timeline_timelinepanel_timelinepanel",
+      "frontend_src_editor_ops_clipsattime",
+      "frontend_src_editor_ops_projectduration",
+      "frontend_src_main",
+      "frontend_src_store_editorstore_editoractions",
+      "frontend_src_store_editorstore_editoractions_addclip",
+      "frontend_src_store_editorstore_editoractions_duplicateclip",
+      "frontend_src_store_editorstore_editoractions_moveclip",
+      "frontend_src_store_editorstore_editoractions_redo",
+      "frontend_src_store_editorstore_editoractions_removeasset",
+      "frontend_src_store_editorstore_editoractions_removeclip",
+      "frontend_src_store_editorstore_editoractions_replaceclipasset",
+      "frontend_src_store_editorstore_editoractions_reset",
+      "frontend_src_store_editorstore_editoractions_selectclip",
+      "frontend_src_store_editorstore_editoractions_setplayhead",
+      "frontend_src_store_editorstore_editoractions_splitclip",
+      "frontend_src_store_editorstore_editoractions_trimclip",
+      "frontend_src_store_editorstore_editoractions_undo",
+      "frontend_src_store_editorstore_useeditorstore",
+      "ref_react"
+    ],
+    "2": [
+      "studio_config",
+      "studio_config_backend",
+      "studio_config_backend_host",
+      "studio_config_backend_port",
+      "studio_config_ffmpeg",
+      "studio_config_ffmpeg_bin",
+      "studio_config_ffmpeg_source",
+      "studio_config_localdirs",
+      "studio_config_localdirs_cache",
+      "studio_config_localdirs_ffmpeg",
+      "studio_config_localdirs_graphifyout",
+      "studio_config_localdirs_models",
+      "studio_config_localdirs_nodemodules",
+      "studio_config_localdirs_projects",
+      "studio_config_localdirs_temp",
+      "studio_config_localdirs_venv",
+      "studio_config_name",
+      "studio_config_preview",
+      "studio_config_preview_maxproxywidth",
+      "studio_config_preview_proxyscale",
+      "studio_config_schema"
+    ],
+    "3": [
+      "frontend_tsconfig_app",
+      "frontend_tsconfig_app_compileroptions",
+      "frontend_tsconfig_app_compileroptions_allowarbitraryextensions",
+      "frontend_tsconfig_app_compileroptions_allowimportingtsextensions",
+      "frontend_tsconfig_app_compileroptions_erasablesyntaxonly",
+      "frontend_tsconfig_app_compileroptions_jsx",
+      "frontend_tsconfig_app_compileroptions_lib",
+      "frontend_tsconfig_app_compileroptions_module",
+      "frontend_tsconfig_app_compileroptions_moduledetection",
+      "frontend_tsconfig_app_compileroptions_moduleresolution",
+      "frontend_tsconfig_app_compileroptions_noemit",
+      "frontend_tsconfig_app_compileroptions_nofallthroughcasesinswitch",
+      "frontend_tsconfig_app_compileroptions_nounusedlocals",
+      "frontend_tsconfig_app_compileroptions_nounusedparameters",
+      "frontend_tsconfig_app_compileroptions_skiplibcheck",
+      "frontend_tsconfig_app_compileroptions_target",
+      "frontend_tsconfig_app_compileroptions_tsbuildinfofile",
+      "frontend_tsconfig_app_compileroptions_types",
+      "frontend_tsconfig_app_compileroptions_verbatimmodulesyntax",
+      "frontend_tsconfig_app_include"
+    ],
+    "4": [
+      "frontend_src_editor_types",
+      "frontend_src_editor_types_asset",
+      "frontend_src_editor_types_assetkind",
+      "frontend_src_editor_types_assetmeta",
+      "frontend_src_editor_types_default_tracks",
+      "frontend_src_editor_types_timelinemodel",
+      "frontend_src_editor_types_track_types",
+      "frontend_src_editor_types_tracktype",
+      "frontend_src_media_importer",
+      "frontend_src_media_importer_importfiles",
+      "frontend_src_media_importer_kindof",
+      "frontend_src_media_importer_readimagemeta",
+      "frontend_src_media_importer_readmediameta",
+      "frontend_src_store_editorstore_editoractions_addasset",
+      "frontend_src_store_editorstore_test",
+      "frontend_src_store_editorstore_test_audioasset",
+      "frontend_src_store_editorstore_test_imageasset",
+      "ref_vitest"
+    ],
+    "5": [
+      "frontend_tsconfig_node",
+      "frontend_tsconfig_node_compileroptions",
+      "frontend_tsconfig_node_compileroptions_allowimportingtsextensions",
+      "frontend_tsconfig_node_compileroptions_erasablesyntaxonly",
+      "frontend_tsconfig_node_compileroptions_lib",
+      "frontend_tsconfig_node_compileroptions_module",
+      "frontend_tsconfig_node_compileroptions_moduledetection",
+      "frontend_tsconfig_node_compileroptions_noemit",
+      "frontend_tsconfig_node_compileroptions_nofallthroughcasesinswitch",
+      "frontend_tsconfig_node_compileroptions_nounusedlocals",
+      "frontend_tsconfig_node_compileroptions_nounusedparameters",
+      "frontend_tsconfig_node_compileroptions_skiplibcheck",
+      "frontend_tsconfig_node_compileroptions_target",
+      "frontend_tsconfig_node_compileroptions_tsbuildinfofile",
+      "frontend_tsconfig_node_compileroptions_types",
+      "frontend_tsconfig_node_compileroptions_verbatimmodulesyntax",
+      "frontend_tsconfig_node_include"
+    ],
+    "6": [
+      "frontend_src_components_timeline_clipblock",
+      "frontend_src_components_timeline_scale",
+      "frontend_src_components_timeline_scale_px_per_second",
+      "frontend_src_components_timeline_scale_track_height",
+      "frontend_src_components_timeline_timelinepanel",
+      "frontend_src_components_timeline_trackrow",
+      "frontend_src_components_timeline_trackrow_trackrow",
+      "frontend_src_editor_types_clip",
+      "frontend_src_editor_types_track",
+      "frontend_src_store_editorstore",
+      "frontend_src_store_editorstore_editorbase",
+      "frontend_src_store_editorstore_editorstate",
+      "frontend_src_store_editorstore_initialstate",
+      "ref_zundo",
+      "ref_zustand"
+    ],
+    "7": [
+      "frontend_src_editor_ops",
+      "frontend_src_editor_ops_addclip",
+      "frontend_src_editor_ops_clipinput",
+      "frontend_src_editor_ops_createclip",
+      "frontend_src_editor_ops_duplicateclip",
+      "frontend_src_editor_ops_moveclip",
+      "frontend_src_editor_ops_newid",
+      "frontend_src_editor_ops_removeclip",
+      "frontend_src_editor_ops_replaceclipasset",
+      "frontend_src_editor_ops_splitclip",
+      "frontend_src_editor_ops_test",
+      "frontend_src_editor_ops_test_base",
+      "frontend_src_editor_ops_trimclip"
+    ],
+    "8": [
+      "frontend_src_services_ffmpeg",
+      "frontend_src_services_ffmpeg_ffmpegprobe",
+      "frontend_src_services_ffmpeg_ffmpegprovider",
+      "frontend_src_services_ffmpeg_ffmpegprovider_probe",
+      "frontend_src_services_ffmpeg_ffmpegprovider_render",
+      "frontend_src_services_ffmpeg_ffmpegprovider_version",
+      "frontend_src_services_ffmpeg_ffmpegservice",
+      "frontend_src_services_ffmpeg_local",
+      "frontend_src_services_ffmpeg_unavailableffmpegprovider",
+      "frontend_src_services_ffmpeg_unavailableffmpegprovider_probe",
+      "frontend_src_services_ffmpeg_unavailableffmpegprovider_render",
+      "frontend_src_services_ffmpeg_unavailableffmpegprovider_version"
+    ],
+    "9": [
+      "scripts_fetch_ffmpeg",
+      "scripts_fetch_ffmpeg_args",
+      "scripts_fetch_ffmpeg_bindir",
+      "scripts_fetch_ffmpeg_cachedir",
+      "scripts_fetch_ffmpeg_download",
+      "scripts_fetch_ffmpeg_extract",
+      "scripts_fetch_ffmpeg_findbinary",
+      "scripts_fetch_ffmpeg_main",
+      "scripts_fetch_ffmpeg_root",
+      "scripts_fetch_ffmpeg_skipverify",
+      "scripts_fetch_ffmpeg_sources"
+    ],
+    "10": [
+      "frontend_oxlintrc",
+      "frontend_oxlintrc_plugins",
+      "frontend_oxlintrc_rules",
+      "frontend_oxlintrc_rules_react_only_export_components",
+      "frontend_oxlintrc_rules_react_rules_of_hooks",
+      "frontend_oxlintrc_schema"
+    ],
+    "11": [
+      "frontend_tsconfig",
+      "frontend_tsconfig_files",
+      "frontend_tsconfig_references"
+    ],
+    "12": [
+      "opencode_plugins_graphify",
+      "opencode_plugins_graphify_graphifyplugin",
+      "opencode_plugins_graphify_rationale_4"
+    ]
+  },
+  "cohesion": {
+    "0": 0.0625,
+    "1": 0.13978494623655913,
+    "2": 0.09523809523809523,
+    "3": 0.1,
+    "4": 0.1568627450980392,
+    "5": 0.11764705882352941,
+    "6": 0.2571428571428571,
+    "7": 0.2948717948717949,
+    "8": 0.18181818181818182,
+    "9": 0.23636363636363636,
+    "10": 0.3333333333333333,
+    "11": 0.6666666666666666,
+    "12": 0.6666666666666666
+  },
+  "gods": [
+    {
+      "id": "frontend_src_store_editorstore_useeditorstore",
+      "label": "useEditorStore",
+      "degree": 26
+    },
+    {
+      "id": "frontend_tsconfig_app_compileroptions",
+      "label": "compilerOptions",
+      "degree": 18
+    },
+    {
+      "id": "frontend_src_store_editorstore_editoractions",
+      "label": "EditorActions",
+      "degree": 15
+    },
+    {
+      "id": "frontend_tsconfig_node_compileroptions",
+      "label": "compilerOptions",
+      "degree": 15
+    },
+    {
+      "id": "studio_config_localdirs",
+      "label": "localDirs",
+      "degree": 9
+    },
+    {
+      "id": "frontend_src_components_mediapanel_mediapanel",
+      "label": "MediaPanel()",
+      "degree": 8
+    },
+    {
+      "id": "frontend_src_editor_ops_projectduration",
+      "label": "projectDuration()",
+      "degree": 8
+    },
+    {
+      "id": "frontend_src_components_timeline_clipblock_clipblock",
+      "label": "ClipBlock()",
+      "degree": 7
+    },
+    {
+      "id": "frontend_src_media_importer_importfiles",
+      "label": "importFiles()",
+      "degree": 7
+    },
+    {
+      "id": "frontend_src_editor_types_asset",
+      "label": "Asset",
+      "degree": 6
+    }
+  ],
+  "surprises": [
+    {
+      "source": "EditorBase",
+      "target": "Asset",
+      "source_files": [
+        "frontend/src/store/editorStore.ts",
+        "frontend/src/editor/types.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "MediaPanel()",
+      "target": "importFiles()",
+      "source_files": [
+        "frontend/src/components/MediaPanel.tsx",
+        "frontend/src/media/importer.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "importFiles()",
+      "target": "newId()",
+      "source_files": [
+        "frontend/src/media/importer.ts",
+        "frontend/src/editor/ops.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "TrackRow()",
+      "target": "useEditorStore",
+      "source_files": [
+        "frontend/src/components/timeline/TrackRow.tsx",
+        "frontend/src/store/editorStore.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "EditorBase",
+      "target": "Clip",
+      "source_files": [
+        "frontend/src/store/editorStore.ts",
+        "frontend/src/editor/types.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references",
+      "why": "cross-file semantic connection"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `useEditorStore` connect `useEditorStore` to `types.ts`, `editorStore.ts`?",
+      "why": "High betweenness centrality (0.059) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `react` connect `useEditorStore` to `package.json`?",
+      "why": "High betweenness centrality (0.047) - this node is a cross-community bridge."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `TimelineModel`, `TrackType`, `EditorState` to the rest of the system?",
+      "why": "98 weakly-connected nodes found - possible documentation gaps or missing edges."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `package.json` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.0625 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `useEditorStore` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.13978494623655913 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `localDirs` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.09523809523809523 - nodes in this community are weakly interconnected."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `compilerOptions` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.1 - nodes in this community are weakly interconnected."
+    }
+  ]
+}
