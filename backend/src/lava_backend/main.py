@@ -53,6 +53,7 @@ from .visual_prompts import router as visual_prompts_router
 from .voice_blending import router as voice_blending_router
 from .voice_cloning import router as voice_cloning_router
 from .model_manager import router as model_manager_router
+from .image_gen import router as image_gen_router
 
 app = FastAPI(title="Lava Studio Media Sidecar", version="0.1.0-beta.0")
 
@@ -79,6 +80,7 @@ app.include_router(visual_prompts_router, prefix=f"{API_V1}")
 app.include_router(voice_blending_router, prefix=f"{API_V1}")
 app.include_router(voice_cloning_router, prefix=f"{API_V1}")
 app.include_router(model_manager_router, prefix=f"{API_V1}")
+app.include_router(image_gen_router, prefix=f"{API_V1}")
 app.include_router(matching_router, prefix=f"{API_V1}")
 app.include_router(manhwa_router, prefix=f"{API_V1}/manhwa")
 

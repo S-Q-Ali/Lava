@@ -12,6 +12,7 @@ export const NAV_ITEMS: NavItem[] = [
   { id: 'voiceover', label: 'Voiceover', icon: '♪' },
   { id: 'scriptwriter', label: 'Scripts', icon: '✎' },
   { id: 'pipeline', label: 'Pipeline', icon: '▶' },
+  { id: 'imagegen', label: 'Image Gen', icon: '🖼' },
   { id: 'captions', label: 'Captions', icon: 'Cc' },
   { id: 'templates', label: 'Templates', icon: '□' },
   { id: 'export', label: 'Export', icon: '↗' },

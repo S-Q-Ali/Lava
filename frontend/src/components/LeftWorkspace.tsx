@@ -9,6 +9,7 @@ import VoiceoverPanel from './VoiceoverPanel'
 import ScriptWriterPanel from './ScriptWriterPanel'
 import PipelinePanel from './PipelinePanel'
 import { SettingsPanel } from './SettingsPanel'
+import { ImageGenPanel } from './ImageGenPanel'
 import { useEditorStore } from '../store/editorStore'
 import { projectDuration } from '../editor/ops'
 import './LeftWorkspace.css'
@@ -69,6 +70,12 @@ export default function LeftWorkspace({ activeNav }: LeftWorkspaceProps) {
       return (
         <div className="left-workspace-content">
           <PipelinePanel />
+        </div>
+      )
+    case 'imagegen':
+      return (
+        <div className="left-workspace-content">
+          <ImageGenPanel />
         </div>
       )
     case 'captions':
