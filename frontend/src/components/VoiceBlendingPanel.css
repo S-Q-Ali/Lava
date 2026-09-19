@@ -1,0 +1,271 @@
+.voice-blend-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.vb-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.vb-icon {
+  font-size: 14px;
+}
+
+.vb-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  flex: 1;
+}
+
+.vb-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.vb-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.vb-section:last-child {
+  border-bottom: none;
+}
+
+.vb-section-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.vb-hint {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.vb-dropzone {
+  border: 1px dashed var(--border);
+  border-radius: 4px;
+  padding: 12px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--text-dim);
+  transition: border-color 0.15s;
+}
+
+.vb-dropzone:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.vb-entries {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.vb-entry {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.vb-entry-name {
+  flex: 1;
+  font-size: 11px;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vb-volume {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+.vb-volume input[type='range'] {
+  width: 60px;
+  height: 4px;
+  accent-color: var(--accent);
+}
+
+.vb-volume-val {
+  min-width: 24px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+}
+
+.vb-remove {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0 4px;
+}
+
+.vb-remove:hover {
+  color: var(--danger);
+}
+
+.vb-action-btn {
+  background: var(--accent-btn);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.vb-action-btn:hover {
+  background: #d4822e;
+}
+
+.vb-action-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.vb-check-btn {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 11px;
+  color: var(--text-dim);
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.vb-check-btn:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.vb-model-status {
+  padding: 6px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.vb-model-status.ready {
+  background: rgba(76, 175, 80, 0.1);
+  border: 1px solid #4caf50;
+  color: #4caf50;
+}
+
+.vb-model-status.missing {
+  background: rgba(255, 152, 0, 0.1);
+  border: 1px solid #ff9800;
+  color: #ff9800;
+}
+
+.vb-model-status p {
+  margin: 0;
+}
+
+.vb-download-instructions {
+  margin: 6px 0 0;
+  padding: 6px;
+  background: var(--panel);
+  border-radius: 3px;
+  font-size: 10px;
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: var(--text-dim);
+}
+
+.vb-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.vb-field span {
+  font-size: 11px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.vb-field textarea,
+.vb-field input,
+.vb-field select {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 6px;
+  font-size: 12px;
+  font-family: inherit;
+}
+
+.vb-field textarea:focus,
+.vb-field input:focus,
+.vb-field select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.vb-error {
+  margin: 0;
+  color: #e66;
+  font-size: 12px;
+}
+
+.vb-result {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  background: rgba(76, 175, 80, 0.1);
+  border: 1px solid #4caf50;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #4caf50;
+}
+
+.vb-download-link {
+  margin-left: auto;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 11px;
+}
+
+.vb-download-link:hover {
+  text-decoration: underline;
+}
