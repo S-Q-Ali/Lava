@@ -14,6 +14,8 @@ import { PodcastMakerPanel } from './PodcastMakerPanel'
 import { VoiceLibraryPanel } from './VoiceLibraryPanel'
 import { SoundFXPanel } from './SoundFXPanel'
 import { BulkGenerationPanel } from './BulkGenerationPanel'
+import { SyncPanel } from './SyncPanel'
+import { ClipperPanel } from './ClipperPanel'
 import { useEditorStore } from '../store/editorStore'
 import { projectDuration } from '../editor/ops'
 import './LeftWorkspace.css'
@@ -104,6 +106,18 @@ export default function LeftWorkspace({ activeNav }: LeftWorkspaceProps) {
       return (
         <div className="left-workspace-content">
           <BulkGenerationPanel />
+        </div>
+      )
+    case 'sync':
+      return (
+        <div className="left-workspace-content">
+          <SyncPanel />
+        </div>
+      )
+    case 'clipper':
+      return (
+        <div className="left-workspace-content">
+          <ClipperPanel />
         </div>
       )
     case 'captions':

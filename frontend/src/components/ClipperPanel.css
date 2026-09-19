@@ -1,0 +1,22 @@
+.clipper-panel { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+.cp-header { display: flex; align-items: center; gap: 6px; padding: 8px 12px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.cp-icon { font-size: 14px; }
+.cp-title { font-size: 12px; font-weight: 600; color: var(--text); letter-spacing: 0.04em; text-transform: uppercase; flex: 1; }
+.cp-body { flex: 1; overflow-y: auto; padding: 8px 12px; display: flex; flex-direction: column; gap: 8px; }
+.cp-field { display: flex; flex-direction: column; gap: 3px; }
+.cp-row { display: flex; gap: 8px; }
+.cp-field-third { flex: 1; }
+.cp-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.04em; }
+.cp-input { background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 4px; padding: 4px 8px; font-size: 12px; }
+.cp-input:focus { outline: none; border-color: var(--accent); }
+.cp-field select { background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: 4px; padding: 4px 6px; font-size: 12px; }
+.cp-extract-btn { background: var(--accent-btn); color: #fff; border: none; border-radius: 4px; padding: 6px 12px; font-size: 12px; cursor: pointer; }
+.cp-extract-btn:hover { background: #d4822e; }
+.cp-extract-btn:disabled { opacity: 0.5; cursor: default; }
+.cp-error { margin: 0; color: #e66; font-size: 12px; }
+.cp-results { display: flex; flex-direction: column; gap: 4px; }
+.cp-clip-list { display: flex; flex-direction: column; gap: 2px; }
+.cp-clip-row { display: flex; align-items: center; gap: 8px; padding: 3px 6px; border-radius: 4px; font-size: 12px; }
+.cp-clip-row:hover { background: var(--panel-2); }
+.cp-clip-id { color: var(--accent); font-weight: 600; min-width: 40px; }
+.cp-clip-meta { color: var(--text-dim); font-family: 'JetBrains Mono', monospace; }
