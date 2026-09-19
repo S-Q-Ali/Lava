@@ -10,6 +10,10 @@ import ScriptWriterPanel from './ScriptWriterPanel'
 import PipelinePanel from './PipelinePanel'
 import { SettingsPanel } from './SettingsPanel'
 import { ImageGenPanel } from './ImageGenPanel'
+import { PodcastMakerPanel } from './PodcastMakerPanel'
+import { VoiceLibraryPanel } from './VoiceLibraryPanel'
+import { SoundFXPanel } from './SoundFXPanel'
+import { BulkGenerationPanel } from './BulkGenerationPanel'
 import { useEditorStore } from '../store/editorStore'
 import { projectDuration } from '../editor/ops'
 import './LeftWorkspace.css'
@@ -76,6 +80,30 @@ export default function LeftWorkspace({ activeNav }: LeftWorkspaceProps) {
       return (
         <div className="left-workspace-content">
           <ImageGenPanel />
+        </div>
+      )
+    case 'podcast':
+      return (
+        <div className="left-workspace-content">
+          <PodcastMakerPanel />
+        </div>
+      )
+    case 'voices':
+      return (
+        <div className="left-workspace-content">
+          <VoiceLibraryPanel />
+        </div>
+      )
+    case 'sfx':
+      return (
+        <div className="left-workspace-content">
+          <SoundFXPanel />
+        </div>
+      )
+    case 'bulkgen':
+      return (
+        <div className="left-workspace-content">
+          <BulkGenerationPanel />
         </div>
       )
     case 'captions':
