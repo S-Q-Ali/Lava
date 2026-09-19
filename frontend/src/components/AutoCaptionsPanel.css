@@ -322,3 +322,38 @@
   border-color: var(--danger);
   color: var(--danger);
 }
+
+.auto-captions-export {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 6px;
+  border-top: 1px solid var(--border);
+}
+
+.auto-captions-export-buttons {
+  display: flex;
+  gap: 4px;
+}
+
+.auto-captions-export-btn {
+  flex: 1;
+  padding: 4px 8px;
+  font-size: 11px;
+  text-align: center;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-dim);
+  cursor: pointer;
+}
+
+.auto-captions-export-btn:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.auto-captions-export-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}

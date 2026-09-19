@@ -22,6 +22,14 @@ const REQUIRED_IDS = [
   'english',
   'mixed',
   'emoji',
+  'arabic',
+  'hindi',
+  'chinese',
+  'japanese',
+  'korean',
+  'thai',
+  'hebrew',
+  'bengali',
 ]
 
 describe('caption style catalog', () => {

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useEditorStore } from '../store/editorStore'
 import { usePresetStore } from '../store/presetStore'
+import { exportCaptions, downloadCaptionFile, type CaptionExportFormat } from '../services/voice'
 import {
   CAPTION_STYLES,
   DEFAULT_CAPTION_STYLE_ID,
@@ -14,9 +15,38 @@ function formatTimestamp(t: number): string {
   return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}.${ms.toString().padStart(2, '0')}`
 }
 
+const LANGUAGES = [
+  { value: 'auto', label: 'Auto-detect' },
+  { value: 'en', label: 'English' },
+  { value: 'ur', label: 'Urdu' },
+  { value: 'hi', label: 'Hindi' },
+  { value: 'ar', label: 'Arabic' },
+  { value: 'es', label: 'Spanish' },
+  { value: 'fr', label: 'French' },
+  { value: 'de', label: 'German' },
+  { value: 'pt', label: 'Portuguese' },
+  { value: 'ru', label: 'Russian' },
+  { value: 'ja', label: 'Japanese' },
+  { value: 'ko', label: 'Korean' },
+  { value: 'zh', label: 'Chinese' },
+  { value: 'tr', label: 'Turkish' },
+  { value: 'pl', label: 'Polish' },
+  { value: 'nl', label: 'Dutch' },
+  { value: 'sv', label: 'Swedish' },
+  { value: 'it', label: 'Italian' },
+  { value: 'th', label: 'Thai' },
+  { value: 'vi', label: 'Vietnamese' },
+  { value: 'id', label: 'Indonesian' },
+  { value: 'bn', label: 'Bengali' },
+  { value: 'he', label: 'Hebrew' },
+  { value: 'rom', label: 'Roman Urdu' },
+  { value: 'mixed', label: 'Mixed' },
+]
+
 export function AutoCaptionsPanel() {
   const [enabled, setEnabled] = useState(true)
   const [timingMode, setTimingMode] = useState<'auto' | 'manual'>('auto')
+  const [exporting, setExporting] = useState(false)
 
   const assets = useEditorStore((s) => s.assets)
   const transcripts = useEditorStore((s) => s.transcripts)
@@ -35,6 +65,24 @@ export function AutoCaptionsPanel() {
 
   const voiceAssets = assets.filter((a) => a.kind === 'audio')
   const analyzed = voiceAssets.filter((a) => transcripts[a.id])
+
+  const handleExport = async (format: CaptionExportFormat) => {
+    if (captions.length === 0) return
+    setExporting(true)
+    try {
+      const captionData = captions.map((c) => ({
+        start: c.start,
+        duration: c.duration,
+        text: c.text,
+      }))
+      const content = await exportCaptions(captionData, format)
+      downloadCaptionFile(content, format)
+    } catch {
+      // Export failed silently — user can retry
+    } finally {
+      setExporting(false)
+    }
+  }
 
   return (
     <section className="auto-captions-panel" aria-label="Auto Captions">
@@ -57,11 +105,9 @@ export function AutoCaptionsPanel() {
             <label className="auto-captions-field">
               <span className="auto-captions-label">Language</span>
               <select className="auto-captions-select" defaultValue="auto">
-                <option value="auto">Auto-detect</option>
-                <option value="en">English</option>
-                <option value="ur">Urdu</option>
-                <option value="rom">Roman Urdu</option>
-                <option value="mixed">Mixed</option>
+                {LANGUAGES.map((lang) => (
+                  <option key={lang.value} value={lang.value}>{lang.label}</option>
+                ))}
               </select>
             </label>
 
@@ -140,60 +186,84 @@ export function AutoCaptionsPanel() {
           </div>
 
           {captions.length > 0 && (
-            <div className="auto-captions-list">
-              {captions.map((caption) => {
-                return (
-                  <div key={caption.id} className="auto-captions-item">
-                    <div className="auto-captions-item-meta">
-                      <span className="auto-captions-time">
-                        {caption.start.toFixed(2)}s → {(caption.start + caption.duration).toFixed(2)}s
-                      </span>
-                      <span className={`auto-captions-source auto-captions-source-${caption.source}`}>
-                        {caption.source}
-                      </span>
-                    </div>
-                    <input
-                      className="auto-captions-text"
-                      value={caption.text}
-                      onChange={(e) => updateCaptionText(caption.id, e.target.value)}
-                      aria-label="Caption text"
-                    />
-                    <div className="auto-captions-item-controls">
-                      <label className="auto-captions-field-inline">
-                        Style
-                        <select
-                          value={caption.styleId}
-                          onChange={(e) => setCaptionStyle(caption.id, e.target.value)}
+            <>
+              <div className="auto-captions-export">
+                <span className="auto-captions-label">Export</span>
+                <div className="auto-captions-export-buttons">
+                  <button
+                    type="button"
+                    className="auto-captions-export-btn"
+                    disabled={exporting}
+                    onClick={() => void handleExport('srt')}
+                  >
+                    {exporting ? 'Exporting…' : 'Download .SRT'}
+                  </button>
+                  <button
+                    type="button"
+                    className="auto-captions-export-btn"
+                    disabled={exporting}
+                    onClick={() => void handleExport('vtt')}
+                  >
+                    {exporting ? 'Exporting…' : 'Download .VTT'}
+                  </button>
+                </div>
+              </div>
+
+              <div className="auto-captions-list">
+                {captions.map((caption) => {
+                  return (
+                    <div key={caption.id} className="auto-captions-item">
+                      <div className="auto-captions-item-meta">
+                        <span className="auto-captions-time">
+                          {caption.start.toFixed(2)}s → {(caption.start + caption.duration).toFixed(2)}s
+                        </span>
+                        <span className={`auto-captions-source auto-captions-source-${caption.source}`}>
+                          {caption.source}
+                        </span>
+                      </div>
+                      <input
+                        className="auto-captions-text"
+                        value={caption.text}
+                        onChange={(e) => updateCaptionText(caption.id, e.target.value)}
+                        aria-label="Caption text"
+                      />
+                      <div className="auto-captions-item-controls">
+                        <label className="auto-captions-field-inline">
+                          Style
+                          <select
+                            value={caption.styleId}
+                            onChange={(e) => setCaptionStyle(caption.id, e.target.value)}
+                          >
+                            {styleOptions.map((s) => (
+                              <option key={s.id} value={s.id}>{s.label}</option>
+                            ))}
+                          </select>
+                        </label>
+                        <label className="auto-captions-field-inline">
+                          Duration
+                          <input
+                            type="number"
+                            min={0.2}
+                            step={0.1}
+                            value={Number(caption.duration.toFixed(2))}
+                            onChange={(e) =>
+                              updateCaptionTiming(caption.id, { duration: Number(e.target.value) })
+                            }
+                          />
+                        </label>
+                        <button
+                          type="button"
+                          className="auto-captions-remove"
+                          onClick={() => removeCaption(caption.id)}
                         >
-                          {styleOptions.map((s) => (
-                            <option key={s.id} value={s.id}>{s.label}</option>
-                          ))}
-                        </select>
-                      </label>
-                      <label className="auto-captions-field-inline">
-                        Duration
-                        <input
-                          type="number"
-                          min={0.2}
-                          step={0.1}
-                          value={Number(caption.duration.toFixed(2))}
-                          onChange={(e) =>
-                            updateCaptionTiming(caption.id, { duration: Number(e.target.value) })
-                          }
-                        />
-                      </label>
-                      <button
-                        type="button"
-                        className="auto-captions-remove"
-                        onClick={() => removeCaption(caption.id)}
-                      >
-                        Remove
-                      </button>
+                          Remove
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                )
-              })}
-            </div>
+                  )
+                })}
+              </div>
+            </>
           )}
         </div>
       )}
