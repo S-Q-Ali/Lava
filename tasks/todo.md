@@ -234,3 +234,53 @@ Build order: proxy-preview → runtime-optimization → memory-tuning → baseli
 ### Phase 7: Auto Captions Polish
 - [x] Task 7.1: Add timestamps to transcript preview
 - [x] Task 7.2: Wire caption timing mode (Auto/Manual)
+
+---
+
+## M11 — AutoCut Studio PRO + Clabeo Feature Parity (PLANNED)
+> Plan: `tasks/plan-autocut-pro.md` | 33 tasks, 8 phases, ~43 files
+> Status: PLANNED — waiting for green signal to implement
+
+### Phase 1: Groq Whisper Transcription
+- [ ] Task 1.1: Groq Transcription Backend (`groq_transcribe.py`, `POST /api/transcribe-groq`)
+- [ ] Task 1.2: Groq Transcription Frontend (TranscriptPanel toggle, Settings modal)
+- [ ] Task 1.3: Groq Transcription Tests (`tests/test_groq_transcribe.py`)
+
+### Phase 2: Enhanced Captions + Script Writer (Parallel)
+- [ ] Task 2.1: 18+ Language Auto-Detect Captions (Urdu, Arabic, Hindi, RTL)
+- [ ] Task 2.2: .VTT Export + Enhanced SRT (`POST /api/captions/export`)
+- [ ] Task 2.3: Script Writer v2 — 9 Templates (shorts, storytelling, etc.)
+
+### Phase 3: Visual Prompt Generator
+- [ ] Task 3.1: Visual Prompt Backend (`POST /api/visual-prompts`, 11 styles)
+- [ ] Task 3.2: Visual Prompt Frontend (VisualPromptPanel, style grid)
+
+### Phase 4: Voice Blending & Cloning
+- [ ] Task 4.1: Voice Blending Backend (FFmpeg amix, `POST /api/voiceover/blend`)
+- [ ] Task 4.2: Voice Cloning Backend (XTTS-v2, `POST /api/voiceover/clone`)
+- [ ] Task 4.3: Voice Blending/Cloning Frontend (ratio sliders, clone upload)
+- [ ] Task 4.4: Voice Blending Tests
+
+### Phase 5: Bulk Image Generation
+- [ ] Task 5.1: Gemini Image Generation Backend (`POST /api/image-gen/batch`)
+- [ ] Task 5.2: Custom Image Upload (`POST /api/image-gen/upload`)
+- [ ] Task 5.3: Bulk Image Generator Frontend (ImageGenPanel)
+
+### Phase 6: Clabeo-Unique Features
+- [ ] Task 6.1: Podcast Maker (multi-line, per-line voice/speed/pitch, FFmpeg concat)
+- [ ] Task 6.2: Voice Library (browse, filter, favorites, 322+ voices)
+- [ ] Task 6.3: Sound FX (Open Source — bundled CC0 + ZzFX + Wikimedia + optional Freesound)
+- [ ] Task 6.4: Bulk TTS (TXT import, batch, ZIP download)
+- [ ] Task 6.5: Script Templates (pre-built cards, click to load)
+- [ ] Task 6.6: My Generations (history, re-download, delete)
+- [ ] Task 6.7: Auto-Update System (GitHub releases)
+
+### Phase 7: Timeline Sync + Video Clipper
+- [ ] Task 7.1: Timeline Auto-Sync (timecode images -> audio, `POST /api/timeline-sync`)
+- [ ] Task 7.2: Auto Video Clipper (9:16, MediaPipe face-tracking, `POST /api/clipper`)
+
+### Phase 8: Settings + Polish
+- [ ] Task 8.1: Settings Panel (Groq, Gemini, Freesound API keys, XTTS model path)
+- [ ] Task 8.2: Navigation Update (all new nav items, LeftWorkspace routing)
+- [ ] Task 8.3: Color Theme Update (non-AI-slop professional dark theme)
+- [ ] Task 8.4: Final Integration Tests (all tests pass, E2E verification)

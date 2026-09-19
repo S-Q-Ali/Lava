@@ -66,6 +66,10 @@ export default function TranscriptPanel() {
   const selectedClipId = useEditorStore((s) => s.selectedClipId)
   const analysis = useTranscriptStore((s) => s.analysis)
   const analyze = useTranscriptStore((s) => s.analyze)
+  const provider = useTranscriptStore((s) => s.provider)
+  const setProvider = useTranscriptStore((s) => s.setProvider)
+  const groqOptions = useTranscriptStore((s) => s.groqOptions)
+  const setGroqOptions = useTranscriptStore((s) => s.setGroqOptions)
 
   const selectedClip = clips.find((c) => c.id === selectedClipId)
   const selectedAsset = assets.find((a) => a.id === selectedClip?.assetId)
@@ -90,6 +94,73 @@ export default function TranscriptPanel() {
     <section className="transcript-panel" aria-label="Narration transcript">
       <div className="inspector-stats">
         <h4>Narration analysis</h4>
+
+        <div className="transcript-provider-toggle">
+          <label className="transcript-provider-label">Engine</label>
+          <div className="transcript-provider-buttons">
+            <button
+              type="button"
+              className={`transcript-provider-btn${provider === 'local' ? ' active' : ''}`}
+              onClick={() => setProvider('local')}
+            >
+              Local Whisper
+            </button>
+            <button
+              type="button"
+              className={`transcript-provider-btn${provider === 'groq' ? ' active' : ''}`}
+              onClick={() => setProvider('groq')}
+            >
+              Groq Cloud
+            </button>
+          </div>
+        </div>
+
+        {provider === 'groq' && (
+          <div className="transcript-groq-options">
+            <label className="transcript-groq-field">
+              <span>Model</span>
+              <select
+                value={groqOptions.model ?? 'whisper-large-v3'}
+                onChange={(e) => setGroqOptions({ model: e.target.value })}
+              >
+                <option value="whisper-large-v3">Whisper Large v3</option>
+                <option value="whisper-large-v3-turbo">Whisper Large v3 Turbo</option>
+                <option value="whisper-medium">Whisper Medium</option>
+                <option value="whisper-small">Whisper Small</option>
+                <option value="whisper-base">Whisper Base</option>
+                <option value="whisper-tiny">Whisper Tiny</option>
+              </select>
+            </label>
+            <label className="transcript-groq-field">
+              <span>Language</span>
+              <select
+                value={groqOptions.language ?? 'auto'}
+                onChange={(e) => setGroqOptions({ language: e.target.value })}
+              >
+                <option value="auto">Auto-detect</option>
+                <option value="en">English</option>
+                <option value="ur">Urdu</option>
+                <option value="hi">Hindi</option>
+                <option value="ar">Arabic</option>
+                <option value="es">Spanish</option>
+                <option value="fr">French</option>
+                <option value="de">German</option>
+                <option value="ja">Japanese</option>
+                <option value="zh">Chinese</option>
+              </select>
+            </label>
+            <label className="transcript-groq-field">
+              <span>API Key</span>
+              <input
+                type="password"
+                placeholder="gsk_... (or set GROQ_API_KEY)"
+                value={groqOptions.apiKey ?? ''}
+                onChange={(e) => setGroqOptions({ apiKey: e.target.value })}
+              />
+            </label>
+          </div>
+        )}
+
         {statusText && <p className="transcript-hint">{statusText}</p>}
         {file && !transcript && (
           <button
@@ -97,7 +168,13 @@ export default function TranscriptPanel() {
             disabled={busy}
             onClick={() => void analyze(selectedAsset.id, file)}
           >
-            {busy ? 'Analyzing…' : 'Analyze narration'}
+            {busy
+              ? provider === 'groq'
+                ? 'Transcribing with Groq…'
+                : 'Analyzing…'
+              : provider === 'groq'
+                ? 'Transcribe with Groq'
+                : 'Analyze narration'}
           </button>
         )}
       </div>

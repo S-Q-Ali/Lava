@@ -47,6 +47,12 @@ from .media import (
 )
 from .proxy import ProxyError, file_hash, generate_image_proxy, generate_video_proxy
 from .transcribe import router as transcribe_router
+from .groq_transcribe import router as groq_transcribe_router
+from .captions_export import router as captions_export_router
+from .visual_prompts import router as visual_prompts_router
+from .voice_blending import router as voice_blending_router
+from .voice_cloning import router as voice_cloning_router
+from .model_manager import router as model_manager_router
 
 app = FastAPI(title="Lava Studio Media Sidecar", version="0.1.0-beta.0")
 
@@ -67,8 +73,35 @@ app.add_middleware(
 
 API_V1 = "/api"
 app.include_router(transcribe_router, prefix=f"{API_V1}")
+app.include_router(groq_transcribe_router, prefix=f"{API_V1}")
+app.include_router(captions_export_router, prefix=f"{API_V1}")
+app.include_router(visual_prompts_router, prefix=f"{API_V1}")
+app.include_router(voice_blending_router, prefix=f"{API_V1}")
+app.include_router(voice_cloning_router, prefix=f"{API_V1}")
+app.include_router(model_manager_router, prefix=f"{API_V1}")
 app.include_router(matching_router, prefix=f"{API_V1}")
 app.include_router(manhwa_router, prefix=f"{API_V1}/manhwa")
+
+# Pipeline API (auto-clipping)
+try:
+    from .pipeline_api import router as pipeline_router
+    app.include_router(pipeline_router)
+except ImportError:
+    pass  # Pipeline deps not installed
+
+# Voiceover API (edge-tts, 170+ voices)
+try:
+    from .voiceover_api import router as voiceover_router
+    app.include_router(voiceover_router)
+except ImportError:
+    pass  # edge-tts not installed
+
+# AI Script Writer (Groq/Cerebras/Mistral)
+try:
+    from .scriptwriter_api import router as scriptwriter_router
+    app.include_router(scriptwriter_router)
+except ImportError:
+    pass  # LLM deps not installed
 
 
 @app.exception_handler(ApiError)
