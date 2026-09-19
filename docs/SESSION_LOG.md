@@ -2386,3 +2386,72 @@ visible and recoverable.
   status and a retryable connection check.
 - Added editor-store tests for split, trim, cross-track movement, ripple
   movement and undo behavior.
+
+---
+
+## Session 49 — AutoCut Studio PRO + Clabeo Feature Parity Planning
+
+### Purpose (WHY)
+User wants Lava Studio to match ALL features of AutoCut Studio PRO V3.0 (mrhassnain.com) + unique features from Clabeo TTS. This session is dedicated to research, planning, and recording the complete implementation plan.
+
+### WHAT
+- **Research completed:**
+  - AutoCut Studio PRO V3.0: 8 tools analyzed (Whisper Groq, Script Writer, Visual Prompts, Captions, Timeline Sync, Bulk Image Gen, Voiceover/Cloning, Video Clipper)
+  - Clabeo TTS v1.0.8: 7 unique features analyzed (Podcast Maker, Voice Library, Sound FX, Bulk TTS, Script Templates, My Generations, Auto-Update)
+  - Voice cloning technology: Coqui XTTS-v2 (6-sec reference, 17 languages, local GPU/CPU)
+  - Voice blending: FFmpeg amix (mix 2+ generated audio with volume weights)
+  - Sound FX open source: Bundled CC0 library + ZzFX procedural + Wikimedia Commons (no key) + Freesound (optional)
+  - Color theme research: Professional dark themes from DaVinci Resolve, Frame.io, Splice, Morphic (non-AI-slop)
+
+- **Plan created:** `tasks/plan-autocut-pro.md`
+  - 8 phases, 33 tasks, ~43 files
+  - Phase 1: Groq Whisper Transcription (3 tasks)
+  - Phase 2: Enhanced Captions + Script Writer v2 (3 tasks)
+  - Phase 3: Visual Prompt Generator (2 tasks)
+  - Phase 4: Voice Blending & Cloning (4 tasks)
+  - Phase 5: Bulk Image Generation (3 tasks)
+  - Phase 6: Clabeo-Unique Features (7 tasks)
+  - Phase 7: Timeline Sync + Video Clipper (2 tasks)
+  - Phase 8: Settings + Polish (4 tasks)
+
+- **User decisions recorded:**
+  - Gemini API: Free tier + option to add own images
+  - XTTS-v2 model: User downloads manually to `models/xtts-v2/`
+  - Freesound API: Optional, bundled + Wikimedia + ZzFX work without key
+  - Desktop packaging: After features stable
+  - Priority: Phase 1-3 first
+
+- **Color theme locked:** Non-AI-slop professional dark theme
+  - Background: #10131a, Surface: #171b24, Raised: #1e2330, Floating: #262c3a
+  - Text: #e2e6ed, #8b92a3, #555d73
+  - Borders: #1c2030, #2a3040
+  - Accent: #4a8eff (single accent only)
+  - No gradients, no glow, no glassmorphism
+
+### HOW
+- Skills loaded: `planning-and-task-breakdown`, `spec-driven-development`
+- Research agents used for AutoCut Studio PRO, Clabeo TTS, voice cloning tech, color themes
+- Plan follows vertical slicing: each task delivers working, testable functionality
+- Dependency graph: groq-transcription -> enhanced-captions + script-writer-v2 -> visual-prompts -> voice-blending -> bulk-image-gen -> timeline-sync -> video-clipper -> settings-ui
+
+### Files changed
+- `tasks/plan-autocut-pro.md` (new: complete implementation plan)
+- `tasks/todo.md` (appended: M11 section with 33 tasks)
+- `docs/SESSION_LOG.md` (this entry)
+- `docs/ROADMAP.md` (needs update)
+
+### Verify
+- Plan file written and complete
+- Todo.md updated with all 33 tasks
+- Session log entry recorded
+
+### Limitations
+- No code implementation in this session (planning only)
+- Model downloads (XTTS-v2, CLIP) are user responsibility
+- Some features depend on external APIs (Groq, Gemini) with rate limits
+
+### Next step
+- Wait for user green signal to begin implementation
+- Start with Phase 1: Groq Whisper Transcription
+- Then Phase 2: Enhanced Captions + Script Writer v2 (parallel)
+- Then Phase 3: Visual Prompt Generator

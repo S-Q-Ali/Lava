@@ -116,6 +116,56 @@ log into `docs/M9-MEASUREMENT.md` + `docs/M10-measurement.md` (optional rows).
 - [x] Docs (README updated to M9.5, regression script)
 - [x] Regression suite (tools/regression.sh)
 
+## Milestone 11 — AutoCut Studio PRO + Clabeo Feature Parity
+> Plan: `tasks/plan-autocut-pro.md` | 33 tasks, 8 phases
+> Competitor: AutoCut Studio PRO V3.0 (mrhassnain.com) + Clabeo TTS v1.0.8
+
+### Phase 1: Groq Whisper Transcription
+- [ ] 1.1: Groq Transcription Backend (`groq_transcribe.py`, `POST /api/transcribe-groq`)
+- [ ] 1.2: Groq Transcription Frontend (TranscriptPanel toggle, Settings modal)
+- [ ] 1.3: Groq Transcription Tests
+
+### Phase 2: Enhanced Captions + Script Writer
+- [ ] 2.1: 18+ Language Auto-Detect Captions (Urdu, Arabic, Hindi, RTL)
+- [ ] 2.2: .VTT Export + Enhanced SRT
+- [ ] 2.3: Script Writer v2 — 9 Templates
+
+### Phase 3: Visual Prompt Generator
+- [ ] 3.1: Visual Prompt Backend (11 styles)
+- [ ] 3.2: Visual Prompt Frontend
+
+### Phase 4: Voice Blending & Cloning
+- [ ] 4.1: Voice Blending (FFmpeg amix)
+- [ ] 4.2: Voice Cloning (XTTS-v2, 6-sec reference)
+- [ ] 4.3: Voice Blending/Cloning Frontend
+- [ ] 4.4: Voice Blending Tests
+
+### Phase 5: Bulk Image Generation
+- [ ] 5.1: Gemini Image Generation Backend
+- [ ] 5.2: Custom Image Upload
+- [ ] 5.3: Bulk Image Generator Frontend
+
+### Phase 6: Clabeo-Unique Features
+- [ ] 6.1: Podcast Maker (multi-line, per-line voice/speed/pitch)
+- [ ] 6.2: Voice Library (322+ voices, filter, favorites)
+- [ ] 6.3: Sound FX (Open Source — bundled CC0 + ZzFX + Wikimedia + optional Freesound)
+- [ ] 6.4: Bulk TTS (TXT import, batch, ZIP download)
+- [ ] 6.5: Script Templates (pre-built cards)
+- [ ] 6.6: My Generations (history, re-download, delete)
+- [ ] 6.7: Auto-Update System (GitHub releases)
+
+### Phase 7: Timeline Sync + Video Clipper
+- [ ] 7.1: Timeline Auto-Sync (timecode -> audio)
+- [ ] 7.2: Auto Video Clipper (9:16, MediaPipe face-tracking)
+
+### Phase 8: Settings + Polish
+- [ ] 8.1: Settings Panel (API keys, model paths)
+- [ ] 8.2: Navigation Update (all new nav items)
+- [ ] 8.3: Color Theme Update (non-AI-slop professional dark)
+- [ ] 8.4: Final Integration Tests
+
+---
+
 ## Status legend
 
 - ⬜ Not started (documentation-only phase)
