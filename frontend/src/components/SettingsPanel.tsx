@@ -30,7 +30,10 @@ export function SettingsPanel() {
   const [models, setModels] = useState<ModelInfo[]>([])
   const [loading, setLoading] = useState(true)
   const [groqKey, setGroqKey] = useState('')
-  const [groqKeySaved, setGroqKeySaved] = useState(false)
+  const [geminiKey, setGeminiKey] = useState('')
+  const [cerebrasKey, setCerebrasKey] = useState('')
+  const [mistralKey, setMistralKey] = useState('')
+  const [savedMsg, setSavedMsg] = useState<string | null>(null)
 
   const fetchModels = useCallback(async () => {
     try {
@@ -43,6 +46,14 @@ export function SettingsPanel() {
     } finally {
       setLoading(false)
     }
+  }, [])
+
+  useEffect(() => {
+    // Load saved API keys
+    setGroqKey(localStorage.getItem('groq_api_key') || '')
+    setGeminiKey(localStorage.getItem('gemini_api_key') || '')
+    setCerebrasKey(localStorage.getItem('cerebras_api_key') || '')
+    setMistralKey(localStorage.getItem('mistral_api_key') || '')
   }, [])
 
   useEffect(() => {
@@ -80,12 +91,14 @@ export function SettingsPanel() {
     }
   }
 
-  const saveGroqKey = () => {
-    if (groqKey.trim()) {
-      localStorage.setItem('groq_api_key', groqKey.trim())
-      setGroqKeySaved(true)
-      setTimeout(() => setGroqKeySaved(false), 2000)
+  const saveKey = (keyName: string, value: string) => {
+    if (value.trim()) {
+      localStorage.setItem(keyName, value.trim())
+    } else {
+      localStorage.removeItem(keyName)
     }
+    setSavedMsg(keyName)
+    setTimeout(() => setSavedMsg(null), 1500)
   }
 
   const installedCount = models.filter((m) => m.installed).length
@@ -102,6 +115,7 @@ export function SettingsPanel() {
         {/* API Keys */}
         <div className="settings-section">
           <h4 className="settings-section-title">API Keys</h4>
+
           <label className="settings-field">
             <span>Groq API Key</span>
             <div className="settings-key-row">
@@ -111,20 +125,59 @@ export function SettingsPanel() {
                 value={groqKey}
                 onChange={(e) => setGroqKey(e.target.value)}
               />
-              <button
-                type="button"
-                className="settings-save-btn"
-                onClick={saveGroqKey}
-              >
-                {groqKeySaved ? '✓ Saved' : 'Save'}
+              <button type="button" className="settings-save-btn" onClick={() => saveKey('groq_api_key', groqKey)}>
+                {savedMsg === 'groq_api_key' ? '✓' : 'Save'}
               </button>
             </div>
-            <span className="settings-hint">
-              Free tier: 30 RPM, 14,400 req/day. Get key at{' '}
-              <a href="https://console.groq.com/keys" target="_blank" rel="noreferrer">
-                console.groq.com
-              </a>
-            </span>
+            <span className="settings-hint">Free tier: 30 RPM. Transcription + Scripts.</span>
+          </label>
+
+          <label className="settings-field">
+            <span>Google Gemini API Key</span>
+            <div className="settings-key-row">
+              <input
+                type="password"
+                placeholder="AIza... (free at aistudio.google.com)"
+                value={geminiKey}
+                onChange={(e) => setGeminiKey(e.target.value)}
+              />
+              <button type="button" className="settings-save-btn" onClick={() => saveKey('gemini_api_key', geminiKey)}>
+                {savedMsg === 'gemini_api_key' ? '✓' : 'Save'}
+              </button>
+            </div>
+            <span className="settings-hint">Free tier: 1500 req/day. Image generation.</span>
+          </label>
+
+          <label className="settings-field">
+            <span>Cerebras API Key</span>
+            <div className="settings-key-row">
+              <input
+                type="password"
+                placeholder="csk-... (free at cloud.cerebras.ai)"
+                value={cerebrasKey}
+                onChange={(e) => setCerebrasKey(e.target.value)}
+              />
+              <button type="button" className="settings-save-btn" onClick={() => saveKey('cerebras_api_key', cerebrasKey)}>
+                {savedMsg === 'cerebras_api_key' ? '✓' : 'Save'}
+              </button>
+            </div>
+            <span className="settings-hint">Free tier: Fast inference. Fallback for scripts.</span>
+          </label>
+
+          <label className="settings-field">
+            <span>Mistral API Key</span>
+            <div className="settings-key-row">
+              <input
+                type="password"
+                placeholder="mist-... (free at console.mistral.ai)"
+                value={mistralKey}
+                onChange={(e) => setMistralKey(e.target.value)}
+              />
+              <button type="button" className="settings-save-btn" onClick={() => saveKey('mistral_api_key', mistralKey)}>
+                {savedMsg === 'mistral_api_key' ? '✓' : 'Save'}
+              </button>
+            </div>
+            <span className="settings-hint">Free tier: Volume. Volume fallback.</span>
           </label>
         </div>
 
@@ -197,6 +250,16 @@ export function SettingsPanel() {
               ))}
             </div>
           )}
+        </div>
+
+        {/* About */}
+        <div className="settings-section">
+          <h4 className="settings-section-title">About</h4>
+          <div className="settings-about">
+            <span className="settings-about-name">Lava Studio</span>
+            <span className="settings-about-ver">v1.0.0-beta · M11</span>
+            <span className="settings-about-desc">AI Video Studio — Local-first, production-grade NLE</span>
+          </div>
         </div>
       </div>
     </section>
