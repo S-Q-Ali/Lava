@@ -5,11 +5,15 @@ export type NavItem = {
 }
 
 export const NAV_ITEMS: NavItem[] = [
-  { id: 'home', label: 'Home', icon: '🏠' },
-  { id: 'projects', label: 'Projects', icon: '📁' },
-  { id: 'media', label: 'Media', icon: '🖼' },
+  { id: 'home', label: 'Home', icon: '⌂' },
+  { id: 'projects', label: 'Projects', icon: '⊞' },
+  { id: 'media', label: 'Media', icon: '◎' },
   { id: 'ai-tools', label: 'AI Tools', icon: '⚡' },
-  { id: 'captions', label: 'Captions', icon: '💬' },
-  { id: 'templates', label: 'Templates', icon: '📝' },
-  { id: 'export', label: 'Export', icon: '📤' },
+  { id: 'voiceover', label: 'Voiceover', icon: '♪' },
+  { id: 'scriptwriter', label: 'Scripts', icon: '✎' },
+  { id: 'pipeline', label: 'Pipeline', icon: '▶' },
+  { id: 'captions', label: 'Captions', icon: 'Cc' },
+  { id: 'templates', label: 'Templates', icon: '□' },
+  { id: 'export', label: 'Export', icon: '↗' },
+  { id: 'settings', label: 'Settings', icon: '⚙' },
 ]

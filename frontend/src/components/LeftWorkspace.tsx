@@ -5,6 +5,10 @@ import { CaptionPanel } from './CaptionPanel'
 import { PresetPanel } from './PresetPanel'
 import ExtractorPanel from './ExtractorPanel'
 import ExportPanel from './ExportPanel'
+import VoiceoverPanel from './VoiceoverPanel'
+import ScriptWriterPanel from './ScriptWriterPanel'
+import PipelinePanel from './PipelinePanel'
+import { SettingsPanel } from './SettingsPanel'
 import { useEditorStore } from '../store/editorStore'
 import { projectDuration } from '../editor/ops'
 import './LeftWorkspace.css'
@@ -49,6 +53,24 @@ export default function LeftWorkspace({ activeNav }: LeftWorkspaceProps) {
       )
     case 'ai-tools':
       return <AiToolsWorkspace />
+    case 'voiceover':
+      return (
+        <div className="left-workspace-content">
+          <VoiceoverPanel />
+        </div>
+      )
+    case 'scriptwriter':
+      return (
+        <div className="left-workspace-content">
+          <ScriptWriterPanel />
+        </div>
+      )
+    case 'pipeline':
+      return (
+        <div className="left-workspace-content">
+          <PipelinePanel />
+        </div>
+      )
     case 'captions':
       return (
         <div className="left-workspace-content">
@@ -69,6 +91,12 @@ export default function LeftWorkspace({ activeNav }: LeftWorkspaceProps) {
       return (
         <div className="left-workspace-content">
           <ExportPanel />
+        </div>
+      )
+    case 'settings':
+      return (
+        <div className="left-workspace-content">
+          <SettingsPanel />
         </div>
       )
     default:
