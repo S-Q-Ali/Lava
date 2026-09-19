@@ -54,6 +54,10 @@ from .voice_blending import router as voice_blending_router
 from .voice_cloning import router as voice_cloning_router
 from .model_manager import router as model_manager_router
 from .image_gen import router as image_gen_router
+from .podcast_maker import router as podcast_maker_router
+from .voice_library import router as voice_library_router
+from .sound_fx import router as sound_fx_router
+from .bulk_tts import router as bulk_tts_router
 
 app = FastAPI(title="Lava Studio Media Sidecar", version="0.1.0-beta.0")
 
@@ -81,6 +85,10 @@ app.include_router(voice_blending_router, prefix=f"{API_V1}")
 app.include_router(voice_cloning_router, prefix=f"{API_V1}")
 app.include_router(model_manager_router, prefix=f"{API_V1}")
 app.include_router(image_gen_router, prefix=f"{API_V1}")
+app.include_router(podcast_maker_router, prefix=f"{API_V1}")
+app.include_router(voice_library_router, prefix=f"{API_V1}")
+app.include_router(sound_fx_router, prefix=f"{API_V1}")
+app.include_router(bulk_tts_router, prefix=f"{API_V1}")
 app.include_router(matching_router, prefix=f"{API_V1}")
 app.include_router(manhwa_router, prefix=f"{API_V1}/manhwa")
 
