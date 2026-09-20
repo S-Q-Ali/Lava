@@ -230,6 +230,26 @@ def _scan_models() -> list[ModelInfo]:
             download_url="https://huggingface.co/coqui/XTTS-v2",
             download_command="python -c \"from huggingface_hub import snapshot_download; snapshot_download('coqui/XTTS-v2', local_dir='models/xtts-v2')\"",
         ),
+        ModelInfo(
+            id="manhwa-panel-nano",
+            name="Manhwa Panel Detector (Nano)",
+            description="Fast ML panel detection (~3MB). YOLO26-nano, detects panels + text regions. CPU-friendly.",
+            directory="models/manhwa-nano",
+            size_mb=3,
+            download_source="huggingface",
+            download_url="https://huggingface.co/leoxs22/manga-panel-detector-yolo26n",
+            download_command="python -c \"from huggingface_hub import snapshot_download; snapshot_download('leoxs22/manga-panel-detector-yolo26n', local_dir='models/manhwa-nano')\"",
+        ),
+        ModelInfo(
+            id="manhwa-panel-seg",
+            name="Manhwa Panel Segmentation",
+            description="Pixel-level panel masks for irregular layouts (~23MB). YOLO26s-seg with balloon detection.",
+            directory="models/manhwa-seg",
+            size_mb=23,
+            download_source="huggingface",
+            download_url="https://huggingface.co/ShadowB/Manga109-panel-balloon-text-yolov26-segmentation",
+            download_command="python -c \"from huggingface_hub import snapshot_download; snapshot_download('ShadowB/Manga109-panel-balloon-text-yolov26-segmentation', local_dir='models/manhwa-seg')\"",
+        ),
     ]
 
     # Check installation status
