@@ -206,8 +206,8 @@ def _scan_models() -> list[ModelInfo]:
             directory="models/clip",
             size_mb=350,
             download_source="huggingface",
-            download_url="https://huggingface.co/openai/clip-vit-base-patch32/resolve/main/pytorch_model.bin",
-            download_command="python -c \"from huggingface_hub import snapshot_download; snapshot_download('openai/clip-vit-base-patch32', local_dir='models/clip')\"",
+            download_url="openai/clip-vit-base-patch32",
+            download_command="Auto-downloads via huggingface_hub",
         ),
         ModelInfo(
             id="clip-multilingual",
@@ -216,8 +216,8 @@ def _scan_models() -> list[ModelInfo]:
             directory="models/clip-multilingual",
             size_mb=550,
             download_source="huggingface",
-            download_url="https://huggingface.co/p Titscha/clip-vit-b32-multilingual/resolve/main/pytorch_model.bin",
-            download_command="python -c \"from huggingface_hub import snapshot_download; snapshot_download('p Titscha/clip-vit-b32-multilingual', local_dir='models/clip-multilingual')\"",
+            download_url="pcuenq/clip-vit-b32-multilingual",
+            download_command="Auto-downloads via huggingface_hub",
         ),
         ModelInfo(
             id="xtts-v2",
@@ -226,8 +226,8 @@ def _scan_models() -> list[ModelInfo]:
             directory="models/xtts-v2",
             size_mb=1500,
             download_source="huggingface",
-            download_url="https://huggingface.co/coqui/XTTS-v2",
-            download_command="python -c \"from huggingface_hub import snapshot_download; snapshot_download('coqui/XTTS-v2', local_dir='models/xtts-v2')\"",
+            download_url="coqui/XTTS-v2",
+            download_command="Auto-downloads via huggingface_hub",
         ),
         ModelInfo(
             id="manhwa-panel-nano",
@@ -236,8 +236,8 @@ def _scan_models() -> list[ModelInfo]:
             directory="models/manhwa-nano",
             size_mb=3,
             download_source="huggingface",
-            download_url="https://huggingface.co/leoxs22/manga-panel-detector-yolo26n",
-            download_command="python -c \"from huggingface_hub import snapshot_download; snapshot_download('leoxs22/manga-panel-detector-yolo26n', local_dir='models/manhwa-nano')\"",
+            download_url="leoxs22/manga-panel-detector-yolo26n",
+            download_command="Auto-downloads via huggingface_hub",
         ),
         ModelInfo(
             id="manhwa-panel-seg",
@@ -246,8 +246,8 @@ def _scan_models() -> list[ModelInfo]:
             directory="models/manhwa-seg",
             size_mb=23,
             download_source="huggingface",
-            download_url="https://huggingface.co/ShadowB/Manga109-panel-balloon-text-yolov26-segmentation",
-            download_command="python -c \"from huggingface_hub import snapshot_download; snapshot_download('ShadowB/Manga109-panel-balloon-text-yolov26-segmentation', local_dir='models/manhwa-seg')\"",
+            download_url="ShadowB/Manga109-panel-balloon-text-yolov26-segmentation",
+            download_command="Auto-downloads via huggingface_hub",
         ),
     ]
 
