@@ -91,7 +91,6 @@ describe('TopBar', () => {
     expect(settingsBtn).not.toBeNull()
     act(() => settingsBtn.click())
     expect(host.textContent).toContain('Settings')
-    expect(host.textContent).toContain('Preferences')
   })
 
   it('allows editing the project name', () => {

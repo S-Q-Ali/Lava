@@ -198,8 +198,15 @@ export default function TopBar({ onNavigate, onPreview }: TopBarProps) {
             </button>
             {settingsOpen && (
               <div className="topbar-v2-dropdown">
-                <div className="topbar-v2-dropdown-item">Settings</div>
-                <div className="topbar-v2-dropdown-item">Preferences</div>
+                <div
+                  className="topbar-v2-dropdown-item"
+                  onClick={() => {
+                    onNavigate?.('settings')
+                    setSettingsOpen(false)
+                  }}
+                >
+                  Settings
+                </div>
               </div>
             )}
           </div>
