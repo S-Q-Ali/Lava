@@ -1914,9 +1914,9 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/pipeline_api.py": {
-    "mtime": 1789829353.2419164,
-    "seen": 1789860882.7681587,
-    "ast_hash": "7f870bbf736e57282f32ee64681ce6b0",
+    "mtime": 1789862920.7283106,
+    "seen": 1789863030.06767,
+    "ast_hash": "f7a07f3a1b4ea8df249824b70e2a2f78",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/scriptwriter/__init__.py": {
@@ -1974,9 +1974,9 @@
     "semantic_hash": ""
   },
   "frontend/src/components/PipelinePanel.tsx": {
-    "mtime": 1789837319.8239563,
-    "seen": 1789860882.7681587,
-    "ast_hash": "b8f4334b9c71d1b0ba3f030aeb61437b",
+    "mtime": 1789862936.9587665,
+    "seen": 1789863030.06767,
+    "ast_hash": "d3d391f4e31dbb8cbe7af7294bf75f5b",
     "semantic_hash": ""
   },
   "frontend/src/components/ScriptWriterPanel.tsx": {
@@ -2139,6 +2139,18 @@
     "mtime": 1789862491.5091975,
     "seen": 1789862563.2208476,
     "ast_hash": "c1c3ba0012b44d70013f2a4fab0b1810",
+    "semantic_hash": ""
+  },
+  "backend/src/lava_backend/pipeline_engine.py": {
+    "mtime": 1789862900.613025,
+    "seen": 1789863030.06767,
+    "ast_hash": "51ff87896e820044f17403f4a7453f74",
+    "semantic_hash": ""
+  },
+  "tasks/plan-pipeline.md": {
+    "mtime": 1789862862.7869093,
+    "seen": 1789863030.068654,
+    "ast_hash": "184b02206b3562379039cf1a2bb5ffa7",
     "semantic_hash": ""
   }
 }
