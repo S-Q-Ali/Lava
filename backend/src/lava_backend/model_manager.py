@@ -12,7 +12,6 @@ import asyncio
 import json
 import os
 import shutil
-import subprocess
 import threading
 import time
 from dataclasses import dataclass, field
@@ -299,25 +298,16 @@ def _download_model(model: ModelInfo):
 
     try:
         if model.download_source == "pip":
-            # faster-whisper auto-downloads, just mark as ready
             _set_progress(model.id, "ready", 100, "Model auto-downloads on first transcription")
             return
 
         if model.download_source == "huggingface":
             _set_progress(model.id, "downloading", 10, "Downloading from Hugging Face...")
-            import shlex
-            cmd_parts = shlex.split(model.download_command)
-            result = subprocess.run(
-                cmd_parts,
-                shell=False,
-                capture_output=True,
-                text=True,
-                timeout=600,
-                cwd=str(root),
+            from huggingface_hub import snapshot_download
+            snapshot_download(
+                model.download_url,
+                local_dir=str(target_dir),
             )
-            if result.returncode != 0:
-                _set_progress(model.id, "error", 0, f"Download failed: {result.stderr[:200]}")
-                return
             # Verify actual model files were downloaded
             _MODEL_EXTENSIONS = {".pt", ".bin", ".onnx", ".safetensors", ".keras", ".h5"}
             if target_dir.exists():
@@ -328,11 +318,8 @@ def _download_model(model: ModelInfo):
             _set_progress(model.id, "ready", 100, f"{model.name} installed successfully")
             return
 
-        # Manual download — just show instructions
         _set_progress(model.id, "manual", 0, f"Manual download required: {model.download_url}")
 
-    except subprocess.TimeoutExpired:
-        _set_progress(model.id, "error", 0, "Download timed out (10 min limit)")
     except Exception as exc:
         _set_progress(model.id, "error", 0, f"Download failed: {exc}")
 
