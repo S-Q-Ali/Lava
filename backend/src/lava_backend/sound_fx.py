@@ -236,15 +236,37 @@ async def search_archive(query: str = "", limit: int = 10):
 
 @router.get("/download")
 async def download_sfx(url: str):
-    """Download an SFX file from a URL and cache it."""
+    """Download an SFX file from a URL and cache it.
+
+    Only allows downloads from known safe domains to prevent SSRF.
+    """
     if not url:
         raise ApiError(400, "NO_URL", "Download URL is required")
+
+    # SSRF protection: allowlist of safe domains
+    from urllib.parse import urlparse
+    parsed = urlparse(url)
+    ALLOWED_HOSTS = {
+        "commons.wikimedia.org",
+        "upload.wikimedia.org",
+        "archive.org",
+        "ia600504.us.archive.org",
+        "ia800504.us.archive.org",
+        "ia601200.us.archive.org",
+        "ia801200.us.archive.org",
+    }
+    if parsed.hostname not in ALLOWED_HOSTS:
+        raise ApiError(403, "FORBIDDEN", f"Downloads not allowed from: {parsed.hostname}")
 
     try:
         async with httpx.AsyncClient(timeout=30.0) as client:
             resp = await client.get(url)
             if resp.status_code != 200:
                 raise ApiError(502, "DOWNLOAD_FAILED", f"Failed to download: HTTP {resp.status_code}")
+
+            # Limit file size to 10MB
+            if len(resp.content) > 10 * 1024 * 1024:
+                raise ApiError(413, "TOO_LARGE", "File too large (max 10MB)")
 
             file_id = str(uuid.uuid4())[:12]
             content_type = resp.headers.get("content-type", "audio/ogg")
@@ -261,4 +283,4 @@ async def download_sfx(url: str):
     except ApiError:
         raise
     except Exception as exc:
-        raise ApiError(502, "DOWNLOAD_FAILED", f"Download failed: {exc}")
+        raise ApiError(502, "DOWNLOAD_FAILED", "Download failed")

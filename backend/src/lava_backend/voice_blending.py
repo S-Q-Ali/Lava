@@ -175,6 +175,9 @@ async def blend_audio(
 @router.post("/blend/download/{file_id}")
 async def download_blend(file_id: str):
     """Download a blended audio file."""
+    import re
+    if not re.match(r'^[a-zA-Z0-9_-]+$', file_id):
+        raise ApiError(400, "INVALID_ID", "Invalid file ID")
     for f in BLEND_OUTPUT_DIR.iterdir():
         if f.name.startswith(f"blend_{file_id}"):
             return FileResponse(

@@ -286,10 +286,11 @@ def _download_model(model: ModelInfo):
         if model.download_source == "huggingface":
             # Use huggingface_hub snapshot_download
             _set_progress(model.id, "downloading", 10, "Downloading from Hugging Face...")
-            cmd = model.download_command
+            import shlex
+            cmd_parts = shlex.split(model.download_command)
             result = subprocess.run(
-                cmd,
-                shell=True,
+                cmd_parts,
+                shell=False,
                 capture_output=True,
                 text=True,
                 timeout=600,

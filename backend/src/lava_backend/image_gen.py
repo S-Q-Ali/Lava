@@ -55,7 +55,7 @@ async def _generate_with_gemini(
     """Generate image using Google Gemini Imagen 3 API."""
     import httpx
 
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key={api_key}"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict"
 
     # Map aspect ratio to Imagen dimensions
     ratio_map = {
@@ -77,7 +77,7 @@ async def _generate_with_gemini(
     }
 
     async with httpx.AsyncClient(timeout=120.0) as client:
-        resp = await client.post(url, json=payload)
+        resp = await client.post(url, json=payload, headers={"Authorization": f"Bearer {api_key}"})
         if resp.status_code != 200:
             error_body = resp.json() if resp.headers.get("content-type", "").startswith("application/json") else {}
             error_msg = error_body.get("error", {}).get("message", f"HTTP {resp.status_code}")
@@ -107,7 +107,7 @@ async def _generate_with_gemini_native(
     """Generate image using Gemini native image generation (newer API)."""
     import httpx
 
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key={api_key}"
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent"
 
     payload = {
         "contents": [{"parts": [{"text": f"Generate an image: {prompt}"}]}],
@@ -117,7 +117,7 @@ async def _generate_with_gemini_native(
     }
 
     async with httpx.AsyncClient(timeout=120.0) as client:
-        resp = await client.post(url, json=payload)
+        resp = await client.post(url, json=payload, headers={"Authorization": f"Bearer {api_key}"})
         if resp.status_code != 200:
             error_body = resp.json() if resp.headers.get("content-type", "").startswith("application/json") else {}
             error_msg = error_body.get("error", {}).get("message", f"HTTP {resp.status_code}")
@@ -245,6 +245,9 @@ async def upload_custom_image(
 @router.get("/download/{image_id}")
 async def download_image(image_id: str):
     """Download a generated or uploaded image."""
+    import re
+    if not re.match(r'^[a-zA-Z0-9_-]+$', image_id):
+        raise ApiError(400, "INVALID_ID", "Invalid image ID")
     for f in IMAGE_OUTPUT_DIR.iterdir():
         if f.name.startswith(f"gen_{image_id}") or f.name.startswith(f"custom_{image_id}"):
             media_type = "image/png" if f.suffix == ".png" else "image/jpeg"
@@ -255,6 +258,9 @@ async def download_image(image_id: str):
 @router.delete("/{image_id}")
 async def delete_image(image_id: str):
     """Delete a generated image."""
+    import re
+    if not re.match(r'^[a-zA-Z0-9_-]+$', image_id):
+        raise ApiError(400, "INVALID_ID", "Invalid image ID")
     for f in IMAGE_OUTPUT_DIR.iterdir():
         if f.name.startswith(f"gen_{image_id}") or f.name.startswith(f"custom_{image_id}"):
             f.unlink()

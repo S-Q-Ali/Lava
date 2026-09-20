@@ -175,14 +175,14 @@ async def _generate_image_for_scene(
     try:
         import httpx
 
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key={api_key}"
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict"
         payload = {
             "instances": [{"prompt": scene.prompt or scene.text}],
             "parameters": {"sampleCount": 1, "aspectRatio": "9:16"},
         }
 
         async with httpx.AsyncClient(timeout=60.0) as client:
-            resp = await client.post(url, json=payload)
+            resp = await client.post(url, json=payload, headers={"Authorization": f"Bearer {api_key}"})
             if resp.status_code == 200:
                 data = resp.json()
                 predictions = data.get("predictions", [])
