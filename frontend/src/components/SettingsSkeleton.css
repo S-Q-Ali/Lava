@@ -1,0 +1,161 @@
+.settings-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 8px 12px;
+}
+
+.skeleton-bone {
+  background: var(--panel-2);
+  border-radius: 4px;
+  animation: skeletonPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes skeletonPulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.7; }
+}
+
+/* Section title */
+.skeleton-section-title {
+  width: 100px;
+  height: 10px;
+  margin-bottom: 6px;
+}
+
+.skeleton-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.skeleton-model-count {
+  width: 80px;
+  height: 8px;
+}
+
+/* Hardware skeleton */
+.skeleton-hardware {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skeleton-hw-card {
+  width: 100%;
+  height: 48px;
+}
+
+.skeleton-hw-stats {
+  display: flex;
+  gap: 6px;
+}
+
+.skeleton-hw-stat {
+  flex: 1;
+  height: 32px;
+}
+
+/* API key skeleton */
+.skeleton-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.skeleton-label {
+  width: 120px;
+  height: 10px;
+}
+
+.skeleton-key-row {
+  display: flex;
+  gap: 4px;
+}
+
+.skeleton-input {
+  flex: 1;
+  height: 28px;
+}
+
+.skeleton-save-btn {
+  width: 48px;
+  height: 28px;
+}
+
+.skeleton-hint {
+  width: 200px;
+  height: 8px;
+}
+
+/* Model card skeleton */
+.skeleton-model-card {
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.skeleton-model-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.skeleton-model-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.skeleton-model-name {
+  width: 140px;
+  height: 12px;
+}
+
+.skeleton-badge {
+  width: 50px;
+  height: 10px;
+}
+
+.skeleton-model-desc {
+  width: 90%;
+  height: 10px;
+}
+
+.skeleton-model-meta {
+  width: 60%;
+  height: 8px;
+}
+
+.skeleton-download-btn {
+  width: 72px;
+  height: 28px;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+/* About skeleton */
+.skeleton-about {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.skeleton-about-name {
+  width: 100px;
+  height: 12px;
+}
+
+.skeleton-about-ver {
+  width: 80px;
+  height: 10px;
+}
+
+.skeleton-about-desc {
+  width: 220px;
+  height: 8px;
+}

@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { backendBaseUrl } from '../services/ffmpeg'
 import { HardwarePanel } from './HardwarePanel'
+import SettingsSkeleton from './SettingsSkeleton'
 import './SettingsPanel.css'
 
 interface ModelInfo {
@@ -123,11 +124,15 @@ export function SettingsPanel() {
       </div>
 
       <div className="settings-body">
-        {/* Hardware Analysis */}
-        <div className="settings-section">
-          <h4 className="settings-section-title">Hardware Analysis</h4>
-          <HardwarePanel />
-        </div>
+        {loading ? (
+          <SettingsSkeleton />
+        ) : (
+          <>
+            {/* Hardware Analysis */}
+            <div className="settings-section">
+              <h4 className="settings-section-title">Hardware Analysis</h4>
+              <HardwarePanel />
+            </div>
 
         {/* API Keys */}
         <div className="settings-section">
@@ -207,12 +212,9 @@ export function SettingsPanel() {
             </span>
           </div>
 
-          {loading ? (
-            <p className="settings-hint">Loading models...</p>
-          ) : (
-            <div className="settings-models">
-              {downloadMsg && <p className="settings-download-msg">{downloadMsg}</p>}
-              {models.map((model) => (
+          <div className="settings-models">
+            {downloadMsg && <p className="settings-download-msg">{downloadMsg}</p>}
+            {models.map((model) => (
                 <div
                   key={model.id}
                   className={`settings-model-card ${model.installed ? 'installed' : ''} ${model.required ? 'required' : ''}`}
@@ -304,7 +306,6 @@ export function SettingsPanel() {
                 </div>
               ))}
             </div>
-          )}
         </div>
 
         {/* About */}
@@ -316,6 +317,8 @@ export function SettingsPanel() {
             <span className="settings-about-desc">AI Video Studio — Local-first, production-grade NLE</span>
           </div>
         </div>
+        </>
+        )}
       </div>
     </section>
   )
