@@ -18,9 +18,9 @@
     "semantic_hash": ""
   },
   "frontend/package.json": {
-    "mtime": 1789577825.7626147,
-    "seen": 1789860882.7681587,
-    "ast_hash": "352b0667ff1677a660e50c7d646dd50c",
+    "mtime": 1789906017.1829188,
+    "seen": 1789906264.0228176,
+    "ast_hash": "f430961fa7bb83ca75c5b9795aca11cb",
     "semantic_hash": ""
   },
   "frontend/src/App.tsx": {
@@ -132,9 +132,9 @@
     "semantic_hash": ""
   },
   "frontend/vite.config.ts": {
-    "mtime": 1789577825.8506153,
-    "seen": 1789860882.7681587,
-    "ast_hash": "5f2378e0ffb86a8f7fc387101c95e767",
+    "mtime": 1789906072.4894583,
+    "seen": 1789906264.0228176,
+    "ast_hash": "bb3d3ac3157297d5b7f81d610f995fb4",
     "semantic_hash": ""
   },
   "scripts/fetch-ffmpeg.mjs": {
@@ -408,9 +408,9 @@
     "semantic_hash": ""
   },
   "backend/pyproject.toml": {
-    "mtime": 1789835483.4806702,
-    "seen": 1789860882.7681587,
-    "ast_hash": "2000bbb3cb1dc69ac32af0e3fb6f83eb",
+    "mtime": 1789905946.0743394,
+    "seen": 1789906264.0228176,
+    "ast_hash": "7466040b697a4e1459b4bcc064fc60c7",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/__init__.py": {
@@ -1170,9 +1170,9 @@
     "semantic_hash": ""
   },
   "CONSTRAINTS.md": {
-    "mtime": 1789863129.1823285,
-    "seen": 1789863476.4632823,
-    "ast_hash": "3e8f20d4f3f9ffe17dfad19acfd868e2",
+    "mtime": 1789906053.9805527,
+    "seen": 1789906264.0228176,
+    "ast_hash": "2ef9f9bc37d37d9677dcb932ecbaf14d",
     "semantic_hash": ""
   },
   "docs/SPEC-m7-capability-map.md": {
@@ -1452,9 +1452,9 @@
     "semantic_hash": ""
   },
   "frontend/src/components/LeftWorkspace.test.tsx": {
-    "mtime": 1789668138.35837,
-    "seen": 1789860882.7681587,
-    "ast_hash": "714b72cbf2e0c9d5e01281094ba47faa",
+    "mtime": 1789906194.152028,
+    "seen": 1789906264.0228176,
+    "ast_hash": "bdfb36c18d8ff305b225fa67e880d709",
     "semantic_hash": ""
   },
   "frontend/src/components/LeftWorkspace.tsx": {

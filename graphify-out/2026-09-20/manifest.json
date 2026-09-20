@@ -1734,9 +1734,9 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/captions_export.py": {
-    "mtime": 1789852247.7462385,
-    "seen": 1789860882.7681587,
-    "ast_hash": "e58324b5230956bc052a8762392a2f9e",
+    "mtime": 1789903721.7662623,
+    "seen": 1789903806.0228677,
+    "ast_hash": "fd389c710cf401925b2452f1181723e4",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/desktop.py": {
@@ -1752,15 +1752,15 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/groq_transcribe.py": {
-    "mtime": 1789850685.014295,
-    "seen": 1789860882.7681587,
-    "ast_hash": "d10bd7336eba10457d6967af15600f57",
+    "mtime": 1789903681.0478623,
+    "seen": 1789903806.0228677,
+    "ast_hash": "860206b0e659d3b3a7782bf605220b4a",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/model_manager.py": {
-    "mtime": 1789860581.720434,
-    "seen": 1789860882.7681587,
-    "ast_hash": "88c6bec4754733f4b01d35c6c633ec15",
+    "mtime": 1789864003.5825255,
+    "seen": 1789903806.0228677,
+    "ast_hash": "e4017806944e131cf8c662e759daec73",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/pipeline/__init__.py": {
@@ -1932,21 +1932,21 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/visual_prompts.py": {
-    "mtime": 1789859705.4042382,
-    "seen": 1789860882.7681587,
-    "ast_hash": "56f00f9c57fdd738f287b6578d87cc13",
+    "mtime": 1789903703.485229,
+    "seen": 1789903806.0228677,
+    "ast_hash": "ae8fabec40fb469231347e4d0b3df4b2",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/voice_blending.py": {
-    "mtime": 1789859894.275141,
-    "seen": 1789860882.7681587,
-    "ast_hash": "10de8a0ebd4c352ffedc9401840bf8d0",
+    "mtime": 1789864025.6527421,
+    "seen": 1789903806.0228677,
+    "ast_hash": "0e62ca2b6548499cecba24eaa9713d1e",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/voice_cloning.py": {
-    "mtime": 1789859915.487988,
-    "seen": 1789860882.7681587,
-    "ast_hash": "d59341a1440b4337fee5270c5a69035f",
+    "mtime": 1789903652.297191,
+    "seen": 1789903806.0228677,
+    "ast_hash": "8921ce2f0ae639d300d1248ea206924d",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/voiceover/__init__.py": {
@@ -2052,9 +2052,9 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/image_gen.py": {
-    "mtime": 1789860998.235703,
-    "seen": 1789861701.11994,
-    "ast_hash": "92617510ec5b1057b2919903cb11b820",
+    "mtime": 1789864053.2712336,
+    "seen": 1789903806.0228677,
+    "ast_hash": "f1f4eb141673a8b812ffd6c82c6801a2",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/podcast_maker.py": {
@@ -2064,9 +2064,9 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/sound_fx.py": {
-    "mtime": 1789861278.9169621,
-    "seen": 1789861701.11994,
-    "ast_hash": "f2d02f6de699f09519939d44b83bd206",
+    "mtime": 1789863886.2098281,
+    "seen": 1789903806.0228677,
+    "ast_hash": "196d26584ccb529de08da829d5ad0e7f",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/timeline_sync.py": {
@@ -2142,9 +2142,9 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/pipeline_engine.py": {
-    "mtime": 1789862900.613025,
-    "seen": 1789863030.06767,
-    "ast_hash": "51ff87896e820044f17403f4a7453f74",
+    "mtime": 1789863982.4396205,
+    "seen": 1789903806.0228677,
+    "ast_hash": "caf437e1fb5bdf9a349ad002de9c3be8",
     "semantic_hash": ""
   },
   "tasks/plan-pipeline.md": {
