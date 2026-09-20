@@ -11,16 +11,16 @@ const ASPECT_RATIOS: AspectRatio[] = ['16:9', '9:16', '1:1', '4:3']
 type TopBarProps = {
   onNavigate?: (id: string) => void
   onPreview?: () => void
+  onOpenSettings?: () => void
 }
 
-export default function TopBar({ onNavigate, onPreview }: TopBarProps) {
+export default function TopBar({ onNavigate, onPreview, onOpenSettings }: TopBarProps) {
   const openProjectInputRef = useRef<HTMLInputElement>(null)
   const [aspectRatio, setAspectRatio] = useState<AspectRatio>('16:9')
   const [isEditingTitle, setIsEditingTitle] = useState(false)
   const [editTitle, setEditTitle] = useState('')
   const [saved, setSaved] = useState(true)
   const [profileOpen, setProfileOpen] = useState(false)
-  const [settingsOpen, setSettingsOpen] = useState(false)
 
   const model = useEditorStore(
     useShallow((s) => ({
@@ -171,7 +171,6 @@ export default function TopBar({ onNavigate, onPreview }: TopBarProps) {
               className="topbar-v2-btn-icon"
               onClick={() => {
                 setProfileOpen(!profileOpen)
-                setSettingsOpen(false)
               }}
               title="Profile"
             >
@@ -184,32 +183,14 @@ export default function TopBar({ onNavigate, onPreview }: TopBarProps) {
               </div>
             )}
           </div>
-          <div className="topbar-v2-dropdown-wrap">
-            <button
-              type="button"
-              className="topbar-v2-btn-icon"
-              onClick={() => {
-                setSettingsOpen(!settingsOpen)
-                setProfileOpen(false)
-              }}
-              title="Settings"
-            >
-              ⚙
-            </button>
-            {settingsOpen && (
-              <div className="topbar-v2-dropdown">
-                <div
-                  className="topbar-v2-dropdown-item"
-                  onClick={() => {
-                    onNavigate?.('settings')
-                    setSettingsOpen(false)
-                  }}
-                >
-                  Settings
-                </div>
-              </div>
-            )}
-          </div>
+          <button
+            type="button"
+            className="topbar-v2-btn-icon"
+            onClick={onOpenSettings}
+            title="Settings"
+          >
+            ⚙
+          </button>
         </div>
       </div>
     </header>

@@ -23,5 +23,4 @@ export const NAV_ITEMS: NavItem[] = [
   { id: 'templates', label: 'Templates', icon: '📋' },
   { id: 'mygenerations', label: 'My Gen', icon: '📂' },
   { id: 'export', label: 'Export', icon: '↗' },
-  { id: 'settings', label: 'Settings', icon: '⚙' },
 ]

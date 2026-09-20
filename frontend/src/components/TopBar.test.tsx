@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { createRoot } from 'react-dom/client'
 import { act } from 'react'
 import { useEditorStore } from '../store/editorStore'
@@ -8,11 +8,15 @@ import TopBar from './TopBar'
 let host: HTMLDivElement
 let root: ReturnType<typeof createRoot>
 
-function mount() {
+function mount(props?: { onOpenSettings?: () => void }) {
   host = document.createElement('div')
   document.body.appendChild(host)
   root = createRoot(host)
-  act(() => root.render(<TopBar />))
+  act(() => root.render(<TopBar onOpenSettings={props?.onOpenSettings} />))
+}
+
+function mountWithProps(props: { onOpenSettings?: () => void }) {
+  mount(props)
 }
 
 function unmount() {
@@ -83,14 +87,15 @@ describe('TopBar', () => {
     expect(host.textContent).toContain('Account')
   })
 
-  it('opens settings dropdown on click', () => {
-    mount()
+  it('calls onOpenSettings when settings button is clicked', () => {
+    const onOpenSettings = vi.fn()
+    mountWithProps({ onOpenSettings })
     const settingsBtn = Array.from(host.querySelectorAll('button')).find(
       (b) => b.getAttribute('title') === 'Settings',
     ) as HTMLButtonElement
     expect(settingsBtn).not.toBeNull()
     act(() => settingsBtn.click())
-    expect(host.textContent).toContain('Settings')
+    expect(onOpenSettings).toHaveBeenCalledTimes(1)
   })
 
   it('allows editing the project name', () => {

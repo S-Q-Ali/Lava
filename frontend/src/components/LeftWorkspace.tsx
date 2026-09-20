@@ -5,7 +5,6 @@ import ExportPanel from './ExportPanel'
 import VoiceoverPanel from './VoiceoverPanel'
 import ScriptWriterPanel from './ScriptWriterPanel'
 import PipelinePanel from './PipelinePanel'
-import { SettingsPanel } from './SettingsPanel'
 import { ImageGenPanel } from './ImageGenPanel'
 import { PodcastMakerPanel } from './PodcastMakerPanel'
 import { VoiceLibraryPanel } from './VoiceLibraryPanel'
@@ -149,12 +148,6 @@ export default function LeftWorkspace({ activeNav }: LeftWorkspaceProps) {
       return (
         <div className="left-workspace-content">
           <ExportPanel />
-        </div>
-      )
-    case 'settings':
-      return (
-        <div className="left-workspace-content">
-          <SettingsPanel />
         </div>
       )
     default:

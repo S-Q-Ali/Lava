@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import TopBar from './components/TopBar'
 import NavRail from './components/NavRail'
 import LeftWorkspace from './components/LeftWorkspace'
@@ -6,6 +6,7 @@ import PreviewPanel from './components/PreviewPanel'
 import RightPanel from './components/RightPanel'
 import TimelinePanel from './components/timeline/TimelinePanel'
 import AssetsPanel from './components/AssetsPanel'
+import SettingsModal from './components/SettingsModal'
 import { ErrorBoundary } from './components/ErrorBoundary'
 import ToastContainer from './components/ToastContainer'
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'
@@ -17,6 +18,18 @@ function App() {
   const [activeNav, setActiveNav] = useState('ai-tools')
   const [leftPanelOpen, setLeftPanelOpen] = useState(true)
   const [rightPanelOpen, setRightPanelOpen] = useState(true)
+  const [settingsOpen, setSettingsOpen] = useState(false)
+  const prevNavRef = useRef(activeNav)
+
+  const handleOpenSettings = useCallback(() => {
+    prevNavRef.current = activeNav
+    setSettingsOpen(true)
+  }, [activeNav])
+
+  const handleCloseSettings = useCallback(() => {
+    setSettingsOpen(false)
+    setActiveNav(prevNavRef.current)
+  }, [])
 
   const handlePreview = () => {
     const { playing } = useEditorStore.getState()
@@ -26,7 +39,7 @@ function App() {
   return (
     <ErrorBoundary>
       <div className={`app${leftPanelOpen ? '' : ' left-panel-collapsed'}${rightPanelOpen ? '' : ' right-panel-collapsed'}`}>
-        <TopBar onNavigate={setActiveNav} onPreview={handlePreview} />
+        <TopBar onNavigate={setActiveNav} onPreview={handlePreview} onOpenSettings={handleOpenSettings} />
         <div className="workspace">
           <NavRail
             active={activeNav}
@@ -84,6 +97,7 @@ function App() {
           )}
         </div>
       </div>
+      {settingsOpen && <SettingsModal onClose={handleCloseSettings} />}
       <ToastContainer />
     </ErrorBoundary>
   )
