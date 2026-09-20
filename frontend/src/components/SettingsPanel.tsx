@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { backendBaseUrl } from '../services/ffmpeg'
+import { HardwarePanel } from './HardwarePanel'
 import './SettingsPanel.css'
 
 interface ModelInfo {
@@ -112,6 +113,12 @@ export function SettingsPanel() {
       </div>
 
       <div className="settings-body">
+        {/* Hardware Analysis */}
+        <div className="settings-section">
+          <h4 className="settings-section-title">Hardware Analysis</h4>
+          <HardwarePanel />
+        </div>
+
         {/* API Keys */}
         <div className="settings-section">
           <h4 className="settings-section-title">API Keys</h4>
