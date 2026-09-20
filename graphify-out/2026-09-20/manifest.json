@@ -342,9 +342,9 @@
     "semantic_hash": ""
   },
   "docs/ARCHITECTURE.md": {
-    "mtime": 1789577825.576137,
-    "seen": 1789860882.7681587,
-    "ast_hash": "9b83a5ea348ece0b4ee46785498d6c6d",
+    "mtime": 1789863390.4570718,
+    "seen": 1789863476.4632823,
+    "ast_hash": "00487a551781525a3d12de49bf0737ac",
     "semantic_hash": ""
   },
   "docs/DECISIONS.md": {
@@ -360,9 +360,9 @@
     "semantic_hash": ""
   },
   "docs/PRODUCT_SPEC.md": {
-    "mtime": 1789577825.5848582,
-    "seen": 1789860882.7681587,
-    "ast_hash": "a327255839cb218bf16c95b0e92acfc6",
+    "mtime": 1789863369.678897,
+    "seen": 1789863476.4632823,
+    "ast_hash": "62154624cf7e6a29b74cc4ac7260a9a0",
     "semantic_hash": ""
   },
   "docs/ROADMAP.md": {
@@ -432,9 +432,9 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/main.py": {
-    "mtime": 1789862477.7549503,
-    "seen": 1789862563.2208476,
-    "ast_hash": "011b852e4d04a64ebed16e156740cbb0",
+    "mtime": 1789863260.5769057,
+    "seen": 1789863476.462284,
+    "ast_hash": "7098c2bfb3ee2a5ff1da272e4065e66e",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/media.py": {
@@ -510,9 +510,9 @@
     "semantic_hash": ""
   },
   "tasks/todo.md": {
-    "mtime": 1789849301.3058617,
-    "seen": 1789860882.7681587,
-    "ast_hash": "a01283747f5d652b4ed091867cf4e6c3",
+    "mtime": 1789863158.0937707,
+    "seen": 1789863476.4632823,
+    "ast_hash": "f39646a680ee5137009d8aa9e44303c0",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/transcribe.py": {
@@ -1170,9 +1170,9 @@
     "semantic_hash": ""
   },
   "CONSTRAINTS.md": {
-    "mtime": 1789577825.5122247,
-    "seen": 1789860882.7681587,
-    "ast_hash": "0a9c89477273611440898a903f86cafa",
+    "mtime": 1789863129.1823285,
+    "seen": 1789863476.4632823,
+    "ast_hash": "3e8f20d4f3f9ffe17dfad19acfd868e2",
     "semantic_hash": ""
   },
   "docs/SPEC-m7-capability-map.md": {
@@ -1458,9 +1458,9 @@
     "semantic_hash": ""
   },
   "frontend/src/components/LeftWorkspace.tsx": {
-    "mtime": 1789861497.6663055,
-    "seen": 1789861701.11994,
-    "ast_hash": "0227739d28c7e64661e5a31c45c2c083",
+    "mtime": 1789863291.2988162,
+    "seen": 1789863476.462284,
+    "ast_hash": "182eb7900c59ad6d6656ea9a54dfa241",
     "semantic_hash": ""
   },
   "frontend/src/components/NavRail.test.tsx": {
@@ -1488,9 +1488,9 @@
     "semantic_hash": ""
   },
   "frontend/src/components/navItems.ts": {
-    "mtime": 1789861486.537702,
-    "seen": 1789861701.11994,
-    "ast_hash": "6aabfd391f9aa405b15c21abb8ae31d8",
+    "mtime": 1789863271.2277756,
+    "seen": 1789863476.462284,
+    "ast_hash": "a6d6cd06843bf2f3dedecaace8eba4c3",
     "semantic_hash": ""
   },
   "AGENTS_V2_EXACT_FRONTEND.md": {
@@ -1974,9 +1974,9 @@
     "semantic_hash": ""
   },
   "frontend/src/components/PipelinePanel.tsx": {
-    "mtime": 1789862936.9587665,
-    "seen": 1789863030.06767,
-    "ast_hash": "d3d391f4e31dbb8cbe7af7294bf75f5b",
+    "mtime": 1789863319.6532993,
+    "seen": 1789863476.462284,
+    "ast_hash": "1e2841b2e1ec443af076158fa7298b37",
     "semantic_hash": ""
   },
   "frontend/src/components/ScriptWriterPanel.tsx": {
@@ -2151,6 +2151,42 @@
     "mtime": 1789862862.7869093,
     "seen": 1789863030.068654,
     "ast_hash": "184b02206b3562379039cf1a2bb5ffa7",
+    "semantic_hash": ""
+  },
+  "backend/src/lava_backend/auto_updater.py": {
+    "mtime": 1789863250.4165874,
+    "seen": 1789863476.462284,
+    "ast_hash": "d4dcb7761656558002f86e79ece592cb",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/MyGenerationsPanel.tsx": {
+    "mtime": 1789863234.3004942,
+    "seen": 1789863476.462284,
+    "ast_hash": "1833be28671c51f03abb218cb1664754",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/ScriptTemplatesPanel.tsx": {
+    "mtime": 1789863219.3307767,
+    "seen": 1789863476.462284,
+    "ast_hash": "466196bfcc33765c5ab6f0cee7e6cdb3",
+    "semantic_hash": ""
+  },
+  "tasks/SPEC-m12-remaining.md": {
+    "mtime": 1789863139.3006804,
+    "seen": 1789863476.4632823,
+    "ast_hash": "7906f740fb3fff47f5745717307d8749",
+    "semantic_hash": ""
+  },
+  "tasks/capability-map-m12.md": {
+    "mtime": 1789863115.645514,
+    "seen": 1789863476.4632823,
+    "ast_hash": "203881a448b6b1104e65e6c5089ff489",
+    "semantic_hash": ""
+  },
+  "tasks/plan-m12-remaining.md": {
+    "mtime": 1789863147.1541884,
+    "seen": 1789863476.4632823,
+    "ast_hash": "6d0cda31b0a3514fa1eae9a11951bd35",
     "semantic_hash": ""
   }
 }
