@@ -252,16 +252,18 @@ def _scan_models() -> list[ModelInfo]:
         ),
     ]
 
-    # Check installation status
+    # Check installation status — require actual model files, not just directory
+    _MODEL_EXTENSIONS = {".pt", ".bin", ".onnx", ".safetensors", ".keras", ".h5"}
     for m in models:
         model_dir = root / m.directory
-        if model_dir.exists():
+        if model_dir.exists() and model_dir.is_dir():
+            model_files = [f for f in model_dir.rglob("*") if f.is_file() and f.suffix in _MODEL_EXTENSIONS]
+            if model_files:
+                m.installed = True
+                m.size_on_disk = sum(f.stat().st_size for f in model_files)
+        elif model_dir.exists() and model_dir.is_file():
             m.installed = True
-            # Calculate size on disk
-            if model_dir.is_dir():
-                m.size_on_disk = sum(f.stat().st_size for f in model_dir.rglob("*") if f.is_file())
-            else:
-                m.size_on_disk = model_dir.stat().st_size if model_dir.exists() else 0
+            m.size_on_disk = model_dir.stat().st_size
 
     return models
 
@@ -296,15 +298,12 @@ def _download_model(model: ModelInfo):
     _set_progress(model.id, "downloading", 0, f"Starting download of {model.name}...")
 
     try:
-        target_dir.mkdir(parents=True, exist_ok=True)
-
         if model.download_source == "pip":
             # faster-whisper auto-downloads, just mark as ready
             _set_progress(model.id, "ready", 100, "Model auto-downloads on first transcription")
             return
 
         if model.download_source == "huggingface":
-            # Use huggingface_hub snapshot_download
             _set_progress(model.id, "downloading", 10, "Downloading from Hugging Face...")
             import shlex
             cmd_parts = shlex.split(model.download_command)
@@ -319,6 +318,13 @@ def _download_model(model: ModelInfo):
             if result.returncode != 0:
                 _set_progress(model.id, "error", 0, f"Download failed: {result.stderr[:200]}")
                 return
+            # Verify actual model files were downloaded
+            _MODEL_EXTENSIONS = {".pt", ".bin", ".onnx", ".safetensors", ".keras", ".h5"}
+            if target_dir.exists():
+                model_files = [f for f in target_dir.rglob("*") if f.is_file() and f.suffix in _MODEL_EXTENSIONS]
+                if not model_files:
+                    _set_progress(model.id, "error", 0, "Download completed but no model files found")
+                    return
             _set_progress(model.id, "ready", 100, f"{model.name} installed successfully")
             return
 
