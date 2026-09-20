@@ -43,9 +43,9 @@ describe('LeftWorkspace', () => {
     expect(host.querySelector('.caption-panel')).not.toBeNull()
   })
 
-  it('renders PresetPanel when activeNav is templates', () => {
+  it('renders ScriptTemplatesPanel when activeNav is templates', () => {
     mount('templates')
-    expect(host.querySelector('.preset-panel')).not.toBeNull()
+    expect(host.querySelector('.templates-panel')).not.toBeNull()
   })
 
   it('renders useful home guidance', () => {
