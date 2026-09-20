@@ -234,11 +234,19 @@ export function SettingsPanel() {
                   <div className="settings-model-actions">
                     {model.download_status === 'downloading' ? (
                       <div className="settings-progress">
-                        <div className="settings-progress-bar">
-                          <div
-                            className="settings-progress-fill"
-                            style={{ width: `${model.download_progress}%` }}
-                          />
+                        <div className="settings-progress-circle">
+                          <svg viewBox="0 0 36 36">
+                            <circle className="settings-progress-circle-bg" cx="18" cy="18" r="15.9" />
+                            <circle
+                              className="settings-progress-circle-fill"
+                              cx="18" cy="18" r="15.9"
+                              strokeDasharray="100"
+                              strokeDashoffset={100 - model.download_progress}
+                            />
+                          </svg>
+                          <span className="settings-progress-circle-text">
+                            {Math.round(model.download_progress)}%
+                          </span>
                         </div>
                         <span className="settings-progress-text">
                           {model.download_message || 'Downloading...'}
