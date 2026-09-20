@@ -1,0 +1,16 @@
+{
+  "name": "podcast_interview",
+  "output_format": "mp4",
+  "target_fps": 30,
+  "output_width": 1080,
+  "output_height": 1920,
+  "target_bitrate": "10M",
+  "min_duration": 20,
+  "max_duration": 90,
+  "max_clips": 8,
+  "min_score": 0.5,
+  "caption": {"font": "Arial", "size": 48, "animation": "karaoke", "emphasis_color": "#5B8DEF"},
+  "zoom": {"enabled": true, "factor": 1.08, "ramp_sec": 0.1},
+  "effects": {"flash_on_punchline": false, "speed_ramps": false},
+  "audio": {"voice_db": -3.0, "music_db": -30.0, "master_lufs": -16.0}
+}

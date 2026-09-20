@@ -1,0 +1,152 @@
+.scriptwriter-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sw-input {
+  width: 100%;
+  padding: 6px 8px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text);
+  font-size: 12px;
+  font-family: 'JetBrains Mono Variable', monospace;
+}
+
+.sw-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.sw-hint {
+  font-size: 10px;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.sw-hint:hover {
+  text-decoration: underline;
+}
+
+.sw-textarea {
+  width: 100%;
+  min-height: 48px;
+  padding: 8px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text);
+  font-size: 13px;
+  font-family: inherit;
+  resize: vertical;
+}
+
+.sw-textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.sw-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.sw-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sw-col-center {
+  justify-content: flex-end;
+}
+
+.sw-slider {
+  width: 100%;
+  accent-color: var(--accent);
+}
+
+.sw-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.sw-checkbox-label input[type="checkbox"] {
+  accent-color: var(--accent);
+}
+
+.sw-result {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  background: var(--panel-2);
+  border-radius: 4px;
+}
+
+.sw-result-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0;
+}
+
+.sw-result-hook {
+  font-size: 12px;
+  color: var(--accent);
+  margin: 0;
+  font-style: italic;
+}
+
+.sw-segments {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sw-segment {
+  display: flex;
+  gap: 8px;
+  padding: 6px 8px;
+  background: var(--panel);
+  border-radius: 3px;
+  font-size: 12px;
+}
+
+.sw-seg-time {
+  color: var(--text-dim);
+  font-family: 'JetBrains Mono Variable', monospace;
+  font-size: 10px;
+  min-width: 32px;
+  flex-shrink: 0;
+}
+
+.sw-seg-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sw-seg-text {
+  color: var(--text);
+}
+
+.sw-seg-visual {
+  color: var(--text-dim);
+  font-size: 10px;
+  font-style: italic;
+}
+
+.sw-result-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--text-dim);
+}

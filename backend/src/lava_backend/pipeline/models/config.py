@@ -1,0 +1,57 @@
+"""Pipeline configuration model."""
+from __future__ import annotations
+from pathlib import Path
+from typing import Literal
+from pydantic import BaseModel, Field
+
+
+class PipelineConfig(BaseModel):
+    input_path: str = Field(description="Path to source video file")
+    output_dir: str = Field(description="Directory for output clips")
+    preset: str = Field(default="default")
+    style_profile_path: str | None = Field(default=None)
+    target_fps: int = Field(default=30, ge=1, le=120)
+    target_bitrate: str = Field(default="12M")
+    output_format: Literal["mp4", "webm"] = Field(default="mp4")
+    output_width: int = Field(default=1080)
+    output_height: int = Field(default=1920)
+    min_duration: float = Field(default=15.0, ge=5.0, le=300.0)
+    max_duration: float = Field(default=60.0, ge=10.0, le=300.0)
+    max_clips: int = Field(default=10, ge=1, le=50)
+    min_score: float = Field(default=0.6, ge=0.0, le=1.0)
+    zoom_enabled: bool = Field(default=True)
+    zoom_factor: float = Field(default=1.10, ge=1.0, le=2.0)
+    zoom_hold_sec: float = Field(default=1.5, ge=0.5, le=5.0)
+    zoom_ramp_sec: float = Field(default=0.08, ge=0.0, le=0.5)
+    captions_enabled: bool = Field(default=True)
+    caption_style: Literal["karaoke", "word-pop", "static", "none"] = Field(default="karaoke")
+    caption_font: str = Field(default="Impact")
+    caption_size: int = Field(default=64, ge=24, le=200)
+    caption_color: str = Field(default="#FFFFFF")
+    caption_outline_color: str = Field(default="#000000")
+    caption_outline_width: int = Field(default=3, ge=0, le=10)
+    caption_emphasis_color: str = Field(default="#FFD700")
+    caption_position: Literal["center-bottom", "center", "top"] = Field(default="center-bottom")
+    speed_ramps_enabled: bool = Field(default=True)
+    speed_buildup: float = Field(default=1.5, ge=1.0, le=4.0)
+    speed_payoff: float = Field(default=1.0, ge=0.5, le=2.0)
+    flash_enabled: bool = Field(default=True)
+    flash_duration_sec: float = Field(default=0.05, ge=0.01, le=0.2)
+    sfx_enabled: bool = Field(default=True)
+    sfx_transition: str = Field(default="whooshes/cinematic_fast.wav")
+    sfx_punchline: str = Field(default="dings/pop_ding.wav")
+    sfx_buildup: str = Field(default="risers/tension_riser.wav")
+    sfx_impact: str = Field(default="impacts/heavy_hit.wav")
+    reframe_mode: Literal["face-track", "center-crop", "none"] = Field(default="face-track")
+    provider: Literal["groq", "cerebras", "mistral", "deepseek", "auto"] = Field(default="auto")
+    api_key: str = Field(default="")
+    concurrency: int = Field(default=2, ge=1, le=8)
+    skip_stages: list[str] = Field(default_factory=list)
+    resume_from: str | None = Field(default=None)
+    voice_db: float = Field(default=-6.0)
+    music_db: float = Field(default=-24.0)
+    sfx_db: float = Field(default=-12.0)
+    master_lufs: float = Field(default=-14.0)
+
+    def output_path_for_clip(self, clip_id: str) -> str:
+        return str(Path(self.output_dir) / f"{clip_id}.{self.output_format}")
