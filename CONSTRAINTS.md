@@ -46,7 +46,7 @@ Lighthouse, osv-scanner, semgrep — must be live before a feature ships.
 | Metric | Today | Direction |
 |--------|-------|-----------|
 | Backend test count | 457 passed | must not fall |
-| Frontend test count | 297 passed (33 files) | must not fall |
+| Frontend test count | 378 passed (45 files) | must not fall |
 | Frontend bundle (main) | 91.8 kB gzip / 307.2 kB raw | must stay ≤ 500 kB gzip (M9 baseline) |
 | Render time (10-clip benchmark pass) | logged M9 validation: 2.47 s (Mac) | > 120 s never passes on any logged machine (M9) |
 

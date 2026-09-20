@@ -284,3 +284,23 @@ Build order: proxy-preview → runtime-optimization → memory-tuning → baseli
 - [ ] Task 8.2: Navigation Update (all new nav items, LeftWorkspace routing)
 - [ ] Task 8.3: Color Theme Update (non-AI-slop professional dark theme)
 - [ ] Task 8.4: Final Integration Tests (all tests pass, E2E verification)
+
+---
+
+## M12 — Remaining Work (spec-first, SPEC-m12-remaining.md)
+
+### Phase 1: Quality Bar
+- [ ] Task 1.1: Update CONSTRAINTS.md — current test counts (378 frontend, 457 backend)
+
+### Phase 2: Deferred Features (parallel)
+- [ ] Task 2.1: ScriptTemplatesPanel — 9 template cards, one-click load into ScriptWriter
+- [ ] Task 2.2: MyGenerationsPanel — history list, re-download, delete, "Use in Voice Studio"
+- [ ] Task 2.3: Auto-Update — GitHub releases checker, UI notification, download button
+
+### Phase 3: Pipeline Polish
+- [ ] Task 3.1: Pipeline error states — missing API key = graceful fallback with message
+- [ ] Task 3.2: Pipeline video preview — HTML5 player in output section
+
+### Phase 4: Documentation
+- [ ] Task 4.1: PRODUCT_SPEC.md update — M11/M12 features documented
+- [ ] Task 4.2: ARCHITECTURE.md update — new modules, endpoints, file layout
