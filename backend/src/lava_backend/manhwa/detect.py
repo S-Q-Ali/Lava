@@ -27,6 +27,7 @@ import numpy as np
 from PIL import Image
 
 from lava_backend.manhwa.errors import ManhwaError
+from lava_backend.manhwa.models import ManhwaDetector, DetectionResult
 from lava_backend.manhwa.order import attribute_confidence, order_panels
 from lava_backend.manhwa.panels import (
     Panel,
@@ -274,6 +275,38 @@ def build_panels(
     return panels
 
 
+def _ml_detections_to_panels(
+    detection: DetectionResult,
+    *,
+    source_id: str,
+) -> list[Panel]:
+    """Convert ML bounding box detections to Panel objects.
+
+    Filters to panel-class detections only, sorts top-to-bottom,
+    and assigns reading order.
+    """
+    panel_dets = [d for d in detection.panels if d.class_name in ("panel", "frame")]
+    if not panel_dets:
+        panel_dets = detection.panels
+    panel_dets = sorted(panel_dets, key=lambda d: d.y)
+
+    panels: list[Panel] = []
+    for i, det in enumerate(panel_dets):
+        panels.append(make_panel(
+            id=f"p{i + 1}",
+            source_id=source_id,
+            x=det.x,
+            y=det.y,
+            w=det.w,
+            h=det.h,
+            order=i + 1,
+            source_w=detection.image_width,
+            source_h=detection.image_height,
+            confidence=det.confidence,
+        ))
+    return order_panels(panels)
+
+
 def detect_strip(
     source: str | Path | Image.Image,
     *,
@@ -283,38 +316,56 @@ def detect_strip(
 ) -> dict[str, Any]:
     """Detect panels in a vertical strip; optionally persist crops + registry.
 
-    The strip must be single-column (taller than wide). Analysis runs at
-    ≤ 512 px; the returned boxes and saved crops are at original resolution.
-    `save=True` writes `cache/manhwa/<source_id>/panel_*.png` and a flat JSON
-    registry; reruns overwrite cleanly (git-clean, no silent edits).
+    Detection strategy:
+    1. Try ML detection (YOLO nano → seg) if models are available
+    2. Fall back to classical CV pipeline if ML unavailable or fails
+
+    The strip must be single-column (taller than wide) for CV detection.
+    ML detection works on any aspect ratio. Analysis runs at ≤ 512 px for CV;
+    ML uses the model's native input size.
     """
     image, mime, source_file = _open_source(source)
     src_w, src_h = image.size
-    if src_w > src_h:
-        raise ManhwaError(
-            f"panel detection requires a vertical strip; got {src_w}x{src_h}. "
-            "Multi-column/multi-panel pages are a later milestone (see ROADMAP)."
+
+    ml_result = None
+    detection_method = "cv"
+    cuts: list[Cut] = []
+
+    ml_path = _source_path_for_ml(source)
+    if ml_path is not None:
+        ml_result = ManhwaDetector.detect_auto(
+            image_path=ml_path,
+            confidence=0.25,
         )
-    gray, ana_w, ana_h, factor = load_analysis_image(image)
-    cuts = detect_cuts(row_features(gray), ana_h)
-    panels = build_panels(
-        cuts,
-        source_id=source_id,
-        src_w=src_w,
-        src_h=src_h,
-        ana_w=ana_w,
-        ana_h=ana_h,
-    )
+    if ml_result and len(ml_result.panels) > 0:
+        detection_method = ml_result.method
+        panels = _ml_detections_to_panels(ml_result, source_id=source_id)
+    else:
+        if src_w > src_h:
+            raise ManhwaError(
+                f"panel detection requires a vertical strip; got {src_w}x{src_h}. "
+                "Multi-column/multi-panel pages require the ML model "
+                "(download Manhwa Panel Detector from Settings → Models)."
+            )
+        gray, ana_w, ana_h, factor = load_analysis_image(image)
+        cuts = detect_cuts(row_features(gray), ana_h)
+        panels = build_panels(
+            cuts,
+            source_id=source_id,
+            src_w=src_w,
+            src_h=src_h,
+            ana_w=ana_w,
+            ana_h=ana_h,
+        )
+
     result: dict[str, Any] = {
         "sourceId": source_id,
         "sourceFile": source_file,
         "width": src_w,
         "height": src_h,
         "mime": mime,
+        "detectionMethod": detection_method,
         "analysis": {
-            "anaW": ana_w,
-            "anaH": ana_h,
-            "factor": factor,
             "cuts": [
                 {"y": c.y, "confidence": c.confidence, "kind": c.kind}
                 for c in cuts
@@ -343,6 +394,23 @@ def detect_strip(
         ).save()
         result["cachePath"] = str(base)
     return result
+
+
+def _source_path_for_ml(source: str | Path | Image.Image) -> str | Path | None:
+    """Extract a file path suitable for ML inference from the source input.
+
+    Returns None if the source is an in-memory Image without a file path,
+    so callers can fall back to classical CV.
+    """
+    if isinstance(source, Image.Image):
+        fp = getattr(source, "fp", None)
+        if fp is not None:
+            return fp
+        filename = getattr(source, "filename", None)
+        if filename:
+            return filename
+        return None
+    return source
 
 
 def _open_source(source: str | Path | Image.Image) -> tuple[Image.Image, str, str]:
