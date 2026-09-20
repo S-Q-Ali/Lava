@@ -61,6 +61,7 @@ from .bulk_tts import router as bulk_tts_router
 from .timeline_sync import router as timeline_sync_router
 from .video_clipper import router as video_clipper_router
 from .hardware_analyzer import router as hardware_router
+from .auto_updater import router as update_router
 
 app = FastAPI(title="Lava Studio Media Sidecar", version="0.1.0-beta.0")
 
@@ -95,6 +96,7 @@ app.include_router(bulk_tts_router, prefix=f"{API_V1}")
 app.include_router(timeline_sync_router, prefix=f"{API_V1}")
 app.include_router(video_clipper_router, prefix=f"{API_V1}")
 app.include_router(hardware_router, prefix=f"{API_V1}")
+app.include_router(update_router, prefix=f"{API_V1}")
 app.include_router(matching_router, prefix=f"{API_V1}")
 app.include_router(manhwa_router, prefix=f"{API_V1}/manhwa")
 

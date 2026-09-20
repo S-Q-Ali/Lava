@@ -20,7 +20,8 @@ export const NAV_ITEMS: NavItem[] = [
   { id: 'bulkgen', label: 'Bulk TTS', icon: '📦' },
   { id: 'sync', label: 'Sync', icon: '🔄' },
   { id: 'clipper', label: 'Clipper', icon: '✂' },
-  { id: 'templates', label: 'Templates', icon: '□' },
+  { id: 'templates', label: 'Templates', icon: '📋' },
+  { id: 'mygenerations', label: 'My Gen', icon: '📂' },
   { id: 'export', label: 'Export', icon: '↗' },
   { id: 'settings', label: 'Settings', icon: '⚙' },
 ]

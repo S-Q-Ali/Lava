@@ -16,6 +16,8 @@ import { SoundFXPanel } from './SoundFXPanel'
 import { BulkGenerationPanel } from './BulkGenerationPanel'
 import { SyncPanel } from './SyncPanel'
 import { ClipperPanel } from './ClipperPanel'
+import { ScriptTemplatesPanel } from './ScriptTemplatesPanel'
+import { MyGenerationsPanel } from './MyGenerationsPanel'
 import { useEditorStore } from '../store/editorStore'
 import { projectDuration } from '../editor/ops'
 import './LeftWorkspace.css'
@@ -129,7 +131,13 @@ export default function LeftWorkspace({ activeNav }: LeftWorkspaceProps) {
     case 'templates':
       return (
         <div className="left-workspace-content">
-          <PresetPanel />
+          <ScriptTemplatesPanel />
+        </div>
+      )
+    case 'mygenerations':
+      return (
+        <div className="left-workspace-content">
+          <MyGenerationsPanel />
         </div>
       )
     case 'home':

@@ -1,0 +1,18 @@
+.templates-panel { display: flex; flex-direction: column; height: 100%; min-height: 0; }
+.tp-header { display: flex; align-items: center; gap: 6px; padding: 8px 12px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.tp-icon { font-size: 14px; }
+.tp-title { font-size: 12px; font-weight: 600; color: var(--text); letter-spacing: 0.04em; text-transform: uppercase; flex: 1; }
+.tp-count { font-size: 11px; color: var(--text-dim); background: var(--panel-2); padding: 2px 6px; border-radius: 8px; }
+.tp-body { flex: 1; overflow-y: auto; padding: 8px 12px; display: flex; flex-direction: column; gap: 8px; }
+.tp-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+.tp-card { background: var(--panel-2); border: 1px solid var(--border); border-radius: 6px; padding: 8px; text-align: left; cursor: pointer; transition: border-color 0.15s; }
+.tp-card:hover { border-color: var(--accent); }
+.tp-card.selected { border-color: var(--accent); background: rgba(74,142,255,0.06); }
+.tp-card-name { font-size: 12px; font-weight: 600; color: var(--text); display: block; }
+.tp-card-cat { font-size: 10px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.04em; }
+.tp-card-desc { margin: 4px 0 0; font-size: 10px; color: var(--text-dim); line-height: 1.3; }
+.tp-preview { background: var(--panel-2); border-radius: 6px; padding: 10px; display: flex; flex-direction: column; gap: 6px; }
+.tp-preview-title { margin: 0; font-size: 13px; font-weight: 600; color: var(--text); }
+.tp-preview-script { margin: 0; font-size: 11px; color: var(--text-dim); white-space: pre-wrap; line-height: 1.5; max-height: 200px; overflow-y: auto; background: var(--panel); padding: 8px; border-radius: 4px; font-family: inherit; }
+.tp-copy-btn { background: var(--accent-btn); color: #fff; border: none; border-radius: 4px; padding: 6px 12px; font-size: 12px; cursor: pointer; }
+.tp-copy-btn:hover { background: #d4822e; }

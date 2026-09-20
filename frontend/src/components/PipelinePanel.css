@@ -34,6 +34,8 @@
 .pipe-scene-text { flex: 1; color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .pipe-scene-dur { color: var(--text-dim); font-family: 'JetBrains Mono', monospace; font-size: 10px; }
 
-/* Download */
+/* Download + Preview */
+.pipe-output { display: flex; flex-direction: column; gap: 6px; }
+.pipe-video-preview { width: 100%; max-height: 200px; border-radius: 4px; background: #000; }
 .pipe-download-btn { background: #2ecc71; color: #fff; border: none; border-radius: 4px; padding: 6px 12px; font-size: 12px; cursor: pointer; font-weight: 600; }
 .pipe-download-btn:hover { background: #27ae60; }

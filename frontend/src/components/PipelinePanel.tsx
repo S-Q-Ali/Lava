@@ -212,11 +212,20 @@ export default function PipelinePanel() {
               </div>
             )}
 
-            {/* Download */}
+            {/* Download + Preview */}
             {job.stage === 'done' && job.output_path && (
-              <button type="button" className="pipe-download-btn" onClick={handleDownload}>
-                Download Video
-              </button>
+              <div className="pipe-output">
+                <video
+                  controls
+                  className="pipe-video-preview"
+                  src={`${backendBaseUrl()}/api/pipeline/script-download/${job.job_id}`}
+                >
+                  <track kind="captions" />
+                </video>
+                <button type="button" className="pipe-download-btn" onClick={handleDownload}>
+                  Download Video
+                </button>
+              </div>
             )}
           </div>
         )}
