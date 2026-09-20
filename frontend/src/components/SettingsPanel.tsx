@@ -252,6 +252,24 @@ export function SettingsPanel() {
                           {model.download_message || 'Downloading...'}
                         </span>
                       </div>
+                    ) : model.download_status === 'installing' ? (
+                      <div className="settings-progress">
+                        <div className="settings-progress-circle installing">
+                          <svg viewBox="0 0 36 36">
+                            <circle className="settings-progress-circle-bg" cx="18" cy="18" r="15.9" />
+                            <circle
+                              className="settings-progress-circle-fill"
+                              cx="18" cy="18" r="15.9"
+                              strokeDasharray="100"
+                              strokeDashoffset="0"
+                            />
+                          </svg>
+                          <span className="settings-progress-circle-text">✓</span>
+                        </div>
+                        <span className="settings-progress-text">
+                          {model.download_message || 'Verifying installation...'}
+                        </span>
+                      </div>
                     ) : model.download_status === 'error' ? (
                       <div className="settings-download-error">
                         <span className="settings-error-text">{model.download_message || 'Download failed'}</span>

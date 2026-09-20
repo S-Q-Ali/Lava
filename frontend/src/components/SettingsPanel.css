@@ -269,6 +269,10 @@
   transition: stroke-dashoffset 0.3s;
 }
 
+.settings-progress-circle.installing .settings-progress-circle-fill {
+  stroke: #4caf50;
+}
+
 .settings-progress-circle-text {
   position: absolute;
   inset: 0;
@@ -278,6 +282,17 @@
   font-size: 9px;
   font-weight: 600;
   color: var(--accent);
+}
+
+.settings-progress-circle.installing .settings-progress-circle-text {
+  color: #4caf50;
+  font-size: 14px;
+  animation: settingsInstallPulse 1s ease-in-out infinite;
+}
+
+@keyframes settingsInstallPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 
 .settings-progress-text {
