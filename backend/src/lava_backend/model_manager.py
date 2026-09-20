@@ -300,6 +300,14 @@ class _DownloadProgressTqdm:
         self.n = 0
         self.total = kwargs.get("total") or (args[1] if len(args) > 1 else None)
         self.disable = kwargs.get("disable", False)
+        self.desc = kwargs.get("desc", "")
+        self.unit = kwargs.get("unit", "")
+        self.unit_scale = kwargs.get("unit_scale", False)
+        self.bar_format = kwargs.get("bar_format", "")
+        self.name = kwargs.get("name", "")
+        self.log_level = kwargs.get("log_level", None)
+        self.initial = kwargs.get("initial", 0)
+        self.postfix: dict = {}
 
     def update(self, n=1):
         self.n += n
@@ -319,6 +327,19 @@ class _DownloadProgressTqdm:
 
     def set_postfix(self, *args, **kwargs):
         pass
+
+    def set_postfix_str(self, *args, **kwargs):
+        pass
+
+    def set_transfer_postfix_str(self, *args, **kwargs):
+        pass
+
+    def set_description_str(self, *args, **kwargs):
+        pass
+
+    @property
+    def format_dict(self):
+        return {"n": self.n, "total": self.total, "rate": None}
 
     def __enter__(self):
         return self
