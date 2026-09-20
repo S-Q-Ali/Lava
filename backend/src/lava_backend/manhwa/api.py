@@ -291,6 +291,118 @@ async def upload_pdf(request: Request, file: UploadFile | None = File(default=No
     return {"strips": strips}
 
 
+# -- two-phase upload: upload first, detect on demand -----------------------
+
+@router.post("/strips/upload", status_code=201)
+async def upload_strip_only(request: Request, file: UploadFile | None = File(default=None)):
+    """Save a strip image WITHOUT running detection. Returns stripId for later detection."""
+    from lava_backend.config import get_config
+
+    if file is None:
+        raise ApiError(400, "NO_FILE", "Add a strip image to analyze.")
+    content_type = (file.content_type or "").lower()
+    ext = IMAGE_CONTENT.get(content_type, ".png")
+    data = await file.read()
+    if not data:
+        raise ApiError(400, "NO_FILE", "The selected strip image is empty.")
+
+    config = get_config()
+    source_id = new_source_id()
+    base = strip_dir(config, source_id)
+    base.mkdir(parents=True, exist_ok=True)
+    source_path = base / f"source{ext}"
+    try:
+        source_path.write_bytes(data)
+    except OSError as exc:
+        raise ApiError(500, "STORAGE_FAILED", f"could not store strip: {exc}") from exc
+
+    return {"stripId": source_id, "fileName": file.name or f"source{ext}"}
+
+
+@router.post("/strips/pdf-upload", status_code=201)
+async def upload_pdf_only(request: Request, file: UploadFile | None = File(default=None)):
+    """Save a PDF and extract pages as images WITHOUT running detection. Returns page stripIds."""
+    from lava_backend.config import get_config
+    from lava_backend.manhwa.pdf_extract import extract_pages
+
+    if file is None:
+        raise ApiError(400, "NO_FILE", "Add a PDF file to analyze.")
+    content_type = (file.content_type or "").lower()
+    if "pdf" not in content_type and not (file.filename or "").lower().endswith(".pdf"):
+        raise ApiError(400, "NOT_PDF", "File must be a PDF.")
+    data = await file.read()
+    if not data:
+        raise ApiError(400, "NO_FILE", "The selected PDF is empty.")
+
+    config = get_config()
+    pdf_id = new_source_id()
+    pdf_dir = config.cache_dir / "manhwa" / pdf_id
+    pdf_dir.mkdir(parents=True, exist_ok=True)
+    pdf_path = pdf_dir / "source.pdf"
+    try:
+        pdf_path.write_bytes(data)
+    except OSError as exc:
+        raise ApiError(500, "STORAGE_FAILED", f"could not store PDF: {exc}") from exc
+
+    pages_dir = pdf_dir / "pages"
+    try:
+        page_paths = extract_pages(pdf_path, pages_dir)
+    except Exception as exc:
+        rmtree_safe(pdf_dir, ignore_errors=True)
+        raise ApiError(422, "PDF_EXTRACT_FAILED", f"PDF extraction failed: {exc}") from exc
+
+    pages = []
+    for page_path in page_paths:
+        page_id = new_source_id()
+        page_strip_dir = strip_dir(config, page_id)
+        page_strip_dir.mkdir(parents=True, exist_ok=True)
+        dest = page_strip_dir / f"source{page_path.suffix}"
+        try:
+            dest.write_bytes(page_path.read_bytes())
+            pages.append({"stripId": page_id, "fileName": page_path.name})
+        except OSError:
+            rmtree_safe(page_strip_dir, ignore_errors=True)
+            continue
+
+    rmtree_safe(pdf_dir, ignore_errors=True)
+
+    if not pages:
+        raise ApiError(422, "NO_PAGES", "No pages could be extracted from the PDF.")
+
+    return {"pages": pages, "fileName": file.name or "document.pdf"}
+
+
+@router.post("/strips/{source_id}/detect")
+def detect_panels(source_id: str):
+    """Run panel detection on an already-uploaded strip."""
+    from lava_backend.config import get_config
+
+    config = get_config()
+    try:
+        base = strip_dir(config, source_id)
+    except ValueError as exc:
+        raise ApiError(422, "INVALID_SOURCE_ID", str(exc)) from exc
+
+    if not base.exists():
+        raise ApiError(404, "NOT_FOUND", f"no manhwa strip {source_id!r}")
+
+    source_files = list(base.glob("source.*"))
+    if not source_files:
+        raise ApiError(404, "SOURCE_MISSING", "source image missing from disk")
+
+    source_path = source_files[0]
+    try:
+        result = detect_strip(
+            source_path,
+            source_id=source_id,
+            save=True,
+            cache_dir=config.cache_dir,
+        )
+    except Exception as exc:
+        raise ApiError(422, "MANHWA_DETECT_FAILED", f"panel detection failed: {exc}") from exc
+    return result
+
+
 @router.patch("/strips/{source_id}/panels")
 async def apply_correction(source_id: str, request: Request):
     from lava_backend.config import get_config

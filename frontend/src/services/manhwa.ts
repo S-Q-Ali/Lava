@@ -200,6 +200,85 @@ export function sourceImageUrl(sourceId: string): string {
   return `${baseUrl}/api/manhwa/strips/${encodeURIComponent(sourceId)}/source`
 }
 
+// -- Two-phase upload: upload first, detect on demand ------------------------
+
+export interface UploadOnlyResult {
+  stripId: string
+  fileName: string
+}
+
+export interface PdfUploadOnlyResult {
+  pages: Array<{ stripId: string; fileName: string }>
+  fileName: string
+}
+
+function xhrUpload(
+  path: string,
+  file: File,
+  onProgress: (pct: number) => void,
+): Promise<Record<string, unknown>> {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest()
+    const baseUrl = backendBaseUrl().replace(/\/$/, '')
+    xhr.open('POST', `${baseUrl}/api/manhwa${path}`)
+    xhr.responseType = 'json'
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable) {
+        onProgress(Math.round((e.loaded / e.total) * 100))
+      }
+    }
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        resolve(xhr.response as Record<string, unknown>)
+      } else {
+        const err = (xhr.response as Record<string, unknown>)?.error as { code?: string; message?: string } | undefined
+        reject(new ManhwaError(
+          err?.code ?? 'UPLOAD_FAILED',
+          err?.message ?? `Upload failed (HTTP ${xhr.status})`,
+        ))
+      }
+    }
+    xhr.onerror = () => reject(new ManhwaError('NETWORK_ERROR', 'No sidecar reachable. Start the local media service.'))
+    const form = new FormData()
+    form.append('file', file, file.name)
+    xhr.send(form)
+  })
+}
+
+export async function uploadStripOnly(
+  file: File,
+  onProgress: (pct: number) => void,
+): Promise<UploadOnlyResult> {
+  const body = await xhrUpload('/strips/upload', file, onProgress)
+  if (typeof body.stripId !== 'string') {
+    throw new ManhwaError('INVALID_RESPONSE', 'Unexpected upload response shape.')
+  }
+  return { stripId: body.stripId, fileName: (body.fileName as string) ?? file.name }
+}
+
+export async function uploadPdfOnly(
+  file: File,
+  onProgress: (pct: number) => void,
+): Promise<PdfUploadOnlyResult> {
+  const body = await xhrUpload('/strips/pdf-upload', file, onProgress)
+  if (!Array.isArray(body.pages)) {
+    throw new ManhwaError('INVALID_RESPONSE', 'Unexpected PDF upload response shape.')
+  }
+  return {
+    pages: (body.pages as Array<Record<string, unknown>>).map((p) => ({
+      stripId: p.stripId as string,
+      fileName: (p.fileName as string) ?? 'page',
+    })),
+    fileName: (body.fileName as string) ?? file.name,
+  }
+}
+
+export async function detectStrip(stripId: string): Promise<ManhwaStripDetail> {
+  return parseStripDetail(
+    await manhwaFetch(`/strips/${encodeURIComponent(stripId)}/detect`, { method: 'POST' }),
+  )
+}
+
 // -- PDF Upload --------------------------------------------------------------
 
 export interface PdfUploadResult {

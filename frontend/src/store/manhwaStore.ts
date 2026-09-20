@@ -3,6 +3,9 @@ import {
   listStrips,
   uploadStrip,
   uploadPdf,
+  uploadStripOnly,
+  uploadPdfOnly,
+  detectStrip,
   getStrip,
   correctStrip,
   redetectStrip,
@@ -12,9 +15,13 @@ import {
   type CorrectionOp,
 } from '../services/manhwa'
 
+export type PendingPage = { stripId: string; fileName: string }
+
 export type ManhwaStatus =
   | { phase: 'idle' }
-  | { phase: 'uploading' }
+  | { phase: 'uploading'; progress: number }
+  | { phase: 'uploaded'; pages: PendingPage[]; fileName: string }
+  | { phase: 'detecting' }
   | { phase: 'loading' }
   | { phase: 'error'; error: string }
 
@@ -27,6 +34,8 @@ interface ManhwaStore {
   select(id: string | null): Promise<void>
   upload(file: File): Promise<void>
   uploadPdf(file: File): Promise<void>
+  uploadOnly(file: File): Promise<void>
+  startDetection(): Promise<void>
   apply(op: CorrectionOp): Promise<void>
   redetect(): Promise<void>
   remove(id: string): Promise<void>
@@ -65,7 +74,7 @@ export const useManhwaStore = create<ManhwaStore>()((set, get) => ({
   },
 
   upload: async (file) => {
-    set({ status: { phase: 'uploading' } })
+    set({ status: { phase: 'uploading', progress: 0 } })
     try {
       const detail = await uploadStrip(file)
       const strips = await listStrips()
@@ -82,7 +91,7 @@ export const useManhwaStore = create<ManhwaStore>()((set, get) => ({
   },
 
   uploadPdf: async (file) => {
-    set({ status: { phase: 'uploading' } })
+    set({ status: { phase: 'uploading', progress: 0 } })
     try {
       const result = await uploadPdf(file)
       const strips = await listStrips()
@@ -95,6 +104,51 @@ export const useManhwaStore = create<ManhwaStore>()((set, get) => ({
       })
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Could not upload PDF.'
+      set({ status: { phase: 'error', error: message } })
+    }
+  },
+
+  uploadOnly: async (file) => {
+    set({ status: { phase: 'uploading', progress: 0 } })
+    try {
+      const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')
+      if (isPdf) {
+        const result = await uploadPdfOnly(file, (progress) => {
+          set({ status: { phase: 'uploading', progress } })
+        })
+        set({ status: { phase: 'uploaded', pages: result.pages, fileName: result.fileName } })
+      } else {
+        const result = await uploadStripOnly(file, (progress) => {
+          set({ status: { phase: 'uploading', progress } })
+        })
+        set({ status: { phase: 'uploaded', pages: [result], fileName: result.fileName } })
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Could not upload file.'
+      set({ status: { phase: 'error', error: message } })
+    }
+  },
+
+  startDetection: async () => {
+    const { status } = get()
+    if (status.phase !== 'uploaded') return
+    const pages = status.pages
+    set({ status: { phase: 'detecting' } })
+    try {
+      let firstDetail: ManhwaStripDetail | null = null
+      for (const page of pages) {
+        const detail = await detectStrip(page.stripId)
+        if (!firstDetail) firstDetail = detail
+      }
+      const strips = await listStrips()
+      set({
+        status: { phase: 'idle' },
+        strips,
+        currentId: pages[0]?.stripId ?? null,
+        detail: firstDetail,
+      })
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Could not detect panels.'
       set({ status: { phase: 'error', error: message } })
     }
   },

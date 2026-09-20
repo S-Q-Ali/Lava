@@ -9,8 +9,8 @@ export function ManhwaPanel() {
   const detail = useManhwaStore((s) => s.detail)
   const refresh = useManhwaStore((s) => s.refresh)
   const select = useManhwaStore((s) => s.select)
-  const upload = useManhwaStore((s) => s.upload)
-  const uploadPdf = useManhwaStore((s) => s.uploadPdf)
+  const uploadOnly = useManhwaStore((s) => s.uploadOnly)
+  const startDetection = useManhwaStore((s) => s.startDetection)
   const apply = useManhwaStore((s) => s.apply)
   const redetect = useManhwaStore((s) => s.redetect)
   const remove = useManhwaStore((s) => s.remove)
@@ -28,13 +28,9 @@ export function ManhwaPanel() {
     (files: FileList | null) => {
       const file = files?.[0]
       if (!file) return
-      if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
-        void uploadPdf(file)
-      } else {
-        void upload(file)
-      }
+      void uploadOnly(file)
     },
-    [upload, uploadPdf],
+    [uploadOnly],
   )
 
   const handleDrop = useCallback(
@@ -59,7 +55,7 @@ export function ManhwaPanel() {
     setExportSuccess(`Exported ${detail?.panels.length ?? 0} panels as ${exportFormat.toUpperCase()}.`)
   }, [currentId, exportFormat, detail])
 
-  const isBusy = status.phase === 'uploading' || status.phase === 'loading'
+  const isBusy = status.phase === 'uploading' || status.phase === 'loading' || status.phase === 'detecting'
 
   return (
     <section className="panel manhwa-panel" aria-label="Manhwa">
@@ -84,10 +80,37 @@ export function ManhwaPanel() {
           onChange={(e) => handleFiles(e.target.files)}
         />
         <button type="button" onClick={() => fileRef.current?.click()} disabled={isBusy}>
-          {status.phase === 'uploading' ? 'Uploading…' : 'Drop or pick a strip / PDF'}
+          {status.phase === 'uploading' ? 'Uploading…' : status.phase === 'detecting' ? 'Detecting…' : 'Drop or pick a strip / PDF'}
         </button>
         <p className="manhwa-drop-hint">PNG, JPG, WebP, or PDF. Tall vertical strip or chapter PDF.</p>
       </div>
+
+      {status.phase === 'uploading' && (
+        <div className="manhwa-progress">
+          <div className="manhwa-progress-bar" role="progressbar" aria-valuenow={status.progress} aria-valuemin={0} aria-valuemax={100}>
+            <div className="manhwa-progress-fill" style={{ width: `${status.progress}%` }} />
+          </div>
+          <span className="manhwa-progress-text">Uploading… {status.progress}%</span>
+        </div>
+      )}
+
+      {status.phase === 'uploaded' && (
+        <div className="manhwa-ready">
+          <p className="manhwa-ready-info">
+            ✅ {status.fileName} ({status.pages.length} {status.pages.length === 1 ? 'page' : 'pages'})
+          </p>
+          <button type="button" className="manhwa-detect-btn" onClick={() => void startDetection()}>
+            Start Extraction
+          </button>
+        </div>
+      )}
+
+      {status.phase === 'detecting' && (
+        <div className="manhwa-detecting">
+          <span className="manhwa-spinner" />
+          <span>Detecting panels…</span>
+        </div>
+      )}
 
       {strips.length > 0 && (
         <div className="manhwa-strip-list">
