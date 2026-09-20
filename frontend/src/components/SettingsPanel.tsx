@@ -291,8 +291,6 @@ export function SettingsPanel() {
                       >
                         Delete
                       </button>
-                    ) : model.download_source === 'pip' ? (
-                      <span className="settings-badge auto">Auto-downloads on first use</span>
                     ) : (
                       <button
                         type="button"
