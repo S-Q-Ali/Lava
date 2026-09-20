@@ -30,7 +30,8 @@ class CaptionExportRequest(BaseModel):
 async def export_captions(req: CaptionExportRequest):
     """Export captions as SRT or VTT format."""
     if req.format not in ("srt", "vtt"):
-        return {"error": f"Format '{req.format}' not supported. Use srt or vtt."}
+        from .errors import ApiError
+        raise ApiError(422, "UNSUPPORTED_FORMAT", f"Format '{req.format}' not supported. Use srt or vtt.")
 
     caption_dicts = [
         {"start": c.start, "duration": c.duration, "text": c.text}

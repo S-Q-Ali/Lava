@@ -58,45 +58,6 @@ def _is_model_available() -> bool:
     return config_file.exists() and model_file.exists()
 
 
-async def _clone_voice(
-    text: str,
-    reference_audio_path: str,
-    output_path: str,
-    language: str = "en",
-) -> dict:
-    """Generate speech using XTTS-v2 with voice cloning."""
-    try:
-        from TTS.api import TTS
-        from TTS.tts.configs.xtts_config import XttsConfig
-    except ImportError:
-        raise RuntimeError(
-            "Coqui TTS not installed. Run: pip install TTS"
-        )
-
-    model_path = _get_model_path()
-
-    # Load model
-    config = XttsConfig()
-    config.load_json(str(model_path / "config.json"))
-
-    from TTS.tts.models.xtts import Xtts
-    model = Xtts.init_from_config(config)
-    model.load_checkpoint(config, checkpoint_dir=str(model_path))
-    model.cuda()  # or model.cpu() for CPU-only
-
-    # Generate speech
-    result = model.synthesize(
-        text,
-        config.speakers[reference_audio_path],
-        language=language,
-    )
-
-    import soundfile as sf
-    sf.write(output_path, result["wav"], 24000)
-
-    return {"duration": len(result["wav"]) / 24000}
-
-
 async def _clone_voice_simple(
     text: str,
     reference_audio_path: str,
@@ -222,6 +183,9 @@ async def clone_voice(
 @router.post("/clone/download/{file_id}")
 async def download_clone(file_id: str):
     """Download a cloned voice file."""
+    import re
+    if not re.match(r'^[a-zA-Z0-9_-]+$', file_id):
+        raise ApiError(400, "INVALID_ID", "Invalid file ID")
     for f in CLONE_OUTPUT_DIR.iterdir():
         if f.name.startswith(f"clone_{file_id}"):
             return FileResponse(

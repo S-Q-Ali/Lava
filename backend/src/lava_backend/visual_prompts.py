@@ -140,7 +140,7 @@ Generate {req.count} unique image prompt{"s" if req.count > 1 else ""} for this 
     except Exception as e:
         return VisualPromptResponse(
             success=False,
-            error=str(e),
+            error="Prompt generation failed. Check your API key and try again.",
         )
 
 

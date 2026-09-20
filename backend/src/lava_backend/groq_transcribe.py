@@ -134,7 +134,7 @@ async def transcribe_groq(
         raise ApiError(
             502,
             "TRANSCRIBE_FAILED",
-            f"Groq transcription failed: {exc}",
+            "Groq transcription failed. Check your API key and audio file.",
         )
     finally:
         path.unlink(missing_ok=True)
