@@ -288,6 +288,60 @@ def _get_progress(model_id: str) -> dict:
         return _download_progress.get(model_id, {"status": "idle", "progress": 0, "message": ""})
 
 
+# ── Download progress via tqdm interception ─────────────────────────
+
+class _DownloadProgressTqdm:
+    """Custom tqdm that tracks bytes downloaded from snapshot_download."""
+    _bytes = 0
+    _total = 0
+    _lock = threading.Lock()
+
+    def __init__(self, *args, **kwargs):
+        self.n = 0
+        self.total = kwargs.get("total") or (args[1] if len(args) > 1 else None)
+        self.disable = kwargs.get("disable", False)
+
+    def update(self, n=1):
+        self.n += n
+        with _DownloadProgressTqdm._lock:
+            _DownloadProgressTqdm._bytes = self.n
+            if self.total and self.total > _DownloadProgressTqdm._total:
+                _DownloadProgressTqdm._total = self.total
+
+    def close(self):
+        pass
+
+    def refresh(self):
+        pass
+
+    def set_description(self, *args, **kwargs):
+        pass
+
+    def set_postfix(self, *args, **kwargs):
+        pass
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
+        pass
+
+
+def _poll_download_progress(model_id: str, stop_event: threading.Event):
+    """Poll tqdm progress every 0.5s and update _download_progress."""
+    while not stop_event.is_set():
+        with _DownloadProgressTqdm._lock:
+            n = _DownloadProgressTqdm._bytes
+            total = _DownloadProgressTqdm._total
+        if total > 0:
+            pct = min(n / total * 100, 99)
+            mb_done = n / (1024 * 1024)
+            mb_total = total / (1024 * 1024)
+            _set_progress(model_id, "downloading", pct,
+                          f"{mb_done:.1f} MB / {mb_total:.1f} MB")
+        stop_event.wait(0.5)
+
+
 def _download_model(model: ModelInfo):
     """Download model in background thread."""
     config = get_config()
@@ -302,14 +356,35 @@ def _download_model(model: ModelInfo):
             return
 
         if model.download_source == "huggingface":
-            _set_progress(model.id, "downloading", 10, "Downloading from Hugging Face...")
+            # Reset progress tracker
+            with _DownloadProgressTqdm._lock:
+                _DownloadProgressTqdm._bytes = 0
+                _DownloadProgressTqdm._total = 0
+
+            # Start polling thread (updates every 0.5s)
+            stop = threading.Event()
+            poller = threading.Thread(
+                target=_poll_download_progress,
+                args=(model.id, stop),
+                daemon=True,
+            )
+            poller.start()
+
+            # Download (blocking — tqdm captures bytes)
             from huggingface_hub import snapshot_download
             snapshot_download(
                 model.download_url,
                 local_dir=str(target_dir),
+                tqdm_class=_DownloadProgressTqdm,
             )
+
+            stop.set()
+            poller.join(timeout=2)
+
+            # Show verifying state
             _set_progress(model.id, "installing", 95, "Verifying installation...")
             time.sleep(1.5)
+
             # Verify actual model files were downloaded
             _MODEL_EXTENSIONS = {".pt", ".bin", ".onnx", ".safetensors", ".keras", ".h5"}
             if target_dir.exists():
@@ -317,6 +392,7 @@ def _download_model(model: ModelInfo):
                 if not model_files:
                     _set_progress(model.id, "error", 0, "Download completed but no model files found")
                     return
+
             _set_progress(model.id, "ready", 100, f"{model.name} installed successfully")
             return
 
