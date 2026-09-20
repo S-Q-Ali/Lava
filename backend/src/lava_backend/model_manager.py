@@ -309,6 +309,7 @@ def _download_model(model: ModelInfo):
                 local_dir=str(target_dir),
             )
             _set_progress(model.id, "installing", 95, "Verifying installation...")
+            time.sleep(1.5)
             # Verify actual model files were downloaded
             _MODEL_EXTENSIONS = {".pt", ".bin", ".onnx", ".safetensors", ".keras", ".h5"}
             if target_dir.exists():
