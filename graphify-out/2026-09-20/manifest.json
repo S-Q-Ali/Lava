@@ -366,15 +366,15 @@
     "semantic_hash": ""
   },
   "docs/ROADMAP.md": {
-    "mtime": 1789849473.9356961,
-    "seen": 1789860882.7681587,
-    "ast_hash": "a9424522c5ba69674aab8bc087e87abd",
+    "mtime": 1789861651.9905887,
+    "seen": 1789861701.11994,
+    "ast_hash": "159b587cd915a72be6fd589e8afe0844",
     "semantic_hash": ""
   },
   "docs/SESSION_LOG.md": {
-    "mtime": 1789849382.181805,
-    "seen": 1789860882.7681587,
-    "ast_hash": "f8c16479e2a5d2d738ac851593fc3988",
+    "mtime": 1789861622.606969,
+    "seen": 1789861701.11994,
+    "ast_hash": "8ff5c57236c062a2d3298ea2122ab735",
     "semantic_hash": ""
   },
   "docs/TEST_PLAN.md": {
@@ -432,9 +432,9 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/main.py": {
-    "mtime": 1789860407.614271,
-    "seen": 1789860882.7681587,
-    "ast_hash": "0b207864ece513df00659baa3713833a",
+    "mtime": 1789861452.2341166,
+    "seen": 1789861701.11994,
+    "ast_hash": "a7e0ff050b846112ddb5801467c791da",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/media.py": {
@@ -1458,9 +1458,9 @@
     "semantic_hash": ""
   },
   "frontend/src/components/LeftWorkspace.tsx": {
-    "mtime": 1789860470.712754,
-    "seen": 1789860882.7681587,
-    "ast_hash": "4e2be60028a1db01a9edee8af565543c",
+    "mtime": 1789861497.6663055,
+    "seen": 1789861701.11994,
+    "ast_hash": "0227739d28c7e64661e5a31c45c2c083",
     "semantic_hash": ""
   },
   "frontend/src/components/NavRail.test.tsx": {
@@ -1488,9 +1488,9 @@
     "semantic_hash": ""
   },
   "frontend/src/components/navItems.ts": {
-    "mtime": 1789860461.484084,
-    "seen": 1789860882.7681587,
-    "ast_hash": "d2c97fe8e5beae6b15099a0971ab41e1",
+    "mtime": 1789861486.537702,
+    "seen": 1789861701.11994,
+    "ast_hash": "6aabfd391f9aa405b15c21abb8ae31d8",
     "semantic_hash": ""
   },
   "AGENTS_V2_EXACT_FRONTEND.md": {
@@ -1986,9 +1986,9 @@
     "semantic_hash": ""
   },
   "frontend/src/components/SettingsPanel.tsx": {
-    "mtime": 1789860416.0731058,
-    "seen": 1789860882.7681587,
-    "ast_hash": "8c2e52d3aa7cace6fec05040ec8981c6",
+    "mtime": 1789861552.363464,
+    "seen": 1789861701.11994,
+    "ast_hash": "df6b2634fa5f067f1531925a89640b44",
     "semantic_hash": ""
   },
   "frontend/src/components/VisualPromptPanel.tsx": {
@@ -2043,6 +2043,90 @@
     "mtime": 1789849243.0841486,
     "seen": 1789860882.7681587,
     "ast_hash": "72e21e11333a5c808b09f87b53a9d4fd",
+    "semantic_hash": ""
+  },
+  "backend/src/lava_backend/bulk_tts.py": {
+    "mtime": 1789861288.7645917,
+    "seen": 1789861701.11994,
+    "ast_hash": "592dd6f4eb4bf6cdb6bb967858133781",
+    "semantic_hash": ""
+  },
+  "backend/src/lava_backend/image_gen.py": {
+    "mtime": 1789860998.235703,
+    "seen": 1789861701.11994,
+    "ast_hash": "92617510ec5b1057b2919903cb11b820",
+    "semantic_hash": ""
+  },
+  "backend/src/lava_backend/podcast_maker.py": {
+    "mtime": 1789861249.773358,
+    "seen": 1789861701.11994,
+    "ast_hash": "5e1f84fcf4f205e88cf59e2ec1634772",
+    "semantic_hash": ""
+  },
+  "backend/src/lava_backend/sound_fx.py": {
+    "mtime": 1789861278.9169621,
+    "seen": 1789861701.11994,
+    "ast_hash": "f2d02f6de699f09519939d44b83bd206",
+    "semantic_hash": ""
+  },
+  "backend/src/lava_backend/timeline_sync.py": {
+    "mtime": 1789861430.5040367,
+    "seen": 1789861701.11994,
+    "ast_hash": "2414f38be9f03189ebe448dcb1e5e425",
+    "semantic_hash": ""
+  },
+  "backend/src/lava_backend/video_clipper.py": {
+    "mtime": 1789861440.692294,
+    "seen": 1789861701.11994,
+    "ast_hash": "8db0cb776545b33402cba064b0bee7a9",
+    "semantic_hash": ""
+  },
+  "backend/src/lava_backend/voice_library.py": {
+    "mtime": 1789861261.5858612,
+    "seen": 1789861701.11994,
+    "ast_hash": "7eb137910de6c61fb7b29ae30d9baef4",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/BulkGenerationPanel.tsx": {
+    "mtime": 1789861360.6627245,
+    "seen": 1789861701.11994,
+    "ast_hash": "689799c4025554e8b6bb0c8b63f9126a",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/ClipperPanel.tsx": {
+    "mtime": 1789861472.2356398,
+    "seen": 1789861701.11994,
+    "ast_hash": "a5aecfe9480c1b1401575e8229472c61",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/ImageGenPanel.tsx": {
+    "mtime": 1789861023.090854,
+    "seen": 1789861701.11994,
+    "ast_hash": "f29a4f04918a6b3cb654bbf30831bdf7",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/PodcastMakerPanel.tsx": {
+    "mtime": 1789861305.56563,
+    "seen": 1789861701.11994,
+    "ast_hash": "3061a6c99d64b7694934280acd5c0434",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/SoundFXPanel.tsx": {
+    "mtime": 1789861337.873508,
+    "seen": 1789861701.11994,
+    "ast_hash": "edc3ad5ed1a1cacb3a1db46e894d5eb9",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/SyncPanel.tsx": {
+    "mtime": 1789861459.201379,
+    "seen": 1789861701.11994,
+    "ast_hash": "b4733a0a73048ffe86b874880bc48df0",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/VoiceLibraryPanel.tsx": {
+    "mtime": 1789861321.0412297,
+    "seen": 1789861701.11994,
+    "ast_hash": "86caf7f881696369170f6c539181880a",
     "semantic_hash": ""
   }
 }

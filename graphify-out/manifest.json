@@ -432,9 +432,9 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/main.py": {
-    "mtime": 1789861452.2341166,
-    "seen": 1789861701.11994,
-    "ast_hash": "a7e0ff050b846112ddb5801467c791da",
+    "mtime": 1789862477.7549503,
+    "seen": 1789862563.2208476,
+    "ast_hash": "011b852e4d04a64ebed16e156740cbb0",
     "semantic_hash": ""
   },
   "backend/src/lava_backend/media.py": {
@@ -1986,9 +1986,9 @@
     "semantic_hash": ""
   },
   "frontend/src/components/SettingsPanel.tsx": {
-    "mtime": 1789861552.363464,
-    "seen": 1789861701.11994,
-    "ast_hash": "df6b2634fa5f067f1531925a89640b44",
+    "mtime": 1789862515.3148098,
+    "seen": 1789862563.2208476,
+    "ast_hash": "861f5d9022ac12ef09c53b1b039e2ed1",
     "semantic_hash": ""
   },
   "frontend/src/components/VisualPromptPanel.tsx": {
@@ -2127,6 +2127,18 @@
     "mtime": 1789861321.0412297,
     "seen": 1789861701.11994,
     "ast_hash": "86caf7f881696369170f6c539181880a",
+    "semantic_hash": ""
+  },
+  "backend/src/lava_backend/hardware_analyzer.py": {
+    "mtime": 1789862464.8822505,
+    "seen": 1789862563.2208476,
+    "ast_hash": "fc9b1ee9f2296f91154854b02ff80ad2",
+    "semantic_hash": ""
+  },
+  "frontend/src/components/HardwarePanel.tsx": {
+    "mtime": 1789862491.5091975,
+    "seen": 1789862563.2208476,
+    "ast_hash": "c1c3ba0012b44d70013f2a4fab0b1810",
     "semantic_hash": ""
   }
 }
