@@ -2286,6 +2286,12 @@
   object-fit: contain;
 }
 
+.manhwa-viewer-meta {
+  font-size: 11px;
+  color: var(--text-dim);
+  text-align: center;
+}
+
 .manhwa-detect-btn {
   width: 100%;
   padding: 6px 12px;

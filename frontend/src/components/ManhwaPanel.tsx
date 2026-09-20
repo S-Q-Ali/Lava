@@ -131,9 +131,38 @@ export function ManhwaPanel() {
         </div>
       )}
 
-      {strips.length > 0 && (
+      {status.phase === 'idle' && strips.length > 1 && (
+        <div className="manhwa-viewer">
+          <div className="manhwa-viewer-header">
+            <span className="manhwa-viewer-filename" title={strips[viewerPageIndex]?.sourceFile}>
+              {strips[viewerPageIndex]?.sourceFile}
+            </span>
+            <span className="manhwa-viewer-count">{strips.length} pages</span>
+          </div>
+          <div className="manhwa-viewer-nav">
+            <button type="button" onClick={() => void prevPage()} disabled={viewerPageIndex === 0}>
+              ◀ Prev
+            </button>
+            <span className="manhwa-viewer-page">{viewerPageIndex + 1} / {strips.length}</span>
+            <button type="button" onClick={() => void nextPage()} disabled={viewerPageIndex === strips.length - 1}>
+              Next ▶
+            </button>
+          </div>
+          <div className="manhwa-viewer-image">
+            <img
+              src={sourceImageUrl(strips[viewerPageIndex].sourceId)}
+              alt={`Page ${viewerPageIndex + 1}`}
+            />
+          </div>
+          <div className="manhwa-viewer-meta">
+            <span>{strips[viewerPageIndex]?.panelCount} panels detected</span>
+          </div>
+        </div>
+      )}
+
+      {status.phase === 'idle' && strips.length === 1 && !currentId && (
         <div className="manhwa-strip-list">
-          <h4>Strips{strips.length > 1 ? ` (${strips.length} pages)` : ''}</h4>
+          <h4>Strips</h4>
           {strips.map((strip, index) => (
             <div
               key={strip.sourceId}
@@ -142,7 +171,7 @@ export function ManhwaPanel() {
             >
               <div className="manhwa-strip-info">
                 <span className="manhwa-strip-name" title={strip.sourceFile}>
-                  {strips.length > 1 ? `Page ${index + 1}` : strip.sourceFile}
+                  {strip.sourceFile}
                 </span>
                 <span className="manhwa-strip-meta">
                   {strip.panelCount} panels

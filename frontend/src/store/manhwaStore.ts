@@ -134,17 +134,25 @@ export const useManhwaStore = create<ManhwaStore>()((set, get) => ({
   },
 
   nextPage: () => {
-    const { status, viewerPageIndex } = get()
-    if (status.phase !== 'uploaded') return
-    if (viewerPageIndex < status.pages.length - 1) {
-      set({ viewerPageIndex: viewerPageIndex + 1 })
+    const { status, viewerPageIndex, strips } = get()
+    const maxIndex = status.phase === 'uploaded' ? status.pages.length - 1 : strips.length - 1
+    if (viewerPageIndex < maxIndex) {
+      const next = viewerPageIndex + 1
+      set({ viewerPageIndex: next })
+      if (status.phase === 'idle' && strips[next]) {
+        void get().select(strips[next].sourceId)
+      }
     }
   },
 
   prevPage: () => {
-    const { viewerPageIndex } = get()
+    const { viewerPageIndex, status, strips } = get()
     if (viewerPageIndex > 0) {
-      set({ viewerPageIndex: viewerPageIndex - 1 })
+      const prev = viewerPageIndex - 1
+      set({ viewerPageIndex: prev })
+      if (status.phase === 'idle' && strips[prev]) {
+        void get().select(strips[prev].sourceId)
+      }
     }
   },
 
@@ -165,6 +173,7 @@ export const useManhwaStore = create<ManhwaStore>()((set, get) => ({
         strips,
         currentId: pages[0]?.stripId ?? null,
         detail: firstDetail,
+        viewerPageIndex: 0,
       })
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Could not detect panels.'
