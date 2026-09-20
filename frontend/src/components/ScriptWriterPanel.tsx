@@ -38,7 +38,7 @@ export default function ScriptWriterPanel({ onApplyScript }: ScriptWriterPanelPr
   } | null>(null)
 
   useEffect(() => {
-    listScriptStyles().then(setStyles).catch(() => {})
+    listScriptStyles().then((s) => setStyles(Array.isArray(s) ? s : [])).catch(() => {})
   }, [])
 
   const handleGenerate = useCallback(async () => {
