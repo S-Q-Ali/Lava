@@ -1,9 +1,6 @@
-import { useState } from 'react'
 import MediaPanel from './MediaPanel'
 import ManhwaPanel from './ManhwaPanel'
 import { CaptionPanel } from './CaptionPanel'
-import { PresetPanel } from './PresetPanel'
-import ExtractorPanel from './ExtractorPanel'
 import ExportPanel from './ExportPanel'
 import VoiceoverPanel from './VoiceoverPanel'
 import ScriptWriterPanel from './ScriptWriterPanel'
@@ -61,7 +58,11 @@ export default function LeftWorkspace({ activeNav }: LeftWorkspaceProps) {
         </div>
       )
     case 'ai-tools':
-      return <AiToolsWorkspace />
+      return (
+        <div className="left-workspace-content">
+          <ManhwaPanel />
+        </div>
+      )
     case 'voiceover':
       return (
         <div className="left-workspace-content">
@@ -159,32 +160,4 @@ export default function LeftWorkspace({ activeNav }: LeftWorkspaceProps) {
     default:
       return <WorkspaceOverview title="Home" />
   }
-}
-
-type AiTab = 'extractor' | 'manhwa'
-
-function AiToolsWorkspace() {
-  const [tab, setTab] = useState<AiTab>('extractor')
-
-  return (
-    <div className="left-workspace-content">
-      <div className="ai-tools-tabs">
-        <button
-          type="button"
-          className={`ai-tools-tab${tab === 'extractor' ? ' active' : ''}`}
-          onClick={() => setTab('extractor')}
-        >
-          Presentation
-        </button>
-        <button
-          type="button"
-          className={`ai-tools-tab${tab === 'manhwa' ? ' active' : ''}`}
-          onClick={() => setTab('manhwa')}
-        >
-          Manhwa
-        </button>
-      </div>
-      {tab === 'extractor' ? <ExtractorPanel /> : <ManhwaPanel />}
-    </div>
-  )
 }
