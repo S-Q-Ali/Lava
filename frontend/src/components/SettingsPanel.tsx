@@ -63,9 +63,11 @@ export function SettingsPanel() {
   useEffect(() => {
     void fetchModels()
     const interval = setInterval(() => {
-      const hasActive = modelsRef.current.some((m) => m.download_status === 'downloading')
+      const hasActive = modelsRef.current.some((m) =>
+        m.download_status === 'downloading' || m.download_status === 'installing',
+      )
       if (hasActive) void fetchModels()
-    }, 2000)
+    }, 1000)
     return () => clearInterval(interval)
   }, [fetchModels])
 

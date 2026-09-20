@@ -449,6 +449,8 @@ async def model_status():
     result = []
     for m in models:
         progress = _get_progress(m.id)
+        # During active download/install, hide installed badge
+        is_active = progress["status"] in ("downloading", "installing")
         result.append(ModelStatusResponse(
             id=m.id,
             name=m.name,
@@ -459,7 +461,7 @@ async def model_status():
             download_url=m.download_url,
             download_command=m.download_command,
             required=m.required,
-            installed=m.installed,
+            installed=m.installed and not is_active,
             size_on_disk=m.size_on_disk,
             download_status=progress["status"],
             download_progress=progress["progress"],
