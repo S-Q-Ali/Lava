@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { backendBaseUrl } from '../services/ffmpeg'
 import { HardwarePanel } from './HardwarePanel'
 import './SettingsPanel.css'
@@ -35,6 +35,9 @@ export function SettingsPanel() {
   const [cerebrasKey, setCerebrasKey] = useState('')
   const [mistralKey, setMistralKey] = useState('')
   const [savedMsg, setSavedMsg] = useState<string | null>(null)
+  const [downloadMsg, setDownloadMsg] = useState<string | null>(null)
+  const modelsRef = useRef(models)
+  modelsRef.current = models
 
   const fetchModels = useCallback(async () => {
     try {
@@ -59,24 +62,29 @@ export function SettingsPanel() {
 
   useEffect(() => {
     void fetchModels()
-    // Poll progress every 2s for active downloads
     const interval = setInterval(() => {
-      const hasActive = models.some((m) => m.download_status === 'downloading')
+      const hasActive = modelsRef.current.some((m) => m.download_status === 'downloading')
       if (hasActive) void fetchModels()
     }, 2000)
     return () => clearInterval(interval)
-  }, [fetchModels, models])
+  }, [fetchModels])
 
   const handleDownload = async (modelId: string) => {
     try {
+      setDownloadMsg(null)
       const baseUrl = backendBaseUrl()
-      await fetch(`${baseUrl.replace(/\/$/, '')}/api/models/download/${modelId}`, {
+      const res = await fetch(`${baseUrl.replace(/\/$/, '')}/api/models/download/${modelId}`, {
         method: 'POST',
       })
-      // Refresh immediately
+      const body = await res.json()
+      if (!body.success) {
+        setDownloadMsg(body.error || 'Download failed')
+        setTimeout(() => setDownloadMsg(null), 3000)
+      }
       void fetchModels()
     } catch {
-      // Connection failed
+      setDownloadMsg('Connection failed')
+      setTimeout(() => setDownloadMsg(null), 3000)
     }
   }
 
@@ -201,6 +209,7 @@ export function SettingsPanel() {
             <p className="settings-hint">Loading models...</p>
           ) : (
             <div className="settings-models">
+              {downloadMsg && <p className="settings-download-msg">{downloadMsg}</p>}
               {models.map((model) => (
                 <div
                   key={model.id}
@@ -235,6 +244,17 @@ export function SettingsPanel() {
                           {model.download_message || 'Downloading...'}
                         </span>
                       </div>
+                    ) : model.download_status === 'error' ? (
+                      <div className="settings-download-error">
+                        <span className="settings-error-text">{model.download_message || 'Download failed'}</span>
+                        <button
+                          type="button"
+                          className="settings-download-btn"
+                          onClick={() => void handleDownload(model.id)}
+                        >
+                          Retry
+                        </button>
+                      </div>
                     ) : model.installed ? (
                       <button
                         type="button"
@@ -243,6 +263,8 @@ export function SettingsPanel() {
                       >
                         Delete
                       </button>
+                    ) : model.download_source === 'pip' ? (
+                      <span className="settings-badge auto">Auto-downloads on first use</span>
                     ) : (
                       <button
                         type="button"
