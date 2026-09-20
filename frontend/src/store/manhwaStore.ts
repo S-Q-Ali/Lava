@@ -30,11 +30,14 @@ interface ManhwaStore {
   strips: ManhwaStripSummary[]
   currentId: string | null
   detail: ManhwaStripDetail | null
+  viewerPageIndex: number
   refresh(): Promise<void>
   select(id: string | null): Promise<void>
   upload(file: File): Promise<void>
   uploadPdf(file: File): Promise<void>
   uploadOnly(file: File): Promise<void>
+  nextPage(): void
+  prevPage(): void
   startDetection(): Promise<void>
   apply(op: CorrectionOp): Promise<void>
   redetect(): Promise<void>
@@ -46,6 +49,7 @@ export const useManhwaStore = create<ManhwaStore>()((set, get) => ({
   strips: [],
   currentId: null,
   detail: null,
+  viewerPageIndex: 0,
 
   refresh: async () => {
     set({ status: { phase: 'loading' } })
@@ -116,16 +120,31 @@ export const useManhwaStore = create<ManhwaStore>()((set, get) => ({
         const result = await uploadPdfOnly(file, (progress) => {
           set({ status: { phase: 'uploading', progress } })
         })
-        set({ status: { phase: 'uploaded', pages: result.pages, fileName: result.fileName } })
+        set({ status: { phase: 'uploaded', pages: result.pages, fileName: result.fileName }, viewerPageIndex: 0 })
       } else {
         const result = await uploadStripOnly(file, (progress) => {
           set({ status: { phase: 'uploading', progress } })
         })
-        set({ status: { phase: 'uploaded', pages: [result], fileName: result.fileName } })
+        set({ status: { phase: 'uploaded', pages: [result], fileName: result.fileName }, viewerPageIndex: 0 })
       }
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Could not upload file.'
       set({ status: { phase: 'error', error: message } })
+    }
+  },
+
+  nextPage: () => {
+    const { status, viewerPageIndex } = get()
+    if (status.phase !== 'uploaded') return
+    if (viewerPageIndex < status.pages.length - 1) {
+      set({ viewerPageIndex: viewerPageIndex + 1 })
+    }
+  },
+
+  prevPage: () => {
+    const { viewerPageIndex } = get()
+    if (viewerPageIndex > 0) {
+      set({ viewerPageIndex: viewerPageIndex - 1 })
     }
   },
 

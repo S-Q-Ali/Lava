@@ -7,9 +7,12 @@ export function ManhwaPanel() {
   const strips = useManhwaStore((s) => s.strips)
   const currentId = useManhwaStore((s) => s.currentId)
   const detail = useManhwaStore((s) => s.detail)
+  const viewerPageIndex = useManhwaStore((s) => s.viewerPageIndex)
   const refresh = useManhwaStore((s) => s.refresh)
   const select = useManhwaStore((s) => s.select)
   const uploadOnly = useManhwaStore((s) => s.uploadOnly)
+  const nextPage = useManhwaStore((s) => s.nextPage)
+  const prevPage = useManhwaStore((s) => s.prevPage)
   const startDetection = useManhwaStore((s) => s.startDetection)
   const apply = useManhwaStore((s) => s.apply)
   const redetect = useManhwaStore((s) => s.redetect)
@@ -95,10 +98,26 @@ export function ManhwaPanel() {
       )}
 
       {status.phase === 'uploaded' && (
-        <div className="manhwa-ready">
-          <p className="manhwa-ready-info">
-            ✅ {status.fileName} ({status.pages.length} {status.pages.length === 1 ? 'page' : 'pages'})
-          </p>
+        <div className="manhwa-viewer">
+          <div className="manhwa-viewer-header">
+            <span className="manhwa-viewer-filename" title={status.fileName}>{status.fileName}</span>
+            <span className="manhwa-viewer-count">{status.pages.length} pages</span>
+          </div>
+          <div className="manhwa-viewer-nav">
+            <button type="button" onClick={() => void prevPage()} disabled={viewerPageIndex === 0}>
+              ◀ Prev
+            </button>
+            <span className="manhwa-viewer-page">{viewerPageIndex + 1} / {status.pages.length}</span>
+            <button type="button" onClick={() => void nextPage()} disabled={viewerPageIndex === status.pages.length - 1}>
+              Next ▶
+            </button>
+          </div>
+          <div className="manhwa-viewer-image">
+            <img
+              src={sourceImageUrl(status.pages[viewerPageIndex].stripId)}
+              alt={`Page ${viewerPageIndex + 1}`}
+            />
+          </div>
           <button type="button" className="manhwa-detect-btn" onClick={() => void startDetection()}>
             Start Extraction
           </button>
