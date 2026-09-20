@@ -174,3 +174,25 @@ The `backend/` service exposes the FFmpeg capability the browser lacks. Contract
 Uploads/renders live under project-local `cache/backend/` (gitignored). Whisper models live under project-local `models/whisper/` (gitignored); CLIP model under `models/clip/` (gitignored). The frontend's `HttpFFmpegProvider` (`frontend/src/services/ffmpeg.ts`) auto-detects the sidecar via `GET /api/health` and falls back to the unavailable provider when it is not running.
 
 Current gaps (honest state): `backend/` hosts media + ASR + CLIP matching only — transitions, caption and Manhwa pipelines are not implemented; match *duration pacing* is implemented only at the edges (floor + tail hold within the narration-audio horizon) and timing overrides are preserved across re-matches but beat ids remain positional (stable ids reserved); transcript timing edits/re-segmentation are deferred.
+
+## 7. M11/M12 Backend Modules
+
+| Module | File | Endpoint | Purpose |
+|--------|------|----------|---------|
+| Groq Transcription | `groq_transcribe.py` | `POST /api/transcribe-groq` | Cloud Whisper via Groq API |
+| Captions Export | `captions_export.py` | `POST /api/captions/export` | SRT/VTT subtitle download |
+| Visual Prompts | `visual_prompts.py` | `POST /api/visual-prompts/generate` | LLM-powered image prompt generation |
+| Voice Blending | `voice_blending.py` | `POST /api/voiceover/blend` | FFmpeg amix multi-voice blending |
+| Voice Cloning | `voice_cloning.py` | `POST /api/voiceover/clone` | XTTS-v2 voice cloning |
+| Model Manager | `model_manager.py` | `GET/POST/DELETE /api/models/*` | Model status, download, delete |
+| Image Generation | `image_gen.py` | `POST /api/image-gen/batch` | Gemini Imagen 3 batch generation |
+| Podcast Maker | `podcast_maker.py` | `POST /api/podcast/generate` | Multi-turn dialogue synthesis |
+| Voice Library | `voice_library.py` | `GET /api/voices` | Browse 322+ TTS voices |
+| Sound FX | `sound_fx.py` | `POST /api/sfx/generate` | ZzFX procedural + web search |
+| Bulk TTS | `bulk_tts.py` | `POST /api/bulk-tts/generate` | Batch TTS + ZIP download |
+| Timeline Sync | `timeline_sync.py` | `POST /api/timeline-sync` | Image-audio alignment |
+| Video Clipper | `video_clipper.py` | `POST /api/clipper` | 9:16 vertical clip extraction |
+| Hardware Analyzer | `hardware_analyzer.py` | `GET /api/hardware/analyze` | Pre-download system assessment |
+| Auto-Update | `auto_updater.py` | `GET /api/update/check` | GitHub releases version check |
+| Pipeline Engine | `pipeline_engine.py` | (internal) | Script-to-video orchestrator |
+| Pipeline API | `pipeline_api.py` | `POST /api/pipeline/run-script` | End-to-end pipeline endpoint |

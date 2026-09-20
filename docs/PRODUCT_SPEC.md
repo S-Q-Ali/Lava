@@ -334,6 +334,45 @@ The user should be able to understand what happened, change it, undo it, and con
 
 The system should feel authored, fast and trustworthy.
 
+## 12. M11/M12 Features (AutoCut Studio PRO + Clabeo Parity)
+
+### Voice & TTS
+- **Groq Whisper** — cloud transcription (6 models, 25 languages)
+- **Edge-TTS** — 322+ voices, bulk generation, ZIP download
+- **Voice Blending** — FFmpeg amix, 2+ voices with volume ratios
+- **Voice Cloning** — XTTS-v2, 6-second reference sample (manual download)
+
+### Captions
+- **25 languages** — Urdu, Arabic, Hindi, Chinese, Japanese, Korean, Thai, Hebrew, Bengali, etc.
+- **8 new styles** — RTL/CJK support (Arabic, Hindi, Chinese, Japanese, Korean, Thai, Hebrew, Bengali)
+- **SRT/VTT export** — POST /api/captions/export
+
+### Image Generation
+- **Gemini Imagen 3** — batch generation from prompts, 11 art styles
+- **Custom upload** — upload images for timeline
+- **Visual Prompts** — LLM-powered prompt generation
+
+### Audio Features
+- **Podcast Maker** — multi-turn dialogue from topic (LLM + edge-tts)
+- **Sound FX** — ZzFX procedural + Wikimedia/Internet Archive search
+- **Bulk TTS** — TXT import, batch generation, ZIP download
+
+### Video Features
+- **Timeline Sync** — auto-sync images to voiceover by timecodes
+- **Video Clipper** — 9:16 vertical clips, scene detection, 4 crop modes
+
+### Pipeline
+- **End-to-End** — Script → TTS → Images → Sync → Captions → Render → Video
+- **Progress tracking** — real-time stage progress via polling
+- **Video preview** — HTML5 player in pipeline output
+
+### Tools
+- **Hardware Analyzer** — pre-download system assessment (Easy/Medium/Hard/Insufficient)
+- **Script Templates** — 9 pre-built templates, one-click load
+- **My Generations** — history of generated audio, re-download
+- **Auto-Update** — GitHub releases checker
+- **Settings Panel** — Groq/Gemini/Cerebras/Mistral API keys, model manager
+
 ## Reference repositories
 
 - https://github.com/Graphify-Labs/graphify.git
