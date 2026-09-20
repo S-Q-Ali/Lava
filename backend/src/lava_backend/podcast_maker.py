@@ -18,7 +18,7 @@ from pydantic import BaseModel, Field
 from .config import get_config
 from .errors import ApiError
 
-router = APIRouter(prefix="/api/podcast", tags=["podcast"])
+router = APIRouter(prefix="/podcast", tags=["podcast"])
 
 PODCAST_OUTPUT_DIR = Path("podcast_output")
 PODCAST_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)

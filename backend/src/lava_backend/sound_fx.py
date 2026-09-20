@@ -21,7 +21,7 @@ from pydantic import BaseModel, Field
 
 from .errors import ApiError
 
-router = APIRouter(prefix="/api/sfx", tags=["sfx"])
+router = APIRouter(prefix="/sfx", tags=["sfx"])
 
 SFX_CACHE_DIR = Path("sfx_cache")
 SFX_CACHE_DIR.mkdir(parents=True, exist_ok=True)

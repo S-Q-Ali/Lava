@@ -16,7 +16,7 @@ from pydantic import BaseModel, Field
 
 from .errors import ApiError
 
-router = APIRouter(prefix="/api/voices", tags=["voices"])
+router = APIRouter(prefix="/voices", tags=["voices"])
 
 VOICE_CACHE_FILE = Path("voice_cache.json")
 

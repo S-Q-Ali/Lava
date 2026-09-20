@@ -14,7 +14,7 @@ from pathlib import Path
 from fastapi import APIRouter
 from pydantic import BaseModel
 
-router = APIRouter(prefix="/api/hardware", tags=["hardware"])
+router = APIRouter(prefix="/hardware", tags=["hardware"])
 
 
 # ── Per-model hardware requirements ──────────────────────────────────────────

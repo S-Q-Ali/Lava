@@ -14,7 +14,7 @@ from pydantic import BaseModel
 
 from .errors import ApiError
 
-router = APIRouter(prefix="/api/update", tags=["update"])
+router = APIRouter(prefix="/update", tags=["update"])
 
 CURRENT_VERSION = os.environ.get("LAVA_VERSION", "1.0.0-beta")
 

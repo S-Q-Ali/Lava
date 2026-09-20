@@ -8,7 +8,7 @@ from . import (
     ScriptRequest, ScriptStyle, generate_script,
 )
 
-router = APIRouter(prefix="/api/scriptwriter", tags=["scriptwriter"])
+router = APIRouter(prefix="/scriptwriter", tags=["scriptwriter"])
 
 
 class ScriptGenRequest(BaseModel):

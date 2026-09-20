@@ -18,7 +18,7 @@ from pydantic import BaseModel, Field
 
 from .errors import ApiError
 
-router = APIRouter(prefix="/api/bulk-tts", tags=["bulk-tts"])
+router = APIRouter(prefix="/bulk-tts", tags=["bulk-tts"])
 
 TTS_semaphore = asyncio.Semaphore(3)
 

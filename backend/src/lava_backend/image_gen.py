@@ -19,7 +19,7 @@ from pydantic import BaseModel, Field
 from .config import get_config
 from .errors import ApiError
 
-router = APIRouter(prefix="/api/image-gen", tags=["image-gen"])
+router = APIRouter(prefix="/image-gen", tags=["image-gen"])
 
 IMAGE_OUTPUT_DIR = Path("image_gen_output")
 IMAGE_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)

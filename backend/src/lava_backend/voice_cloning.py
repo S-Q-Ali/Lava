@@ -21,7 +21,7 @@ from pydantic import BaseModel, Field
 from .config import get_config
 from .errors import ApiError
 
-router = APIRouter(prefix="/api/voiceover", tags=["voice-cloning"])
+router = APIRouter(prefix="/voiceover", tags=["voice-cloning"])
 
 CLONE_OUTPUT_DIR = Path("voiceover_output")
 CLONE_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)

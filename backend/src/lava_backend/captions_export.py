@@ -10,7 +10,7 @@ from .captions_engine.generators import (
     generate_vtt_from_captions,
 )
 
-router = APIRouter(prefix="/api/captions", tags=["captions"])
+router = APIRouter(prefix="/captions", tags=["captions"])
 
 SUPPORTED_FORMATS = ["srt", "vtt", "ass"]
 

@@ -11,7 +11,7 @@ from pydantic import BaseModel, Field
 
 from .pipeline.providers.factory import create_provider
 
-router = APIRouter(prefix="/api/visual-prompts", tags=["visual-prompts"])
+router = APIRouter(prefix="/visual-prompts", tags=["visual-prompts"])
 
 
 class VisualStyle(str, Enum):

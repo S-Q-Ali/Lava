@@ -14,7 +14,7 @@ from pydantic import BaseModel, Field
 
 from .errors import ApiError
 
-router = APIRouter(prefix="/api/timeline-sync", tags=["timeline-sync"])
+router = APIRouter(prefix="/timeline-sync", tags=["timeline-sync"])
 
 
 class TimelineClip(BaseModel):

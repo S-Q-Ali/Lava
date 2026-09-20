@@ -16,7 +16,7 @@ from pydantic import BaseModel, Field
 from .config import get_config
 from .errors import ApiError
 
-router = APIRouter(prefix="/api/clipper", tags=["clipper"])
+router = APIRouter(prefix="/clipper", tags=["clipper"])
 
 CLIP_OUTPUT_DIR = Path("clip_output")
 CLIP_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)

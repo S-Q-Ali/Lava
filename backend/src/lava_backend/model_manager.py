@@ -24,7 +24,7 @@ from pydantic import BaseModel
 
 from .config import get_config
 
-router = APIRouter(prefix="/api/models", tags=["model-manager"])
+router = APIRouter(prefix="/models", tags=["model-manager"])
 
 # ── Model Registry ──────────────────────────────────────────────────
 

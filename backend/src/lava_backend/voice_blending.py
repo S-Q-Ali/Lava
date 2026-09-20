@@ -18,7 +18,7 @@ from pydantic import BaseModel, Field
 from .config import get_config
 from .errors import ApiError
 
-router = APIRouter(prefix="/api/voiceover", tags=["voice-blending"])
+router = APIRouter(prefix="/voiceover", tags=["voice-blending"])
 
 BLEND_OUTPUT_DIR = Path("voiceover_output")
 BLEND_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
