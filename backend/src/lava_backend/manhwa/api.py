@@ -316,7 +316,7 @@ async def upload_strip_only(request: Request, file: UploadFile | None = File(def
     except OSError as exc:
         raise ApiError(500, "STORAGE_FAILED", f"could not store strip: {exc}") from exc
 
-    return {"stripId": source_id, "fileName": file.name or f"source{ext}"}
+    return {"stripId": source_id, "fileName": file.filename or f"source{ext}"}
 
 
 @router.post("/strips/pdf-upload", status_code=201)
@@ -369,7 +369,7 @@ async def upload_pdf_only(request: Request, file: UploadFile | None = File(defau
     if not pages:
         raise ApiError(422, "NO_PAGES", "No pages could be extracted from the PDF.")
 
-    return {"pages": pages, "fileName": file.name or "document.pdf"}
+    return {"pages": pages, "fileName": file.filename or "document.pdf"}
 
 
 @router.post("/strips/{source_id}/detect")
