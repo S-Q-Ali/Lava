@@ -1,10 +1,10 @@
 """PDF page extraction for manhwa/webtoon import.
 
 Converts each page of a PDF to a PNG image using PyMuPDF (fitz).
-Two-stage filter skips blank and text-only pages while keeping manhwa images.
-
-Stage 1: Text-only detection — skips pages with no embedded images or drawings.
-Stage 2: Visual content check — lower threshold catches manhwa pages with white gutters.
+Skips blank pages using pixel sampling — keeps all non-blank pages
+(including manhwa panels, text pages, and anything with visual content).
+Manhwa PDFs often use Form XObjects which make image/drawing detection
+unreliable, so we rely on rendered pixel sampling instead.
 """
 
 from __future__ import annotations
@@ -19,23 +19,13 @@ DEFAULT_DPI = 150
 
 
 def _should_extract_page(page: fitz.Page, dpi: int = DEFAULT_DPI) -> bool:
-    """Two-stage filter: skip blank and text-only pages, keep manhwa images.
+    """Skip blank pages using pixel sampling. Keep everything else.
 
-    Stage 1 (fast): If page has no embedded images AND no vector drawings,
-    it's likely a text-only page (copyright, TOC, author notes) → skip.
-
-    Stage 2 (pixel check): Sample the rendered page to detect blank pages.
-    Uses 80×240 grid with 0.3% threshold — catches pages with large white
-    gutters between manhwa panels.
+    Renders the page at low resolution and checks if there are enough
+    non-white pixels to consider it non-blank. Uses an 80×240 sampling
+    grid with a 0.3% threshold — catches blank pages while keeping
+    manhwa pages with large white gutters between panels.
     """
-    # Stage 1: Text-only detection
-    images = page.get_images()
-    drawings = page.get_drawings()
-
-    if len(images) == 0 and len(drawings) == 0:
-        return False
-
-    # Stage 2: Visual content check (pixel sampling)
     zoom = dpi / 72.0
     matrix = fitz.Matrix(zoom, zoom)
     pix = page.get_pixmap(matrix=matrix, alpha=False)
@@ -43,7 +33,6 @@ def _should_extract_page(page: fitz.Page, dpi: int = DEFAULT_DPI) -> bool:
     if pix.width == 0 or pix.height == 0:
         return False
 
-    # Higher resolution sampling: 80×240 grid
     samples_x = min(pix.width, 80)
     samples_y = min(pix.height, 240)
     step_x = max(1, pix.width // samples_x)
