@@ -175,15 +175,19 @@ export const useManhwaStore = create<ManhwaStore>()((set, get) => ({
     try {
       let firstDetail: ManhwaStripDetail | null = null
       for (let i = 0; i < pages.length; i++) {
-        const detail = await detectStrip(pages[i].stripId)
-        if (!firstDetail) firstDetail = detail
+        try {
+          const detail = await detectStrip(pages[i].stripId)
+          if (!firstDetail) firstDetail = detail
+        } catch {
+          // Skip failed pages — continue with the rest
+        }
         set({ detectionProgress: { current: i + 1, total: pages.length } })
       }
       const strips = await listStrips()
       set({
         status: { phase: 'idle' },
         strips,
-        currentId: pages[0]?.stripId ?? null,
+        currentId: strips.length > 0 ? strips[0].id : null,
         detail: firstDetail,
         viewerPageIndex: 0,
         detectionProgress: null,
