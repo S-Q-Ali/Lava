@@ -40,6 +40,12 @@ export function ManhwaResultsModal() {
 
   const panels = useMemo(() => detail?.panels ?? [], [detail])
 
+  // Pages to show in uploaded phase — from status.pages (set by uploadOnly)
+  const uploadPages = useMemo(
+    () => (isUploaded ? status.pages : []),
+    [isUploaded, status],
+  )
+
   // Reset selection when modal opens/closes
   useEffect(() => {
     if (!resultsModalOpen) {
@@ -128,7 +134,7 @@ export function ManhwaResultsModal() {
   const meta = isDetecting
     ? `${detectionProgress?.current ?? 0} / ${detectionProgress?.total ?? pendingPages.length} pages`
     : isUploaded
-      ? `${pendingPages.length} pages — source`
+      ? `${uploadPages.length} pages — source`
       : isIdle && panels.length > 0
         ? `${panels.length} panels across ${strips.length} ${strips.length === 1 ? 'page' : 'pages'}`
         : ''
@@ -188,7 +194,7 @@ export function ManhwaResultsModal() {
           {isUploaded && (
             <div className="manhwa-results-upload-layout">
               <div className="manhwa-results-grid">
-                {pendingPages.map((page, index) => (
+                {uploadPages.map((page, index) => (
                   <div
                     key={page.stripId}
                     className={`manhwa-results-thumb${index === viewerPageIndex ? ' active' : ''}`}
@@ -209,19 +215,19 @@ export function ManhwaResultsModal() {
               <div className="manhwa-results-preview">
                 <div className="manhwa-results-preview-nav">
                   <button type="button" onClick={() => void prevPage()} disabled={viewerPageIndex === 0}>
-                    ◀ Prev
+                    Prev
                   </button>
                   <span className="manhwa-results-preview-page">
-                    {viewerPageIndex + 1} / {pendingPages.length}
+                    {viewerPageIndex + 1} / {uploadPages.length}
                   </span>
-                  <button type="button" onClick={() => void nextPage()} disabled={viewerPageIndex === pendingPages.length - 1}>
-                    Next ▶
+                  <button type="button" onClick={() => void nextPage()} disabled={viewerPageIndex === uploadPages.length - 1}>
+                    Next
                   </button>
                 </div>
                 <div className="manhwa-results-preview-image">
-                  {pendingPages[viewerPageIndex] && (
+                  {uploadPages[viewerPageIndex] && (
                     <img
-                      src={sourceImageUrl(pendingPages[viewerPageIndex].stripId)}
+                      src={sourceImageUrl(uploadPages[viewerPageIndex].stripId)}
                       alt={`Page ${viewerPageIndex + 1}`}
                     />
                   )}
