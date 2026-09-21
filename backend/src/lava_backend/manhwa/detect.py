@@ -42,14 +42,14 @@ from lava_backend.manhwa.panels import (
 )
 
 DEFAULT_MAX_WIDTH = 512
-CONTENT_EPS = 0.03          # row "empty" if foreground coverage < 3%
-GUTTER_MIN_H = 8            # analysis px a clean empty band needs to separate
+CONTENT_EPS = 0.01          # row "empty" if foreground coverage < 1% (lowered for color manhwa)
+GUTTER_MIN_H = 4            # analysis px a clean empty band needs to separate (lowered for manhwa)
 UNIFORM_FLAT = 0.97         # row must be this flat to count as a clean gutter
-BG_TOL = 12                 # |gray − bg| above this marks a pixel as content
+BG_TOL = 8                  # |gray − bg| above this marks a pixel as content (lowered for color pages)
 STD_DENOM = 40.0            # normalizer for row std → uniform score
 CLEAN_CUT_CONF = 0.95
 RESCUE_CUT_CONF = 0.35
-SEAM_NEIGHBOR = 0.15        # content rows immediately beside a seam must reach
+SEAM_NEIGHBOR = 0.05        # content rows immediately beside a seam must reach (lowered for manhwa)
 SEAM_MAX_H = 24             # a seam is narrow; anything bigger is a clean band or dead zone
 NEIGHBOR_BAND = 3           # rows sampled immediately above/below a run
 MIN_PANEL_H = 24            # analysis px; thinner panels are slivers → merged
