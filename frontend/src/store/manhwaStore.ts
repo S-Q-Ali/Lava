@@ -11,9 +11,12 @@ import {
   redetectStrip,
   deleteStrip,
   deleteAllStrips,
+  fetchGroups,
+  deleteGroup,
   type ManhwaPanel,
   type ManhwaStripSummary,
   type ManhwaStripDetail,
+  type ManhwaGroup,
   type CorrectionOp,
 } from '../services/manhwa'
 
@@ -31,6 +34,7 @@ export type ManhwaStatus =
 interface ManhwaStore {
   status: ManhwaStatus
   strips: ManhwaStripSummary[]
+  groups: ManhwaGroup[]
   currentId: string | null
   detail: ManhwaStripDetail | null
   viewerPageIndex: number
@@ -50,12 +54,14 @@ interface ManhwaStore {
   apply(op: CorrectionOp): Promise<void>
   redetect(): Promise<void>
   remove(id: string): Promise<void>
+  removeGroup(groupId: string): Promise<void>
   clearAll(): Promise<void>
 }
 
 export const useManhwaStore = create<ManhwaStore>()((set, get) => ({
   status: { phase: 'idle' },
   strips: [],
+  groups: [],
   currentId: null,
   detail: null,
   viewerPageIndex: 0,
@@ -66,8 +72,8 @@ export const useManhwaStore = create<ManhwaStore>()((set, get) => ({
   refresh: async () => {
     set({ status: { phase: 'loading' } })
     try {
-      const strips = await listStrips()
-      set({ status: { phase: 'idle' }, strips })
+      const [strips, groups] = await Promise.all([listStrips(), fetchGroups()])
+      set({ status: { phase: 'idle' }, strips, groups })
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Could not load strips.'
       set({ status: { phase: 'error', error: message } })
@@ -250,12 +256,24 @@ export const useManhwaStore = create<ManhwaStore>()((set, get) => ({
     set({ status: { phase: 'loading' } })
     try {
       await deleteStrip(id)
-      const strips = await listStrips()
+      const [strips, groups] = await Promise.all([listStrips(), fetchGroups()])
       const currentId = get().currentId === id ? null : get().currentId
       const detail = get().currentId === id ? null : get().detail
-      set({ status: { phase: 'idle' }, strips, currentId, detail })
+      set({ status: { phase: 'idle' }, strips, groups, currentId, detail })
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Could not delete strip.'
+      set({ status: { phase: 'error', error: message } })
+    }
+  },
+
+  removeGroup: async (groupId) => {
+    set({ status: { phase: 'loading' } })
+    try {
+      await deleteGroup(groupId)
+      const [strips, groups] = await Promise.all([listStrips(), fetchGroups()])
+      set({ status: { phase: 'idle' }, strips, groups })
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Could not delete group.'
       set({ status: { phase: 'error', error: message } })
     }
   },
@@ -267,6 +285,7 @@ export const useManhwaStore = create<ManhwaStore>()((set, get) => ({
       set({
         status: { phase: 'idle' },
         strips: [],
+        groups: [],
         currentId: null,
         detail: null,
         viewerPageIndex: 0,
