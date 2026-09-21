@@ -23,6 +23,7 @@ export function ManhwaResultsModal() {
   const prevPage = useManhwaStore((s) => s.prevPage)
   const startDetection = useManhwaStore((s) => s.startDetection)
   const select = useManhwaStore((s) => s.select)
+  const clearAll = useManhwaStore((s) => s.clearAll)
 
   const [expandedPanelId, setExpandedPanelId] = useState<string | null>(null)
   const [adjustBounds, setAdjustBounds] = useState<{
@@ -33,6 +34,8 @@ export function ManhwaResultsModal() {
     h: number
   } | null>(null)
   const [exportFormat, setExportFormat] = useState<'png' | 'jpg'>('png')
+  const [confirmDelete, setConfirmDelete] = useState<string | null>(null)
+  const [confirmClearAll, setConfirmClearAll] = useState(false)
 
   const isDetecting = status.phase === 'detecting'
   const isIdle = status.phase === 'idle'
@@ -248,6 +251,33 @@ export function ManhwaResultsModal() {
                 >
                   Re-detect
                 </button>
+                {confirmClearAll ? (
+                  <>
+                    <span className="manhwa-results-confirm-text">Clear all results?</span>
+                    <button
+                      type="button"
+                      className="manhwa-results-action-btn manhwa-results-panel-danger"
+                      onClick={() => { setConfirmClearAll(false); void clearAll() }}
+                    >
+                      Yes, Clear
+                    </button>
+                    <button
+                      type="button"
+                      className="manhwa-results-action-btn"
+                      onClick={() => setConfirmClearAll(false)}
+                    >
+                      Cancel
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    type="button"
+                    className="manhwa-results-action-btn manhwa-results-panel-danger"
+                    onClick={() => setConfirmClearAll(true)}
+                  >
+                    Clear All
+                  </button>
+                )}
                 <div className="manhwa-results-toolbar-spacer" />
                 <div className="manhwa-results-export-group">
                   <select
@@ -347,13 +377,33 @@ export function ManhwaResultsModal() {
                           >
                             Down
                           </button>
-                          <button
-                            type="button"
-                            className="manhwa-results-panel-action-btn manhwa-results-panel-danger"
-                            onClick={() => void handleApply(panel.sourceId, { op: 'delete', panelId: panel.id })}
-                          >
-                            Delete
-                          </button>
+                          {confirmDelete === panel.id ? (
+                            <>
+                              <span className="manhwa-results-confirm-text">Delete?</span>
+                              <button
+                                type="button"
+                                className="manhwa-results-panel-action-btn manhwa-results-panel-danger"
+                                onClick={() => { setConfirmDelete(null); void handleApply(panel.sourceId, { op: 'delete', panelId: panel.id }) }}
+                              >
+                                Yes
+                              </button>
+                              <button
+                                type="button"
+                                className="manhwa-results-panel-action-btn"
+                                onClick={() => setConfirmDelete(null)}
+                              >
+                                No
+                              </button>
+                            </>
+                          ) : (
+                            <button
+                              type="button"
+                              className="manhwa-results-panel-action-btn manhwa-results-panel-danger"
+                              onClick={() => setConfirmDelete(panel.id)}
+                            >
+                              Delete
+                            </button>
+                          )}
                         </div>
                       </div>
 

@@ -517,6 +517,13 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* ─── Confirm text ─── */
+.manhwa-results-confirm-text {
+  font-size: 11px;
+  color: var(--text-dim);
+  font-weight: 500;
+}
+
 /* ─── Footer ─── */
 .manhwa-results-footer {
   display: flex;
