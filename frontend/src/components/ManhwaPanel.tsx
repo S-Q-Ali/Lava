@@ -5,25 +5,25 @@ import './ManhwaResultsModal.css'
 
 export default function ManhwaPanel() {
   const status = useManhwaStore((s) => s.status)
-  const strips = useManhwaStore((s) => s.strips)
+  const groups = useManhwaStore((s) => s.groups)
   const uploadOnly = useManhwaStore((s) => s.uploadOnly)
   const refresh = useManhwaStore((s) => s.refresh)
   const openResults = useManhwaStore((s) => s.openResults)
   const select = useManhwaStore((s) => s.select)
-  const remove = useManhwaStore((s) => s.remove)
+  const removeGroup = useManhwaStore((s) => s.removeGroup)
   const resultsModalOpen = useManhwaStore((s) => s.resultsModalOpen)
 
   const fileInputRef = useRef<HTMLInputElement>(null)
   const dragCounterRef = useRef(0)
   const dragOver = status.phase === 'uploading'
-  const [confirmRemoveId, setConfirmRemoveId] = useState<string | null>(null)
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null)
 
-  // Load existing strips on mount
+  // Load existing groups on mount
   useEffect(() => {
-    if (status.phase === 'idle' && strips.length === 0) {
+    if (status.phase === 'idle' && groups.length === 0) {
       void refresh()
     }
-  }, [refresh, status.phase, strips.length])
+  }, [refresh, status.phase, groups.length])
 
   const handleFiles = useCallback(
     (files: FileList | null) => {
@@ -49,19 +49,21 @@ export default function ManhwaPanel() {
   }, [])
 
   const handleView = useCallback(
-    async (sourceId: string) => {
-      await select(sourceId)
+    async (groupId: string) => {
+      const group = groups.find((g) => g.groupId === groupId)
+      if (!group || group.pages.length === 0) return
+      await select(group.pages[0].sourceId)
       openResults()
     },
-    [select, openResults],
+    [groups, select, openResults],
   )
 
-  const handleRemove = useCallback(
-    async (sourceId: string) => {
-      setConfirmRemoveId(null)
-      await remove(sourceId)
+  const handleDelete = useCallback(
+    async (groupId: string) => {
+      setConfirmDeleteId(null)
+      await removeGroup(groupId)
     },
-    [remove],
+    [removeGroup],
   )
 
   const isLoading = status.phase === 'loading' || status.phase === 'uploading' || status.phase === 'processing'
@@ -116,40 +118,42 @@ export default function ManhwaPanel() {
       )}
 
       {/* Recent Extractions */}
-      {(strips?.length ?? 0) > 0 && !isLoading && (
+      {groups.length > 0 && !isLoading && (
         <div className="manhwa-recent">
           <h4 className="manhwa-recent-title">Recent Extractions</h4>
           <div className="manhwa-recent-list">
-            {strips.map((strip) => (
-              <div key={strip.sourceId} className="manhwa-recent-item">
+            {groups.map((group) => (
+              <div key={group.groupId} className="manhwa-recent-item">
                 <div className="manhwa-recent-info">
-                  <span className="manhwa-recent-filename">{strip.sourceFile}</span>
+                  <span className="manhwa-recent-filename">
+                    {group.sourceName ?? group.pages[0]?.sourceFile ?? 'Untitled'}
+                  </span>
                   <span className="manhwa-recent-meta">
-                    {strip.panelCount} {strip.panelCount === 1 ? 'panel' : 'panels'} · {strip.width}x{strip.height}
+                    {group.pageCount} {group.pageCount === 1 ? 'page' : 'pages'} · {group.totalPanels} {group.totalPanels === 1 ? 'panel' : 'panels'}
                   </span>
                 </div>
                 <div className="manhwa-recent-actions">
                   <button
                     type="button"
                     className="manhwa-recent-btn manhwa-recent-view"
-                    onClick={() => void handleView(strip.sourceId)}
+                    onClick={() => void handleView(group.groupId)}
                   >
                     View
                   </button>
-                  {confirmRemoveId === strip.sourceId ? (
+                  {confirmDeleteId === group.groupId ? (
                     <>
-                      <span className="manhwa-recent-confirm">Remove?</span>
+                      <span className="manhwa-recent-confirm">Delete?</span>
                       <button
                         type="button"
                         className="manhwa-recent-btn manhwa-recent-remove-confirm"
-                        onClick={() => void handleRemove(strip.sourceId)}
+                        onClick={() => void handleDelete(group.groupId)}
                       >
                         Yes
                       </button>
                       <button
                         type="button"
                         className="manhwa-recent-btn"
-                        onClick={() => setConfirmRemoveId(null)}
+                        onClick={() => setConfirmDeleteId(null)}
                       >
                         No
                       </button>
@@ -158,9 +162,9 @@ export default function ManhwaPanel() {
                     <button
                       type="button"
                       className="manhwa-recent-btn manhwa-recent-remove"
-                      onClick={() => setConfirmRemoveId(strip.sourceId)}
+                      onClick={() => setConfirmDeleteId(group.groupId)}
                     >
-                      Remove
+                      Delete
                     </button>
                   )}
                 </div>
