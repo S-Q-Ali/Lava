@@ -2549,3 +2549,85 @@ Classical CV pipeline (horizontal cuts only) was too limited for manhwa PDFs. Us
 - Download nano model and test real-world detection
 - Fix pre-existing LeftWorkspace test failure (`.ai-tools-tabs` selector)
 - Consider adding "Refine" button to use seg model on demand
+
+---
+
+## Session 2026-09-21 — Settings modal skeleton loading
+
+### Purpose (WHY)
+Settings modal had no loading state — when the modal opened, it showed an empty white panel while model data fetched from the backend. This is poor UX. A skeleton loading state provides immediate visual feedback.
+
+### WHAT
+- Created `frontend/src/components/SettingsSkeleton.tsx` — Skeleton placeholder component matching all Settings sections (Hardware, API Keys, Models, About)
+- Created `frontend/src/components/SettingsSkeleton.css` — CSS pulse animation and bone shape styles
+- Modified `frontend/src/components/SettingsPanel.tsx` — Added skeleton loading conditional:
+  - When `loading=true`: shows `<SettingsSkeleton />`
+  - When `loading=false`: shows full content in a React fragment
+  - Removed inner `loading` ternary in Models section (was redundant)
+
+### HOW
+- SettingsSkeleton uses a `Bone` component for consistent placeholder shapes
+- CSS uses `@keyframes pulse` for subtle shimmer animation
+- Skeleton layout mirrors real Settings panel: Hardware (1 card + 4 stats), API Keys (4 field rows), Models (5 model cards), About (name + ver + desc)
+- Loading state managed by existing `fetchModels()` call which sets `loading=false` on completion
+
+### Decisions
+- Skeleton over spinner — provides spatial preview of content layout
+- Bone component abstraction — reusable, consistent placeholder styling
+- CSS-only animation — no JS overhead, GPU-accelerated transforms
+
+### Verify
+- Frontend: 384/385 tests pass (1 pre-existing LeftWorkspace failure)
+- TypeScript: 0 type errors
+- Commit: `03e58ae`
+
+### Limitations
+- Skeleton does not animate individual bone transitions (all pulse together)
+- No skeleton for error states (shows error message directly)
+
+### Next step
+- Fix pre-existing LeftWorkspace test failure (`.ai-tools-tabs` selector)
+- Update graphify knowledge graph
+- Continue with remaining roadmap items
+
+---
+
+## Session 2026-09-21 — Fix manhwa 404 + smart PDF extraction + results modal
+
+### Purpose (WHY)
+PDF upload succeeded (201) but immediately fetching source images failed with 404. Additionally, PDF extraction included text-only pages (TOC, copyright) which are useless for manhwa panel detection. User also wanted a proper results viewer modal instead of inline navigation.
+
+### WHAT
+- **Backend: Fix 404** — Added `StripRegistry` creation in `upload_strip_only` and `upload_pdf_only` endpoints (`api.py`). Both now create `registry.json` with image dimensions, MIME type, and empty panels list after saving the source file.
+- **Backend: Skip text-only pages** — Replaced naive all-pages extraction in `pdf_extract.py` with `_page_has_visual_content()` that renders each page and samples pixels to detect non-white content. Pages that are mostly text/blank are skipped.
+- **Frontend: Results modal** — Created `ManhwaResultsModal.tsx` + `.css` with thumbnail grid sidebar, large preview with prev/next navigation, and "Start Extraction" button. Keyboard: Escape closes, Arrow keys navigate.
+- **Frontend: Panel update** — Removed inline viewer from `ManhwaPanel.tsx` when `status.phase === 'uploaded'`. Replaced with a compact "See Results" button that opens the modal.
+- **Frontend: Store update** — Added `resultsModalOpen` boolean + `openResults()`/`closeResults()` actions to `manhwaStore.ts`. Modal auto-opens after upload completes, closes when detection starts.
+
+### HOW
+- `upload_strip_only`: Uses `PIL.Image.open()` to read dimensions/MIME, creates minimal `StripRegistry` with `panels=[]`
+- `upload_pdf_only`: Same per-page after copying extracted PNG
+- `_page_has_visual_content()`: Renders page at low DPI, samples 40x120 grid of pixels, counts non-white (R,G,B < 240). If `non_white / total >= 0.01` → visual page.
+- Modal follows SettingsModal pattern: overlay + content + Escape handler
+- Store auto-sets `resultsModalOpen: true` in `uploadOnly` success path
+
+### Decisions
+- Pixel-based visual detection over embedded-image counting — catches vector drawings, shapes, illustrations (not just embedded images)
+- 1% non-white threshold — conservative, avoids skipping pages with dark backgrounds or partial illustrations
+- Modal over inline viewer — cleaner UX, full-screen for proper image inspection
+
+### Verify
+- Frontend: 384/385 tests pass (pre-existing LeftWorkspace failure)
+- Frontend: 0 type errors
+- Backend: 30/30 manhwa API tests pass
+- Backend: Pre-existing failures in detect, health, transition tests (unrelated)
+- Commit: `16b8e05`
+
+### Limitations
+- Visual detection samples every Nth pixel — very sparse images (e.g. single small icon on white) could theoretically be missed
+- No lazy loading for distant thumbnails in modal grid (only ±3 pages from current)
+
+### Next step
+- Fix pre-existing LeftWorkspace test failure (`.ai-tools-tabs` selector)
+- Update graphify knowledge graph
+- Continue with remaining roadmap items

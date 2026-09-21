@@ -372,9 +372,9 @@
     "semantic_hash": ""
   },
   "docs/SESSION_LOG.md": {
-    "mtime": 1789949562.776875,
-    "seen": 1789949607.5803466,
-    "ast_hash": "709383a01cc995f73e3dcd62f4a0ec29",
+    "mtime": 1789947261.0146968,
+    "seen": 1789947305.4932306,
+    "ast_hash": "c92b2490782b687ac30a405b40713d6a",
     "semantic_hash": ""
   },
   "docs/TEST_PLAN.md": {
@@ -1296,9 +1296,9 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/manhwa/api.py": {
-    "mtime": 1789948977.1113496,
-    "seen": 1789949607.57934,
-    "ast_hash": "dd5540d36df98429135ee8e79cb7d242",
+    "mtime": 1789914708.5311308,
+    "seen": 1789934914.1231873,
+    "ast_hash": "ed940dc5f1a77a3d35826fd4eccea77c",
     "semantic_hash": ""
   },
   "backend/tests/test_manhwa_api.py": {
@@ -1326,9 +1326,9 @@
     "semantic_hash": ""
   },
   "frontend/src/components/ManhwaPanel.tsx": {
-    "mtime": 1789948977.122358,
-    "seen": 1789949607.57934,
-    "ast_hash": "b4cdce8b5dc1a695b4bdc82f884ec970",
+    "mtime": 1789917449.7489526,
+    "seen": 1789934914.1241875,
+    "ast_hash": "a7c913bfb5d57d23612c4fcc507c2709",
     "semantic_hash": ""
   },
   "frontend/src/services/manhwa.test.ts": {
@@ -1350,9 +1350,9 @@
     "semantic_hash": ""
   },
   "frontend/src/store/manhwaStore.ts": {
-    "mtime": 1789948977.125347,
-    "seen": 1789949607.57934,
-    "ast_hash": "4a8adbf6faf85a784f1e6b4017d98b94",
+    "mtime": 1789917473.6998131,
+    "seen": 1789934914.1241875,
+    "ast_hash": "dca102d3fff1b4b50c3c0c86e98a6e6d",
     "semantic_hash": ""
   },
   "docs/SPEC-m7-panel-ui.md": {
@@ -1638,9 +1638,9 @@
     "semantic_hash": ""
   },
   "backend/src/lava_backend/manhwa/pdf_extract.py": {
-    "mtime": 1789948977.112346,
-    "seen": 1789949607.57934,
-    "ast_hash": "77e894cec62d86e323662a8aadaa3a02",
+    "mtime": 1789577825.5329518,
+    "seen": 1789860882.7681587,
+    "ast_hash": "fce351e6f64d70fe458fd232ff47acd4",
     "semantic_hash": ""
   },
   "backend/tests/test_manhwa_pdf.py": {
@@ -2211,12 +2211,6 @@
     "mtime": 1789946298.6594586,
     "seen": 1789947305.4921875,
     "ast_hash": "0d1b3636f120f28ef911d8d19866f2f6",
-    "semantic_hash": ""
-  },
-  "frontend/src/components/ManhwaResultsModal.tsx": {
-    "mtime": 1789948258.1061094,
-    "seen": 1789949607.57934,
-    "ast_hash": "a57a0aa62846183f312a52eeb56c5cca",
     "semantic_hash": ""
   }
 }
