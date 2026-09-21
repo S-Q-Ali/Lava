@@ -10,6 +10,7 @@ import {
   correctStrip,
   redetectStrip,
   deleteStrip,
+  type ManhwaPanel,
   type ManhwaStripSummary,
   type ManhwaStripDetail,
   type CorrectionOp,
@@ -173,22 +174,35 @@ export const useManhwaStore = create<ManhwaStore>()((set, get) => ({
     const pages = status.pages
     set({ status: { phase: 'detecting' }, detectionProgress: { current: 0, total: pages.length }, pendingPages: pages })
     try {
-      let firstDetail: ManhwaStripDetail | null = null
       for (let i = 0; i < pages.length; i++) {
         try {
-          const detail = await detectStrip(pages[i].stripId)
-          if (!firstDetail) firstDetail = detail
+          await detectStrip(pages[i].stripId)
         } catch {
           // Skip failed pages — continue with the rest
         }
         set({ detectionProgress: { current: i + 1, total: pages.length } })
       }
+      // Fetch all strips and aggregate their panels into one detail
       const strips = await listStrips()
+      let allPanels: ManhwaPanel[] = []
+      let firstDetail: ManhwaStripDetail | null = null
+      for (const strip of strips) {
+        try {
+          const detail = await getStrip(strip.sourceId)
+          if (!firstDetail) firstDetail = detail
+          allPanels = allPanels.concat(detail.panels)
+        } catch {
+          // Skip strips that fail to load
+        }
+      }
+      const aggregatedDetail: ManhwaStripDetail | null = firstDetail
+        ? { ...firstDetail, panels: allPanels }
+        : null
       set({
         status: { phase: 'idle' },
         strips,
-        currentId: strips.length > 0 ? strips[0].id : null,
-        detail: firstDetail,
+        currentId: strips.length > 0 ? strips[0].sourceId : null,
+        detail: aggregatedDetail,
         viewerPageIndex: 0,
         detectionProgress: null,
       })

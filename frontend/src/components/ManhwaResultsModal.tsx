@@ -65,16 +65,15 @@ export function ManhwaResultsModal() {
   }, [currentId])
 
   const handleApply = useCallback(
-    async (op: CorrectionOp) => {
-      if (!currentId) return
+    async (stripSourceId: string, op: CorrectionOp) => {
       try {
-        await correctStrip(currentId, op)
-        await select(currentId)
+        await correctStrip(stripSourceId, op)
+        await select(stripSourceId)
       } catch {
         // error handled by store
       }
     },
-    [currentId, select],
+    [select],
   )
 
   const handleRedetect = useCallback(async () => {
@@ -315,7 +314,14 @@ export function ManhwaResultsModal() {
                           <button
                             type="button"
                             className="manhwa-results-panel-action-btn"
-                            onClick={() => void handleApply({ type: 'reorder', panelId: panel.id, newOrder: panel.order - 1 })}
+                            onClick={() => {
+                              const ids = panels.map((p) => p.id)
+                              const idx = ids.indexOf(panel.id)
+                              if (idx > 0) {
+                                ;[ids[idx - 1], ids[idx]] = [ids[idx], ids[idx - 1]]
+                                void handleApply(panel.sourceId, { op: 'reorder', ids })
+                              }
+                            }}
                             disabled={panel.order === 1}
                           >
                             Up
@@ -323,7 +329,14 @@ export function ManhwaResultsModal() {
                           <button
                             type="button"
                             className="manhwa-results-panel-action-btn"
-                            onClick={() => void handleApply({ type: 'reorder', panelId: panel.id, newOrder: panel.order + 1 })}
+                            onClick={() => {
+                              const ids = panels.map((p) => p.id)
+                              const idx = ids.indexOf(panel.id)
+                              if (idx < ids.length - 1) {
+                                ;[ids[idx], ids[idx + 1]] = [ids[idx + 1], ids[idx]]
+                                void handleApply(panel.sourceId, { op: 'reorder', ids })
+                              }
+                            }}
                             disabled={panel.order === panels.length}
                           >
                             Down
@@ -331,7 +344,7 @@ export function ManhwaResultsModal() {
                           <button
                             type="button"
                             className="manhwa-results-panel-action-btn manhwa-results-panel-danger"
-                            onClick={() => void handleApply({ type: 'delete', panelId: panel.id })}
+                            onClick={() => void handleApply(panel.sourceId, { op: 'delete', panelId: panel.id })}
                           >
                             Delete
                           </button>
@@ -345,14 +358,21 @@ export function ManhwaResultsModal() {
                             <button
                               type="button"
                               className="manhwa-results-action-btn"
-                              onClick={() => void handleApply({ type: 'split', panelId: panel.id })}
+                              onClick={() => void handleApply(panel.sourceId, { op: 'split', panelId: panel.id, y: Math.round(panel.y + panel.h / 2) })}
                             >
                               Split
                             </button>
                             <button
                               type="button"
                               className="manhwa-results-action-btn"
-                              onClick={() => void handleApply({ type: 'merge_down', panelId: panel.id })}
+                              onClick={() => {
+                                const nextPanel = panels.find(
+                                  (p) => p.sourceId === panel.sourceId && p.order === panel.order + 1,
+                                )
+                                if (nextPanel) {
+                                  void handleApply(panel.sourceId, { op: 'merge', ids: [panel.id, nextPanel.id] })
+                                }
+                              }}
                               disabled={panel.order === panels.length}
                             >
                               Merge Down
@@ -425,15 +445,13 @@ export function ManhwaResultsModal() {
                                   type="button"
                                   className="manhwa-results-action-btn"
                                   onClick={() =>
-                                    void handleApply({
-                                      type: 'adjust_bounds',
+                                    void handleApply(panel.sourceId, {
+                                      op: 'adjust',
                                       panelId: panel.id,
-                                      bounds: {
-                                        x: adjustBounds.x,
-                                        y: adjustBounds.y,
-                                        width: adjustBounds.w,
-                                        height: adjustBounds.h,
-                                      },
+                                      x: adjustBounds.x,
+                                      y: adjustBounds.y,
+                                      w: adjustBounds.w,
+                                      h: adjustBounds.h,
                                     })
                                   }
                                 >
