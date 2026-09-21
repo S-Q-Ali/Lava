@@ -272,7 +272,7 @@ export function ManhwaResultsModal() {
                       key={panel.id}
                       className={`manhwa-results-panel-card${isExpanded ? ' expanded' : ''}`}
                     >
-                      {/* Panel image */}
+                      {/* Panel thumbnail */}
                       <div
                         className="manhwa-results-panel-image"
                         onClick={() => setExpandedPanelId(isExpanded ? null : panel.id)}
@@ -282,53 +282,60 @@ export function ManhwaResultsModal() {
                           alt={`Panel ${panel.order}`}
                           loading="lazy"
                         />
-                        <span className="manhwa-results-panel-badge">
-                          #{panel.order}
-                        </span>
-                        <span className="manhwa-results-panel-confidence">
-                          {Math.round(panel.confidence * 100)}%
-                        </span>
                       </div>
 
-                      {/* Quick actions row */}
-                      <div className="manhwa-results-panel-actions">
-                        <button
-                          type="button"
-                          className="manhwa-results-panel-action-btn"
-                          onClick={() => setExpandedPanelId(isExpanded ? null : panel.id)}
-                        >
-                          {isExpanded ? 'Hide Editor' : 'Edit'}
-                        </button>
-                        <button
-                          type="button"
-                          className="manhwa-results-panel-action-btn"
-                          onClick={() => void handleExportPanel(panel.id, panel.order)}
-                        >
-                          Export
-                        </button>
-                        <button
-                          type="button"
-                          className="manhwa-results-panel-action-btn"
-                          onClick={() => void handleApply({ type: 'reorder', panelId: panel.id, newOrder: panel.order - 1 })}
-                          disabled={panel.order === 1}
-                        >
-                          ↑
-                        </button>
-                        <button
-                          type="button"
-                          className="manhwa-results-panel-action-btn"
-                          onClick={() => void handleApply({ type: 'reorder', panelId: panel.id, newOrder: panel.order + 1 })}
-                          disabled={panel.order === panels.length}
-                        >
-                          ↓
-                        </button>
-                        <button
-                          type="button"
-                          className="manhwa-results-panel-action-btn manhwa-results-panel-danger"
-                          onClick={() => void handleApply({ type: 'delete', panelId: panel.id })}
-                        >
-                          Delete
-                        </button>
+                      {/* Panel info + actions */}
+                      <div className="manhwa-results-panel-info">
+                        <div className="manhwa-results-panel-info-header">
+                          <span className="manhwa-results-panel-order">
+                            Panel {panel.order} / {panels.length}
+                          </span>
+                          <span className="manhwa-results-panel-confidence">
+                            {Math.round(panel.confidence * 100)}%
+                          </span>
+                        </div>
+                        <div className="manhwa-results-panel-dims">
+                          {panel.bounds.width} x {panel.bounds.height}
+                        </div>
+                        <div className="manhwa-results-panel-actions">
+                          <button
+                            type="button"
+                            className="manhwa-results-panel-action-btn"
+                            onClick={() => setExpandedPanelId(isExpanded ? null : panel.id)}
+                          >
+                            {isExpanded ? 'Close' : 'Edit'}
+                          </button>
+                          <button
+                            type="button"
+                            className="manhwa-results-panel-action-btn"
+                            onClick={() => void handleExportPanel(panel.id, panel.order)}
+                          >
+                            Export
+                          </button>
+                          <button
+                            type="button"
+                            className="manhwa-results-panel-action-btn"
+                            onClick={() => void handleApply({ type: 'reorder', panelId: panel.id, newOrder: panel.order - 1 })}
+                            disabled={panel.order === 1}
+                          >
+                            Up
+                          </button>
+                          <button
+                            type="button"
+                            className="manhwa-results-panel-action-btn"
+                            onClick={() => void handleApply({ type: 'reorder', panelId: panel.id, newOrder: panel.order + 1 })}
+                            disabled={panel.order === panels.length}
+                          >
+                            Down
+                          </button>
+                          <button
+                            type="button"
+                            className="manhwa-results-panel-action-btn manhwa-results-panel-danger"
+                            onClick={() => void handleApply({ type: 'delete', panelId: panel.id })}
+                          >
+                            Delete
+                          </button>
+                        </div>
                       </div>
 
                       {/* Expanded editor */}
@@ -348,7 +355,7 @@ export function ManhwaResultsModal() {
                               onClick={() => void handleApply({ type: 'merge_down', panelId: panel.id })}
                               disabled={panel.order === panels.length}
                             >
-                              Merge ↓
+                              Merge Down
                             </button>
                             <button
                               type="button"
@@ -367,70 +374,72 @@ export function ManhwaResultsModal() {
                                 )
                               }
                             >
-                              {adjustBounds?.panelId === panel.id ? 'Cancel' : 'Adjust'}
+                              {adjustBounds?.panelId === panel.id ? 'Cancel' : 'Adjust Bounds'}
                             </button>
                           </div>
 
                           {adjustBounds?.panelId === panel.id && (
-                            <div className="manhwa-results-adjust">
-                              <label>
-                                X
-                                <input
-                                  type="number"
-                                  value={adjustBounds.x}
-                                  onChange={(e) =>
-                                    setAdjustBounds({ ...adjustBounds, x: Number(e.target.value) })
+                            <div className="manhwa-results-panel-editor-row">
+                              <div className="manhwa-results-adjust">
+                                <label>
+                                  X
+                                  <input
+                                    type="number"
+                                    value={adjustBounds.x}
+                                    onChange={(e) =>
+                                      setAdjustBounds({ ...adjustBounds, x: Number(e.target.value) })
+                                    }
+                                  />
+                                </label>
+                                <label>
+                                  Y
+                                  <input
+                                    type="number"
+                                    value={adjustBounds.y}
+                                    onChange={(e) =>
+                                      setAdjustBounds({ ...adjustBounds, y: Number(e.target.value) })
+                                    }
+                                  />
+                                </label>
+                                <label>
+                                  W
+                                  <input
+                                    type="number"
+                                    value={adjustBounds.w}
+                                    onChange={(e) =>
+                                      setAdjustBounds({ ...adjustBounds, w: Number(e.target.value) })
+                                    }
+                                  />
+                                </label>
+                                <label>
+                                  H
+                                  <input
+                                    type="number"
+                                    value={adjustBounds.h}
+                                    onChange={(e) =>
+                                      setAdjustBounds({ ...adjustBounds, h: Number(e.target.value) })
+                                    }
+                                  />
+                                </label>
+                                <button
+                                  type="button"
+                                  className="manhwa-results-action-btn"
+                                  onClick={() =>
+                                    void handleApply({
+                                      type: 'adjust_bounds',
+                                      panelId: panel.id,
+                                      bounds: {
+                                        x: adjustBounds.x,
+                                        y: adjustBounds.y,
+                                        width: adjustBounds.w,
+                                        height: adjustBounds.h,
+                                      },
+                                    })
                                   }
-                                />
-                              </label>
-                              <label>
-                                Y
-                                <input
-                                  type="number"
-                                  value={adjustBounds.y}
-                                  onChange={(e) =>
-                                    setAdjustBounds({ ...adjustBounds, y: Number(e.target.value) })
-                                  }
-                                />
-                              </label>
-                              <label>
-                                W
-                                <input
-                                  type="number"
-                                  value={adjustBounds.w}
-                                  onChange={(e) =>
-                                    setAdjustBounds({ ...adjustBounds, w: Number(e.target.value) })
-                                  }
-                                />
-                              </label>
-                              <label>
-                                H
-                                <input
-                                  type="number"
-                                  value={adjustBounds.h}
-                                  onChange={(e) =>
-                                    setAdjustBounds({ ...adjustBounds, h: Number(e.target.value) })
-                                  }
-                                />
-                              </label>
-                              <button
-                                type="button"
-                                className="manhwa-results-action-btn"
-                                onClick={() =>
-                                  void handleApply({
-                                    type: 'adjust_bounds',
-                                    panelId: panel.id,
-                                    bounds: {
-                                      x: adjustBounds.x,
-                                      y: adjustBounds.y,
-                                      width: adjustBounds.w,
-                                      height: adjustBounds.h,
-                                    },
-                                  })
-                                }
-                              >
-                                Apply
-                              </button>
+                                >
+                                  Apply
+                                </button>
+                              </div>
                             </div>
                           )}
                         </div>
@@ -444,8 +453,8 @@ export function ManhwaResultsModal() {
 
           {/* Idle but no panels */}
           {isIdle && panels.length === 0 && (
-            <div className="manhwa-results-progress">
-              <span className="manhwa-results-progress-text">No panels detected</span>
+            <div className="manhwa-results-empty">
+              <span>No panels detected</span>
             </div>
           )}
         </div>
