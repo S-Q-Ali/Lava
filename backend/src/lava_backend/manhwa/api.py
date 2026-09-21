@@ -151,6 +151,52 @@ def list_strips(request: Request):
     return {"strips": strips}
 
 
+@router.get("/groups")
+def list_groups(request: Request):
+    """Return strips grouped by parentId. Strips without parentId → standalone groups."""
+    from collections import defaultdict
+    from lava_backend.config import get_config
+
+    base = manhwa_dir(get_config())
+    all_strips: list[dict] = []
+    if base.exists():
+        for registry_dir in sorted(base.glob("*")):
+            path = registry_dir / "registry.json"
+            if not path.exists():
+                continue
+            try:
+                all_strips.append(_summary(StripRegistry.load(path)))
+            except Exception:
+                continue
+
+    # Group by parentId
+    grouped: dict[str, list[dict]] = defaultdict(list)
+    for strip in all_strips:
+        pid = strip.get("parentId")
+        grouped[pid or strip["sourceId"]].append(strip)
+
+    groups = []
+    for gid, pages in grouped.items():
+        # sourceName = first non-null sourceName in the group
+        source_name = None
+        for p in pages:
+            sn = p.get("sourceName")
+            if sn:
+                source_name = sn
+                break
+        groups.append({
+            "groupId": gid,
+            "sourceName": source_name,
+            "pageCount": len(pages),
+            "totalPanels": sum(p.get("panelCount", 0) for p in pages),
+            "pages": pages,
+        })
+
+    # Sort by most recent (last page in group has highest sourceId = most recent)
+    groups.sort(key=lambda g: g["pages"][-1]["sourceId"] if g["pages"] else "", reverse=True)
+    return {"groups": groups}
+
+
 @router.get("/strips/{source_id}")
 def get_strip(source_id: str):
     from lava_backend.config import get_config
