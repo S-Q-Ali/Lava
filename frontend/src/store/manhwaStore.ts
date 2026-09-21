@@ -32,6 +32,8 @@ interface ManhwaStore {
   detail: ManhwaStripDetail | null
   viewerPageIndex: number
   resultsModalOpen: boolean
+  detectionProgress: { current: number; total: number } | null
+  pendingPages: PendingPage[]
   refresh(): Promise<void>
   select(id: string | null): Promise<void>
   upload(file: File): Promise<void>
@@ -54,6 +56,8 @@ export const useManhwaStore = create<ManhwaStore>()((set, get) => ({
   detail: null,
   viewerPageIndex: 0,
   resultsModalOpen: false,
+  detectionProgress: null,
+  pendingPages: [],
 
   refresh: async () => {
     set({ status: { phase: 'loading' } })
@@ -138,7 +142,7 @@ export const useManhwaStore = create<ManhwaStore>()((set, get) => ({
   },
 
   openResults: () => set({ resultsModalOpen: true }),
-  closeResults: () => set({ resultsModalOpen: false }),
+  closeResults: () => set({ resultsModalOpen: false, detectionProgress: null, pendingPages: [] }),
 
   nextPage: () => {
     const { status, viewerPageIndex, strips } = get()
@@ -167,12 +171,13 @@ export const useManhwaStore = create<ManhwaStore>()((set, get) => ({
     const { status } = get()
     if (status.phase !== 'uploaded') return
     const pages = status.pages
-    set({ status: { phase: 'detecting' }, resultsModalOpen: false })
+    set({ status: { phase: 'detecting' }, detectionProgress: { current: 0, total: pages.length }, pendingPages: pages })
     try {
       let firstDetail: ManhwaStripDetail | null = null
-      for (const page of pages) {
-        const detail = await detectStrip(page.stripId)
+      for (let i = 0; i < pages.length; i++) {
+        const detail = await detectStrip(pages[i].stripId)
         if (!firstDetail) firstDetail = detail
+        set({ detectionProgress: { current: i + 1, total: pages.length } })
       }
       const strips = await listStrips()
       set({
@@ -181,10 +186,11 @@ export const useManhwaStore = create<ManhwaStore>()((set, get) => ({
         currentId: pages[0]?.stripId ?? null,
         detail: firstDetail,
         viewerPageIndex: 0,
+        detectionProgress: null,
       })
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Could not detect panels.'
-      set({ status: { phase: 'error', error: message } })
+      set({ status: { phase: 'error', error: message }, detectionProgress: null })
     }
   },
 

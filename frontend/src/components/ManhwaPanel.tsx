@@ -250,6 +250,22 @@ export function ManhwaPanel() {
           onClose={() => useManhwaStore.getState().closeResults()}
         />
       )}
+
+      {resultsModalOpen && status.phase === 'detecting' && (
+        <ManhwaResultsModal
+          pages={[]}
+          fileName=""
+          onClose={() => useManhwaStore.getState().closeResults()}
+        />
+      )}
+
+      {resultsModalOpen && status.phase === 'idle' && detail && (
+        <ManhwaResultsModal
+          pages={[]}
+          fileName=""
+          onClose={() => useManhwaStore.getState().closeResults()}
+        />
+      )}
     </section>
   )
 }

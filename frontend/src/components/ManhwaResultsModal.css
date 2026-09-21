@@ -218,3 +218,75 @@
 .manhwa-results-detect-btn:hover {
   opacity: 0.9;
 }
+
+.manhwa-results-done-btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 8px 24px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.12s;
+}
+
+.manhwa-results-done-btn:hover {
+  opacity: 0.9;
+}
+
+.manhwa-results-progress {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 40px;
+}
+
+.manhwa-results-progress-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: manhwaResultsSpin 0.8s linear infinite;
+}
+
+@keyframes manhwaResultsSpin {
+  to { transform: rotate(360deg); }
+}
+
+.manhwa-results-progress-bar {
+  width: 300px;
+  height: 6px;
+  background: var(--panel-2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.manhwa-results-progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 3px;
+  transition: width 0.3s ease-out;
+}
+
+.manhwa-results-progress-text {
+  font-size: 12px;
+  color: var(--text-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+.manhwa-results-panel-thumb .manhwa-results-thumb-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.manhwa-results-confidence {
+  font-size: 9px;
+  opacity: 0.7;
+  font-weight: 400;
+}
