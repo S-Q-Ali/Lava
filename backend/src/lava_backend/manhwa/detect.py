@@ -341,14 +341,12 @@ def detect_strip(
         detection_method = ml_result.method
         panels = _ml_detections_to_panels(ml_result, source_id=source_id)
     else:
-        if src_w > src_h:
-            raise ManhwaError(
-                f"panel detection requires a vertical strip; got {src_w}x{src_h}. "
-                "Multi-column/multi-panel pages require the ML model "
-                "(download Manhwa Panel Detector from Settings → Models)."
-            )
         gray, ana_w, ana_h, factor = load_analysis_image(image)
-        cuts = detect_cuts(row_features(gray), ana_h)
+        if src_w > src_h:
+            # Landscape pages: return whole page as one panel (no cuts attempted)
+            cuts = []
+        else:
+            cuts = detect_cuts(row_features(gray), ana_h)
         panels = build_panels(
             cuts,
             source_id=source_id,
