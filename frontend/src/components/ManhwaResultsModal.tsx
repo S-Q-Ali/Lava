@@ -62,10 +62,20 @@ export function ManhwaResultsModal() {
     if (!resultsModalOpen) return
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') closeResults()
+      if (isUploaded) {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+          e.preventDefault()
+          nextPage()
+        }
+        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault()
+          prevPage()
+        }
+      }
     }
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [resultsModalOpen, closeResults])
+  }, [resultsModalOpen, closeResults, isUploaded, nextPage, prevPage])
 
   // Sync when currentId changes
   useEffect(() => {
