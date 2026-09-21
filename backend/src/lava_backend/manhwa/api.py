@@ -515,6 +515,19 @@ def re_detect_strip(source_id: str):
     return result
 
 
+@router.delete("/strips", status_code=204)
+def delete_all_strips():
+    from lava_backend.config import get_config
+
+    config = get_config()
+    base = manhwa_dir(config)
+    if base.exists():
+        for child in base.iterdir():
+            if child.is_dir():
+                rmtree_safe(child, ignore_errors=True)
+    return Response(status_code=204)
+
+
 @router.delete("/strips/{source_id}", status_code=204)
 def delete_strip(source_id: str):
     from lava_backend.config import get_config
