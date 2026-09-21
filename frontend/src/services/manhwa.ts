@@ -24,6 +24,14 @@ export interface ManhwaStripSummary {
   correctedCount: number
 }
 
+export interface ManhwaGroup {
+  groupId: string
+  sourceName: string | null
+  pageCount: number
+  totalPanels: number
+  pages: ManhwaStripSummary[]
+}
+
 export interface ManhwaStripDetail {
   sourceId: string
   sourceFile: string
@@ -187,6 +195,34 @@ export async function deleteStrip(sourceId: string): Promise<void> {
 
 export async function deleteAllStrips(): Promise<void> {
   await manhwaFetch('/strips', { method: 'DELETE' })
+}
+
+export async function fetchGroups(signal?: AbortSignal): Promise<ManhwaGroup[]> {
+  const body = (await manhwaFetch('/groups', { signal })) as Record<string, unknown>
+  if (!Array.isArray(body.groups)) {
+    throw new ManhwaError('INVALID_RESPONSE', 'Unexpected groups response shape.')
+  }
+  return (body.groups as Array<Record<string, unknown>>).map((g) => ({
+    groupId: g.groupId as string,
+    sourceName: (g.sourceName as string) ?? null,
+    pageCount: g.pageCount as number,
+    totalPanels: g.totalPanels as number,
+    pages: Array.isArray(g.pages)
+      ? (g.pages as Array<Record<string, unknown>>).map((p) => ({
+          sourceId: p.sourceId as string,
+          sourceFile: (p.sourceFile as string) ?? '',
+          width: (p.width as number) ?? 0,
+          height: (p.height as number) ?? 0,
+          mime: (p.mime as string) ?? '',
+          panelCount: (p.panelCount as number) ?? 0,
+          correctedCount: (p.correctedCount as number) ?? 0,
+        }))
+      : [],
+  }))
+}
+
+export async function deleteGroup(groupId: string): Promise<void> {
+  await manhwaFetch(`/groups/${encodeURIComponent(groupId)}`, { method: 'DELETE' })
 }
 
 export function exportUrl(sourceId: string, format: 'png' | 'jpg' = 'png'): string {
