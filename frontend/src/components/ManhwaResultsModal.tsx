@@ -6,7 +6,7 @@ import {
   redetectStrip,
   type CorrectionOp,
 } from '../services/manhwa'
-import { useManhwaStore, type PendingPage } from '../store/manhwaStore'
+import { useManhwaStore } from '../store/manhwaStore'
 import './ManhwaResultsModal.css'
 
 export function ManhwaResultsModal() {
@@ -24,9 +24,9 @@ export function ManhwaResultsModal() {
   const startDetection = useManhwaStore((s) => s.startDetection)
   const select = useManhwaStore((s) => s.select)
 
-  const [selectedPanelIdx, setSelectedPanelIdx] = useState<number | null>(null)
+  const [expandedPanelId, setExpandedPanelId] = useState<string | null>(null)
   const [adjustBounds, setAdjustBounds] = useState<{
-    idx: number
+    panelId: string
     x: number
     y: number
     w: number
@@ -43,7 +43,7 @@ export function ManhwaResultsModal() {
   // Reset selection when modal opens/closes
   useEffect(() => {
     if (!resultsModalOpen) {
-      setSelectedPanelIdx(null)
+      setExpandedPanelId(null)
       setAdjustBounds(null)
     }
   }, [resultsModalOpen])
@@ -53,28 +53,14 @@ export function ManhwaResultsModal() {
     if (!resultsModalOpen) return
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') closeResults()
-      if (isIdle && panels.length > 0) {
-        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
-          e.preventDefault()
-          setSelectedPanelIdx((prev) =>
-            prev === null ? 0 : Math.min(prev + 1, panels.length - 1),
-          )
-        }
-        if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-          e.preventDefault()
-          setSelectedPanelIdx((prev) =>
-            prev === null ? 0 : Math.max(prev - 1, 0),
-          )
-        }
-      }
     }
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [resultsModalOpen, closeResults, isIdle, panels.length])
+  }, [resultsModalOpen, closeResults])
 
-  // Sync selectedPanelIdx when currentId/detail changes
+  // Sync when currentId changes
   useEffect(() => {
-    setSelectedPanelIdx(null)
+    setExpandedPanelId(null)
     setAdjustBounds(null)
   }, [currentId])
 
@@ -101,17 +87,6 @@ export function ManhwaResultsModal() {
     }
   }, [currentId, select])
 
-  const handleExport = useCallback(async () => {
-    if (!currentId || selectedPanelIdx === null || !panels[selectedPanelIdx]) return
-    const panel = panels[selectedPanelIdx]
-    const url = panelImageUrl(panel.sourceId, panel.id)
-    const ext = exportFormat === 'jpg' ? 'jpg' : 'png'
-    const link = document.createElement('a')
-    link.href = url
-    link.download = `panel-${panel.order}.${ext}`
-    link.click()
-  }, [currentId, selectedPanelIdx, panels, exportFormat])
-
   const handleExportAll = useCallback(async () => {
     if (!currentId || panels.length === 0) return
     for (const panel of panels) {
@@ -125,9 +100,22 @@ export function ManhwaResultsModal() {
     }
   }, [currentId, panels, exportFormat])
 
-  if (!resultsModalOpen) return null
+  const handleExportPanel = useCallback(
+    (panelId: string, order: number) => {
+      if (!currentId) return
+      const panel = panels.find((p) => p.id === panelId)
+      if (!panel) return
+      const url = panelImageUrl(panel.sourceId, panel.id)
+      const ext = exportFormat === 'jpg' ? 'jpg' : 'png'
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `panel-${order}.${ext}`
+      link.click()
+    },
+    [currentId, panels, exportFormat],
+  )
 
-  const selectedPanel = selectedPanelIdx !== null ? panels[selectedPanelIdx] : null
+  if (!resultsModalOpen) return null
 
   // --- Title / Meta ---
   const title = isDetecting
@@ -145,63 +133,6 @@ export function ManhwaResultsModal() {
       : isIdle && panels.length > 0
         ? `${panels.length} panels across ${strips.length} ${strips.length === 1 ? 'page' : 'pages'}`
         : ''
-
-  // --- Grid items ---
-  const gridItems = isUploaded
-    ? pendingPages.map((p, i) => ({
-        key: p.stripId,
-        src: sourceImageUrl(p.stripId),
-        label: `${i + 1}`,
-        active: i === viewerPageIndex,
-        onClick: () => {
-          while (useManhwaStore.getState().viewerPageIndex < i) nextPage()
-          while (useManhwaStore.getState().viewerPageIndex > i) prevPage()
-        },
-      }))
-    : isIdle && panels.length > 0
-      ? panels.map((p, i) => ({
-          key: p.id,
-          src: panelImageUrl(p.sourceId, p.id),
-          label: `${p.order}`,
-          badge: `${Math.round(p.confidence * 100)}%`,
-          active: i === selectedPanelIdx,
-          onClick: () => {
-            setSelectedPanelIdx(i)
-            setAdjustBounds(null)
-          },
-        }))
-      : []
-
-  // --- Preview image ---
-  let previewSrc = ''
-  let previewAlt = ''
-  if (isUploaded && pendingPages[viewerPageIndex]) {
-    previewSrc = sourceImageUrl(pendingPages[viewerPageIndex].stripId)
-    previewAlt = `Page ${viewerPageIndex + 1}`
-  } else if (selectedPanel) {
-    previewSrc = panelImageUrl(selectedPanel.sourceId, selectedPanel.id)
-    previewAlt = `Panel ${selectedPanel.order}`
-  } else if (isIdle && panels.length > 0 && panels[0]) {
-    previewSrc = panelImageUrl(panels[0].sourceId, panels[0].id)
-    previewAlt = `Panel ${panels[0].order}`
-  }
-
-  // --- Preview navigation ---
-  const previewTotal = isUploaded ? pendingPages.length : panels.length
-  const previewIndex = isUploaded ? viewerPageIndex : (selectedPanelIdx ?? 0)
-
-  const previewPrev = () => {
-    if (isUploaded) prevPage()
-    else setSelectedPanelIdx((p) => (p === null ? 0 : Math.max(p - 1, 0)))
-  }
-  const previewNext = () => {
-    if (isUploaded) nextPage()
-    else setSelectedPanelIdx((p) => (p === null ? 0 : Math.min(p + 1, panels.length - 1)))
-  }
-
-  // --- Editor controls visibility ---
-  const showEditor = isIdle && selectedPanel !== null
-  const canExport = isIdle && panels.length > 0
 
   return (
     <div
@@ -254,241 +185,268 @@ export function ManhwaResultsModal() {
             </div>
           )}
 
-          {/* Pages / Panels grid + preview */}
-          {!isDetecting && (
-            <>
-              {/* Left sidebar — thumbnails */}
+          {/* Uploaded phase — pages grid + preview */}
+          {isUploaded && (
+            <div className="manhwa-results-upload-layout">
               <div className="manhwa-results-grid">
-                {gridItems.map((item) => (
+                {pendingPages.map((page, index) => (
                   <div
-                    key={item.key}
-                    className={`manhwa-results-thumb${item.active ? ' active' : ''}`}
-                    onClick={item.onClick}
+                    key={page.stripId}
+                    className={`manhwa-results-thumb${index === viewerPageIndex ? ' active' : ''}`}
+                    onClick={() => {
+                      while (useManhwaStore.getState().viewerPageIndex < index) nextPage()
+                      while (useManhwaStore.getState().viewerPageIndex > index) prevPage()
+                    }}
                   >
                     <img
-                      src={item.src}
-                      alt={item.label}
-                      loading="lazy"
+                      src={sourceImageUrl(page.stripId)}
+                      alt={`Page ${index + 1}`}
+                      loading={Math.abs(index - viewerPageIndex) <= 3 ? 'eager' : 'lazy'}
                     />
-                    <span className="manhwa-results-thumb-label">
-                      {item.label}
-                      {'badge' in item && item.badge && (
-                        <span className="manhwa-results-confidence">
-                          {item.badge}
-                        </span>
-                      )}
-                    </span>
+                    <span className="manhwa-results-thumb-label">{index + 1}</span>
                   </div>
                 ))}
-                {gridItems.length === 0 && isIdle && (
-                  <div className="manhwa-results-empty">
-                    No panels detected
-                  </div>
-                )}
               </div>
-
-              {/* Main preview + editor */}
-              <div className="manhwa-results-main">
-                {/* Preview navigation */}
+              <div className="manhwa-results-preview">
                 <div className="manhwa-results-preview-nav">
-                  <button type="button" onClick={previewPrev} disabled={previewIndex === 0}>
+                  <button type="button" onClick={() => void prevPage()} disabled={viewerPageIndex === 0}>
                     ◀ Prev
                   </button>
                   <span className="manhwa-results-preview-page">
-                    {previewIndex + 1} / {previewTotal || 1}
+                    {viewerPageIndex + 1} / {pendingPages.length}
                   </span>
-                  <button type="button" onClick={previewNext} disabled={previewIndex >= previewTotal - 1}>
+                  <button type="button" onClick={() => void nextPage()} disabled={viewerPageIndex === pendingPages.length - 1}>
                     Next ▶
                   </button>
                 </div>
-
-                {/* Preview image */}
                 <div className="manhwa-results-preview-image">
-                  {previewSrc ? (
-                    <img src={previewSrc} alt={previewAlt} />
-                  ) : (
-                    <div className="manhwa-results-preview-empty">
-                      Select a panel to preview
-                    </div>
+                  {pendingPages[viewerPageIndex] && (
+                    <img
+                      src={sourceImageUrl(pendingPages[viewerPageIndex].stripId)}
+                      alt={`Page ${viewerPageIndex + 1}`}
+                    />
                   )}
                 </div>
+              </div>
+            </div>
+          )}
 
-                {/* Editor controls — shown when a panel is selected */}
-                {showEditor && selectedPanel && (
-                  <div className="manhwa-results-editor">
-                    <div className="manhwa-results-editor-header">
-                      <span className="manhwa-results-editor-title">
-                        Panel #{selectedPanel.order} ·{' '}
-                        {Math.round(selectedPanel.confidence * 100)}% confidence
-                      </span>
-                    </div>
+          {/* Idle phase — scrollable vertical panels list */}
+          {isIdle && panels.length > 0 && (
+            <div className="manhwa-results-panels-layout">
+              {/* Toolbar */}
+              <div className="manhwa-results-toolbar">
+                <button
+                  type="button"
+                  className="manhwa-results-action-btn"
+                  onClick={() => void handleRedetect()}
+                >
+                  Re-detect
+                </button>
+                <div className="manhwa-results-toolbar-spacer" />
+                <div className="manhwa-results-export-group">
+                  <select
+                    value={exportFormat}
+                    onChange={(e) => setExportFormat(e.target.value as 'png' | 'jpg')}
+                    className="manhwa-results-format-select"
+                  >
+                    <option value="png">PNG</option>
+                    <option value="jpg">JPG</option>
+                  </select>
+                  <button
+                    type="button"
+                    className="manhwa-results-action-btn"
+                    onClick={() => void handleExportAll()}
+                  >
+                    Export All
+                  </button>
+                </div>
+              </div>
 
-                    <div className="manhwa-results-editor-actions">
-                      <button
-                        type="button"
-                        className="manhwa-results-action-btn"
-                        onClick={() => void handleApply({ type: 'split', panelId: selectedPanel.id })}
+              {/* Scrollable panels */}
+              <div className="manhwa-results-panels-scroll">
+                {panels.map((panel) => {
+                  const isExpanded = expandedPanelId === panel.id
+                  return (
+                    <div
+                      key={panel.id}
+                      className={`manhwa-results-panel-card${isExpanded ? ' expanded' : ''}`}
+                    >
+                      {/* Panel image */}
+                      <div
+                        className="manhwa-results-panel-image"
+                        onClick={() => setExpandedPanelId(isExpanded ? null : panel.id)}
                       >
-                        Split
-                      </button>
-                      <button
-                        type="button"
-                        className="manhwa-results-action-btn"
-                        onClick={() => void handleApply({ type: 'merge_down', panelId: selectedPanel.id })}
-                        disabled={selectedPanelIdx === panels.length - 1}
-                      >
-                        Merge ↓
-                      </button>
-                      <button
-                        type="button"
-                        className="manhwa-results-action-btn"
-                        onClick={() =>
-                          setAdjustBounds(
-                            adjustBounds
-                              ? null
-                              : {
-                                  idx: selectedPanelIdx!,
-                                  x: selectedPanel.bounds.x,
-                                  y: selectedPanel.bounds.y,
-                                  w: selectedPanel.bounds.width,
-                                  h: selectedPanel.bounds.height,
-                                },
-                          )
-                        }
-                      >
-                        {adjustBounds ? 'Cancel' : 'Adjust'}
-                      </button>
-                      <button
-                        type="button"
-                        className="manhwa-results-action-btn manhwa-results-action-danger"
-                        onClick={() => void handleApply({ type: 'delete', panelId: selectedPanel.id })}
-                      >
-                        Delete
-                      </button>
-                      <button
-                        type="button"
-                        className="manhwa-results-action-btn"
-                        onClick={() => void handleApply({ type: 'reorder', panelId: selectedPanel.id, newOrder: selectedPanel.order - 1 })}
-                        disabled={selectedPanelIdx === 0}
-                      >
-                        ↑
-                      </button>
-                      <button
-                        type="button"
-                        className="manhwa-results-action-btn"
-                        onClick={() => void handleApply({ type: 'reorder', panelId: selectedPanel.id, newOrder: selectedPanel.order + 1 })}
-                        disabled={selectedPanelIdx === panels.length - 1}
-                      >
-                        ↓
-                      </button>
-                    </div>
+                        <img
+                          src={panelImageUrl(panel.sourceId, panel.id)}
+                          alt={`Panel ${panel.order}`}
+                          loading="lazy"
+                        />
+                        <span className="manhwa-results-panel-badge">
+                          #{panel.order}
+                        </span>
+                        <span className="manhwa-results-panel-confidence">
+                          {Math.round(panel.confidence * 100)}%
+                        </span>
+                      </div>
 
-                    {/* Adjust bounds form */}
-                    {adjustBounds && adjustBounds.idx === selectedPanelIdx && (
-                      <div className="manhwa-results-adjust">
-                        <label>
-                          X
-                          <input
-                            type="number"
-                            value={adjustBounds.x}
-                            onChange={(e) =>
-                              setAdjustBounds({ ...adjustBounds, x: Number(e.target.value) })
-                            }
-                          />
-                        </label>
-                        <label>
-                          Y
-                          <input
-                            type="number"
-                            value={adjustBounds.y}
-                            onChange={(e) =>
-                              setAdjustBounds({ ...adjustBounds, y: Number(e.target.value) })
-                            }
-                          />
-                        </label>
-                        <label>
-                          W
-                          <input
-                            type="number"
-                            value={adjustBounds.w}
-                            onChange={(e) =>
-                              setAdjustBounds({ ...adjustBounds, w: Number(e.target.value) })
-                            }
-                          />
-                        </label>
-                        <label>
-                          H
-                          <input
-                            type="number"
-                            value={adjustBounds.h}
-                            onChange={(e) =>
-                              setAdjustBounds({ ...adjustBounds, h: Number(e.target.value) })
-                            }
-                          />
-                        </label>
+                      {/* Quick actions row */}
+                      <div className="manhwa-results-panel-actions">
                         <button
                           type="button"
-                          className="manhwa-results-action-btn"
-                          onClick={() =>
-                            void handleApply({
-                              type: 'adjust_bounds',
-                              panelId: selectedPanel.id,
-                              bounds: {
-                                x: adjustBounds.x,
-                                y: adjustBounds.y,
-                                width: adjustBounds.w,
-                                height: adjustBounds.h,
-                              },
-                            })
-                          }
+                          className="manhwa-results-panel-action-btn"
+                          onClick={() => setExpandedPanelId(isExpanded ? null : panel.id)}
                         >
-                          Apply
+                          {isExpanded ? 'Hide Editor' : 'Edit'}
+                        </button>
+                        <button
+                          type="button"
+                          className="manhwa-results-panel-action-btn"
+                          onClick={() => void handleExportPanel(panel.id, panel.order)}
+                        >
+                          Export
+                        </button>
+                        <button
+                          type="button"
+                          className="manhwa-results-panel-action-btn"
+                          onClick={() => void handleApply({ type: 'reorder', panelId: panel.id, newOrder: panel.order - 1 })}
+                          disabled={panel.order === 1}
+                        >
+                          ↑
+                        </button>
+                        <button
+                          type="button"
+                          className="manhwa-results-panel-action-btn"
+                          onClick={() => void handleApply({ type: 'reorder', panelId: panel.id, newOrder: panel.order + 1 })}
+                          disabled={panel.order === panels.length}
+                        >
+                          ↓
+                        </button>
+                        <button
+                          type="button"
+                          className="manhwa-results-panel-action-btn manhwa-results-panel-danger"
+                          onClick={() => void handleApply({ type: 'delete', panelId: panel.id })}
+                        >
+                          Delete
                         </button>
                       </div>
-                    )}
-                  </div>
-                )}
 
-                {/* Toolbar — visible when idle with panels */}
-                {isIdle && panels.length > 0 && (
-                  <div className="manhwa-results-toolbar">
-                    <button
-                      type="button"
-                      className="manhwa-results-action-btn"
-                      onClick={() => void handleRedetect()}
-                    >
-                      Re-detect
-                    </button>
-                    <div className="manhwa-results-toolbar-spacer" />
-                    <div className="manhwa-results-export-group">
-                      <select
-                        value={exportFormat}
-                        onChange={(e) => setExportFormat(e.target.value as 'png' | 'jpg')}
-                        className="manhwa-results-format-select"
-                      >
-                        <option value="png">PNG</option>
-                        <option value="jpg">JPG</option>
-                      </select>
-                      <button
-                        type="button"
-                        className="manhwa-results-action-btn"
-                        onClick={() => void handleExport()}
-                        disabled={selectedPanelIdx === null}
-                      >
-                        Export Selected
-                      </button>
-                      <button
-                        type="button"
-                        className="manhwa-results-action-btn"
-                        onClick={() => void handleExportAll()}
-                      >
-                        Export All
-                      </button>
+                      {/* Expanded editor */}
+                      {isExpanded && (
+                        <div className="manhwa-results-panel-editor">
+                          <div className="manhwa-results-panel-editor-row">
+                            <button
+                              type="button"
+                              className="manhwa-results-action-btn"
+                              onClick={() => void handleApply({ type: 'split', panelId: panel.id })}
+                            >
+                              Split
+                            </button>
+                            <button
+                              type="button"
+                              className="manhwa-results-action-btn"
+                              onClick={() => void handleApply({ type: 'merge_down', panelId: panel.id })}
+                              disabled={panel.order === panels.length}
+                            >
+                              Merge ↓
+                            </button>
+                            <button
+                              type="button"
+                              className="manhwa-results-action-btn"
+                              onClick={() =>
+                                setAdjustBounds(
+                                  adjustBounds?.panelId === panel.id
+                                    ? null
+                                    : {
+                                        panelId: panel.id,
+                                        x: panel.bounds.x,
+                                        y: panel.bounds.y,
+                                        w: panel.bounds.width,
+                                        h: panel.bounds.height,
+                                      },
+                                )
+                              }
+                            >
+                              {adjustBounds?.panelId === panel.id ? 'Cancel' : 'Adjust'}
+                            </button>
+                          </div>
+
+                          {adjustBounds?.panelId === panel.id && (
+                            <div className="manhwa-results-adjust">
+                              <label>
+                                X
+                                <input
+                                  type="number"
+                                  value={adjustBounds.x}
+                                  onChange={(e) =>
+                                    setAdjustBounds({ ...adjustBounds, x: Number(e.target.value) })
+                                  }
+                                />
+                              </label>
+                              <label>
+                                Y
+                                <input
+                                  type="number"
+                                  value={adjustBounds.y}
+                                  onChange={(e) =>
+                                    setAdjustBounds({ ...adjustBounds, y: Number(e.target.value) })
+                                  }
+                                />
+                              </label>
+                              <label>
+                                W
+                                <input
+                                  type="number"
+                                  value={adjustBounds.w}
+                                  onChange={(e) =>
+                                    setAdjustBounds({ ...adjustBounds, w: Number(e.target.value) })
+                                  }
+                                />
+                              </label>
+                              <label>
+                                H
+                                <input
+                                  type="number"
+                                  value={adjustBounds.h}
+                                  onChange={(e) =>
+                                    setAdjustBounds({ ...adjustBounds, h: Number(e.target.value) })
+                                  }
+                                />
+                              </label>
+                              <button
+                                type="button"
+                                className="manhwa-results-action-btn"
+                                onClick={() =>
+                                  void handleApply({
+                                    type: 'adjust_bounds',
+                                    panelId: panel.id,
+                                    bounds: {
+                                      x: adjustBounds.x,
+                                      y: adjustBounds.y,
+                                      width: adjustBounds.w,
+                                      height: adjustBounds.h,
+                                    },
+                                  })
+                                }
+                              >
+                                Apply
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
-                  </div>
-                )}
+                  )
+                })}
               </div>
-            </>
+            </div>
+          )}
+
+          {/* Idle but no panels */}
+          {isIdle && panels.length === 0 && (
+            <div className="manhwa-results-progress">
+              <span className="manhwa-results-progress-text">No panels detected</span>
+            </div>
           )}
         </div>
 

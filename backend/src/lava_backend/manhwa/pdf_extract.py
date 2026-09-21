@@ -1,8 +1,10 @@
 """PDF page extraction for manhwa/webtoon import.
 
 Converts each page of a PDF to a PNG image using PyMuPDF (fitz).
-Skips text-only pages (table of contents, copyright, etc.) by checking
-for visual content in the rasterized pixmap.
+Two-stage filter skips blank and text-only pages while keeping manhwa images.
+
+Stage 1: Text-only detection — skips pages with no embedded images or drawings.
+Stage 2: Visual content check — lower threshold catches manhwa pages with white gutters.
 """
 
 from __future__ import annotations
@@ -16,16 +18,24 @@ from lava_backend.manhwa.errors import ManhwaError
 DEFAULT_DPI = 150
 
 
-def _page_has_visual_content(page: fitz.Page, dpi: int = DEFAULT_DPI, min_visual_ratio: float = 0.01) -> bool:
-    """Return True if the page contains meaningful visual content.
+def _should_extract_page(page: fitz.Page, dpi: int = DEFAULT_DPI) -> bool:
+    """Two-stage filter: skip blank and text-only pages, keep manhwa images.
 
-    Renders the page at low resolution and checks if there are enough
-    non-white pixels to consider it a visual page. This catches both
-    embedded images AND vector drawings (rectangles, shapes, illustrations).
+    Stage 1 (fast): If page has no embedded images AND no vector drawings,
+    it's likely a text-only page (copyright, TOC, author notes) → skip.
 
-    A page is considered text-only if it is almost entirely white/blank
-    after rendering.
+    Stage 2 (pixel check): Sample the rendered page to detect blank pages.
+    Uses 80×240 grid with 0.3% threshold — catches pages with large white
+    gutters between manhwa panels.
     """
+    # Stage 1: Text-only detection
+    images = page.get_images()
+    drawings = page.get_drawings()
+
+    if len(images) == 0 and len(drawings) == 0:
+        return False
+
+    # Stage 2: Visual content check (pixel sampling)
     zoom = dpi / 72.0
     matrix = fitz.Matrix(zoom, zoom)
     pix = page.get_pixmap(matrix=matrix, alpha=False)
@@ -33,10 +43,9 @@ def _page_has_visual_content(page: fitz.Page, dpi: int = DEFAULT_DPI, min_visual
     if pix.width == 0 or pix.height == 0:
         return False
 
-    # Sample pixels to check for visual content
-    # Look at a grid of sample points across the image
-    samples_x = min(pix.width, 40)
-    samples_y = min(pix.height, 120)
+    # Higher resolution sampling: 80×240 grid
+    samples_x = min(pix.width, 80)
+    samples_y = min(pix.height, 240)
     step_x = max(1, pix.width // samples_x)
     step_y = max(1, pix.height // samples_y)
 
@@ -48,14 +57,14 @@ def _page_has_visual_content(page: fitz.Page, dpi: int = DEFAULT_DPI, min_visual
             pixel = pix.pixel(x, y)
             r, g, b = pixel[0], pixel[1], pixel[2]
             total_count += 1
-            # Consider a pixel "visual" if it's not near-white (R,G,B all > 240)
             if r < 240 or g < 240 or b < 240:
                 non_white_count += 1
 
     if total_count == 0:
         return False
 
-    return (non_white_count / total_count) >= min_visual_ratio
+    # 0.3% threshold — keeps manhwa pages with white gutters
+    return (non_white_count / total_count) >= 0.003
 
 
 def extract_pages(
@@ -63,7 +72,7 @@ def extract_pages(
     output_dir: str | Path,
     dpi: int = DEFAULT_DPI,
 ) -> list[Path]:
-    """Extract each visual PDF page as a PNG image, skipping text-only pages.
+    """Extract each visual PDF page as a PNG image, skipping blank/text-only pages.
 
     Args:
         pdf_path: Path to the PDF file.
@@ -72,7 +81,7 @@ def extract_pages(
 
     Returns:
         List of paths to extracted PNG images, in page order.
-        Only pages with meaningful visual content are included.
+        Only pages with meaningful visual content (manhwa panels) are included.
 
     Raises:
         ManhwaError: If PDF cannot be read or has no visual pages.
@@ -96,7 +105,7 @@ def extract_pages(
 
         for page_num in range(doc.page_count):
             page = doc.load_page(page_num)
-            if not _page_has_visual_content(page, dpi):
+            if not _should_extract_page(page, dpi):
                 continue
             pix = page.get_pixmap(matrix=matrix, alpha=False)
             out_path = output_dir / f"page_{page_num + 1:03d}.png"
