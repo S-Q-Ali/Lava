@@ -1872,27 +1872,29 @@
 }
 
 .manhwa-dropzone {
-  border: 1px dashed var(--border);
-  border-radius: 4px;
-  padding: 12px;
+  border: 2px dashed var(--border);
+  border-radius: 8px;
+  padding: 20px 12px;
   text-align: center;
   margin-bottom: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+}
+
+.manhwa-dropzone:hover {
+  border-color: var(--accent);
+  background: rgba(74, 142, 255, 0.06);
+  transform: translateY(-1px);
+}
+
+.manhwa-dropzone:active {
+  transform: scale(0.98);
 }
 
 .manhwa-dropzone.drag-over {
   border-color: var(--accent);
-  background: var(--accent-soft);
-}
-
-.manhwa-dropzone button {
-  background: var(--accent-soft);
-  color: var(--text);
-  border: 1px solid var(--accent);
-  border-radius: 4px;
-  padding: 4px 10px;
-  font-size: 12px;
-  cursor: pointer;
-  margin-bottom: 4px;
+  background: rgba(74, 142, 255, 0.1);
+  transform: scale(0.98);
 }
 
 .manhwa-drop-hint {
@@ -2365,6 +2367,11 @@
 .manhwa-dropzone-label {
   font-size: 12px;
   color: var(--text-dim);
+  transition: color 0.2s;
+}
+
+.manhwa-dropzone:hover .manhwa-dropzone-label {
+  color: var(--text);
 }
 
 .manhwa-file-input {
