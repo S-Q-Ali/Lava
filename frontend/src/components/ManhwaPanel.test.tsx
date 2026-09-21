@@ -8,10 +8,14 @@ import { useManhwaStore } from '../store/manhwaStore'
 vi.mock('../services/manhwa', () => ({
   listStrips: vi.fn(),
   uploadStrip: vi.fn(),
+  uploadPdf: vi.fn(),
+  uploadStripOnly: vi.fn(),
+  uploadPdfOnly: vi.fn(),
   getStrip: vi.fn(),
   correctStrip: vi.fn(),
   redetectStrip: vi.fn(),
   deleteStrip: vi.fn(),
+  detectStrip: vi.fn(),
   exportUrl: (id: string, fmt: string) => `http://localhost/api/manhwa/strips/${id}/export?format=${fmt}`,
   panelImageUrl: (sid: string, pid: string) => `http://localhost/api/manhwa/strips/${sid}/panels/${pid}`,
   sourceImageUrl: (id: string) => `http://localhost/api/manhwa/strips/${id}/source`,
@@ -25,38 +29,6 @@ const stripSummary = {
   mime: 'image/png',
   panelCount: 3,
   correctedCount: 1,
-}
-
-const stripDetail = {
-  sourceId: 'sabc123',
-  sourceFile: 'strip.png',
-  width: 800,
-  height: 2400,
-  mime: 'image/png',
-  panels: [
-    {
-      id: 'p1',
-      sourceId: 'sabc123',
-      x: 0,
-      y: 0,
-      w: 800,
-      h: 800,
-      confidence: 0.95,
-      order: 1,
-      userCorrected: false,
-    },
-    {
-      id: 'p2',
-      sourceId: 'sabc123',
-      x: 0,
-      y: 800,
-      w: 800,
-      h: 800,
-      confidence: 0.35,
-      order: 2,
-      userCorrected: true,
-    },
-  ],
 }
 
 function findByText(host: HTMLElement, text: string): HTMLElement | null {
@@ -88,6 +60,7 @@ function resetStore() {
     strips: [],
     currentId: null,
     detail: null,
+    resultsModalOpen: false,
   })
 }
 
@@ -102,87 +75,42 @@ describe('ManhwaPanel', () => {
     resetStore()
   })
 
-  it('shows empty state when no strips exist', async () => {
-    const { listStrips } = await import('../services/manhwa')
-    vi.mocked(listStrips).mockResolvedValue([])
+  it('shows the dropzone', () => {
     mount()
-    await act(async () => {})
-    expect(findByText(host, 'No strips yet. Drop a long vertical image to begin.')).not.toBeNull()
+    const dropzone = host.querySelector('.manhwa-dropzone')
+    expect(dropzone).not.toBeNull()
   })
 
-  it('shows the dropzone button', async () => {
-    const { listStrips } = await import('../services/manhwa')
-    vi.mocked(listStrips).mockResolvedValue([])
+  it('shows dropzone label text', () => {
     mount()
-    await act(async () => {})
-    const button = Array.from(host.querySelectorAll('button')).find((b) =>
-      b.textContent?.includes('Drop or pick a long strip'),
-    )
-    expect(button).not.toBeNull()
+    expect(findByText(host, 'Drop or pick a strip / PDF')).not.toBeNull()
   })
 
-  it('lists strips after loading', async () => {
-    const { listStrips } = await import('../services/manhwa')
-    vi.mocked(listStrips).mockResolvedValue([stripSummary])
+  it('shows error state', () => {
+    useManhwaStore.setState({ status: { phase: 'error', error: 'Network down' } })
     mount()
-    await act(async () => {})
-    expect(findByText(host, 'strip.png')).not.toBeNull()
-    expect(findByText(host, '3 panels · 1 corrected')).not.toBeNull()
-  })
-
-  it('shows panel detail when a strip is selected', async () => {
-    const { listStrips } = await import('../services/manhwa')
-    vi.mocked(listStrips).mockResolvedValue([stripSummary])
-    useManhwaStore.setState({ currentId: 'sabc123', detail: stripDetail })
-    mount()
-    await act(async () => {})
-    expect(findByText(host, '95%')).not.toBeNull()
-    expect(findByText(host, '35%')).not.toBeNull()
-    expect(findByText(host, 'corrected')).not.toBeNull()
-  })
-
-  it('shows error state', async () => {
-    const { listStrips } = await import('../services/manhwa')
-    vi.mocked(listStrips).mockRejectedValue(new Error('Network down'))
-    mount()
-    await act(async () => {})
     expect(findByText(host, 'Network down')).not.toBeNull()
   })
 
-  it('shows export success message after export', async () => {
-    const { listStrips } = await import('../services/manhwa')
-    vi.mocked(listStrips).mockResolvedValue([stripSummary])
-    useManhwaStore.setState({ currentId: 'sabc123', detail: stripDetail })
+  it('shows View Results button when strips exist', () => {
+    useManhwaStore.setState({ strips: [stripSummary] })
     mount()
-    await act(async () => {})
-    const exportBtn = Array.from(host.querySelectorAll('button')).find((b) => b.textContent === 'Export')
-    act(() => exportBtn?.click())
-    await act(async () => {})
-    expect(findByText(host, 'Exported 2 panels as PNG.')).not.toBeNull()
+    expect(findByText(host, 'View Results')).not.toBeNull()
   })
 
-  it('calls delete when the strip delete button is clicked', async () => {
-    const { listStrips, deleteStrip } = await import('../services/manhwa')
-    vi.mocked(listStrips).mockResolvedValue([stripSummary])
-    vi.mocked(deleteStrip).mockResolvedValue(undefined)
+  it('shows panel count stats when strips exist', () => {
+    useManhwaStore.setState({ strips: [stripSummary] })
     mount()
-    await act(async () => {})
-    const deleteBtn = Array.from(host.querySelectorAll('button')).find((b) =>
-      b.getAttribute('aria-label')?.includes('Remove strip.png'),
-    )
-    act(() => deleteBtn?.click())
-    await act(async () => {})
-    expect(deleteStrip).toHaveBeenCalledWith('sabc123')
+    expect(findByText(host, '1 page · 3 panels')).not.toBeNull()
   })
 
-  it('shows low confidence styling for panels below 50%', async () => {
-    const { listStrips } = await import('../services/manhwa')
-    vi.mocked(listStrips).mockResolvedValue([stripSummary])
-    useManhwaStore.setState({ currentId: 'sabc123', detail: stripDetail })
+  it('does not show View Results when no strips', () => {
     mount()
-    await act(async () => {})
-    const lowConf = Array.from(host.querySelectorAll('.manhwa-panel-confidence.low'))
-    expect(lowConf.length).toBe(1)
-    expect(lowConf[0]?.textContent).toBe('35%')
+    expect(findByText(host, 'View Results')).toBeNull()
+  })
+
+  it('does not show stats when no strips', () => {
+    mount()
+    expect(host.querySelector('.manhwa-stats')).toBeNull()
   })
 })

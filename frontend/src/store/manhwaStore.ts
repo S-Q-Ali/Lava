@@ -142,7 +142,7 @@ export const useManhwaStore = create<ManhwaStore>()((set, get) => ({
   },
 
   openResults: () => set({ resultsModalOpen: true }),
-  closeResults: () => set({ resultsModalOpen: false, detectionProgress: null, pendingPages: [] }),
+  closeResults: () => set({ resultsModalOpen: false, detectionProgress: null }),
 
   nextPage: () => {
     const { status, viewerPageIndex, strips } = get()
