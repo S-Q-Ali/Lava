@@ -64,7 +64,7 @@ export default function ManhwaPanel() {
     [remove],
   )
 
-  const isLoading = status.phase === 'loading' || status.phase === 'uploading'
+  const isLoading = status.phase === 'loading' || status.phase === 'uploading' || status.phase === 'processing'
 
   return (
     <section className="manhwa-tab-section">
@@ -93,7 +93,9 @@ export default function ManhwaPanel() {
         <span className="manhwa-dropzone-label">
           {status.phase === 'uploading'
             ? `Uploading… ${Math.round(status.progress)}%`
-            : 'Drop or pick a strip / PDF'}
+            : status.phase === 'processing'
+              ? 'Processing PDF…'
+              : 'Drop or pick a strip / PDF'}
         </span>
       </div>
 
@@ -103,6 +105,13 @@ export default function ManhwaPanel() {
             className="manhwa-progress-bar"
             style={{ width: `${status.progress}%` }}
           />
+        </div>
+      )}
+
+      {status.phase === 'processing' && (
+        <div className="manhwa-processing">
+          <div className="manhwa-spinner" />
+          <span className="manhwa-processing-text">Extracting pages…</span>
         </div>
       )}
 

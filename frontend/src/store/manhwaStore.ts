@@ -22,6 +22,7 @@ export type PendingPage = { stripId: string; fileName: string }
 export type ManhwaStatus =
   | { phase: 'idle' }
   | { phase: 'uploading'; progress: number }
+  | { phase: 'processing' }
   | { phase: 'uploaded'; pages: PendingPage[]; fileName: string }
   | { phase: 'detecting' }
   | { phase: 'loading' }
@@ -127,15 +128,18 @@ export const useManhwaStore = create<ManhwaStore>()((set, get) => ({
     set({ status: { phase: 'uploading', progress: 0 } })
     try {
       const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')
-      if (isPdf) {
-        const result = await uploadPdfOnly(file, (progress) => {
+      const onProgress = (progress: number) => {
+        if (progress >= 100) {
+          set({ status: { phase: 'processing' } })
+        } else {
           set({ status: { phase: 'uploading', progress } })
-        })
+        }
+      }
+      if (isPdf) {
+        const result = await uploadPdfOnly(file, onProgress)
         set({ status: { phase: 'uploaded', pages: result.pages, fileName: result.fileName }, viewerPageIndex: 0, resultsModalOpen: true })
       } else {
-        const result = await uploadStripOnly(file, (progress) => {
-          set({ status: { phase: 'uploading', progress } })
-        })
+        const result = await uploadStripOnly(file, onProgress)
         set({ status: { phase: 'uploaded', pages: [result], fileName: result.fileName }, viewerPageIndex: 0, resultsModalOpen: true })
       }
     } catch (error) {
