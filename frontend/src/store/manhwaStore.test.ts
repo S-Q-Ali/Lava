@@ -7,6 +7,8 @@ import {
   correctStrip,
   redetectStrip,
   deleteStrip,
+  fetchGroups,
+  deleteGroup,
 } from '../services/manhwa'
 
 vi.mock('../services/manhwa', () => ({
@@ -16,6 +18,8 @@ vi.mock('../services/manhwa', () => ({
   correctStrip: vi.fn(),
   redetectStrip: vi.fn(),
   deleteStrip: vi.fn(),
+  fetchGroups: vi.fn().mockResolvedValue([]),
+  deleteGroup: vi.fn(),
 }))
 
 const stripSummary = {
@@ -53,6 +57,7 @@ function resetStore() {
   useManhwaStore.setState({
     status: { phase: 'idle' },
     strips: [],
+    groups: [],
     currentId: null,
     detail: null,
   })

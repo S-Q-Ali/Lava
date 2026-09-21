@@ -16,20 +16,22 @@ vi.mock('../services/manhwa', () => ({
   redetectStrip: vi.fn(),
   deleteStrip: vi.fn(),
   deleteAllStrips: vi.fn(),
+  fetchGroups: vi.fn().mockResolvedValue([]),
+  deleteGroup: vi.fn(),
   detectStrip: vi.fn(),
   exportUrl: (id: string, fmt: string) => `http://localhost/api/manhwa/strips/${id}/export?format=${fmt}`,
   panelImageUrl: (sid: string, pid: string) => `http://localhost/api/manhwa/strips/${sid}/panels/${pid}`,
   sourceImageUrl: (id: string) => `http://localhost/api/manhwa/strips/${id}/source`,
 }))
 
-const stripSummary = {
-  sourceId: 'sabc123',
-  sourceFile: 'strip.png',
-  width: 800,
-  height: 2400,
-  mime: 'image/png',
-  panelCount: 3,
-  correctedCount: 1,
+const group = {
+  groupId: 'pdf_abc',
+  sourceName: 'chapter-12.pdf',
+  pageCount: 24,
+  totalPanels: 89,
+  pages: [
+    { sourceId: 'p1', sourceFile: 'source.png', width: 800, height: 2400, mime: 'image/png', panelCount: 3, correctedCount: 0 },
+  ],
 }
 
 function findByText(host: HTMLElement, text: string): HTMLElement | null {
@@ -59,6 +61,7 @@ function resetStore() {
   useManhwaStore.setState({
     status: { phase: 'idle' },
     strips: [],
+    groups: [],
     currentId: null,
     detail: null,
     resultsModalOpen: false,
@@ -93,26 +96,26 @@ describe('ManhwaPanel', () => {
     expect(findByText(host, 'Network down')).not.toBeNull()
   })
 
-  it('shows View Results button when strips exist', () => {
-    useManhwaStore.setState({ strips: [stripSummary] })
+  it('shows View button when groups exist', () => {
+    useManhwaStore.setState({ groups: [group] })
     mount()
     expect(findByText(host, 'View')).not.toBeNull()
   })
 
-  it('shows recent extractions when strips exist', () => {
-    useManhwaStore.setState({ strips: [stripSummary] })
+  it('shows recent extractions when groups exist', () => {
+    useManhwaStore.setState({ groups: [group] })
     mount()
     expect(findByText(host, 'Recent Extractions')).not.toBeNull()
-    expect(findByText(host, 'strip.png')).not.toBeNull()
+    expect(findByText(host, 'chapter-12.pdf')).not.toBeNull()
     expect(findByText(host, 'View')).not.toBeNull()
   })
 
-  it('does not show View button when no strips', () => {
+  it('does not show View button when no groups', () => {
     mount()
     expect(findByText(host, 'View')).toBeNull()
   })
 
-  it('does not show recent extractions when no strips', () => {
+  it('does not show recent extractions when no groups', () => {
     mount()
     expect(host.querySelector('.manhwa-recent')).toBeNull()
   })
