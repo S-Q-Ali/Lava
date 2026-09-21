@@ -295,7 +295,7 @@ export function ManhwaResultsModal() {
                           </span>
                         </div>
                         <div className="manhwa-results-panel-dims">
-                          {panel.bounds.width} x {panel.bounds.height}
+                          {panel.w} x {panel.h}
                         </div>
                         <div className="manhwa-results-panel-actions">
                           <button
@@ -366,10 +366,10 @@ export function ManhwaResultsModal() {
                                     ? null
                                     : {
                                         panelId: panel.id,
-                                        x: panel.bounds.x,
-                                        y: panel.bounds.y,
-                                        w: panel.bounds.width,
-                                        h: panel.bounds.height,
+                                        x: panel.x,
+                                        y: panel.y,
+                                        w: panel.w,
+                                        h: panel.h,
                                       },
                                 )
                               }
