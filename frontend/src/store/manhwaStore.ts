@@ -43,6 +43,7 @@ interface ManhwaStore {
   pendingPages: PendingPage[]
   refresh(): Promise<void>
   select(id: string | null): Promise<void>
+  viewGroup(groupId: string): void
   upload(file: File): Promise<void>
   uploadPdf(file: File): Promise<void>
   uploadOnly(file: File): Promise<void>
@@ -93,6 +94,19 @@ export const useManhwaStore = create<ManhwaStore>()((set, get) => ({
       const message = error instanceof Error ? error.message : 'Could not load strip detail.'
       set({ status: { phase: 'error', error: message }, detail: null })
     }
+  },
+
+  viewGroup: (groupId) => {
+    const group = get().groups.find((g) => g.groupId === groupId)
+    if (!group || group.pages.length === 0) return
+    const pages = group.pages.map((p) => ({ stripId: p.sourceId, fileName: p.sourceFile }))
+    set({
+      status: { phase: 'uploaded', pages, fileName: group.sourceName ?? 'extraction' },
+      currentId: group.pages[0].sourceId,
+      detail: null,
+      viewerPageIndex: 0,
+      resultsModalOpen: true,
+    })
   },
 
   upload: async (file) => {

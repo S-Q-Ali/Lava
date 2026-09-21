@@ -8,8 +8,7 @@ export default function ManhwaPanel() {
   const groups = useManhwaStore((s) => s.groups)
   const uploadOnly = useManhwaStore((s) => s.uploadOnly)
   const refresh = useManhwaStore((s) => s.refresh)
-  const openResults = useManhwaStore((s) => s.openResults)
-  const select = useManhwaStore((s) => s.select)
+  const viewGroup = useManhwaStore((s) => s.viewGroup)
   const removeGroup = useManhwaStore((s) => s.removeGroup)
   const resultsModalOpen = useManhwaStore((s) => s.resultsModalOpen)
 
@@ -49,13 +48,10 @@ export default function ManhwaPanel() {
   }, [])
 
   const handleView = useCallback(
-    async (groupId: string) => {
-      const group = groups.find((g) => g.groupId === groupId)
-      if (!group || group.pages.length === 0) return
-      await select(group.pages[0].sourceId)
-      openResults()
+    (groupId: string) => {
+      viewGroup(groupId)
     },
-    [groups, select, openResults],
+    [viewGroup],
   )
 
   const handleDelete = useCallback(
