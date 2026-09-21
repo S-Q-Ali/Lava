@@ -235,6 +235,8 @@ class StripRegistry:
         height: int,
         mime: str,
         panels: list[Panel],
+        parent_id: str | None = None,
+        source_name: str | None = None,
     ) -> None:
         self.path = Path(path)
         self.source_id = source_id
@@ -243,6 +245,8 @@ class StripRegistry:
         self.height = height
         self.mime = mime
         self.panels = list(panels)
+        self.parent_id = parent_id
+        self.source_name = source_name
 
     # -- write ---------------------------------------------------------------
 
@@ -256,6 +260,10 @@ class StripRegistry:
             "mime": self.mime,
             "panels": [panel_to_dict(p) for p in self.panels],
         }
+        if self.parent_id is not None:
+            payload["parentId"] = self.parent_id
+        if self.source_name is not None:
+            payload["sourceName"] = self.source_name
         self.path.parent.mkdir(parents=True, exist_ok=True)
         fd, tmp = tempfile.mkstemp(dir=self.path.parent, suffix=".tmp", prefix="registry-")
         try:
@@ -312,6 +320,8 @@ class StripRegistry:
                 height=source_h,
                 mime=_expect_str(payload, "mime"),
                 panels=panels,
+                parent_id=payload.get("parentId") if isinstance(payload.get("parentId"), str) else None,
+                source_name=payload.get("sourceName") if isinstance(payload.get("sourceName"), str) else None,
             )
         except ValueError as exc:
             raise ManhwaError(f"registry {path} failed validation: {exc}") from exc

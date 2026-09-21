@@ -88,7 +88,7 @@ def _source_path(registry: StripRegistry, config) -> Path:
 
 
 def _serialize(registry: StripRegistry) -> dict:
-    return {
+    result = {
         "sourceId": registry.source_id,
         "sourceFile": registry.source_file,
         "width": registry.width,
@@ -96,11 +96,16 @@ def _serialize(registry: StripRegistry) -> dict:
         "mime": registry.mime,
         "panels": [panel_to_dict(p) for p in registry.panels],
     }
+    if registry.parent_id is not None:
+        result["parentId"] = registry.parent_id
+    if registry.source_name is not None:
+        result["sourceName"] = registry.source_name
+    return result
 
 
 def _summary(registry: StripRegistry) -> dict:
     panels = registry.panels
-    return {
+    result = {
         "sourceId": registry.source_id,
         "sourceFile": registry.source_file,
         "width": registry.width,
@@ -109,6 +114,11 @@ def _summary(registry: StripRegistry) -> dict:
         "panelCount": len(panels),
         "correctedCount": sum(1 for p in panels if p.user_corrected),
     }
+    if registry.parent_id is not None:
+        result["parentId"] = registry.parent_id
+    if registry.source_name is not None:
+        result["sourceName"] = registry.source_name
+    return result
 
 
 def _regenerate_panel_png(registry: StripRegistry, panel_id: str) -> bytes:
