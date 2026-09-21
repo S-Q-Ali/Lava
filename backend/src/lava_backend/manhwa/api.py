@@ -410,6 +410,8 @@ async def upload_pdf_only(request: Request, file: UploadFile | None = File(defau
             height=h,
             mime=mime,
             panels=[],
+            parent_id=pdf_id,
+            source_name=file.filename,
         ).save()
         pages.append({"stripId": page_id, "fileName": page_path.name})
 
