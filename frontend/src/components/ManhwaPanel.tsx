@@ -259,7 +259,7 @@ export function ManhwaPanel() {
         />
       )}
 
-      {resultsModalOpen && status.phase === 'idle' && detail && (
+      {resultsModalOpen && status.phase === 'idle' && detail && detail.panels.length > 0 && (
         <ManhwaResultsModal
           pages={[]}
           fileName=""

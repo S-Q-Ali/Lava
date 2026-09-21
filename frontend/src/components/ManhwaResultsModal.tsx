@@ -150,7 +150,7 @@ export default function ManhwaResultsModal({ pages, fileName, onClose }: ManhwaR
           )}
 
           {/* Panels view */}
-          {isDone && (
+          {isDone && panels.length > 0 && (
             <>
               <div className="manhwa-results-grid">
                 {panels.map((panel, index) => (
@@ -188,14 +188,23 @@ export default function ManhwaResultsModal({ pages, fileName, onClose }: ManhwaR
                     Next ▶
                   </button>
                 </div>
-                <div className="manhwa-results-preview-image">
-                  <img
-                    src={panelImageUrl(panels[viewerPageIndex].sourceId, panels[viewerPageIndex].id)}
-                    alt={`Panel ${panels[viewerPageIndex].order}`}
-                  />
-                </div>
+                {panels[viewerPageIndex] && (
+                  <div className="manhwa-results-preview-image">
+                    <img
+                      src={panelImageUrl(panels[viewerPageIndex].sourceId, panels[viewerPageIndex].id)}
+                      alt={`Panel ${panels[viewerPageIndex].order}`}
+                    />
+                  </div>
+                )}
               </div>
             </>
+          )}
+
+          {/* Detecting but no panels yet */}
+          {isDone && panels.length === 0 && (
+            <div className="manhwa-results-progress">
+              <span className="manhwa-results-progress-text">Loading panels...</span>
+            </div>
           )}
         </div>
 
@@ -205,7 +214,7 @@ export default function ManhwaResultsModal({ pages, fileName, onClose }: ManhwaR
               Start Extraction
             </button>
           )}
-          {isDone && (
+          {isDone && panels.length > 0 && (
             <button type="button" className="manhwa-results-done-btn" onClick={onClose}>
               Done
             </button>
