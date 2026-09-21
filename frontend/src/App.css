@@ -2409,6 +2409,107 @@
   to { transform: rotate(360deg); }
 }
 
+/* ─── Recent extractions ─── */
+.manhwa-recent {
+  margin-top: 8px;
+}
+
+.manhwa-recent-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 6px;
+}
+
+.manhwa-recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.manhwa-recent-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 8px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  transition: border-color 0.12s;
+}
+
+.manhwa-recent-item:hover {
+  border-color: var(--accent);
+}
+
+.manhwa-recent-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  flex: 1;
+}
+
+.manhwa-recent-filename {
+  font-size: 12px;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.manhwa-recent-meta {
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+.manhwa-recent-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.manhwa-recent-btn {
+  background: var(--panel-3);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  padding: 2px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 10px;
+  transition: background 0.12s, color 0.12s;
+}
+
+.manhwa-recent-btn:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+.manhwa-recent-view:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+.manhwa-recent-remove:hover {
+  background: var(--danger);
+  color: #fff;
+}
+
+.manhwa-recent-remove-confirm {
+  background: var(--danger);
+  color: #fff;
+  border-color: var(--danger);
+}
+
+.manhwa-recent-confirm {
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
 /* Caption live preview overlay */
 .caption-overlay {
   position: absolute;

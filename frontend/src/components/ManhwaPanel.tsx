@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react'
+import { useCallback, useRef, useEffect, useState } from 'react'
 import { useManhwaStore } from '../store/manhwaStore'
 import { ManhwaResultsModal } from './ManhwaResultsModal'
 import './ManhwaResultsModal.css'
@@ -9,11 +9,21 @@ export default function ManhwaPanel() {
   const uploadOnly = useManhwaStore((s) => s.uploadOnly)
   const refresh = useManhwaStore((s) => s.refresh)
   const openResults = useManhwaStore((s) => s.openResults)
+  const select = useManhwaStore((s) => s.select)
+  const remove = useManhwaStore((s) => s.remove)
   const resultsModalOpen = useManhwaStore((s) => s.resultsModalOpen)
 
   const fileInputRef = useRef<HTMLInputElement>(null)
   const dragCounterRef = useRef(0)
   const dragOver = status.phase === 'uploading'
+  const [confirmRemoveId, setConfirmRemoveId] = useState<string | null>(null)
+
+  // Load existing strips on mount
+  useEffect(() => {
+    if (status.phase === 'idle' && strips.length === 0) {
+      void refresh()
+    }
+  }, [refresh, status.phase, strips.length])
 
   const handleFiles = useCallback(
     (files: FileList | null) => {
@@ -38,8 +48,23 @@ export default function ManhwaPanel() {
     e.stopPropagation()
   }, [])
 
-  const hasResults = strips.length > 0 && status.phase === 'idle'
-  const totalPanels = strips.reduce((sum, s) => sum + (s.panelCount ?? 0), 0)
+  const handleView = useCallback(
+    async (sourceId: string) => {
+      await select(sourceId)
+      openResults()
+    },
+    [select, openResults],
+  )
+
+  const handleRemove = useCallback(
+    async (sourceId: string) => {
+      setConfirmRemoveId(null)
+      await remove(sourceId)
+    },
+    [remove],
+  )
+
+  const isLoading = status.phase === 'loading' || status.phase === 'uploading'
 
   return (
     <section className="manhwa-tab-section">
@@ -81,20 +106,59 @@ export default function ManhwaPanel() {
         </div>
       )}
 
-      {hasResults && (
-        <>
-          <button
-            className="manhwa-see-results-btn"
-            onClick={openResults}
-            type="button"
-          >
-            View Results
-          </button>
-          <div className="manhwa-stats">
-            {strips.length} {strips.length === 1 ? 'page' : 'pages'} · {totalPanels}{' '}
-            {totalPanels === 1 ? 'panel' : 'panels'}
+      {/* Recent Extractions */}
+      {(strips?.length ?? 0) > 0 && !isLoading && (
+        <div className="manhwa-recent">
+          <h4 className="manhwa-recent-title">Recent Extractions</h4>
+          <div className="manhwa-recent-list">
+            {strips.map((strip) => (
+              <div key={strip.sourceId} className="manhwa-recent-item">
+                <div className="manhwa-recent-info">
+                  <span className="manhwa-recent-filename">{strip.sourceFile}</span>
+                  <span className="manhwa-recent-meta">
+                    {strip.panelCount} {strip.panelCount === 1 ? 'panel' : 'panels'} · {strip.width}x{strip.height}
+                  </span>
+                </div>
+                <div className="manhwa-recent-actions">
+                  <button
+                    type="button"
+                    className="manhwa-recent-btn manhwa-recent-view"
+                    onClick={() => void handleView(strip.sourceId)}
+                  >
+                    View
+                  </button>
+                  {confirmRemoveId === strip.sourceId ? (
+                    <>
+                      <span className="manhwa-recent-confirm">Remove?</span>
+                      <button
+                        type="button"
+                        className="manhwa-recent-btn manhwa-recent-remove-confirm"
+                        onClick={() => void handleRemove(strip.sourceId)}
+                      >
+                        Yes
+                      </button>
+                      <button
+                        type="button"
+                        className="manhwa-recent-btn"
+                        onClick={() => setConfirmRemoveId(null)}
+                      >
+                        No
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      type="button"
+                      className="manhwa-recent-btn manhwa-recent-remove"
+                      onClick={() => setConfirmRemoveId(strip.sourceId)}
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
-        </>
+        </div>
       )}
 
       <ManhwaResultsModal />

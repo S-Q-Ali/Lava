@@ -6,7 +6,7 @@ import ManhwaPanel from './ManhwaPanel'
 import { useManhwaStore } from '../store/manhwaStore'
 
 vi.mock('../services/manhwa', () => ({
-  listStrips: vi.fn(),
+  listStrips: vi.fn().mockResolvedValue([]),
   uploadStrip: vi.fn(),
   uploadPdf: vi.fn(),
   uploadStripOnly: vi.fn(),
@@ -15,6 +15,7 @@ vi.mock('../services/manhwa', () => ({
   correctStrip: vi.fn(),
   redetectStrip: vi.fn(),
   deleteStrip: vi.fn(),
+  deleteAllStrips: vi.fn(),
   detectStrip: vi.fn(),
   exportUrl: (id: string, fmt: string) => `http://localhost/api/manhwa/strips/${id}/export?format=${fmt}`,
   panelImageUrl: (sid: string, pid: string) => `http://localhost/api/manhwa/strips/${sid}/panels/${pid}`,
@@ -95,22 +96,24 @@ describe('ManhwaPanel', () => {
   it('shows View Results button when strips exist', () => {
     useManhwaStore.setState({ strips: [stripSummary] })
     mount()
-    expect(findByText(host, 'View Results')).not.toBeNull()
+    expect(findByText(host, 'View')).not.toBeNull()
   })
 
-  it('shows panel count stats when strips exist', () => {
+  it('shows recent extractions when strips exist', () => {
     useManhwaStore.setState({ strips: [stripSummary] })
     mount()
-    expect(findByText(host, '1 page · 3 panels')).not.toBeNull()
+    expect(findByText(host, 'Recent Extractions')).not.toBeNull()
+    expect(findByText(host, 'strip.png')).not.toBeNull()
+    expect(findByText(host, 'View')).not.toBeNull()
   })
 
-  it('does not show View Results when no strips', () => {
+  it('does not show View button when no strips', () => {
     mount()
-    expect(findByText(host, 'View Results')).toBeNull()
+    expect(findByText(host, 'View')).toBeNull()
   })
 
-  it('does not show stats when no strips', () => {
+  it('does not show recent extractions when no strips', () => {
     mount()
-    expect(host.querySelector('.manhwa-stats')).toBeNull()
+    expect(host.querySelector('.manhwa-recent')).toBeNull()
   })
 })
