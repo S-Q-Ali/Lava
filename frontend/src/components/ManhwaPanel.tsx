@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { useManhwaStore } from '../store/manhwaStore'
 import { panelImageUrl, exportUrl, sourceImageUrl, type CorrectionOp } from '../services/manhwa'
+import ManhwaResultsModal from './ManhwaResultsModal'
 
 export function ManhwaPanel() {
   const status = useManhwaStore((s) => s.status)
@@ -8,6 +9,7 @@ export function ManhwaPanel() {
   const currentId = useManhwaStore((s) => s.currentId)
   const detail = useManhwaStore((s) => s.detail)
   const viewerPageIndex = useManhwaStore((s) => s.viewerPageIndex)
+  const resultsModalOpen = useManhwaStore((s) => s.resultsModalOpen)
   const refresh = useManhwaStore((s) => s.refresh)
   const select = useManhwaStore((s) => s.select)
   const uploadOnly = useManhwaStore((s) => s.uploadOnly)
@@ -98,28 +100,13 @@ export function ManhwaPanel() {
       )}
 
       {status.phase === 'uploaded' && (
-        <div className="manhwa-viewer">
-          <div className="manhwa-viewer-header">
-            <span className="manhwa-viewer-filename" title={status.fileName}>{status.fileName}</span>
-            <span className="manhwa-viewer-count">{status.pages.length} pages</span>
+        <div className="manhwa-uploaded">
+          <div className="manhwa-uploaded-info">
+            <span className="manhwa-uploaded-filename" title={status.fileName}>{status.fileName}</span>
+            <span className="manhwa-uploaded-count">{status.pages.length} pages extracted</span>
           </div>
-          <div className="manhwa-viewer-nav">
-            <button type="button" onClick={() => void prevPage()} disabled={viewerPageIndex === 0}>
-              ◀ Prev
-            </button>
-            <span className="manhwa-viewer-page">{viewerPageIndex + 1} / {status.pages.length}</span>
-            <button type="button" onClick={() => void nextPage()} disabled={viewerPageIndex === status.pages.length - 1}>
-              Next ▶
-            </button>
-          </div>
-          <div className="manhwa-viewer-image">
-            <img
-              src={sourceImageUrl(status.pages[viewerPageIndex].stripId)}
-              alt={`Page ${viewerPageIndex + 1}`}
-            />
-          </div>
-          <button type="button" className="manhwa-detect-btn" onClick={() => void startDetection()}>
-            Start Extraction
+          <button type="button" className="manhwa-see-results-btn" onClick={() => useManhwaStore.getState().openResults()}>
+            See Results
           </button>
         </div>
       )}
@@ -254,6 +241,14 @@ export function ManhwaPanel() {
 
       {strips.length === 0 && status.phase !== 'error' && status.phase !== 'loading' && (
         <p className="manhwa-empty">No strips yet. Drop a long vertical image to begin.</p>
+      )}
+
+      {resultsModalOpen && status.phase === 'uploaded' && (
+        <ManhwaResultsModal
+          pages={status.pages}
+          fileName={status.fileName}
+          onClose={() => useManhwaStore.getState().closeResults()}
+        />
       )}
     </section>
   )

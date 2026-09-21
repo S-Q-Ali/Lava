@@ -316,6 +316,25 @@ async def upload_strip_only(request: Request, file: UploadFile | None = File(def
     except OSError as exc:
         raise ApiError(500, "STORAGE_FAILED", f"could not store strip: {exc}") from exc
 
+    from PIL import Image
+
+    try:
+        with Image.open(source_path) as probe:
+            w, h = probe.size
+            mime = (probe.format or ext.lstrip(".")).lower()
+    except Exception as exc:
+        raise ApiError(422, "IMAGE_INVALID", f"could not read image: {exc}") from exc
+
+    StripRegistry(
+        path=base / "registry.json",
+        source_id=source_id,
+        source_file=source_path.name,
+        width=w,
+        height=h,
+        mime=mime,
+        panels=[],
+    ).save()
+
     return {"stripId": source_id, "fileName": file.filename or f"source{ext}"}
 
 
@@ -359,10 +378,30 @@ async def upload_pdf_only(request: Request, file: UploadFile | None = File(defau
         dest = page_strip_dir / f"source{page_path.suffix}"
         try:
             dest.write_bytes(page_path.read_bytes())
-            pages.append({"stripId": page_id, "fileName": page_path.name})
         except OSError:
             rmtree_safe(page_strip_dir, ignore_errors=True)
             continue
+
+        from PIL import Image
+
+        try:
+            with Image.open(dest) as probe:
+                w, h = probe.size
+                mime = (probe.format or dest.suffix.lstrip(".")).lower()
+        except Exception:
+            rmtree_safe(page_strip_dir, ignore_errors=True)
+            continue
+
+        StripRegistry(
+            path=page_strip_dir / "registry.json",
+            source_id=page_id,
+            source_file=dest.name,
+            width=w,
+            height=h,
+            mime=mime,
+            panels=[],
+        ).save()
+        pages.append({"stripId": page_id, "fileName": page_path.name})
 
     rmtree_safe(pdf_dir, ignore_errors=True)
 

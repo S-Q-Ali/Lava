@@ -31,11 +31,14 @@ interface ManhwaStore {
   currentId: string | null
   detail: ManhwaStripDetail | null
   viewerPageIndex: number
+  resultsModalOpen: boolean
   refresh(): Promise<void>
   select(id: string | null): Promise<void>
   upload(file: File): Promise<void>
   uploadPdf(file: File): Promise<void>
   uploadOnly(file: File): Promise<void>
+  openResults(): void
+  closeResults(): void
   nextPage(): void
   prevPage(): void
   startDetection(): Promise<void>
@@ -50,6 +53,7 @@ export const useManhwaStore = create<ManhwaStore>()((set, get) => ({
   currentId: null,
   detail: null,
   viewerPageIndex: 0,
+  resultsModalOpen: false,
 
   refresh: async () => {
     set({ status: { phase: 'loading' } })
@@ -120,18 +124,21 @@ export const useManhwaStore = create<ManhwaStore>()((set, get) => ({
         const result = await uploadPdfOnly(file, (progress) => {
           set({ status: { phase: 'uploading', progress } })
         })
-        set({ status: { phase: 'uploaded', pages: result.pages, fileName: result.fileName }, viewerPageIndex: 0 })
+        set({ status: { phase: 'uploaded', pages: result.pages, fileName: result.fileName }, viewerPageIndex: 0, resultsModalOpen: true })
       } else {
         const result = await uploadStripOnly(file, (progress) => {
           set({ status: { phase: 'uploading', progress } })
         })
-        set({ status: { phase: 'uploaded', pages: [result], fileName: result.fileName }, viewerPageIndex: 0 })
+        set({ status: { phase: 'uploaded', pages: [result], fileName: result.fileName }, viewerPageIndex: 0, resultsModalOpen: true })
       }
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Could not upload file.'
       set({ status: { phase: 'error', error: message } })
     }
   },
+
+  openResults: () => set({ resultsModalOpen: true }),
+  closeResults: () => set({ resultsModalOpen: false }),
 
   nextPage: () => {
     const { status, viewerPageIndex, strips } = get()
@@ -160,7 +167,7 @@ export const useManhwaStore = create<ManhwaStore>()((set, get) => ({
     const { status } = get()
     if (status.phase !== 'uploaded') return
     const pages = status.pages
-    set({ status: { phase: 'detecting' } })
+    set({ status: { phase: 'detecting' }, resultsModalOpen: false })
     try {
       let firstDetail: ManhwaStripDetail | null = null
       for (const page of pages) {
