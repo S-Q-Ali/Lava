@@ -10,6 +10,7 @@ import {
   correctStrip,
   redetectStrip,
   deleteStrip,
+  deleteAllStrips,
   type ManhwaPanel,
   type ManhwaStripSummary,
   type ManhwaStripDetail,
@@ -48,6 +49,7 @@ interface ManhwaStore {
   apply(op: CorrectionOp): Promise<void>
   redetect(): Promise<void>
   remove(id: string): Promise<void>
+  clearAll(): Promise<void>
 }
 
 export const useManhwaStore = create<ManhwaStore>()((set, get) => ({
@@ -250,6 +252,24 @@ export const useManhwaStore = create<ManhwaStore>()((set, get) => ({
       set({ status: { phase: 'idle' }, strips, currentId, detail })
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Could not delete strip.'
+      set({ status: { phase: 'error', error: message } })
+    }
+  },
+
+  clearAll: async () => {
+    set({ status: { phase: 'loading' } })
+    try {
+      await deleteAllStrips()
+      set({
+        status: { phase: 'idle' },
+        strips: [],
+        currentId: null,
+        detail: null,
+        viewerPageIndex: 0,
+        resultsModalOpen: false,
+      })
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Could not clear results.'
       set({ status: { phase: 'error', error: message } })
     }
   },

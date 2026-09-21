@@ -185,6 +185,10 @@ export async function deleteStrip(sourceId: string): Promise<void> {
   await manhwaFetch(`/strips/${encodeURIComponent(sourceId)}`, { method: 'DELETE' })
 }
 
+export async function deleteAllStrips(): Promise<void> {
+  await manhwaFetch('/strips', { method: 'DELETE' })
+}
+
 export function exportUrl(sourceId: string, format: 'png' | 'jpg' = 'png'): string {
   const baseUrl = backendBaseUrl().replace(/\/$/, '')
   return `${baseUrl}/api/manhwa/strips/${encodeURIComponent(sourceId)}/export?format=${format}`
