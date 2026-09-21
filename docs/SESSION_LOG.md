@@ -2673,3 +2673,37 @@ The results modal only showed source pages before detection. User wanted a singl
 ### Next step
 - Fix pre-existing LeftWorkspace test failure (`.ai-tools-tabs` selector)
 - Continue with remaining roadmap items
+
+---
+
+## Session: PDF-wise Grouping in Recent Extractions
+
+### WHAT
+Redesigned Recent Extractions from per-page rows to per-PDF group rows. Added parent_id + source_name to StripRegistry, new /groups API endpoints, and frontend grouping.
+
+### HOW
+1. Added optional parent_id + source_name fields to StripRegistry (backward compatible)
+2. upload_pdf_only now sets parent_id=pdf_id and source_name=file.filename on each page strip
+3. New GET /api/manhwa/groups endpoint groups strips by parentId
+4. New DELETE /api/manhwa/groups/{group_id} endpoint bulk-deletes all pages of a PDF
+5. Frontend: ManhwaGroup type, etchGroups() + deleteGroup() API functions
+6. Store: groups state alongside strips, efresh() loads both in parallel, iewGroup() sets uploaded phase with all group pages, emoveGroup() deletes group
+7. ManhwaPanel: iterates groups instead of strips, shows sourceName + pageCount + totalPanels per row
+8. Modal: iewGroup() sets status to 'uploaded' with all group pages, enabling Start Extraction button
+
+### WHY
+50-page PDF = 50 rows in Recent Extractions. Delete = 50 clicks. User wanted one row per PDF with bulk delete.
+
+### Verify
+- Frontend: 383/384 tests pass (pre-existing LeftWorkspace failure)
+- Frontend: 0 type errors
+- Backend: 67 manhwa tests pass (pre-existing landscape/jpeg failures)
+- Commits: 4b8f99c, 4ab22d2, 17b5eab, 6b41efd, 84af77f, 7a80d9d, 98fd949, d36c7d0,  b6537e
+
+### Limitations
+- Old strips without parent_id appear as standalone groups (by design, backward compatible)
+- sourceName fallback to sourceFile when null
+
+### Next step
+- Continue with remaining roadmap items
+- Fix pre-existing LeftWorkspace test failure
