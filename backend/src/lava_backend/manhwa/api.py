@@ -598,6 +598,34 @@ def delete_strip(source_id: str):
     return Response(status_code=204)
 
 
+@router.delete("/groups/{group_id}", status_code=204)
+def delete_group(group_id: str):
+    """Delete all strips belonging to a group (parentId match) or a standalone strip."""
+    from lava_backend.config import get_config
+
+    config = get_config()
+    base = manhwa_dir(config)
+    deleted = 0
+    if base.exists():
+        for registry_dir in base.iterdir():
+            if not registry_dir.is_dir():
+                continue
+            path = registry_dir / "registry.json"
+            if not path.exists():
+                continue
+            try:
+                reg = StripRegistry.load(path)
+            except Exception:
+                continue
+            # Match by parentId or by sourceId (standalone strip)
+            if reg.parent_id == group_id or reg.source_id == group_id:
+                rmtree_safe(registry_dir, ignore_errors=True)
+                deleted += 1
+    if deleted == 0:
+        raise ApiError(404, "NOT_FOUND", f"no group or strip {group_id!r}")
+    return Response(status_code=204)
+
+
 # -- export ------------------------------------------------------------------
 
 @router.get("/strips/{source_id}/export")
