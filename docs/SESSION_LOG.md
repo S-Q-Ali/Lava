@@ -2631,3 +2631,45 @@ PDF upload succeeded (201) but immediately fetching source images failed with 40
 - Fix pre-existing LeftWorkspace test failure (`.ai-tools-tabs` selector)
 - Update graphify knowledge graph
 - Continue with remaining roadmap items
+
+---
+
+## Session 2026-09-21 — Modal progress bar + extracted panels view
+
+### Purpose (WHY)
+The results modal only showed source pages before detection. User wanted a single unified flow: upload → modal opens with pages → click extract → progress bar inside same modal → extracted panels shown in same modal → done.
+
+### WHAT
+- **Store: `detectionProgress`** — Added `{ current: number; total: number } | null` to track per-page detection progress. Updated after each `detectStrip()` call.
+- **Store: `pendingPages`** — Added `PendingPage[]` to persist the pages array across phase changes (uploaded → detecting → idle), since `status.pages` is lost when phase changes.
+- **Store: Keep modal open** — Removed `resultsModalOpen: false` from `startDetection`. Modal stays open through all 3 phases.
+- **Modal: 3-view design** — `ManhwaResultsModal` now renders 3 different views based on `status.phase`:
+  - `uploaded` → Source pages grid + preview + "Start Extraction" button
+  - `detecting` → Spinner + progress bar + "Detecting panels... 3/10" text
+  - `idle` → Extracted panel crops with confidence badges + "Done" button
+- **CSS: Progress bar** — Animated spinner, progress bar with smooth transition, panel confidence badge styling.
+- **ManhwaPanel: Render in all phases** — Modal now renders when `resultsModalOpen` is true regardless of phase.
+
+### HOW
+- `startDetection` saves pages to `pendingPages` before changing phase
+- Modal reads `pendingPages` from store for the pages view, `detail.panels` for the panels view
+- Progress updated via `set({ detectionProgress: { current: i+1, total } })` after each page
+- `closeResults` clears all modal-related state (open, progress, pages)
+
+### Decisions
+- Separate `pendingPages` field over keeping `status.pages` — cleaner than making status a ref, avoids cross-phase state leakage
+- Spinner + progress bar over just progress bar — gives visual feedback that something is happening
+- Panel confidence shown as small badge on thumbnail — non-informative but useful for quick inspection
+
+### Verify
+- Frontend: 384/385 tests pass (pre-existing LeftWorkspace failure)
+- Frontend: 0 type errors
+- Commit: `cc83d33`
+
+### Limitations
+- Detection progress is per-page, not per-panel — a page with 10 panels takes same time as one with 2 panels
+- Modal doesn't auto-scroll to newly detected panels
+
+### Next step
+- Fix pre-existing LeftWorkspace test failure (`.ai-tools-tabs` selector)
+- Continue with remaining roadmap items
