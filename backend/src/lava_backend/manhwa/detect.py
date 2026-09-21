@@ -335,7 +335,7 @@ def detect_strip(
     if ml_path is not None:
         ml_result = ManhwaDetector.detect_auto(
             image_path=ml_path,
-            confidence=0.25,
+            confidence=0.10,
         )
     if ml_result and len(ml_result.panels) > 0:
         detection_method = ml_result.method
